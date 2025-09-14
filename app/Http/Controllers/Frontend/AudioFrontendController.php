@@ -209,6 +209,23 @@ class AudioFrontendController extends Controller
     }
 
 
+
+    public function stream(Audio $audio)
+    {
+        $filePath = public_path('assets/audios/files/' . $audio->audio_file);
+
+        if (! file_exists($filePath)) {
+            abort(404);
+        }
+
+        $headers = [
+            'Content-Type' => 'audio/mpeg',
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+            'Accept-Ranges' => 'bytes',
+        ];
+
+        return response()->file($filePath, $headers);
+    }
     public function show(Request $request, Audio $audio)
     {
         if (! $audio->category || $audio->category->section != Category::SECTION_AUDIO) {

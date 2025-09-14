@@ -48,6 +48,7 @@ Route::prefix('Audios')->group(function () {
     Route::get('/{category:slug}', [AudioFrontendController::class, 'category'])->name('frontend.audios.category');
     Route::get('/Topic/{audio:slug}', [AudioFrontendController::class, 'show'])->name('frontend.audios.show');
     Route::get('/download/{audio}', [AudioFrontendController::class, 'download'])->name('frontend.audios.download');
+    Route::get('/stream/{audio}', [AudioFrontendController::class, 'stream'])->name('frontend.audios.stream');
 });
 
 Route::prefix('Fatawas')->group(function () {
