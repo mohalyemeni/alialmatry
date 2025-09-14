@@ -174,7 +174,7 @@ class AudioFrontendController extends Controller
      */
     public function category(Request $request, Category $category)
     {
-        if ($category->section !== Category::SECTION_AUDIO) {
+        if ($category->section != Category::SECTION_AUDIO) {
             abort(404);
         }
 
@@ -208,12 +208,10 @@ class AudioFrontendController extends Controller
         return view('frontend.audios.category', compact('category', 'audios'));
     }
 
-    /**
-     * Show single audio — increment views once per session with short cache protection, then prepare recent audios list.
-     */
+
     public function show(Request $request, Audio $audio)
     {
-        if (! $audio->category || $audio->category->section !== Category::SECTION_AUDIO) {
+        if (! $audio->category || $audio->category->section != Category::SECTION_AUDIO) {
             abort(404);
         }
 
@@ -224,12 +222,9 @@ class AudioFrontendController extends Controller
         $ua = substr($request->header('User-Agent', ''), 0, 120);
         $visitorHash = sha1($request->ip() . '|' . $ua);
         $cacheKey = "audio_view_{$audio->id}_{$visitorHash}";
-        $cacheTtlMinutes = 60; // حماية لمدة 60 دقيقة (قابلة للتعديل)
+        $cacheTtlMinutes = 60;
 
-        // Logic:
-        // 1) If session key exists -> do nothing.
-        // 2) If session missing but cache key exists -> set session (do not increment).
-        // 3) If neither exists -> increment views, set cache and session.
+
         if (! $request->session()->has($sessionKey)) {
             if (! Cache::has($cacheKey)) {
                 try {
@@ -240,7 +235,7 @@ class AudioFrontendController extends Controller
                 // set cache entry to block repeated increments from same visitor for a while
                 Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
             }
-            // set session key so within same session we won't increment again
+
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
@@ -252,7 +247,6 @@ class AudioFrontendController extends Controller
         $now = Carbon::now();
         $limit = 5;
 
-        // recent from same category (exclude current)
         $recent = Audio::where('category_id', $audio->category_id)
             ->where('status', 1)
             ->where(function ($q) use ($now) {
@@ -306,9 +300,6 @@ class AudioFrontendController extends Controller
         return view('frontend.audios.show', compact('audio', 'recentAudios'));
     }
 
-    /**
-     * Download audio file (if exists in public/assets/audios/files).
-     */
     public function download(Audio $audio)
     {
         $filePath = public_path('assets/audios/files/' . $audio->audio_file);

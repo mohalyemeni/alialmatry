@@ -155,7 +155,7 @@ class FatawaFrontendController extends Controller
 
     public function category(Request $request, Category $category)
     {
-        if ($category->section !== Category::SECTION_FATWA) {
+        if ($category->section != Category::SECTION_FATWA) {
             abort(404);
         }
 
@@ -191,7 +191,7 @@ class FatawaFrontendController extends Controller
 
     public function show(Request $request, Fatwa $fatawa)
     {
-        if (! $fatawa->category || $fatawa->category->section !== Category::SECTION_FATWA) {
+        if (! $fatawa->category || $fatawa->category->section != Category::SECTION_FATWA) {
             abort(404);
         }
 

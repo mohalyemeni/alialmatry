@@ -98,7 +98,7 @@ class VideoFrontendController extends Controller
 
     public function category(Request $request, Category $category)
     {
-        if ($category->section !== Category::SECTION_VIDEO) {
+        if ($category->section != Category::SECTION_VIDEO) {
             abort(404);
         }
 
@@ -132,7 +132,8 @@ class VideoFrontendController extends Controller
 
     public function show(Request $request, Video $video)
     {
-        if (! $video->category || $video->category->section !== Category::SECTION_VIDEO) {
+
+        if (! $video->category || $video->category->section != Category::SECTION_VIDEO) {
             abort(404);
         }
 

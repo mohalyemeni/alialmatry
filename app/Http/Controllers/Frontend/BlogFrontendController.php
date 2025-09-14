@@ -127,7 +127,7 @@ class BlogFrontendController extends Controller
      */
     public function category(Request $request, Category $category)
     {
-        if ($category->section !== Category::SECTION_ARTICLE) {
+        if ($category->section != Category::SECTION_ARTICLE) {
             abort(404);
         }
 
@@ -165,7 +165,7 @@ class BlogFrontendController extends Controller
      */
     public function show(Request $request, Blog $blog)
     {
-        if (! $blog->category || $blog->category->section !== Category::SECTION_ARTICLE) {
+        if (! $blog->category || $blog->category->section != Category::SECTION_ARTICLE) {
             abort(404);
         }
 
