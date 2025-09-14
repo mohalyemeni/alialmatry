@@ -119,6 +119,14 @@
                             $audioFileUrl = $hasAudioFile ? route('frontend.audios.stream', $audio->id) : null;
                         @endphp
 
+                        @if ($hasAudioFile)
+                            <div class="audio-player-row">
+                                <audio controls preload="auto" aria-label="{{ e($audio->title) }}">
+                                    <source src="{{ $audioFileUrl }}" type="audio/mpeg">
+                                    {{ __('panel.audio_not_supported') }}
+                                </audio>
+                            </div>
+                        @endif
 
                         @if ($hasAudioFile)
                             <div class="audio-download-btn ms-2">
