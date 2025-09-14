@@ -22,14 +22,36 @@
                             @php
                                 $thumb = $video->thumbnail;
                                 $thumbnailSrc = null;
+
+                                // إذا كان رابط مطلق فاستعمله مباشرة
                                 if (\Illuminate\Support\Str::startsWith($thumb, ['http://', 'https://'])) {
                                     $thumbnailSrc = $thumb;
-                                } elseif (file_exists(public_path($thumb))) {
-                                    $thumbnailSrc = asset($thumb);
-                                } elseif (file_exists(public_path('storage/' . ltrim($thumb, '/')))) {
-                                    $thumbnailSrc = asset('storage/' . ltrim($thumb, '/'));
                                 } else {
-                                    $thumbnailSrc = null;
+                                    // حاول تفضيل public/upload أولاً ثم نسخ متعددة كف fallback
+                                    $candidates = [
+                                        'upload/' . ltrim($thumb, '/'), // public/upload/...
+                                        'upload/' . basename($thumb), // public/upload/<file>
+                                        ltrim($thumb, '/'), // قد يكون مسار كامل أو نسبى
+                                        'storage/' . ltrim($thumb, '/'), // storage symlink
+                                        'videos/thumbnails/' . ltrim($thumb, '/'), // legacy public folder
+                                        'assets/videos/thumbnails/' . ltrim($thumb, '/'),
+                                        'assets/video_categories/' . ltrim($thumb, '/'),
+                                    ];
+
+                                    foreach ($candidates as $p) {
+                                        if ($p && file_exists(public_path($p))) {
+                                            $thumbnailSrc = asset($p);
+                                            break;
+                                        }
+                                    }
+
+                                    // كخيار أخير: لو لم نجد في public، جرّب Storage::disk('public')
+                                    if (
+                                        !$thumbnailSrc &&
+                                        \Illuminate\Support\Facades\Storage::disk('public')->exists($thumb)
+                                    ) {
+                                        $thumbnailSrc = asset('storage/' . ltrim($thumb, '/'));
+                                    }
                                 }
                             @endphp
 

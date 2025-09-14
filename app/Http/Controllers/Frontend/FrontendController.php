@@ -88,114 +88,132 @@ class FrontendController extends Controller
             ];
         }
 
-        // ----------------------------
-        // videos (existing logic)
-        // ----------------------------
-        $videoCategory = Category::where('section', Category::SECTION_VIDEO)
+// ----------------------------
+// videos (existing logic)
+// ----------------------------
+$videoCategory = Category::where('section', Category::SECTION_VIDEO)
+    ->where('status', 1)
+    ->orderByDesc('id')
+    ->first();
+$targetVideos = 5;
+$videosCollection = collect();
+$takenVideoIds = [];
+$videoFeaturedCats = Category::where('section', Category::SECTION_VIDEO)
+    ->where('status', 1)
+    ->where('featured', 1)
+    ->whereHas('videos', function ($q) use ($now) {
+        $q->where('status', 1)
+          ->where(function ($q2) use ($now) {
+              $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+          });
+    })
+    ->orderByDesc('id')
+    ->get();
+foreach ($videoFeaturedCats as $vc) {
+    if ($videosCollection->count() >= $targetVideos) break;
+    $v = $vc->videos()
+        ->where('status', 1)
+        ->where(function ($q) use ($now) {
+            $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
+        })
+        ->orderByDesc('published_on')
+        ->first();
+    if ($v) {
+        $takenVideoIds[] = $v->id;
+        $videosCollection->push($v);
+    }
+}
+if ($videosCollection->count() < $targetVideos) {
+    $videoNonFeaturedCats = Category::where('section', Category::SECTION_VIDEO)
+        ->where('status', 1)
+        ->where(function ($q) {
+            $q->where('featured', 0)->orWhereNull('featured');
+        })
+        ->whereHas('videos', function ($q) use ($now) {
+            $q->where('status', 1)
+              ->where(function ($q2) use ($now) {
+                  $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+              });
+        })
+        ->orderByDesc('id')
+        ->get();
+    foreach ($videoNonFeaturedCats as $vc) {
+        if ($videosCollection->count() >= $targetVideos) break;
+        $v = $vc->videos()
             ->where('status', 1)
-            ->orderByDesc('id')
-            ->first();
-        $targetVideos = 5;
-        $videosCollection = collect();
-        $takenVideoIds = [];
-        $videoFeaturedCats = Category::where('section', Category::SECTION_VIDEO)
-            ->where('status', 1)
-            ->where('featured', 1)
-            ->whereHas('videos', function ($q) use ($now) {
-                $q->where('status', 1)
-                  ->where(function ($q2) use ($now) {
-                      $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                  });
+            ->where(function ($q) use ($now) {
+                $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
-            ->orderByDesc('id')
-            ->get();
-        foreach ($videoFeaturedCats as $vc) {
-            if ($videosCollection->count() >= $targetVideos) break;
-            $v = $vc->videos()
-                ->where('status', 1)
-                ->where(function ($q) use ($now) {
-                    $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                })
-                ->orderByDesc('published_on')
-                ->first();
-            if ($v) {
-                $takenVideoIds[] = $v->id;
-                $videosCollection->push($v);
+            ->orderByDesc('published_on')
+            ->first();
+        if ($v && !in_array($v->id, $takenVideoIds)) {
+            $takenVideoIds[] = $v->id;
+            $videosCollection->push($v);
+        }
+    }
+}
+if ($videosCollection->count() < $targetVideos) {
+    $need = $targetVideos - $videosCollection->count();
+    $additional = Video::where('status', 1)
+        ->where(function ($q) use ($now) {
+            $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
+        })
+        ->when(!empty($takenVideoIds), function ($q) use ($takenVideoIds) {
+            $q->whereNotIn('id', $takenVideoIds);
+        })
+        ->orderByDesc('published_on')
+        ->take($need)
+        ->get();
+    foreach ($additional as $a) {
+        $takenVideoIds[] = $a->id;
+        $videosCollection->push($a);
+    }
+}
+$videos = $videosCollection->map(function ($v) {
+    $thumb = $v->thumbnail;
+    if ($thumb && !Str::startsWith($thumb, ['http://', 'https://'])) {
+        // نفضّل public/upload أولاً ثم نتراجع للمسارات القديمة
+        $thumbCandidate = null;
+        $candidates = [
+            // new preferred paths
+            'upload/' . ltrim($thumb, '/'),
+            'upload/' . basename($thumb),
+            // possible stored variants
+            ltrim($thumb, '/'),
+            'storage/' . ltrim($thumb, '/'),
+            'videos/thumbnails/' . ltrim($thumb, '/'),
+            'assets/videos/thumbnails/' . ltrim($thumb, '/'),
+            'assets/video_categories/' . ltrim($thumb, '/'),
+        ];
+
+        foreach ($candidates as $p) {
+            if ($p && file_exists(public_path($p))) {
+                $thumbCandidate = asset($p);
+                break;
             }
         }
-        if ($videosCollection->count() < $targetVideos) {
-            $videoNonFeaturedCats = Category::where('section', Category::SECTION_VIDEO)
-                ->where('status', 1)
-                ->where(function ($q) {
-                    $q->where('featured', 0)->orWhereNull('featured');
-                })
-                ->whereHas('videos', function ($q) use ($now) {
-                    $q->where('status', 1)
-                      ->where(function ($q2) use ($now) {
-                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                      });
-                })
-                ->orderByDesc('id')
-                ->get();
-            foreach ($videoNonFeaturedCats as $vc) {
-                if ($videosCollection->count() >= $targetVideos) break;
-                $v = $vc->videos()
-                    ->where('status', 1)
-                    ->where(function ($q) use ($now) {
-                        $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                    })
-                    ->orderByDesc('published_on')
-                    ->first();
-                if ($v && !in_array($v->id, $takenVideoIds)) {
-                    $takenVideoIds[] = $v->id;
-                    $videosCollection->push($v);
-                }
-            }
-        }
-        if ($videosCollection->count() < $targetVideos) {
-            $need = $targetVideos - $videosCollection->count();
-            $additional = Video::where('status', 1)
-                ->where(function ($q) use ($now) {
-                    $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                })
-                ->when(!empty($takenVideoIds), function ($q) use ($takenVideoIds) {
-                    $q->whereNotIn('id', $takenVideoIds);
-                })
-                ->orderByDesc('published_on')
-                ->take($need)
-                ->get();
-            foreach ($additional as $a) {
-                $takenVideoIds[] = $a->id;
-                $videosCollection->push($a);
-            }
-        }
-        $videos = $videosCollection->map(function ($v) {
-            $thumb = $v->thumbnail;
-            if ($thumb && !Str::startsWith($thumb, ['http://', 'https://'])) {
-                if (file_exists(public_path($thumb))) {
-                    $thumb = asset($thumb);
-                } elseif (file_exists(public_path('storage/' . ltrim($thumb, '/')))) {
-                    $thumb = asset('storage/' . ltrim($thumb, '/'));
-                } else {
-                    $thumb = asset($thumb);
-                }
-            }
-            $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
-            return (object) [
-                'id' => $v->id,
-                'title' => $v->title,
-                'slug' => $v->slug,
-                'youtube_id' => $v->youtube_id,
-                'thumbnail' => $thumb,
-                'watch_url' => 'https://www.youtube.com/watch?v=' . $v->youtube_id,
-                'published_on' => $v->published_on,
-                'views' => $v->views ?? 0,
-                'category' => $v->category ?? null,
-                'description' => $v->description ?? null,
-            ];
-        })->values();
-        $videosMain = $videos->first() ?? null;
-        $videosSmall = $videos->slice(1, 4)->values();
+
+        // إن لم نجد أي ملف، حاول استخدام asset($thumb) أو placeholder لاحقاً
+        $thumb = $thumbCandidate ?: (file_exists(public_path($thumb)) ? asset($thumb) : $thumb);
+    }
+
+    $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
+
+    return (object) [
+        'id' => $v->id,
+        'title' => $v->title,
+        'slug' => $v->slug,
+        'youtube_id' => $v->youtube_id,
+        'thumbnail' => $thumb,
+        'watch_url' => 'https://www.youtube.com/watch?v=' . $v->youtube_id,
+        'published_on' => $v->published_on,
+        'views' => $v->views ?? 0,
+        'category' => $v->category ?? null,
+        'description' => $v->description ?? null,
+    ];
+})->values();
+$videosMain = $videos->first() ?? null;
+$videosSmall = $videos->slice(1, 4)->values();
 
         // ----------------------------
         // audios (existing logic)

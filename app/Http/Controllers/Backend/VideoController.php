@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Requests\VideoRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
@@ -49,67 +48,63 @@ class VideoController extends Controller
         return view('backend.videos.create', compact('categories'));
     }
 
-public function store(VideoRequest $request)
-{
-    if (!auth()->user()->ability('admin', 'create_videos')) {
-        return redirect('admin/index');
-    }
+    public function store(VideoRequest $request)
+    {
+        if (!auth()->user()->ability('admin', 'create_videos')) {
+            return redirect('admin/index');
+        }
 
-    $data = $request->validated();
+        $data = $request->validated();
 
-    $category = Category::where('id', $data['category_id'] ?? null)
-        ->where('section', Category::SECTION_VIDEO)
-        ->first();
+        $category = Category::where('id', $data['category_id'] ?? null)
+            ->where('section', Category::SECTION_VIDEO)
+            ->first();
 
-    if (!$category) {
-        return redirect()->back()->withInput()->withErrors([
-            'category_id' => 'التصنيف غير صالح للقسم الفيديو.'
+        if (!$category) {
+            return redirect()->back()->withInput()->withErrors([
+                'category_id' => 'التصنيف غير صالح للقسم الفيديو.'
+            ]);
+        }
+
+        $slug = Str::slug($data['title']);
+        $originalSlug = $slug; $counter = 1;
+        while (Video::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+
+        $video = new Video();
+        $video->title = $data['title'];
+        $video->slug = $slug;
+        $video->description = $data['description'] ?? null;
+        $video->youtube_id = $data['youtube_id'];
+
+        $thumbnailInput = $request->input('local_thumbnail') ?? $request->input('thumbnail');
+
+        if ($thumbnailInput) {
+            if ($this->isLocalThumb($thumbnailInput)) {
+                // مسار محلي داخل public/upload أو مسارات أخرى معتمدة
+                $video->thumbnail = $thumbnailInput;
+            } elseif (Str::startsWith($thumbnailInput, ['http://', 'https://'])) {
+                // جلب وحفظ في public/upload
+                $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'upload');
+            } else {
+                $video->thumbnail = $thumbnailInput;
+            }
+        }
+
+        $video->category_id = $data['category_id'];
+        $video->meta_keywords = $data['meta_keywords'] ?? null;
+        $video->meta_description = $data['meta_description'] ?? null;
+        $video->published_on = $data['published_on'] ?? null;
+        $video->status = isset($data['status']) ? (bool)$data['status'] : true;
+        $video->views = $data['views'] ?? 0;
+        $video->save();
+
+        return redirect()->route('admin.videos.index')->with([
+            'message' => 'تم إضافة الفيديو بنجاح',
+            'alert-type' => 'success',
         ]);
     }
-
-
-    $slug = Str::slug($data['title']);
-    $originalSlug = $slug; $counter = 1;
-    while (Video::where('slug', $slug)->exists()) {
-        $slug = $originalSlug . '-' . $counter++;
-    }
-
-    $video = new Video();
-    $video->title = $data['title'];
-    $video->slug = $slug;
-    $video->description = $data['description'] ?? null;
-    $video->youtube_id = $data['youtube_id'];
-
-    $thumbnailInput = $request->input('local_thumbnail') ?? $request->input('thumbnail');
-
-    if ($thumbnailInput) {
-        if ($this->isLocalThumb($thumbnailInput)) {
-
-            $video->thumbnail = $thumbnailInput;
-        } elseif (Str::startsWith($thumbnailInput, ['http://', 'https://'])) {
-
-            $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'videos/thumbnails');
-        } else {
-
-            $video->thumbnail = $thumbnailInput;
-        }
-    }
-
-    $video->category_id = $data['category_id'];
-    $video->meta_keywords = $data['meta_keywords'] ?? null;
-    $video->meta_description = $data['meta_description'] ?? null;
-    $video->published_on = $data['published_on'] ?? null;
-    $video->status = isset($data['status']) ? (bool)$data['status'] : true;
-    $video->views = $data['views'] ?? 0;
-    $video->save();
-
-    return redirect()->route('admin.videos.index')->with([
-        'message' => 'تم إضافة الفيديو بنجاح',
-        'alert-type' => 'success',
-    ]);
-}
-
-
 
     public function edit($id)
     {
@@ -123,95 +118,113 @@ public function store(VideoRequest $request)
         return view('backend.videos.edit', compact('video', 'categories'));
     }
 
-public function update(VideoRequest $request, $id)
-{
-    if (! auth()->user()->ability('admin', 'update_videos')) {
-        return redirect('admin/index');
-    }
+    public function update(VideoRequest $request, $id)
+    {
+        if (! auth()->user()->ability('admin', 'update_videos')) {
+            return redirect('admin/index');
+        }
 
-    $video = Video::findOrFail($id);
-    $data = $request->validated();
+        $video = Video::findOrFail($id);
+        $data = $request->validated();
 
-    $category = Category::where('id', $data['category_id'] ?? null)
-        ->where('section', Category::SECTION_VIDEO)
-        ->first();
-    if (!$category) {
-        return redirect()->back()->withInput()->withErrors([
-            'category_id' => 'التصنيف غير صالح للقسم الفيديو.'
+        $category = Category::where('id', $data['category_id'] ?? null)
+            ->where('section', Category::SECTION_VIDEO)
+            ->first();
+        if (!$category) {
+            return redirect()->back()->withInput()->withErrors([
+                'category_id' => 'التصنيف غير صالح للقسم الفيديو.'
+            ]);
+        }
+
+        $oldTitle = $video->title;
+        $video->title = $data['title'];
+
+        if ($data['title'] !== $oldTitle) {
+            $slug = Str::slug($data['title']);
+            if (Video::where('slug', $slug)->where('id', '!=', $video->id)->exists()) {
+                $slug = $slug . '-' . time();
+            }
+            $video->slug = $slug;
+        } elseif (empty($video->slug)) {
+            $video->slug = Str::slug($data['title']);
+        }
+
+        $video->description = $data['description'] ?? null;
+        $video->youtube_id = $data['youtube_id'];
+
+        $thumbnailInput = $request->input('local_thumbnail') ?? $request->input('thumbnail');
+
+        if ($thumbnailInput) {
+            if ($this->isLocalThumb($thumbnailInput)) {
+
+                $this->maybeDeleteOldThumb($video, $thumbnailInput);
+                $video->thumbnail = $thumbnailInput;
+
+            } elseif (Str::startsWith($thumbnailInput, ['http://','https://'])) {
+
+                $localThumb = $this->saveRemoteImage($thumbnailInput, 'upload');
+                if ($localThumb) {
+                    $this->maybeDeleteOldThumb($video, $localThumb);
+                    $video->thumbnail = $localThumb;
+                } else {
+                    // فشل الحفظ الخارجي — إبقاء القديم أو معالجة خطأ حسب الحاجة
+                }
+
+            } else {
+
+                $this->maybeDeleteOldThumb($video, $thumbnailInput);
+                $video->thumbnail = $thumbnailInput;
+            }
+        }
+
+        $video->category_id = $data['category_id'];
+        $video->meta_keywords = $data['meta_keywords'] ?? null;
+        $video->meta_description = $data['meta_description'] ?? null;
+        $video->published_on = $data['published_on'] ?? null;
+        $video->status = isset($data['status']) ? (bool)$data['status'] : $video->status;
+        $video->save();
+
+        return redirect()->route('admin.videos.index')->with([
+            'message' => 'تم تحديث بيانات الفيديو بنجاح',
+            'alert-type' => 'success',
         ]);
     }
 
-    $oldTitle = $video->title;
-    $video->title = $data['title'];
+    private function isLocalThumb(?string $path): bool
+    {
+        if (!is_string($path) || $path === '') return false;
 
-    if ($data['title'] !== $oldTitle) {
-        $slug = Str::slug($data['title']);
-        if (Video::where('slug', $slug)->where('id', '!=', $video->id)->exists()) {
-            $slug = $slug . '-' . time();
-        }
-        $video->slug = $slug;
-    } elseif (empty($video->slug)) {
-        $video->slug = Str::slug($data['title']);
-    }
+        // قبول مسارات upload/ و videos/thumbnails/ و assets/... وغيرها إذا الملف موجود فعلاً داخل public
+        $candidates = [
+            $path,
+            'upload/' . ltrim($path, '/'),
+            'videos/thumbnails/' . ltrim($path, '/'),
+            'assets/videos/thumbnails/' . ltrim($path, '/'),
+            'assets/video_categories/' . ltrim($path, '/'),
+        ];
 
-    $video->description = $data['description'] ?? null;
-    $video->youtube_id = $data['youtube_id'];
-
-    $thumbnailInput = $request->input('local_thumbnail') ?? $request->input('thumbnail');
-
-    if ($thumbnailInput) {
-        if ($this->isLocalThumb($thumbnailInput)) {
-
-            $this->maybeDeleteOldThumb($video, $thumbnailInput);
-            $video->thumbnail = $thumbnailInput;
-
-        } elseif (Str::startsWith($thumbnailInput, ['http://','https://'])) {
-
-            $localThumb = $this->saveRemoteImage($thumbnailInput, 'videos/thumbnails');
-            if ($localThumb) {
-                $this->maybeDeleteOldThumb($video, $localThumb);
-                $video->thumbnail = $localThumb;
-            } else {
-
+        foreach ($candidates as $p) {
+            if (file_exists(public_path($p))) {
+                return true;
             }
+        }
 
-        } else {
+        return false;
+    }
 
-            $this->maybeDeleteOldThumb($video, $thumbnailInput);
-            $video->thumbnail = $thumbnailInput;
+    private function maybeDeleteOldThumb(Video $video, string $newPath): void
+    {
+        if (
+            $video->thumbnail
+            && $video->thumbnail !== $newPath
+            && ! Str::startsWith($video->thumbnail, 'http')
+        ) {
+            $oldFull = public_path($video->thumbnail);
+            if (file_exists($oldFull) && is_file($oldFull)) {
+                @unlink($oldFull);
+            }
         }
     }
-
-    $video->category_id = $data['category_id'];
-    $video->meta_keywords = $data['meta_keywords'] ?? null;
-    $video->meta_description = $data['meta_description'] ?? null;
-    $video->published_on = $data['published_on'] ?? null;
-    $video->status = isset($data['status']) ? (bool)$data['status'] : $video->status;
-    $video->save();
-
-    return redirect()->route('admin.videos.index')->with([
-        'message' => 'تم تحديث بيانات الفيديو بنجاح',
-        'alert-type' => 'success',
-    ]);
-}
-
-private function isLocalThumb(?string $path): bool
-{
-    return is_string($path)
-        && Str::startsWith($path, 'videos/thumbnails')
-        && Storage::disk('public')->exists($path);
-}
-
-private function maybeDeleteOldThumb(Video $video, string $newPath): void
-{
-    if ($video->thumbnail
-        && $video->thumbnail !== $newPath
-        && !Str::startsWith($video->thumbnail, 'http')
-        && Storage::disk('public')->exists($video->thumbnail)) {
-        Storage::disk('public')->delete($video->thumbnail);
-    }
-}
-
 
     public function destroy($id)
     {
@@ -220,9 +233,11 @@ private function maybeDeleteOldThumb(Video $video, string $newPath): void
         }
         $video = Video::findOrFail($id);
 
-
-        if ($video->thumbnail && !Str::startsWith($video->thumbnail, 'http') && Storage::disk('public')->exists($video->thumbnail)) {
-            Storage::disk('public')->delete($video->thumbnail);
+        if ($video->thumbnail && ! Str::startsWith($video->thumbnail, 'http')) {
+            $full = public_path($video->thumbnail);
+            if (file_exists($full)) {
+                @unlink($full);
+            }
         }
 
         $video->delete();
@@ -232,43 +247,41 @@ private function maybeDeleteOldThumb(Video $video, string $newPath): void
         ]);
     }
 
+    public function fetchYouTubeData(Request $request)
+    {
+        $request->validate(['url' => 'required|url']);
 
-public function fetchYouTubeData(Request $request)
-{
-    $request->validate(['url' => 'required|url']);
+        $watchUrl = $request->url;
+        $videoID = $this->getYoutubeID($watchUrl);
+        if (!$videoID) {
+            return response()->json(['success' => false, 'message' => 'رابط يوتيوب غير صالح.']);
+        }
 
-    $watchUrl = $request->url;
-    $videoID = $this->getYoutubeID($watchUrl);
-    if (!$videoID) {
-        return response()->json(['success' => false, 'message' => 'رابط يوتيوب غير صالح.']);
+        try {
+            $info = $this->getYoutubeInfo("https://www.youtube.com/watch?v={$videoID}");
+        } catch (\Throwable $e) {
+            Log::warning('YouTube oEmbed failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'فشل الاتصال بمصدر البيانات. حاول لاحقاً.']);
+        }
+
+        if ($info) {
+            $thumbUrl = $info['thumbnail_url'] ?? null;
+
+            return response()->json([
+                'success'     => true,
+                'title'       => $info['title'] ?? null,
+                'description' => $info['title'] ?? null,
+                'thumbnail'   => $thumbUrl,
+                'local_thumbnail' => null,
+                'author_name' => $info['author_name'] ?? null,
+                'html'        => $info['html'] ?? null,
+                'youtube_id'  => $videoID,
+                'watch_url'   => $watchUrl,
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'لم يتم العثور على معلومات الفيديو.']);
     }
-
-    try {
-        $info = $this->getYoutubeInfo("https://www.youtube.com/watch?v={$videoID}");
-    } catch (\Throwable $e) {
-        Log::warning('YouTube oEmbed failed: ' . $e->getMessage());
-        return response()->json(['success' => false, 'message' => 'فشل الاتصال بمصدر البيانات. حاول لاحقاً.']);
-    }
-
-    if ($info) {
-        $thumbUrl = $info['thumbnail_url'] ?? null;
-
-        return response()->json([
-            'success'     => true,
-            'title'       => $info['title'] ?? null,
-            'description' => $info['title'] ?? null,
-            'thumbnail'   => $thumbUrl,
-            'local_thumbnail' => null,
-            'author_name' => $info['author_name'] ?? null,
-            'html'        => $info['html'] ?? null,
-            'youtube_id'  => $videoID,
-            'watch_url'   => $watchUrl,
-        ]);
-    }
-
-    return response()->json(['success' => false, 'message' => 'لم يتم العثور على معلومات الفيديو.']);
-}
-
 
     private function getYoutubeInfo($url)
     {
@@ -316,52 +329,61 @@ public function fetchYouTubeData(Request $request)
         return false;
     }
 
-private function saveRemoteImage(?string $url, string $folder = 'videos/thumbnails')
-{
-    if (empty($url)) {
-        return null;
-    }
-
-    try {
-        $response = Http::timeout(10)->get($url);
-        if (!$response->successful()) {
+    private function saveRemoteImage(?string $url, string $folder = 'upload')
+    {
+        if (empty($url)) {
             return null;
         }
 
-        $content = $response->body();
-
-        // استنتج الامتداد
-        $ext = null;
-        $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH) ?? '');
-        if (!empty($pathInfo['extension'])) {
-            $ext = strtolower($pathInfo['extension']);
-            if ($ext === 'jpeg') $ext = 'jpg';
-        } else {
-            $ct = $response->header('Content-Type');
-            if ($ct) {
-                if (str_contains($ct, 'jpeg')) $ext = 'jpg';
-                elseif (str_contains($ct, 'png')) $ext = 'png';
-                elseif (str_contains($ct, 'gif')) $ext = 'gif';
+        try {
+            $response = Http::timeout(10)->get($url);
+            if (!$response->successful()) {
+                return null;
             }
+
+            $content = $response->body();
+
+            // استنتاج الامتداد
+            $ext = null;
+            $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH) ?? '');
+            if (!empty($pathInfo['extension'])) {
+                $ext = strtolower($pathInfo['extension']);
+                if ($ext === 'jpeg') $ext = 'jpg';
+            } else {
+                $ct = $response->header('Content-Type');
+                if ($ct) {
+                    if (str_contains($ct, 'jpeg')) $ext = 'jpg';
+                    elseif (str_contains($ct, 'png')) $ext = 'png';
+                    elseif (str_contains($ct, 'gif')) $ext = 'gif';
+                }
+            }
+            $ext = $ext ?: 'jpg';
+
+            // اسم فريد بحسب المحتوى
+            $hash = sha1($content);
+            $filename = $hash . '.' . $ext;
+
+            // مسار داخل public/upload
+            $folder = trim($folder, '/');
+            $fullDir = public_path($folder);
+            if (! is_dir($fullDir)) {
+                mkdir($fullDir, 0755, true);
+            }
+
+            $fullPath = $fullDir . DIRECTORY_SEPARATOR . $filename;
+            $relativePath = $folder . '/' . $filename; // هذا ما يخزن في DB
+
+            if (! file_exists($fullPath)) {
+                file_put_contents($fullPath, $content);
+                @chmod($fullPath, 0644);
+            }
+
+            return $relativePath;
+        } catch (\Throwable $e) {
+            Log::warning('saveRemoteImage failed: ' . $e->getMessage());
+            return null;
         }
-        $ext = $ext ?: 'jpg';
-
-        // اسم حتمي بحسب محتوى الصورة
-        $hash = sha1($content); // أو md5
-        $filename = $hash . '.' . $ext;
-        $fullPath = trim($folder, '/') . '/' . $filename;
-
-        if (!Storage::disk('public')->exists($fullPath)) {
-            Storage::disk('public')->put($fullPath, $content);
-        }
-
-        return $fullPath;
-    } catch (\Throwable $e) {
-        Log::warning('saveRemoteImage failed: ' . $e->getMessage());
-        return null;
     }
-}
-
 
     public function toggleStatus(Request $request)
     {

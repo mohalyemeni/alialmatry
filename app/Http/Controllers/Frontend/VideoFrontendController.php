@@ -21,16 +21,22 @@ class VideoFrontendController extends Controller
             return $thumb;
         }
 
+        // normalize
+        $thumb = ltrim($thumb, '/');
+
+        // new: prefer upload/ (public/upload) first, then fall back to old locations
         $pathsToCheck = [
+            'upload/' . $thumb,
+            'upload/' . basename($thumb),
             $thumb,
-            'storage/' . ltrim($thumb, '/'),
-            'videos/thumbnails/' . ltrim($thumb, '/'),
-            'assets/videos/thumbnails/' . ltrim($thumb, '/'),
-            'assets/video_categories/' . ltrim($thumb, '/'),
+            'storage/' . $thumb,
+            'videos/thumbnails/' . $thumb,
+            'assets/videos/thumbnails/' . $thumb,
+            'assets/video_categories/' . $thumb,
         ];
 
         foreach ($pathsToCheck as $p) {
-            if (file_exists(public_path($p))) {
+            if ($p && file_exists(public_path($p))) {
                 return asset($p);
             }
         }

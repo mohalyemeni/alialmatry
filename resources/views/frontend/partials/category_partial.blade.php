@@ -9,16 +9,41 @@
                     $delay = 0.3 + $index * 0.05;
 
                     $thumbField = $video->thumbnail;
-
                     $thumbnailSrc = null;
 
                     if (!empty($thumbField)) {
+                        // absolute URL -> use it
                         if (\Illuminate\Support\Str::startsWith($thumbField, ['http://', 'https://'])) {
                             $thumbnailSrc = $thumbField;
                         } else {
-                            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($thumbField)) {
-                                $thumbnailSrc = asset('storage/' . $thumbField);
-                            } else {
+                            // prefer public/upload first (new location)
+                            $candidates = [
+                                'upload/' . ltrim($thumbField, '/'),
+                                'upload/' . basename($thumbField),
+                                // if DB stored relative path already
+                                ltrim($thumbField, '/'),
+                                // storage disk public (storage/app/public/...)
+                                'storage/' . ltrim($thumbField, '/'),
+                                // legacy fallback inside public
+                                'videos/thumbnails/' . ltrim($thumbField, '/'),
+                                'assets/videos/thumbnails/' . ltrim($thumbField, '/'),
+                            ];
+
+                            foreach ($candidates as $p) {
+                                if ($p && file_exists(public_path($p))) {
+                                    $thumbnailSrc = asset($p);
+                                    break;
+                                }
+                            }
+
+                            // if not found in public paths, check Storage::disk('public') as last resort
+                            if (
+                                !$thumbnailSrc &&
+                                \Illuminate\Support\Facades\Storage::disk('public')->exists($thumbField)
+                            ) {
+                                $thumbnailSrc = asset('storage/' . ltrim($thumbField, '/'));
+                            } elseif (!$thumbnailSrc) {
+                                // also check a possible storage path variant (videos/thumbnails inside storage)
                                 $attempt = 'videos/thumbnails/' . ltrim($thumbField, '/');
                                 if (\Illuminate\Support\Facades\Storage::disk('public')->exists($attempt)) {
                                     $thumbnailSrc = asset('storage/' . $attempt);
@@ -27,9 +52,13 @@
                         }
                     }
 
+                    // fallback to youtube thumbnail if still empty
                     if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
                         $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
                     }
+
+                    // final fallback placeholder
+                    $thumbnailSrc = $thumbnailSrc ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
                 @endphp
 
