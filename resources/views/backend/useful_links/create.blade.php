@@ -1,0 +1,202 @@
+@extends('layouts.admin')
+
+@section('content')
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between">
+            <div class="card-naving">
+                <h3 class="font-weight-bold text-primary">
+                    <i class="fa fa-plus-square"></i>
+                    {{ __('panel.add_useful_link') }}
+                </h3>
+                <ul class="breadcrumb pt-3">
+                    <li><a href="{{ route('admin.index') }}">{{ __('panel.home') }}</a> /</li>
+                    <li class="ms-1"><a
+                            href="{{ route('admin.useful_links.index') }}">{{ __('panel.manage_useful_links') }}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger pt-0 pb-0 mb-0">
+                    <ul class="px-2 py-3 m-0" style="list-style-type: circle">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.useful_links.store') }}" method="POST" novalidate>
+                @csrf
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="content-tab" data-bs-toggle="tab" data-bs-target="#content"
+                            type="button" role="tab" aria-controls="content"
+                            aria-selected="true">{{ __('panel.content') }}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="SEO-tab" data-bs-toggle="tab" data-bs-target="#SEO" type="button"
+                            role="tab" aria-controls="SEO" aria-selected="false">{{ __('panel.seo') }}</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    {{-- Content Tab --}}
+                    <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-2 pt-3">
+                                <label for="title">{{ __('panel.title') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                    class="form-control @error('title') is-invalid @enderror" required>
+                                @error('title')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-2 pt-3">
+                                <label for="url">{{ __('panel.url') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <input type="url" name="url" id="url" value="{{ old('url') }}"
+                                    class="form-control @error('url') is-invalid @enderror"
+                                    placeholder="https://example.com" required>
+                                @error('url')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-2 pt-3">
+                                {{ __('panel.publish_date') }}
+                            </div>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <div class="input-group flatpickr" id="flatpickr-datetime">
+                                    <input type="text" name="published_on" value="{{ old('published_on') }}"
+                                        class="form-control" placeholder="{{ __('panel.publish_date') }}" data-input>
+                                    <span class="input-group-text input-group-addon" data-toggle>
+                                        <i data-feather="calendar"></i>
+                                    </span>
+                                </div>
+                                @error('published_on')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-2 pt-3">
+                                <label for="status" class="control-label">{{ __('panel.status') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="status" id="status_active"
+                                        value="1" {{ old('status', '1') == '1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="status_active">{{ __('panel.active') }}</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="status" id="status_inactive"
+                                        value="0" {{ old('status') == '0' ? 'checked' : '' }}>
+                                    <label class="form-check-label"
+                                        for="status_inactive">{{ __('panel.inactive') }}</label>
+                                </div>
+                                @error('status')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- SEO Tab --}}
+                    <div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_slug">{{ __('panel.seo_slug') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 pt-3">
+                                <input type="text" name="meta_slug" id="meta_slug" value="{{ old('meta_slug') }}"
+                                    class="form-control">
+                                @error('meta_slug')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_description">{{ __('panel.seo_description') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 pt-3">
+                                <input type="text" name="meta_description" id="meta_description"
+                                    value="{{ old('meta_description') }}" class="form-control">
+                                @error('meta_description')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 pt-3">
+                                <input name="meta_keywords" id="tags1" value="{{ old('meta_keywords') }}"
+                                    class="form-control" />
+                                @error('meta_keywords')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Buttons --}}
+                <div class="row mt-4">
+                    <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
+                    <div class="col-sm-12 col-md-10 pt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-lg me-2" data-feather="corner-down-left"></i> {{ __('panel.save') }}
+                        </button>
+                        <a href="{{ route('admin.useful_links.index') }}" class="btn btn-outline-danger">
+                            <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
+    <script>
+        $(function() {
+            const locale = "ar";
+            if ($('#flatpickr-datetime').length) {
+                const defaultDate = "{{ old('published_on') }}" ? "{{ old('published_on') }}" : new Date();
+                flatpickr("#flatpickr-datetime", {
+                    enableTime: true,
+                    wrap: true,
+                    dateFormat: "Y-m-d H:i",
+                    altInput: true,
+                    altFormat: "Y/m/d h:i K",
+                    locale: locale,
+                    defaultDate: defaultDate,
+                });
+            }
+
+            // tags input (if you're using a tags plugin, otherwise it's simple input)
+            // $('#tags1').tagsinput(); // uncomment if you have bootstrap-tagsinput or similar
+        });
+    </script>
+@endsection

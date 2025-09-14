@@ -1,0 +1,505 @@
+.page-content .card .card_head {
+    padding-top: 3px;
+    padding-bottom: 15px;
+}
+
+.page-content .card .card-body .card_icon {
+    display: flex;
+    justify-content: left;
+    width: 40%;
+}
+.page-content .card .card-body span {
+    font-weight: 800;
+}
+.page-content .card .card-body .link-item {
+    width: 15%;
+    color: #fff;
+}
+.page-content .card .card-body .mr {
+    padding: 0;
+    display: inline-table;
+}
+.page-content .card .card-body .br {
+    border-left: 1px solid #0000003d;
+}
+.page-content .card .card-body .margin {
+    padding-right: 5px;
+}
+
+.page-content .card_color_1 {
+    background: #248874;
+}
+.page-content .color_2 {
+    background: #1da1f2;
+}
+.page-content .color_3 {
+    background: #dc4e41;
+}
+.page-content .card .card-title {
+    color: #fff;
+}
+.page-content .card .card-body .prog-holder {
+    margin-top: 23px;
+}
+
+.page-content .card .card-body .prog-holder h4 {
+    margin-bottom: 5px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.page-content .card .card-body .prog-holder .prog {
+    background-color: #0000003d;
+    height: 4px;
+    border-radius: 4px;
+}
+
+.page-content .card .card-body .prog-holder .prog span {
+    display: block;
+    background-color: #fff;
+    height: 100%;
+    position: relative;
+    border-radius: 4px;
+}
+
+.page-content .card .card-body .card_icon svg.feather-user-plus {
+    color: #0000003d;
+    height: 52px;
+    width: 59px;
+}
+.page-content .card .card-body .card_icon svg.feather-file-text {
+    color: #0000003d;
+    height: 52px;
+    width: 59px;
+}
+.page-content .card .card-body .card_icon svg.feather-database {
+    color: #0000003d;
+    height: 52px;
+    width: 59px;
+}
+/* Table */
+.page-content .card .card-body .card-title_2 {
+    color: #000;
+    font-weight: 700;
+}
+.page-content .table thead th {
+    border-top: 0;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #000;
+}
+.page-content .card .card-body .btn {
+    border: none;
+    float: inline-start;
+}
+
+.page-content .card .card-body .btn_2 {
+    padding-top: 20px;
+}
+.page-content .card .card-body .btn_2 .mr_new {
+    padding-bottom: 7px;
+}
+.page-content .card .card-body .blue {
+    background: #1da1f2 !important;
+}
+.page-content .card .card-body .table-responsive {
+    border-bottom: 3px solid #00000096;
+}
+
+/* lef side */
+.page-content svg.feather-tag {
+    width: 70px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #00000061;
+    color: #fff;
+    padding: 12px;
+}
+.page-content svg.feather-dollar-sign {
+    width: 70px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #00000061;
+    color: #fff;
+    padding: 12px;
+}
+.page-content svg.feather-credit-card {
+    width: 70px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #00000061;
+    color: #fff;
+    padding: 12px;
+}
+
+.page-content .little_card {
+    background: #dede5fb5;
+}
+
+.page-content .ww .little_card .space {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-right: 5px !important;
+}
+
+.prog-holder h4 {
+    margin-bottom: 15px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.prog-holder .prog {
+    background-color: #0000003d;
+    height: 4px;
+    border-radius: 4px;
+}
+
+.prog-holder .prog span {
+    display: block;
+    background-color: #fff;
+    height: 100%;
+    position: relative;
+    border-radius: 4px;
+}
+
+.page-content .card .card-title {
+    color: #fff;
+}
+/* table left */
+.page-content .cent .media h5 {
+    color: #fff;
+}
+.page-content .cent .media p {
+    color: #fff;
+}
+.page-content .card .vedio {
+    color: #000;
+    font-weight: 800;
+}
+.page-content .hed {
+    background: #0000000a;
+}
+.page-content .breadcrumb {
+    background: transparent;
+}
+.page-content .breadcrumb a {
+    color: #7987a1 !important;
+}
+.table-container {
+    background-color: #0000000a !important;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+.table th,
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+.page-content .table-container .bc_bt {
+    background: #0cc2aa;
+    border: none;
+}
+.page-content .table .bt_del {
+    background: #f77a99;
+    border: none;
+}
+.page-content .table .bt_edi {
+    background: #6cc788;
+    border: none;
+}
+
+.page-content .card .padi {
+    padding: 0;
+}
+.page-content .card .padi_2 {
+    padding: 15px;
+}
+.page-content .card .back {
+    background: #e9ecef;
+}
+.page-content .head {
+    padding: 15px;
+    background: #e9ecef;
+}
+.toolbar-container {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.toolbar-container > div:first-child {
+}
+
+.execute-btn {
+    background: #fff;
+    color: #000;
+    border: 1px solid #00000024;
+    margin-top: 5px;
+}
+
+.records-info {
+    margin-left: auto;
+    margin-right: 10%;
+    text-align: center;
+    color: #00000094;
+}
+.page-content .cent .card4 {
+    border-top: 3px solid #47e1e0;
+}
+.page-content .ca1 {
+    background: #b8b838;
+    padding: 15px;
+    padding-right: 5px;
+}
+.page-content .ca2 {
+    background: #66d066;
+    margin-top: 20px;
+    padding: 15px;
+    padding-right: 5px;
+}
+.page-content .ca3 {
+    background: #171776a3;
+    margin-top: 20px;
+    padding: 15px;
+    padding-right: 5px;
+}
+.page-content .sys {
+    border-top: 3px solid #05a39cf2;
+}
+.page-content .cha {
+    border-top: 3px solid #d6a412;
+}
+.page-content .las {
+    border-top: 3px solid #05a39cf2;
+}
+.page-content .one {
+    background: #fff;
+}
+.page-content .isize {
+    font-size: 24px;
+}
+.page-content .date1 {
+    background-color: #dc3545;
+    font-size: 10px;
+    align-self: flex-start;
+}
+.page-content .ca2 {
+    background: #fff;
+}
+.page-content .date2 {
+    background-color: rgb(164, 164, 54);
+    font-size: 10px;
+    align-self: flex-start;
+}
+.page-content .colo1 {
+    color: #000;
+}
+.page-content .osty {
+    width: 19px;
+    height: 18px;
+    margin-left: 5px;
+}
+.page-content .osty1 {
+    width: 19px !important;
+    height: 18px !important;
+}
+.page-content .navbac {
+    background: none;
+}
+.page-content .navbac ol {
+    background: none;
+}
+.page-content .tabback {
+    background: #fff;
+}
+.page-content .btn1 {
+    background: #5858d0;
+}
+.page-content .btn2 {
+    background: #fff;
+    border: 1px solid #00000038;
+    color: #000;
+}
+
+.sidebar .dropdown-item {
+    color: #7987a1;
+    margin-right: 16px;
+}
+.dropdown-item i {
+    margin-left: 10px;
+    right: 0;
+    position: absolute;
+
+    margin-top: 5px;
+}
+
+.auth-page .auth-side-wrapper {
+    background: url("../../images/classic_mercedes_wallpaper_by_s0me0therguy_dfvs0uq-350t.jpg") !important;
+}
+
+.text_rig {
+    text-align: right;
+}
+.text_rig .form-control {
+    text-align: right;
+}
+.text_rig .rig {
+    align-items: start !important;
+    flex-flow: row-reverse;
+}
+.sidebar-dark .sidebar .sidebar-body .nav .nav-item .nav-link svg {
+    right: 0;
+}
+
+.sidebar .sidebar-divider-custom {
+    border-top: 1px solid rgba(255, 255, 255, 0.99);
+    margin: 20px 0.5rem 0rem;
+}
+.sidebar hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    border: 0;
+}
+.sidebar .sidebar-body .nav .nav-item {
+    position: absolute;
+    display: contents;
+}
+.sidebar .sidebar-body .nav .nav-item.nav-category {
+    text-transform: none;
+}
+.page-content .card .card-body .disp {
+    background: transparent;
+}
+.table td img {
+    width: 60px;
+    height: 60px;
+}
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.table th,
+.table td {
+    white-space: unset;
+}
+.form-control {
+    font-size: 12px;
+}
+button:not(:disabled),
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled) {
+    cursor: pointer;
+
+    float: inline-end;
+}
+/* sidbar */
+.sidebar .sidebar-body .nav.sub-menu .nav-item .nav-link::before {
+    position: relative;
+    right: -10px;
+    top: 3px;
+}
+.sidebar .sidebar-body .nav .nav-item .nav-link .link-title {
+    font-size: 15px;
+}
+.sidebar-dark .sidebar .sidebar-body .nav .nav-item .nav-link {
+    margin-bottom: 15px;
+    padding: 13px 0 13px;
+}
+.sidebar .sidebar-body .nav .nav-item .nav-link {
+    margin-bottom: 15px;
+    padding: 13px 0 13px;
+}
+.d_ruby {
+    display: block ruby;
+}
+.sidebar .sidebar-body .nav .nav-item .nav-link .link-icon {
+    font-size: 0.9rem;
+}
+.sidebar-dark .sidebar .sidebar-body .nav .nav-item .nav-link {
+    color: #adb4c0;
+}
+.x_panel {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px 17px;
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #e6e9ed;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.x_content {
+    padding: 0 3px 6px;
+    position: relative;
+    width: 100%;
+    float: right;
+    clear: both;
+    margin-top: 5px;
+    direction: rtl;
+    text-align: right;
+}
+.x_title {
+    border-bottom: 2px solid #e6e9ed;
+    padding: 1px 5px 6px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 1200px) {
+    h2,
+    .h2 {
+        font-size: 1.5rem;
+    }
+}
+.x_title h2 {
+    margin: 5px 0 6px;
+    float: right;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sidebar-dark .sidebar .sidebar-body .h3_mine {
+    padding-right: 10px;
+    color: #bab8b8;
+    font-weight: 400;
+    font-size: 13px;
+    margin-bottom: 0;
+    margin-top: 0;
+    direction: rtl;
+    text-align: right;
+    padding-top: 15px;
+}
+.sidebar .sidebar-body .h3_mine {
+    padding-right: 10px;
+    color: #5b5858;
+    font-weight: 400;
+    font-size: 13px;
+    margin-bottom: 0;
+    margin-top: 0;
+    direction: rtl;
+    text-align: right;
+    padding-top: 15px;
+}
