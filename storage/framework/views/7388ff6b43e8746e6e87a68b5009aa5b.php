@@ -112,44 +112,34 @@
 
                     
                     <div class="audio-play-wrapp mb-3">
-                        
                         <?php
-                            $hasAudioFile = !empty($audio->audio_file);
-                            $audioFileUrl = $hasAudioFile ? $audio->audio_url : null;
+                            $hasAudioFile =
+                                !empty($audio->audio_file) &&
+                                file_exists(public_path('assets/audios/files/' . $audio->audio_file));
+                            $audioFileUrl = $hasAudioFile ? asset('assets/audios/files/' . $audio->audio_file) : null;
                         ?>
 
-                        <?php if($hasAudioFile && $audioFileUrl): ?>
-                            <div class="audio-play-wrapp mb-3">
-                                <div class="audio-player-row">
-                                    <!-- مشغل الصوت المحسن -->
-                                    <audio controls preload="metadata" style="width: 100%" onerror="handleAudioError(this)"
-                                        oncanplay="handleAudioCanPlay(this)">
-                                        <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
-                                        <?php echo e(__('panel.audio_not_supported')); ?>
 
-                                    </audio>
-                                </div>
+                        <?php if($hasAudioFile): ?>
+                            <div class="audio-download-btn ms-2">
+                                <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>" class="th-btn style2 th-btn1"
+                                    aria-label="<?php echo e(__('panel.download')); ?> <?php echo e(e($audio->title)); ?>">
+                                    <span class="btn-text" data-back="<?php echo e(__('panel.download')); ?>"
+                                        data-front="<?php echo e(__('panel.download')); ?>"></span>
+                                    <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                </a>
+                            </div>
+                            <div class="audio-player-row">
+                                <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>">
+                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
+                                    <?php echo e(__('panel.audio_not_supported')); ?>
 
-                                <div class="audio-download-btn ms-2 mt-2">
-                                    <a href="<?php echo e($audioFileUrl); ?>" download class="th-btn style2 th-btn1">
-                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
-                                        <?php echo e(__('panel.download')); ?>
+                                </audio>
 
-                                    </a>
-                                </div>
 
-                                <!-- رسالة بديلة للهواتف -->
-                                <div id="mobile-audio-alert" class="alert alert-info mt-2 d-none">
-                                    <i class="fa-solid fa-mobile-screen-button me-2"></i>
-                                    إذا لم يعمل مشغل الصوت،
-                                    <a href="<?php echo e($audioFileUrl); ?>" download class="alert-link">اضغط هنا لتحميل الملف</a>
-                                </div>
                             </div>
                         <?php else: ?>
-                            <div class="alert alert-warning">
-                                <?php echo e(__('panel.no_audio_file')); ?>
-
-                            </div>
+                            <div class="alert alert-secondary mb-0"><?php echo e(__('panel.no_audio_file')); ?></div>
                         <?php endif; ?>
                     </div>
 
@@ -278,70 +268,6 @@
 
         </div>
     </div>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('scripts'); ?>
-    <script>
-        // كشف إذا كان المستخدم على جهاز محمول
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // التعامل مع أخطاء الصوت
-        function handleAudioError(audioElement) {
-            console.error('خطأ في تحميل الصوت:', audioElement.error);
-
-            // عرض رسالة للمستخدم
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'alert alert-danger mt-2';
-            errorDiv.innerHTML = `
-        <i class="fa-solid fa-triangle-exclamation me-2"></i>
-        تعذر تحميل الملف الصوتي.
-        <a href="<?php echo e($audioFileUrl); ?>" download class="alert-link">اضغط هنا للتحميل</a>
-    `;
-
-            audioElement.parentNode.appendChild(errorDiv);
-
-            // على الأجهزة المحمولة، إظهار التنبيه
-            if (isMobileDevice()) {
-                document.getElementById('mobile-audio-alert')?.classList.remove('d-none');
-            }
-        }
-
-        // عند استعداد الصوت للتشغيل
-        function handleAudioCanPlay(audioElement) {
-            console.log('الصوت جاهز للتشغيل');
-
-            // على الأجهزة المحمولة، حاول التشغيل تلقائياً
-            if (isMobileDevice()) {
-                audioElement.play().catch(function(e) {
-                    console.log('التشغيل التلقائي متوقف يتطلب تفاعلاً من المستخدم:', e);
-                    document.getElementById('mobile-audio-alert')?.classList.remove('d-none');
-                });
-            }
-        }
-
-        // عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            // على الأجهزة المحمولة، أظهر رسالة مساعدة
-            if (isMobileDevice()) {
-                setTimeout(function() {
-                    document.getElementById('mobile-audio-alert')?.classList.remove('d-none');
-                }, 3000);
-            }
-
-            // إضافة حدث لكل عناصر الصوت
-            const audioElements = document.querySelectorAll('audio');
-            audioElements.forEach(function(audio) {
-                audio.addEventListener('error', function() {
-                    handleAudioError(this);
-                });
-
-                audio.addEventListener('canplay', function() {
-                    handleAudioCanPlay(this);
-                });
-            });
-        });
-    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/frontend/audios/show.blade.php ENDPATH**/ ?>

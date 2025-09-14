@@ -41,6 +41,7 @@ Route::prefix('Videos')->group(function () {
     Route::get('/', [VideoFrontendController::class, 'index'])->name('frontend.videos.index');
     Route::get('/{category:slug}', [VideoFrontendController::class, 'category'])->name('frontend.videos.category');
     Route::get('/Topic/{video:slug}', [VideoFrontendController::class, 'show'])->name('frontend.videos.show');
+
 });
 
 Route::prefix('Audios')->group(function () {
