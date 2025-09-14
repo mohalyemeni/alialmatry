@@ -30,6 +30,7 @@
                     $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
                     $desc = $category->excerpt ?? ($category->description ?? '');
 
+                    // عدد الفتاوى — يُفضّل استخدام withCount('fatawas') في الكنترولر لتقليل الاستعلامات
                     $count = $category->fatawas_count ?? ($category->fatawas()->where('status', 1)->count() ?? 0);
                     $countLabel = $count == 1 ? 'فتوى' : 'فتاوى';
                 @endphp
