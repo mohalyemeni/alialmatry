@@ -64,26 +64,26 @@ class AudioFrontendController extends Controller
             return null;
         }
 
-        // absolute url
+        // إذا كان رابطًا خارجيًا
         if (Str::startsWith($file, ['http://', 'https://'])) {
             return $file;
         }
 
-        // check several candidate public/storage paths
-        $candidates = [
-            'assets/audios/files/' . ltrim($file, '/'),
-            'storage/' . ltrim($file, '/'),
-            $file,
+        // البحث في المسارات المحتملة
+        $paths = [
+            'assets/audios/files/' . $file,
+            'storage/audios/' . $file,
+            'storage/app/public/audios/' . $file,
+            $file
         ];
 
-        foreach ($candidates as $p) {
-            if (file_exists(public_path($p))) {
-                return asset($p);
+        foreach ($paths as $path) {
+            if (file_exists(public_path($path))) {
+                return asset($path);
             }
         }
 
-        // fallback: return as-is (maybe it's already an accessible path) or null
-        return file_exists(public_path($file)) ? asset($file) : null;
+        return null; // إذا لم يُعثر على الملف
     }
 
     /**
@@ -210,22 +210,6 @@ class AudioFrontendController extends Controller
 
 
 
-    public function stream(Audio $audio)
-    {
-        $filePath = public_path('assets/audios/files/' . $audio->audio_file);
-
-        if (! file_exists($filePath)) {
-            abort(404);
-        }
-
-        $headers = [
-            'Content-Type' => 'audio/mpeg',
-            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
-            'Accept-Ranges' => 'bytes',
-        ];
-
-        return response()->file($filePath, $headers);
-    }
     public function show(Request $request, Audio $audio)
     {
         if (! $audio->category || $audio->category->section != Category::SECTION_AUDIO) {

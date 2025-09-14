@@ -112,41 +112,35 @@
 
                     
                     <div class="audio-play-wrapp mb-3">
+                        
                         <?php
-                            $hasAudioFile = !empty($audio->audio_file);
-                            $audioFileUrl = $hasAudioFile ? route('frontend.audios.stream', $audio->id) : null;
+                            $audioUrl = $audio->audio_url; // تم تعيينه في الكنترولر مسبقًا
                         ?>
 
-                        <?php if($hasAudioFile): ?>
-                            <div class="audio-player-row">
-                                <audio controls preload="auto" aria-label="<?php echo e(e($audio->title)); ?>">
-                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
-                                    <?php echo e(__('panel.audio_not_supported')); ?>
+                        <?php if($audioUrl): ?>
+                            <div class="audio-play-wrapp mb-3">
+                                <div class="audio-player-row">
+                                    <audio controls preload="metadata" style="width: 100%"
+                                        onerror="console.error('خطأ في تحميل الصوت')">
+                                        <source src="<?php echo e($audioUrl); ?>" type="audio/mpeg">
+                                        <?php echo e(__('panel.audio_not_supported')); ?>
 
-                                </audio>
-                            </div>
-                        <?php endif; ?>
+                                    </audio>
+                                </div>
 
-                        <?php if($hasAudioFile): ?>
-                            <div class="audio-download-btn ms-2">
-                                <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>" class="th-btn style2 th-btn1"
-                                    aria-label="<?php echo e(__('panel.download')); ?> <?php echo e(e($audio->title)); ?>">
-                                    <span class="btn-text" data-back="<?php echo e(__('panel.download')); ?>"
-                                        data-front="<?php echo e(__('panel.download')); ?>"></span>
-                                    <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
-                                </a>
-                            </div>
-                            <div class="audio-player-row">
-                                <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>">
-                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
-                                    <?php echo e(__('panel.audio_not_supported')); ?>
+                                <div class="audio-download-btn ms-2 mt-2">
+                                    <a href="<?php echo e($audioUrl); ?>" download class="th-btn style2 th-btn1">
+                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
+                                        <?php echo e(__('panel.download')); ?>
 
-                                </audio>
-
-
+                                    </a>
+                                </div>
                             </div>
                         <?php else: ?>
-                            <div class="alert alert-secondary mb-0"><?php echo e(__('panel.no_audio_file')); ?></div>
+                            <div class="alert alert-warning">
+                                <?php echo e(__('panel.no_audio_file')); ?>
+
+                            </div>
                         <?php endif; ?>
                     </div>
 
