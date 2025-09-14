@@ -6,6 +6,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>الموقع الرسمي لفضيلة الشيخ ابي الحسن علي بن محمد بن عبده المطري </title>
     <meta name="author" content="themeholy">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="description" content="Tawba - Islamic Center HTML Template">
     <meta name="keywords" content="Tawba - Islamic Center HTML Template">
     <meta name="robots" content="INDEX,FOLLOW">
