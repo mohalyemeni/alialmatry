@@ -105,7 +105,7 @@
             <!-- main -->
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
-                    <h3 class="mb-4 widget_title title-header-noline fadeInRight wow"><?php echo e(e($fatawa->title)); ?></h3>
+                    <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap"><?php echo e(e($fatawa->title)); ?></h3>
 
                     
                     <div class="audio-play-wrapp mb-3">
