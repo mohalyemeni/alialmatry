@@ -103,6 +103,10 @@
             color: #0d6efd;
             text-decoration: underline;
         }
+
+        .audio-player-row {
+            height: 50px !important;
+        }
     </style>
 
     <div class="container py-4">
