@@ -5,10 +5,7 @@
         <div class="row gy-4">
             @foreach ($categories as $index => $category)
                 @php
-                    // نفس حسبة التأخير المستخدمة في التصميم
                     $delay = 0.3 + $index * 0.04;
-
-                    // منطق الصور مطابق للأوديو (محاولات fallback)
                     $img = null;
                     if (
                         !empty($category->img) &&
@@ -26,11 +23,9 @@
                         $img = asset('frontand/assets/img/normal/counter-image.jpg');
                     }
 
-                    // عنوان ووصف (انطبق نفس المنطق)
                     $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
                     $desc = $category->excerpt ?? ($category->description ?? '');
 
-                    // عدد الفتاوى — يُفضّل استخدام withCount('fatawas') في الكنترولر لتقليل الاستعلامات
                     $count = $category->fatawas_count ?? ($category->fatawas()->where('status', 1)->count() ?? 0);
                     $countLabel = $count == 1 ? 'فتوى' : 'فتاوى';
                 @endphp
@@ -46,7 +41,6 @@
                         </div>
 
                         <div class="blog-wrapper p-3 ">
-                            {{-- badge مطابق للتصميم: عدد الفتاوى --}}
                             <span class="date">
                                 <a href="{{ route('frontend.fatawas.category', $category->slug ?? $category->id) }}">
                                     {{ $count }} <span>{{ $countLabel }}</span>
