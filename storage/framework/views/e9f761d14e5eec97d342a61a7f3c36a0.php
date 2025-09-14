@@ -138,10 +138,10 @@
 
                     <div class="services-replace">
                         <div class="row">
-                            
+
                             <?php $__currentLoopData = $displayBooks->take(2); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="col-12 col-sm-6">
-                                    <div class="service-box2 wow fadeInUp" data-wow-delay=".3s">
+                                    <div class="service-box2 wow fadeInUp mb-2" data-wow-delay=".3s">
                                         <?php
                                             $img = $bk->img ?? asset('frontand/assets/img/normal/counter-image.jpg');
                                             if (
