@@ -16,9 +16,8 @@
                     <a href="<?php echo e(route('frontend.sheikh-intro')); ?>">نبذة الشيخ</a>
                 </li>
                 <li><a href="<?php echo e(route('frontend.videos.index')); ?>"> المرئيات</a></li>
-                <li class="menu-item-has-children">
-                    <a href<?php echo e(route('frontend.audios.index')); ?>">الصوتيات</a>
-                </li>
+                <li><a href="<?php echo e(route('frontend.audios.index')); ?>"> الصوتيات</a></li>
+
                 <li class="menu-item-has-children">
                     <a href="<?php echo e(route('frontend.fatawas.index')); ?>">الفتاوى</a>
                 </li>
