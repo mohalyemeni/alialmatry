@@ -58,33 +58,42 @@ class AudioFrontendController extends Controller
     /**
      * Resolve an audio file URL (local file in public or absolute URL or storage path).
      */
-    protected function resolveAudioUrl($file)
-    {
-        if (empty($file)) {
-            return null;
-        }
-
-        // إذا كان رابطًا خارجيًا
-        if (Str::startsWith($file, ['http://', 'https://'])) {
-            return $file;
-        }
-
-        // البحث في المسارات المحتملة
-        $paths = [
-            'assets/audios/files/' . $file,
-            'storage/audios/' . $file,
-            'storage/app/public/audios/' . $file,
-            $file
-        ];
-
-        foreach ($paths as $path) {
-            if (file_exists(public_path($path))) {
-                return asset($path);
-            }
-        }
-
-        return null; // إذا لم يُعثر على الملف
+protected function resolveAudioUrl($file)
+{
+    if (empty($file)) {
+        return null;
     }
+
+    // إذا كان رابطًا خارجيًا
+    if (Str::startsWith($file, ['http://', 'https://'])) {
+        return $file;
+    }
+
+    // البحث في المسارات المحتملة
+    $paths = [
+        'assets/audios/files/' . $file,
+        'storage/audios/' . $file,
+        'public/assets/audios/files/' . $file,
+        'public/storage/audios/' . $file,
+        $file
+    ];
+
+    foreach ($paths as $path) {
+        $fullPath = public_path($path);
+        if (file_exists($fullPath)) {
+            // إضافة timestamp لمنع التخزين المؤقت
+            $timestamp = filemtime($fullPath);
+            return asset($path) . '?v=' . $timestamp;
+        }
+    }
+
+    // إذا لم يتم العثور على الملف، جرب المسار المباشر
+    if (file_exists(public_path($file))) {
+        return asset($file);
+    }
+
+    return null;
+}
 
     /**
      * Index: list audio categories (featured first).
