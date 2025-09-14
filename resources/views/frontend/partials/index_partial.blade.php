@@ -12,32 +12,23 @@
                         @php
                             $delay = 0.3 + $index * 0.04;
 
-                            // Resolve image: prefer public/upload, then assets/video_categories, then remote URL, else placeholder
+                            // Use images ONLY from public/upload
                             $img = null;
                             $rawImg = $category->img ?? '';
 
                             if (!empty($rawImg)) {
-                                // Remote absolute URL?
-                                if (\Illuminate\Support\Str::startsWith($rawImg, ['http://', 'https://'])) {
-                                    $img = $rawImg;
-                                } else {
-                                    // candidates to check (in order)
-                                    $candidates = [
-                                        'upload/' . ltrim($rawImg, '/'), // public/upload/...
-                                        'upload/' . basename($rawImg), // public/upload/<file>
-                                        'assets/video_categories/' . ltrim($rawImg, '/'), // legacy assets
-                                        'storage/' . ltrim($rawImg, '/'), // storage link
-                                        ltrim($rawImg, '/'), // raw path if already full (public/...)
-                                    ];
-                                    foreach ($candidates as $p) {
-                                        if ($p && file_exists(public_path($p))) {
-                                            $img = asset($p);
-                                            break;
-                                        }
-                                    }
+                                // candidate paths strictly inside public/upload
+                                $c1 = 'upload/' . ltrim($rawImg, '/'); // upload/<raw>
+                                $c2 = 'upload/' . basename($rawImg); // upload/<filename>
+
+                                if (file_exists(public_path($c1))) {
+                                    $img = asset($c1);
+                                } elseif (file_exists(public_path($c2))) {
+                                    $img = asset($c2);
                                 }
                             }
 
+                            // fallback placeholder (only if nothing in upload/)
                             if (empty($img)) {
                                 $img = asset('frontand/assets/img/normal/counter-image.jpg');
                             }

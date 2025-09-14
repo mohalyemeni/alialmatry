@@ -7,6 +7,32 @@
             <div class="col-xxl-9 col-lg-8 pt-4 pb-5">
                 <div class="th-blog blog-single has-post-thumbnail">
                     <div class="blog-img position-relative mb-3">
+                        <?php
+                            $thumbnailSrc = null;
+                            $thumb = $video->thumbnail ?? '';
+
+                            if (!empty($thumb)) {
+                                // جلب الصور فقط من public/upload
+                                $candidate1 = 'upload/' . ltrim($thumb, '/');
+                                $candidate2 = 'upload/' . basename($thumb);
+
+                                if (file_exists(public_path($candidate1))) {
+                                    $thumbnailSrc = asset($candidate1);
+                                } elseif (file_exists(public_path($candidate2))) {
+                                    $thumbnailSrc = asset($candidate2);
+                                }
+                            }
+
+                            // fallback لليوتيوب أو صورة placeholder
+                            if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
+                                $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
+                            }
+
+                            if (empty($thumbnailSrc)) {
+                                $thumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
+                            }
+                        ?>
+
                         <?php if(!empty($video->youtube_id)): ?>
                             <div class="ratio ratio-16x9">
                                 <iframe src="https://www.youtube.com/embed/<?php echo e($video->youtube_id); ?>" frameborder="0"
@@ -14,38 +40,9 @@
                                     allowfullscreen></iframe>
                             </div>
                         <?php elseif(!empty($video->html)): ?>
-                            <div class="video-oembed">
-                                <?php echo $video->html; ?>
-
-                            </div>
-                        <?php elseif(!empty($video->thumbnail)): ?>
-                            <?php
-                                $thumb = $video->thumbnail;
-                                $thumbnailSrc = null;
-                                if (\Illuminate\Support\Str::startsWith($thumb, ['http://', 'https://'])) {
-                                    $thumbnailSrc = $thumb;
-                                } elseif (file_exists(public_path($thumb))) {
-                                    $thumbnailSrc = asset($thumb);
-                                } elseif (file_exists(public_path('storage/' . ltrim($thumb, '/')))) {
-                                    $thumbnailSrc = asset('storage/' . ltrim($thumb, '/'));
-                                } else {
-                                    $thumbnailSrc = null;
-                                }
-                            ?>
-
-                            <?php if($thumbnailSrc): ?>
-                                <img src="<?php echo e($thumbnailSrc); ?>" alt="<?php echo e(e($video->title)); ?>" class="img-fluid w-100">
-                            <?php else: ?>
-                                <div class="d-flex align-items-center justify-content-center"
-                                    style="height:360px; background:#eee;">
-                                    <span class="text-muted">لا توجد معاينة</span>
-                                </div>
-                            <?php endif; ?>
+                            <div class="video-oembed"><?php echo $video->html; ?></div>
                         <?php else: ?>
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="height:360px; background:#eee;">
-                                <span class="text-muted">لا توجد معاينة</span>
-                            </div>
+                            <img src="<?php echo e($thumbnailSrc); ?>" alt="<?php echo e(e($video->title)); ?>" class="img-fluid w-100">
                         <?php endif; ?>
                     </div>
 
@@ -57,7 +54,6 @@
                                 <span class="ms-3"><i class="fa-solid fa-eye"></i> <?php echo e($video->views ?? 0); ?> مشاهدة</span>
                             </div>
 
-                            
                             <?php if(!empty($video->category) && (!empty($video->category->title) || !empty($video->category->name))): ?>
                                 <?php
                                     $catTitle = $video->category->title ?? ($video->category->name ?? null);
@@ -93,9 +89,33 @@
                         <?php if(isset($recentVideos) && $recentVideos->isNotEmpty()): ?>
                             <ul class="list-unstyled mb-0 pr-0">
                                 <?php $__currentLoopData = $recentVideos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rv): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        $rvThumb = $rv->thumbnail ?? '';
+                                        $rvThumbnailSrc = null;
+
+                                        if (!empty($rvThumb)) {
+                                            $candidate1 = 'upload/' . ltrim($rvThumb, '/');
+                                            $candidate2 = 'upload/' . basename($rvThumb);
+
+                                            if (file_exists(public_path($candidate1))) {
+                                                $rvThumbnailSrc = asset($candidate1);
+                                            } elseif (file_exists(public_path($candidate2))) {
+                                                $rvThumbnailSrc = asset($candidate2);
+                                            }
+                                        }
+
+                                        if (empty($rvThumbnailSrc) && !empty($rv->youtube_id)) {
+                                            $rvThumbnailSrc = "https://img.youtube.com/vi/{$rv->youtube_id}/hqdefault.jpg";
+                                        }
+
+                                        if (empty($rvThumbnailSrc)) {
+                                            $rvThumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
+                                        }
+                                    ?>
+
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="<?php echo e(route('frontend.videos.show', $rv->slug)); ?>">
-                                            <img src="<?php echo e($rv->thumbnail); ?>" alt="<?php echo e(e($rv->title)); ?>"
+                                            <img src="<?php echo e($rvThumbnailSrc); ?>" alt="<?php echo e(e($rv->title)); ?>"
                                                 class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>

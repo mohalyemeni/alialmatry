@@ -8,6 +8,32 @@
             <div class="col-xxl-9 col-lg-8 pt-4 pb-5">
                 <div class="th-blog blog-single has-post-thumbnail">
                     <div class="blog-img position-relative mb-3">
+                        @php
+                            $thumbnailSrc = null;
+                            $thumb = $video->thumbnail ?? '';
+
+                            if (!empty($thumb)) {
+                                // جلب الصور فقط من public/upload
+                                $candidate1 = 'upload/' . ltrim($thumb, '/');
+                                $candidate2 = 'upload/' . basename($thumb);
+
+                                if (file_exists(public_path($candidate1))) {
+                                    $thumbnailSrc = asset($candidate1);
+                                } elseif (file_exists(public_path($candidate2))) {
+                                    $thumbnailSrc = asset($candidate2);
+                                }
+                            }
+
+                            // fallback لليوتيوب أو صورة placeholder
+                            if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
+                                $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
+                            }
+
+                            if (empty($thumbnailSrc)) {
+                                $thumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
+                            }
+                        @endphp
+
                         @if (!empty($video->youtube_id))
                             <div class="ratio ratio-16x9">
                                 <iframe src="https://www.youtube.com/embed/{{ $video->youtube_id }}" frameborder="0"
@@ -15,59 +41,9 @@
                                     allowfullscreen></iframe>
                             </div>
                         @elseif(!empty($video->html))
-                            <div class="video-oembed">
-                                {!! $video->html !!}
-                            </div>
-                        @elseif(!empty($video->thumbnail))
-                            @php
-                                $thumb = $video->thumbnail;
-                                $thumbnailSrc = null;
-
-                                // إذا كان رابط مطلق فاستعمله مباشرة
-                                if (\Illuminate\Support\Str::startsWith($thumb, ['http://', 'https://'])) {
-                                    $thumbnailSrc = $thumb;
-                                } else {
-                                    // حاول تفضيل public/upload أولاً ثم نسخ متعددة كف fallback
-                                    $candidates = [
-                                        'upload/' . ltrim($thumb, '/'), // public/upload/...
-                                        'upload/' . basename($thumb), // public/upload/<file>
-                                        ltrim($thumb, '/'), // قد يكون مسار كامل أو نسبى
-                                        'storage/' . ltrim($thumb, '/'), // storage symlink
-                                        'videos/thumbnails/' . ltrim($thumb, '/'), // legacy public folder
-                                        'assets/videos/thumbnails/' . ltrim($thumb, '/'),
-                                        'assets/video_categories/' . ltrim($thumb, '/'),
-                                    ];
-
-                                    foreach ($candidates as $p) {
-                                        if ($p && file_exists(public_path($p))) {
-                                            $thumbnailSrc = asset($p);
-                                            break;
-                                        }
-                                    }
-
-                                    // كخيار أخير: لو لم نجد في public، جرّب Storage::disk('public')
-                                    if (
-                                        !$thumbnailSrc &&
-                                        \Illuminate\Support\Facades\Storage::disk('public')->exists($thumb)
-                                    ) {
-                                        $thumbnailSrc = asset('storage/' . ltrim($thumb, '/'));
-                                    }
-                                }
-                            @endphp
-
-                            @if ($thumbnailSrc)
-                                <img src="{{ $thumbnailSrc }}" alt="{{ e($video->title) }}" class="img-fluid w-100">
-                            @else
-                                <div class="d-flex align-items-center justify-content-center"
-                                    style="height:360px; background:#eee;">
-                                    <span class="text-muted">لا توجد معاينة</span>
-                                </div>
-                            @endif
+                            <div class="video-oembed">{!! $video->html !!}</div>
                         @else
-                            <div class="d-flex align-items-center justify-content-center"
-                                style="height:360px; background:#eee;">
-                                <span class="text-muted">لا توجد معاينة</span>
-                            </div>
+                            <img src="{{ $thumbnailSrc }}" alt="{{ e($video->title) }}" class="img-fluid w-100">
                         @endif
                     </div>
 
@@ -79,7 +55,6 @@
                                 <span class="ms-3"><i class="fa-solid fa-eye"></i> {{ $video->views ?? 0 }} مشاهدة</span>
                             </div>
 
-                            {{-- عرض تصنيف الفيديو الكبير كـ badge --}}
                             @if (!empty($video->category) && (!empty($video->category->title) || !empty($video->category->name)))
                                 @php
                                     $catTitle = $video->category->title ?? ($video->category->name ?? null);
@@ -115,9 +90,33 @@
                         @if (isset($recentVideos) && $recentVideos->isNotEmpty())
                             <ul class="list-unstyled mb-0 pr-0">
                                 @foreach ($recentVideos as $rv)
+                                    @php
+                                        $rvThumb = $rv->thumbnail ?? '';
+                                        $rvThumbnailSrc = null;
+
+                                        if (!empty($rvThumb)) {
+                                            $candidate1 = 'upload/' . ltrim($rvThumb, '/');
+                                            $candidate2 = 'upload/' . basename($rvThumb);
+
+                                            if (file_exists(public_path($candidate1))) {
+                                                $rvThumbnailSrc = asset($candidate1);
+                                            } elseif (file_exists(public_path($candidate2))) {
+                                                $rvThumbnailSrc = asset($candidate2);
+                                            }
+                                        }
+
+                                        if (empty($rvThumbnailSrc) && !empty($rv->youtube_id)) {
+                                            $rvThumbnailSrc = "https://img.youtube.com/vi/{$rv->youtube_id}/hqdefault.jpg";
+                                        }
+
+                                        if (empty($rvThumbnailSrc)) {
+                                            $rvThumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
+                                        }
+                                    @endphp
+
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.videos.show', $rv->slug) }}">
-                                            <img src="{{ $rv->thumbnail }}" alt="{{ e($rv->title) }}"
+                                            <img src="{{ $rvThumbnailSrc }}" alt="{{ e($rv->title) }}"
                                                 class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
