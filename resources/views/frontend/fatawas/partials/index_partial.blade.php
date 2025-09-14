@@ -41,7 +41,6 @@
                         </div>
 
                         <div class="blog-wrapper p-3 ">
-                            {{-- badge مطابق للتصميم: عدد الفتاوى --}}
                             <span class="date">
                                 <a href="{{ route('frontend.fatawas.category', $category->slug ?? $category->id) }}">
                                     {{ $count }} <span>{{ $countLabel }}</span>
