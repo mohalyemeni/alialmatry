@@ -132,10 +132,10 @@
 
                     <div class="services-replace">
                         <div class="row">
-                            {{-- show only first 2 books --}}
+
                             @foreach ($displayBooks->take(2) as $bk)
                                 <div class="col-12 col-sm-6">
-                                    <div class="service-box2 wow fadeInUp" data-wow-delay=".3s">
+                                    <div class="service-box2 wow fadeInUp mb-2" data-wow-delay=".3s">
                                         @php
                                             $img = $bk->img ?? asset('frontand/assets/img/normal/counter-image.jpg');
                                             if (
