@@ -1708,7 +1708,7 @@ body[dir="rtl"] .recent-thumb-link {
 .audio-player-row {
     height: 50px;
 }
-/* للشاشات الصغيرة */
+
 @media (max-width: 576px) {
     .custom-audio-item {
         flex-direction: column;

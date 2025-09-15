@@ -28,7 +28,7 @@
             align-items: center;
             gap: 10px;
             width: 100%;
-            height: 50px !important;
+            height: 65px !important;
         }
 
         .audio-player-row audio {
