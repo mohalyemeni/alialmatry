@@ -1708,3 +1708,19 @@ body[dir="rtl"] .recent-thumb-link {
 .audio-player-row {
     height: 50px;
 }
+
+/* على الشاشات الصغيرة */
+@media (max-width: 576px) {
+    .custom-audio-item {
+        flex-direction: column; /* كل شيء عمودي */
+    }
+
+    .custom-audio-item > div:first-child {
+        flex: 0 0 100%; /* الصورة تأخذ كامل العرض */
+    }
+
+    .custom-audio-item .meta-buttons {
+        flex-direction: row; /* الأزرار تبقى صف تحت النص */
+        margin-top: 8px;
+    }
+}
