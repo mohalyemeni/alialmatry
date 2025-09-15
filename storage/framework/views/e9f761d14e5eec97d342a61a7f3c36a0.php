@@ -166,7 +166,7 @@
 
                                             <h3 class="box-title">
                                                 <a
-                                                    href="<?php echo e(route('frontend.books.show', $bk->slug)); ?>"><?php echo e(e(\Illuminate\Support\Str::limit($bk->title, 60))); ?></a>
+                                                    href="<?php echo e(route('frontend.books.show', $bk->slug)); ?>"><?php echo e(e(\Illuminate\Support\Str::limit($bk->title, 35))); ?></a>
                                             </h3>
                                         </div>
 
@@ -178,7 +178,7 @@
                                                 </div>
                                                 <h3 class="box-title">
                                                     <a
-                                                        href="<?php echo e(route('frontend.books.show', $bk->slug)); ?>"><?php echo e(e(\Illuminate\Support\Str::limit($bk->title, 60))); ?></a>
+                                                        href="<?php echo e(route('frontend.books.show', $bk->slug)); ?>"><?php echo e(e(\Illuminate\Support\Str::limit($bk->title, 20))); ?></a>
                                                 </h3>
                                                 <?php if(!empty($bk->excerpt ?? $bk->description)): ?>
                                                     <p class="small text-muted mt-2">

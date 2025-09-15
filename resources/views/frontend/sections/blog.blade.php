@@ -160,7 +160,7 @@
 
                                             <h3 class="box-title">
                                                 <a
-                                                    href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 60)) }}</a>
+                                                    href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 35)) }}</a>
                                             </h3>
                                         </div>
 
@@ -172,7 +172,7 @@
                                                 </div>
                                                 <h3 class="box-title">
                                                     <a
-                                                        href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 60)) }}</a>
+                                                        href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 20)) }}</a>
                                                 </h3>
                                                 @if (!empty($bk->excerpt ?? $bk->description))
                                                     <p class="small text-muted mt-2">
