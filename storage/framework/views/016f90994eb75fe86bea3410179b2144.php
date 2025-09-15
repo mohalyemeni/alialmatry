@@ -16,7 +16,45 @@
             </div>
         </div>
     </div>
+    <style>
+        @media (max-width: 576px) {
+            .custom-audio-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
 
+            .custom-audio-item>div:first-child {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .custom-audio-item img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                border-radius: 5px;
+            }
+
+            .custom-audio-item>div:nth-child(2) {
+                width: 100%;
+            }
+
+            .custom-audio-item .d-flex.align-items-center.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .custom-audio-item .meta-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                margin-top: 5px;
+            }
+        }
+    </style>
     <div class="container py-4">
         <div class="row">
             <!-- Main list -->
@@ -50,7 +88,7 @@
                         <div class="list-group-item custom-audio-item d-flex align-items-start gap-3">
                             <div style="flex:0 0 120px;">
                                 <a href="<?php echo e(route('frontend.audios.show', $audio->slug)); ?>">
-                                    <img src="<?php echo e($thumbSrc); ?>" alt="<?php echo e(e($audio->title)); ?>">
+                                    <img src="<?php echo e($thumbSrc); ?>" alt="">
                                 </a>
                             </div>
 
@@ -158,8 +196,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="<?php echo e(route('frontend.audios.show', $item->slug)); ?>">
-                                            <img src="<?php echo e($rThumb); ?>" alt="<?php echo e(e($item->title)); ?>"
-                                                class="recent-video-thumb"
+                                            <img src="<?php echo e($rThumb); ?>" alt="" class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 
@@ -222,55 +259,7 @@
                         ->get();
                 ?>
 
-                <?php if($featuredCats->isNotEmpty()): ?>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">تصنيفات مميزة</h5>
-                            <ul class="list-unstyled mb-0">
-                                <?php $__currentLoopData = $featuredCats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li class="mb-2">
-                                        <a href="<?php echo e(route('frontend.audios.category', $fc->slug)); ?>"
-                                            class="text-decoration-none d-flex align-items-center" style="gap:10px;">
-                                            <div style="flex:0 0 44px;">
-                                                <?php
-                                                    $cimg = null;
-                                                    if (!empty($fc->img)) {
-                                                        if (
-                                                            \Illuminate\Support\Str::startsWith($fc->img, [
-                                                                'http://',
-                                                                'https://',
-                                                            ])
-                                                        ) {
-                                                            $cimg = $fc->img;
-                                                        } elseif (
-                                                            file_exists(
-                                                                public_path('assets/audio_categories/' . $fc->img),
-                                                            )
-                                                        ) {
-                                                            $cimg = asset('assets/audio_categories/' . $fc->img);
-                                                        }
-                                                    }
-                                                    $cimg =
-                                                        $cimg ?: asset('frontand/assets/img/normal/counter-image.jpg');
-                                                ?>
-                                                <img src="<?php echo e($cimg); ?>" alt="<?php echo e($fc->title); ?>">
-                                            </div>
-                                            <div style="flex:1; min-width:0;">
-                                                <strong
-                                                    style="font-size:0.95rem;"><?php echo e(\Illuminate\Support\Str::limit($fc->title, 40)); ?></strong>
-                                                <div class="text-muted small">
-                                                    <?php echo e($fc->audios_count ?? $fc->audios()->where('status', 1)->count()); ?>
 
-                                                    صوت
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </ul>
-                        </div>
-                    </div>
-                <?php endif; ?>
             </aside>
         </div>
     </div>

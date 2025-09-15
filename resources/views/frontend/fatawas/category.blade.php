@@ -73,7 +73,7 @@
                                                 $thumb = asset('storage/' . ltrim($item->img, '/'));
                                             }
                                         }
-                                        $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                        $thumb = $thumb ?: null;
 
                                         $rDate = $item->published_on
                                             ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
@@ -82,7 +82,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.fatawas.show', $item->slug) }}">
-                                            <img src="{{ $thumb }}" alt="{{ e($item->title) }}"
+                                            <img src="{{ $thumb }}" alt=""
                                                 class="recent-video-thumb recent-fatawa-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>

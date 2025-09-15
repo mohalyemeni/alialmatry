@@ -30,7 +30,7 @@
             </div>
 
             <!-- Sidebar Column -->
-            <aside class="col-xxl-4 col-lg-4 pt-4 pb-5">
+            <aside class="col-xxl-4 col-lg-4  pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">أحدث المقالات</h5>

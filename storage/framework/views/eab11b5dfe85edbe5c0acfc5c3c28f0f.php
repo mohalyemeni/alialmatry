@@ -1,5 +1,5 @@
 <div class="container pt-45 pb-45 pt-60">
-    <h3 class="widget_title title-header-noline mb-5 wow fadeInRight widget_title22" data-wow-delay=".3s"> الفيديوهات
+    <h3 class="widget_title title-header-noline mb-5 wow fadeInRight widget_title22 mt-5" data-wow-delay=".3s"> الفيديوهات
     </h3>
     <?php if($videos->isEmpty()): ?>
         <p>لا توجد فيديوهات في هذا التصنيف بعد.</p>

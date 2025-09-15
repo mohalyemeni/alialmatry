@@ -11,38 +11,23 @@ use Illuminate\Support\Str;
 
 class VideoFrontendController extends Controller
 {
-    protected function resolveThumbnail($thumb)
-    {
-        if (empty($thumb)) {
-            return asset('frontand/assets/img/normal/counter-image.jpg');
-        }
-
-        if (Str::startsWith($thumb, ['http://', 'https://'])) {
-            return $thumb;
-        }
-
-        // normalize
-        $thumb = ltrim($thumb, '/');
-
-        // new: prefer upload/ (public/upload) first, then fall back to old locations
-        $pathsToCheck = [
-            'upload/' . $thumb,
-            'upload/' . basename($thumb),
-            $thumb,
-            'storage/' . $thumb,
-            'videos/thumbnails/' . $thumb,
-            'assets/videos/thumbnails/' . $thumb,
-            'assets/video_categories/' . $thumb,
-        ];
-
-        foreach ($pathsToCheck as $p) {
-            if ($p && file_exists(public_path($p))) {
-                return asset($p);
-            }
-        }
-
-        return (file_exists(public_path($thumb)) ? asset($thumb) : asset('frontand/assets/img/normal/counter-image.jpg'));
+protected function resolveThumbnail($thumb)
+{
+    if (empty($thumb)) {
+        return null; // لا fallback
     }
+
+    $thumb = ltrim($thumb, '/');
+
+    $path = 'assets/video_categories/' . basename($thumb);
+
+    if (file_exists(public_path($path))) {
+        return asset($path);
+    }
+
+    return null; // لا شيء إذا لم يوجد
+}
+
 
     public function index(Request $request)
     {

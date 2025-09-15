@@ -30,10 +30,8 @@ class BlogFrontendController extends Controller
      */
     protected function resolveImage($img)
     {
-        $default = asset('frontand/assets/img/normal/counter-image.jpg');
-
         if (empty($img)) {
-            return $default;
+            return null; // لا صورة افتراضية بعد الآن
         }
 
         // absolute url
@@ -54,8 +52,8 @@ class BlogFrontendController extends Controller
             }
         }
 
-        // fallback
-        return $default;
+        // لم يتم إيجاد الصورة
+        return null;
     }
 
     /**

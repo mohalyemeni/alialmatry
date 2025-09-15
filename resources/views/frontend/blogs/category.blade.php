@@ -20,46 +20,58 @@
     </div>
 
     @php
-        // إعدادات الشبكة:
-        $cols = 3; // عدد أعمدة العرض (على lg)
-        $rowsToShow = 4; // عدد الصفوف الأولى التي تُعرض قبل الضغط على "عرض المزيد"
+        use Illuminate\Support\Str;
+        use Illuminate\Support\Facades\Storage;
+
+        $cols = 3;
+        $rowsToShow = 4;
         $initialCount = $cols * $rowsToShow;
-        // إذا تم تمرير $blogs من الكنترولر استخدمها، وإلا جلب كافة المقالات لهذا التصنيف
         $items = $blogs ?? $category->blogs()->where('status', 1)->latest()->get();
         $total = $items->count();
 
-        // دالة مغلقة لحل مسار الصورة بشكل موثوق — تُعيد null إذا لا توجد صورة صالحة
         $resolveImage = function ($raw) {
             $raw = $raw ?? null;
             if (empty($raw)) {
                 return null;
             }
 
-            // استعمل الفولدرات من خلال الـ helpers الكاملين لتفادي الأخطاء
+            // إذا كان مصفوفة أو JSON خذ أول قيمة
+            if (is_string($raw) && (Str::startsWith($raw, '[') || Str::startsWith($raw, '{'))) {
+                try {
+                    $dec = json_decode($raw, true);
+                    if (is_array($dec) && count($dec)) {
+                        $raw = reset($dec);
+                    }
+                } catch (\Throwable $e) {
+                }
+            } elseif (is_array($raw)) {
+                $raw = reset($raw);
+            }
+
+            $raw = trim($raw);
             $rawTrim = ltrim($raw, '/');
 
-            // رابط خارجي
-            if (\Illuminate\Support\Str::startsWith($rawTrim, ['http://', 'https://', '//'])) {
+            // روابط خارجية
+            if (Str::startsWith($rawTrim, ['http://', 'https://', '//'])) {
                 return $rawTrim;
             }
 
-            // تحقق إذا المخزن كمسار كامل داخل public (مثلاً لو خزنت 'assets/blogs/images/xxx.jpg')
+            // تحقق في public مباشرة
             if (file_exists(public_path($rawTrim))) {
                 return asset($rawTrim);
             }
 
-            // تحقق المسار المتوقع assets/blogs/images/<raw>
-            $candidate1 = public_path('assets/blogs/images/' . $rawTrim);
-            if (file_exists($candidate1)) {
+            // مجلد الاعتيادي assets/blogs/images
+            if (file_exists(public_path('assets/blogs/images/' . $rawTrim))) {
                 return asset('assets/blogs/images/' . $rawTrim);
             }
 
-            // تحقق إذا المخزن في storage/app/public (مع رابط storage)
-            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($rawTrim)) {
+            // مجلد الصور العام عبر storage (بعد storage:link)
+            if (Storage::disk('public')->exists($rawTrim)) {
                 return asset('storage/' . $rawTrim);
             }
 
-            // لم نجد صورة صالحة
+            // لم نجد شيء
             return null;
         };
     @endphp
@@ -70,40 +82,38 @@
                 <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">المقالات</h3>
                 <div class="section-head d-flex align-items-center justify-content-between mb-5 "></div>
 
-                {{-- Grid: استخدم صفوف و أعمدة بوتستراب --}}
                 <div id="blogs-grid" class="row gy-4">
                     @foreach ($items as $index => $blog)
                         @php
-                            // determine if this item should be hidden initially
                             $hideInitially = $index >= $initialCount;
-                            // الحصول على src إن وُجد — الدالة تعيد null إن لم توجد صورة
                             $imgSrc = $resolveImage($blog->img ?? null);
                         @endphp
 
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 blog-item {{ $hideInitially ? 'd-none hidden-by-js' : '' }}"
                             data-index="{{ $index }}">
                             <div class="wow fadeInUp" data-wow-delay=".3s">
-                                <div class="cousrse-card cousrse-card2">
-
-
+                                {{-- اضف كلاس has-image اذا وجد imgSrc، وإلا no-image --}}
+                                <div class="cousrse-card cousrse-card2 {{ $imgSrc ? 'has-image' : 'no-image' }}">
                                     @if ($imgSrc)
                                         <div class="box-img global-img tow_height">
                                             <a href="{{ route('frontend.blogs.show', $blog->slug) }}"
                                                 aria-label="{{ e($blog->title) }}">
                                                 <img src="{{ $imgSrc }}" alt="{{ e($blog->title) }}"
-                                                    class="tow_height" style="width:100%; height:100%; object-fit:cover;">
+                                                    class="tow_height" loading="lazy" decoding="async">
                                             </a>
                                         </div>
                                     @endif
 
                                     <div class="hei">
                                         <h3 class="box-title">
-                                            <a
-                                                href="{{ route('frontend.blogs.show', $blog->slug) }}">{{ \Illuminate\Support\Str::limit(strip_tags($blog->title), 25) }}</a>
+                                            <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($blog->title), 25) }}
+                                            </a>
                                         </h3>
 
                                         <p class="tags text-muted">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 80) }}</p>
+                                            {{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 80) }}
+                                        </p>
 
                                         <div class="btn-group justify-content-between">
                                             <a class="th-btn border-btn2 new_pad"
@@ -117,13 +127,12 @@
                                             </a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> {{-- end cousrse-card --}}
                             </div>
                         </div>
                     @endforeach
-                </div>
+                </div> {{-- end grid --}}
 
-                {{-- عرض المزيد / إخفاء --}}
                 @if ($total > $initialCount)
                     <div class="text-center mt-4">
                         <button id="show-more-btn" class="btn btn-primary">
@@ -147,33 +156,29 @@
             const showMoreBtn = document.getElementById('show-more-btn');
             const showLessBtn = document.getElementById('show-less-btn');
             const hiddenItems = Array.from(document.querySelectorAll('.hidden-by-js'));
-            // إذا لم يوجد مخفيين لا نفعل شيء
+
             if (hiddenItems.length === 0) {
                 if (showMoreBtn) showMoreBtn.style.display = 'none';
                 return;
             }
 
             showMoreBtn && showMoreBtn.addEventListener('click', function() {
-                // أظهر كل العناصر المخفية
                 hiddenItems.forEach(el => el.classList.remove('d-none'));
-                // أخفِ زر العرض واظهر زر الإخفاء
                 if (showMoreBtn) showMoreBtn.classList.add('d-none');
                 if (showLessBtn) showLessBtn.classList.remove('d-none');
-                // تشغيل WOW مجدداً إن كان موجود
                 if (typeof WOW !== 'undefined') {
                     new WOW().init();
                 }
             });
 
             showLessBtn && showLessBtn.addEventListener('click', function() {
-                // أخفِ العناصر التي كانت مخفية
                 hiddenItems.forEach(el => el.classList.add('d-none'));
                 if (showLessBtn) showLessBtn.classList.add('d-none');
                 if (showMoreBtn) showMoreBtn.classList.remove('d-none');
                 if (typeof WOW !== 'undefined') {
                     new WOW().init();
                 }
-                // مرّر للجزء العلوي من الشبكة
+
                 const grid = document.getElementById('blogs-grid');
                 if (grid) grid.scrollIntoView({
                     behavior: 'smooth'

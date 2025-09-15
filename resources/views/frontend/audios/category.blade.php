@@ -90,7 +90,7 @@
                         <div class="list-group-item custom-audio-item d-flex align-items-start gap-3">
                             <div style="flex:0 0 120px;">
                                 <a href="{{ route('frontend.audios.show', $audio->slug) }}">
-                                    <img src="{{ $thumbSrc }}" alt="{{ e($audio->title) }}">
+                                    <img src="{{ $thumbSrc }}" alt="">
                                 </a>
                             </div>
 
@@ -195,8 +195,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.audios.show', $item->slug) }}">
-                                            <img src="{{ $rThumb }}" alt="{{ e($item->title) }}"
-                                                class="recent-video-thumb"
+                                            <img src="{{ $rThumb }}" alt="" class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 
@@ -256,54 +255,7 @@
                         ->get();
                 @endphp
 
-                @if ($featuredCats->isNotEmpty())
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">تصنيفات مميزة</h5>
-                            <ul class="list-unstyled mb-0">
-                                @foreach ($featuredCats as $fc)
-                                    <li class="mb-2">
-                                        <a href="{{ route('frontend.audios.category', $fc->slug) }}"
-                                            class="text-decoration-none d-flex align-items-center" style="gap:10px;">
-                                            <div style="flex:0 0 44px;">
-                                                @php
-                                                    $cimg = null;
-                                                    if (!empty($fc->img)) {
-                                                        if (
-                                                            \Illuminate\Support\Str::startsWith($fc->img, [
-                                                                'http://',
-                                                                'https://',
-                                                            ])
-                                                        ) {
-                                                            $cimg = $fc->img;
-                                                        } elseif (
-                                                            file_exists(
-                                                                public_path('assets/audio_categories/' . $fc->img),
-                                                            )
-                                                        ) {
-                                                            $cimg = asset('assets/audio_categories/' . $fc->img);
-                                                        }
-                                                    }
-                                                    $cimg =
-                                                        $cimg ?: asset('frontand/assets/img/normal/counter-image.jpg');
-                                                @endphp
-                                                <img src="{{ $cimg }}" alt="{{ $fc->title }}">
-                                            </div>
-                                            <div style="flex:1; min-width:0;">
-                                                <strong
-                                                    style="font-size:0.95rem;">{{ \Illuminate\Support\Str::limit($fc->title, 40) }}</strong>
-                                                <div class="text-muted small">
-                                                    {{ $fc->audios_count ?? $fc->audios()->where('status', 1)->count() }}
-                                                    صوت
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                @endif
+
             </aside>
         </div>
     </div>

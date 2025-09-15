@@ -28,32 +28,31 @@ class AudioFrontendController extends Controller
      * Resolve an image path for an audio item.
      * Tries common locations, supports absolute URLs, falls back to default.
      */
-    protected function resolveImage($img)
-    {
-        $default = asset('frontand/assets/img/normal/counter-image.jpg');
-
-        if (empty($img)) {
-            return $default;
-        }
-
-        if (Str::startsWith($img, ['http://', 'https://'])) {
-            return $img;
-        }
-
-        $candidates = [
-            $img,
-            'storage/' . ltrim($img, '/'),
-            'assets/audios/images/' . ltrim($img, '/'),
-        ];
-
-        foreach ($candidates as $p) {
-            if (file_exists(public_path($p))) {
-                return asset($p);
-            }
-        }
-
-        return $default;
+protected function resolveImage($img)
+{
+    if (empty($img)) {
+        return null; // لا شيء إذا لم يوجد
     }
+
+    if (\Illuminate\Support\Str::startsWith($img, ['http://', 'https://'])) {
+        return $img;
+    }
+
+    $candidates = [
+        'assets/audio_categories/' . ltrim($img, '/'), // مجلدك الفعلي
+        'assets/audios/images/' . ltrim($img, '/'),
+        'storage/' . ltrim($img, '/'),
+        $img,
+    ];
+
+    foreach ($candidates as $p) {
+        if (file_exists(public_path($p))) {
+            return asset($p);
+        }
+    }
+
+    return null; // لا شيء إذا لم يوجد في أي مكان
+}
 
     /**
      * Resolve an audio file URL (local file in public or absolute URL or storage path).
