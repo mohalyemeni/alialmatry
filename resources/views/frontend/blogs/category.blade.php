@@ -22,55 +22,38 @@
     <div class="container py-4">
         <div class="row">
             {{-- مقالات --}}
-            <div class="col-12 col-xl-6">
-                <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
-                    <h3 class="widget_title mb-0 fadeInRight wow" data-wow-delay=".3s">
-                        المقالات
-                        @if (isset($blogCategory) && !empty($blogCategory->name))
-                            - {{ e($blogCategory->name) }}
-                        @endif
-                    </h3>
+            <div class="col-12 col-xl-8">
+                <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">
+                    المقالات
+                </h3>
 
-                    <div class="btn-group">
-                        <a href="{{ route('frontend.blogs.index') ?? '#' }}" class="th-btn style1 fadeInRight wow"
-                            data-wow-delay=".3s">
-                            <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
-                        </a>
-                    </div>
-                </div>
-
-                @if (isset($blogs) && $blogs->count())
-                    <div class="list-group">
-                        @foreach ($blogs as $blog)
-                            <div class="list-group-item d-flex justify-content-between align-items-start py-3">
-                                <div class="me-3" style="flex:1;">
-                                    <h5 class="mb-1">
-                                        <i class="fa fa-newspaper me-2 text-primary"></i>
-                                        <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
-                                            {{ e($blog->title) }}
-                                        </a>
-                                    </h5>
-
-                                    @if (!empty($blog->excerpt ?? '') || !empty($blog->description ?? ''))
-                                        <p class="mb-1 text-muted small">
-                                            {{ e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120)) }}
-                                        </p>
-                                    @endif
-                                </div>
-
-                                <div class="button-wrapp d-flex align-items-center">
-                                    <a href="{{ route('frontend.blogs.show', $blog->slug) }}"
-                                        class="th-btn style1 th-btn1">
-                                        <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
-                                        <i class="fa-solid fa-eye me-1"></i>
+                <div class="list-group mt-3">
+                    @foreach ($category->blogs()->where('status', 1)->latest()->take(5)->get() as $blog)
+                        <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                            <div class="me-3" style="flex:1;">
+                                <h5 class="mb-1">
+                                    <i class="fa fa-newspaper me-2 text-primary"></i>
+                                    <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
+                                        {{ e($blog->title) }}
                                     </a>
-                                </div>
+                                </h5>
+
+                                @if (!empty($blog->excerpt ?? '') || !empty($blog->description ?? ''))
+                                    <p class="mb-1 text-muted small">
+                                        {{ e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120)) }}
+                                    </p>
+                                @endif
                             </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-muted">لا توجد مقالات لعرضها حالياً.</p>
-                @endif
+
+                            <div class="button-wrapp d-flex align-items-center">
+                                <a href="{{ route('frontend.blogs.show', $blog->slug) }}" class="th-btn style1 th-btn1">
+                                    <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
+                                    <i class="fa-solid fa-eye me-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
 
             {{-- Sidebar --}}

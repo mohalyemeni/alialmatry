@@ -22,8 +22,12 @@
         <div class="row">
             
             <div class="col-md-8">
-                <div class="list-group">
-                    <?php $__currentLoopData = $category->blogs()->where('status', 1)->latest()->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">
+                    المقالات
+                </h3>
+
+                <div class="list-group mt-3">
+                    <?php $__currentLoopData = $category->blogs()->where('status', 1)->latest()->take(5)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">
                                 <h5 class="mb-1">
