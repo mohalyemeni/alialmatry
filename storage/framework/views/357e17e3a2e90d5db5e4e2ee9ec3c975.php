@@ -21,7 +21,7 @@
     <div class="container py-4">
         <div class="row">
             
-            <div class="col-md-8">
+            <div class="col-12 col-xl-8">
                 <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">
                     المقالات
                 </h3>
@@ -58,7 +58,7 @@
             </div>
 
             
-            <aside class="col-md-4">
+            <aside class="col-12 col-xl-4">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3 d-flex align-items-center">

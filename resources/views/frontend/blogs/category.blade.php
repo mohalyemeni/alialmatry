@@ -57,7 +57,7 @@
             </div>
 
             {{-- Sidebar --}}
-            <aside class="col-md-4">
+            <aside class="col-12 col-xl-4">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3 d-flex align-items-center">
