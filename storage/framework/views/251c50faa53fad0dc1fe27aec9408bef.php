@@ -1,6 +1,32 @@
 <?php $__env->startSection('title', e($video->title ?? 'المرئي')); ?>
 
 <?php $__env->startSection('content'); ?>
+    <div class="breadcumb-wrapper"
+        style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
+        <div class="container">
+            <div class="breadcumb-content text-center text-white">
+                <h1 class="breadcumb-title">
+
+                    <?php echo e($title ?? ($video->title ?? ($category->title ?? 'المرئيات'))); ?>
+
+                </h1>
+                <ul class="breadcumb-menu list-inline justify-content-center mt-3">
+                    <li class="list-inline-item">
+                        <a href="<?php echo e(route('frontend.index')); ?>" class="text-white">الرئيسية</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="<?php echo e(route('frontend.videos.index')); ?>" class="text-white">المرئيات</a>
+                    </li>
+                    <?php if(isset($category)): ?>
+                        <li class="list-inline-item"><?php echo e($category->title); ?></li>
+                    <?php endif; ?>
+                    <?php if(isset($video)): ?>
+                        <li class="list-inline-item"><?php echo e($video->title); ?></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row gx-4 gy-4 justify-content-center">
             <!-- main column -->

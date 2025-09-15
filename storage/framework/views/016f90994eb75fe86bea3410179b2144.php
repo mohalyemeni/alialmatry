@@ -20,16 +20,14 @@
     <div class="container py-4">
         <div class="row">
             <!-- Main list -->
-            <div class="col-md-6 col-lg-8 col-xl-8">
+            <div class="col-xxl-8 col-lg-8">
                 <div class="list-group">
                     <?php $__currentLoopData = $audios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $audio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php
-                            // safe excerpt
                             $excerpt = !empty($audio->excerpt)
                                 ? \Illuminate\Support\Str::limit(strip_tags($audio->excerpt), 120)
                                 : \Illuminate\Support\Str::limit(strip_tags($audio->description ?? ''), 120);
 
-                            // determine thumbnail (try multiple locations)
                             $thumbSrc = null;
                             if (!empty($audio->img)) {
                                 if (\Illuminate\Support\Str::startsWith($audio->img, ['http://', 'https://'])) {
@@ -44,7 +42,6 @@
                             }
                             $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
-                            // published date
                             $published = $audio->published_on
                                 ? \Carbon\Carbon::parse($audio->published_on)->format('d M, Y')
                                 : '';
@@ -76,8 +73,7 @@
                                         <span><i class="fa-solid fa-eye me-1"></i> <?php echo e($audio->views ?? 0); ?></span>
                                         <?php if(!empty($audio->category)): ?>
                                             <a href="<?php echo e(route('frontend.audios.category', $audio->category->slug ?? '#')); ?>"
-                                                class="badge bg-light text-dark small text-decoration-none"
-                                                style="padding:4px 8px;border-radius:999px;">
+                                                class="recent-video-badge" style="padding:4px 8px;border-radius:999px;">
                                                 <i class="fa-solid fa-folder-open me-1" style="font-size:0.75rem;"></i>
                                                 <?php echo e(\Illuminate\Support\Str::limit($audio->category->title, 20)); ?>
 
@@ -115,155 +111,168 @@
             </div>
 
             <!-- Sidebar -->
-            <div class="col-md-6 col-lg-4 col-xl-4">
-                <div class="widget1 footer-widget1 mb-4 p-3">
-                    <h3 class="widget_title1">أحدث الصوتيات</h3>
+            <aside class="col-xxl-4 col-lg-4  pb-5">
+                <div class="card sticky-top" style="top:100px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">أحدث الصوتيات</h5>
 
-                    <?php
-                        // use $recentAudios if controller passed it; otherwise query with eager load for category
-                        $recentList =
-                            $recentAudios ??
-                            \App\Models\Audio::with('category')
-                                ->where('status', 1)
-                                ->where(function ($q) {
-                                    $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                                })
-                                ->orderByDesc('published_on')
-                                ->take(6)
-                                ->get();
-                    ?>
+                        <?php
+                            $recentList =
+                                $recentAudios ??
+                                \App\Models\Audio::with('category')
+                                    ->where('status', 1)
+                                    ->where(function ($q) {
+                                        $q->whereNull('published_on')->orWhere('published_on', '<=', now());
+                                    })
+                                    ->orderByDesc('published_on')
+                                    ->take(6)
+                                    ->get();
+                        ?>
 
-                    <?php if($recentList->isNotEmpty()): ?>
-                        <div class="recent-post-wrap">
-                            <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php
-                                    // thumb resolution similar to above
-                                    $rThumb = null;
-                                    if (!empty($item->img)) {
-                                        if (\Illuminate\Support\Str::startsWith($item->img, ['http://', 'https://'])) {
-                                            $rThumb = $item->img;
-                                        } elseif (file_exists(public_path('assets/audios/images/' . $item->img))) {
-                                            $rThumb = asset('assets/audios/images/' . $item->img);
-                                        } elseif (file_exists(public_path($item->img))) {
-                                            $rThumb = asset($item->img);
-                                        } elseif (
-                                            \Illuminate\Support\Facades\Storage::disk('public')->exists($item->img)
-                                        ) {
-                                            $rThumb = asset('storage/' . ltrim($item->img, '/'));
+                        <?php if($recentList->isNotEmpty()): ?>
+                            <ul class="list-unstyled mb-0 pr-0">
+                                <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        $rThumb = null;
+                                        if (!empty($item->img)) {
+                                            if (
+                                                \Illuminate\Support\Str::startsWith($item->img, ['http://', 'https://'])
+                                            ) {
+                                                $rThumb = $item->img;
+                                            } elseif (file_exists(public_path('assets/audios/images/' . $item->img))) {
+                                                $rThumb = asset('assets/audios/images/' . $item->img);
+                                            } elseif (file_exists(public_path($item->img))) {
+                                                $rThumb = asset($item->img);
+                                            } elseif (
+                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($item->img)
+                                            ) {
+                                                $rThumb = asset('storage/' . ltrim($item->img, '/'));
+                                            }
                                         }
-                                    }
-                                    $rThumb = $rThumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                        $rThumb = $rThumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
-                                    $rDate = $item->published_on
-                                        ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
-                                        : '';
-                                ?>
+                                        $rDate = $item->published_on
+                                            ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
+                                            : '';
+                                    ?>
 
-                                <div class="recent-post d-flex mb-3">
-                                    <div class="media-img me-2" style="flex:0 0 auto;">
+                                    <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="<?php echo e(route('frontend.audios.show', $item->slug)); ?>">
-                                            <img src="<?php echo e($rThumb); ?>" alt="<?php echo e(e($item->title)); ?>" ">
-                                                                </a>
-                                                            </div>
+                                            <img src="<?php echo e($rThumb); ?>" alt="<?php echo e(e($item->title)); ?>"
+                                                class="recent-video-thumb"
+                                                style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
+                                        </a>
 
-                                                            <div class="media-body1" style="min-width:0;">
-                                                                  <h4 class="post-title1 mb-0" style="font-size: 14px;">
-                            <a class="text-inherit d-block" href="<?php echo e(route('frontend.audios.show', $item->slug)); ?>">
-                                <?php echo e(\Illuminate\Support\Str::limit($item->title, 70)); ?>
-
-                            </a>
-                        </h4>
-                                                                <div class="d-flex align-items-center justify-content-between mb-1"
-                                                                    style="gap:8px;">
-                                                                    <div class="recent-post-meta1 text-muted small"><?php echo e($rDate); ?></div>
-
-                                                                    <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                                                        <span class="d-flex align-items-center"><i class="fa-solid fa-eye me-1"></i>
-                                                                            <?php echo e($item->views ?? 0); ?></span>
-
-                                                                              <?php if(!empty($item->category)): ?>
-                                            <a href="<?php echo e(route('frontend.audios.category', $item->category->slug ?? '#')); ?>"
-                                                class="badge bg-light text-dark small text-decoration-none"
-                                                style="padding:4px 8px;border-radius:999px;">
-                                                <i class="fa-solid fa-folder-open me-1" style="font-size:0.75rem;"></i>
-                                                <?php echo e(\Illuminate\Support\Str::limit($item->category->title, 18)); ?>
+                                        <div class="flex-grow-1" style="min-width:0;">
+                                            <a href="<?php echo e(route('frontend.audios.show', $item->slug)); ?>"
+                                                class="d-block fw-bold text-dark small mb-1">
+                                                <?php echo e(\Illuminate\Support\Str::limit($item->title, 70)); ?>
 
                                             </a>
+
+                                            <small class="text-muted d-block mb-1"><?php echo e($rDate); ?></small>
+
+                                            <div class="d-flex align-items-center text-muted small" style="gap:.5rem;">
+                                                <i class="fa-solid fa-eye me-1"></i> <?php echo e($item->views ?? 0); ?>
+
+
+                                                <?php if(!empty($item->category)): ?>
+                                                    <a href="<?php echo e(route('frontend.audios.category', $item->category->slug ?? '#')); ?>"
+                                                        class="recent-video-badge ms-2"
+                                                        title="<?php echo e(e($item->category->title)); ?>">
+                                                        <i class="fa-solid fa-folder-open" aria-hidden="true"
+                                                            style="font-size:0.78rem;"></i>
+                                                        <span class="recent-video-badge-text d-none d-sm-inline">
+                                                            <?php echo e(\Illuminate\Support\Str::limit($item->category->title, 18)); ?>
+
+                                                        </span>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-muted mb-0">لا توجد صوتيات حديثة.</p>
+                        <?php endif; ?>
+
+                        <div class="mt-3 text-start">
+                            <?php if($category->slug): ?>
+                                <a href="<?php echo e(route('frontend.audios.category', $category->slug)); ?>" class="th-btn">عرض
+                                    المزيد <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                            <?php else: ?>
+                                <a href="<?php echo e(route('frontend.audios.index')); ?>" class="th-btn">عرض المزيد <i
+                                        class="fa-solid fa-arrow-left ms-1"></i></a>
                             <?php endif; ?>
                         </div>
+                    </div>
                 </div>
 
+                
+                <?php
+                    $featuredCats = \App\Models\Category::where('section', \App\Models\Category::SECTION_AUDIO)
+                        ->where('status', 1)
+                        ->where('featured', 1)
+                        ->whereHas('audios', function ($q) {
+                            $q->where('status', 1);
+                        })
+                        ->orderByDesc('id')
+                        ->take(6)
+                        ->get();
+                ?>
 
-            </div>
+                <?php if($featuredCats->isNotEmpty()): ?>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">تصنيفات مميزة</h5>
+                            <ul class="list-unstyled mb-0">
+                                <?php $__currentLoopData = $featuredCats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li class="mb-2">
+                                        <a href="<?php echo e(route('frontend.audios.category', $fc->slug)); ?>"
+                                            class="text-decoration-none d-flex align-items-center" style="gap:10px;">
+                                            <div style="flex:0 0 44px;">
+                                                <?php
+                                                    $cimg = null;
+                                                    if (!empty($fc->img)) {
+                                                        if (
+                                                            \Illuminate\Support\Str::startsWith($fc->img, [
+                                                                'http://',
+                                                                'https://',
+                                                            ])
+                                                        ) {
+                                                            $cimg = $fc->img;
+                                                        } elseif (
+                                                            file_exists(
+                                                                public_path('assets/audio_categories/' . $fc->img),
+                                                            )
+                                                        ) {
+                                                            $cimg = asset('assets/audio_categories/' . $fc->img);
+                                                        }
+                                                    }
+                                                    $cimg =
+                                                        $cimg ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                                ?>
+                                                <img src="<?php echo e($cimg); ?>" alt="<?php echo e($fc->title); ?>">
+                                            </div>
+                                            <div style="flex:1; min-width:0;">
+                                                <strong
+                                                    style="font-size:0.95rem;"><?php echo e(\Illuminate\Support\Str::limit($fc->title, 40)); ?></strong>
+                                                <div class="text-muted small">
+                                                    <?php echo e($fc->audios_count ?? $fc->audios()->where('status', 1)->count()); ?>
+
+                                                    صوت
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </aside>
         </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </div>
-<?php else: ?>
-    <p class="text-muted">لا توجد صوتيات حديثة.</p>
-    <?php endif; ?>
-
-    <div class="mt-3 text-end">
-        <?php if($category->slug): ?>
-            <a href="<?php echo e(route('frontend.audios.category', $category->slug)); ?>" class="th-btn">عرض المزيد <i
-                    class="fa-solid fa-arrow-left ms-1"></i></a>
-        <?php else: ?>
-            <a href="<?php echo e(route('frontend.audios.index')); ?>" class="th-btn">عرض المزيد <i
-                    class="fa-solid fa-arrow-left ms-1"></i></a>
-        <?php endif; ?>
-    </div>
-    </div>
-
-    
-    <?php
-        $featuredCats = \App\Models\Category::where('section', \App\Models\Category::SECTION_AUDIO)
-            ->where('status', 1)
-            ->where('featured', 1)
-            ->whereHas('audios', function ($q) {
-                $q->where('status', 1);
-            })
-            ->orderByDesc('id')
-            ->take(6)
-            ->get();
-    ?>
-
-    <?php if($featuredCats->isNotEmpty()): ?>
-        <div class="widget1 footer-widget1 p-3">
-            <h3 class="widget_title1">تصنيفات مميزة</h3>
-            <ul class="list-unstyled mb-0">
-                <?php $__currentLoopData = $featuredCats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li class="mb-2">
-                        <a href="<?php echo e(route('frontend.audios.category', $fc->slug)); ?>"
-                            class="text-decoration-none d-flex align-items-center" style="gap:10px;">
-                            <div style="flex:0 0 44px;">
-                                <?php
-                                    $cimg = null;
-                                    if (!empty($fc->img)) {
-                                        if (\Illuminate\Support\Str::startsWith($fc->img, ['http://', 'https://'])) {
-                                            $cimg = $fc->img;
-                                        } elseif (file_exists(public_path('assets/audio_categories/' . $fc->img))) {
-                                            $cimg = asset('assets/audio_categories/' . $fc->img);
-                                        }
-                                    }
-                                    $cimg = $cimg ?: asset('frontand/assets/img/normal/counter-image.jpg');
-                                ?>
-                                <img src="<?php echo e($cimg); ?>" alt="<?php echo e($fc->title); ?>">
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <strong
-                                    style="font-size:0.95rem;"><?php echo e(\Illuminate\Support\Str::limit($fc->title, 40)); ?></strong>
-                                <div class="text-muted small">
-                                    <?php echo e($fc->audios_count ?? $fc->audios()->where('status', 1)->count()); ?> صوت
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-        </div>
-    <?php endif; ?>
-
-    </div>
-    </div>
     </div>
 <?php $__env->stopSection(); ?>
 

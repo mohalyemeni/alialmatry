@@ -166,101 +166,109 @@
                 </div>
             </div>
 
-            <!-- sidebar -->
-            <div class="col-lg-4">
-                <div class="card p-3 audio-sidebar">
-                    <h5 class="mb-3"><?php echo e(__('panel.recent_fatawas') ?? 'أحدث الفتاوى'); ?></h5>
+            <!-- Sidebar (Fatawas) — adapted to saved sidebar template -->
+            <aside class="col-xxl-4 col-lg-4  pb-5">
+                <div class="card sticky-top" style="top:100px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><?php echo e(__('panel.recent_fatawas') ?? 'أحدث الفتاوى'); ?></h5>
 
-                    <?php
-                        $recent =
-                            $recentFatawas ??
-                            \App\Models\Fatwa::with('category')
-                                ->where('status', 1)
-                                ->where(function ($q) {
-                                    $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                                })
-                                ->orderByDesc('published_on')
-                                ->limit(6)
-                                ->get();
-                    ?>
+                        <?php
+                            $recent =
+                                $recentFatawas ??
+                                \App\Models\Fatwa::with('category')
+                                    ->where('status', 1)
+                                    ->where(function ($q) {
+                                        $q->whereNull('published_on')->orWhere('published_on', '<=', now());
+                                    })
+                                    ->orderByDesc('published_on')
+                                    ->limit(6)
+                                    ->get();
+                        ?>
 
-                    <?php if($recent->isNotEmpty()): ?>
-                        <ul class="list-unstyled recent-list mb-0">
-                            <?php $__currentLoopData = $recent; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php
-                                    $rd_img = null;
-                                    if (!empty($rd->img)) {
-                                        if (\Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])) {
-                                            $rd_img = $rd->img;
-                                        } elseif (file_exists(public_path('assets/fatawa/images/' . $rd->img))) {
-                                            $rd_img = asset('assets/fatawa/images/' . $rd->img);
-                                        } elseif (file_exists(public_path($rd->img))) {
-                                            $rd_img = asset($rd->img);
-                                        } elseif (
-                                            \Illuminate\Support\Facades\Storage::disk('public')->exists($rd->img)
-                                        ) {
-                                            $rd_img = asset('storage/' . ltrim($rd->img, '/'));
+                        <?php if($recent->isNotEmpty()): ?>
+                            <ul class="list-unstyled mb-0 pr-0">
+                                <?php $__currentLoopData = $recent; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        // resolve thumbnail (kept your logic)
+                                        $rd_img = null;
+                                        if (!empty($rd->img)) {
+                                            if (
+                                                \Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])
+                                            ) {
+                                                $rd_img = $rd->img;
+                                            } elseif (file_exists(public_path('assets/fatawa/images/' . $rd->img))) {
+                                                $rd_img = asset('assets/fatawa/images/' . $rd->img);
+                                            } elseif (file_exists(public_path($rd->img))) {
+                                                $rd_img = asset($rd->img);
+                                            } elseif (
+                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($rd->img)
+                                            ) {
+                                                $rd_img = asset('storage/' . ltrim($rd->img, '/'));
+                                            }
                                         }
-                                    }
-                                    $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                        $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
-                                    $rd_date = $rd->published_on
-                                        ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
-                                        : '';
-                                ?>
+                                        $rd_date = $rd->published_on
+                                            ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
+                                            : '';
+                                    ?>
 
-                                <li class="mb-3">
-                                    <div class="recent-post">
-                                        <div class="media-img me-2" style="flex:0 0 auto;">
-                                            <a href="<?php echo e(route('frontend.fatawas.show', $rd->slug)); ?>">
-                                                <img src="<?php echo e($rd_img); ?>" alt="<?php echo e(e($rd->title)); ?>"
-                                                    class="recent-thumb">
-                                            </a>
-                                        </div>
+                                    <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
+                                        <a href="<?php echo e(route('frontend.fatawas.show', $rd->slug)); ?>">
+                                            <img src="<?php echo e($rd_img); ?>" alt="<?php echo e(e($rd->title)); ?>" loading="lazy"
+                                                class="recent-video-thumb"
+                                                style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
+                                        </a>
 
                                         <div class="flex-grow-1" style="min-width:0;">
-                                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <div class="recent-post-meta1 text-muted small"><?php echo e($rd_date); ?></div>
+                                            <a href="<?php echo e(route('frontend.fatawas.show', $rd->slug)); ?>"
+                                                class="d-block fw-bold text-dark small mb-1">
+                                                <?php echo e(\Illuminate\Support\Str::limit($rd->title, 72)); ?>
 
-                                                <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                                    <span class="d-flex align-items-center"><i
-                                                            class="fa-solid fa-eye me-1"></i> <?php echo e($rd->views ?? 0); ?></span>
+                                            </a>
 
-                                                    <?php if(!empty($rd->category)): ?>
-                                                        <a href="<?php echo e(route('frontend.fatawas.category', $rd->category->slug ?? '#')); ?>"
-                                                            class="audio-badge bg-light text-dark text-decoration-none">
-                                                            <i class="fa-solid fa-folder-open"
-                                                                style="font-size:0.72rem;"></i>
-                                                            <span><?php echo e(\Illuminate\Support\Str::limit($rd->category->title, 18)); ?></span>
-                                                        </a>
-                                                    <?php endif; ?>
-                                                </div>
+                                            <small class="text-muted d-block mb-1"><?php echo e($rd_date); ?></small>
+
+                                            <div class="d-flex align-items-center text-muted small" style="gap:.5rem;">
+                                                <i class="fa-solid fa-eye me-1"></i> <?php echo e($rd->views ?? 0); ?>
+
+
+                                                <?php if(!empty($rd->category)): ?>
+                                                    <a href="<?php echo e(route('frontend.fatawas.category', $rd->category->slug ?? '#')); ?>"
+                                                        class="recent-video-badge ms-2"
+                                                        title="<?php echo e(e($rd->category->title)); ?>">
+                                                        <i class="fa-solid fa-folder-open" aria-hidden="true"
+                                                            style="font-size:0.78rem;"></i>
+                                                        <span class="recent-video-badge-text d-none d-sm-inline">
+                                                            <?php echo e(\Illuminate\Support\Str::limit($rd->category->title, 18)); ?>
+
+                                                        </span>
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
 
-                                            <h4 class="post-title1 mb-0 post-title-small">
-                                                <a class="text-inherit d-block"
-                                                    href="<?php echo e(route('frontend.fatawas.show', $rd->slug)); ?>">
-                                                    <?php echo e(\Illuminate\Support\Str::limit($rd->title, 70)); ?>
+                                            <div class="rv-excerpt small text-muted mb-0 mt-1">
+                                                <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($rd->excerpt ?? ($rd->description ?? '')), 80))); ?>
 
-                                                </a>
-                                            </h4>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
-                    <?php else: ?>
-                        <p class="text-muted mb-0"><?php echo e(__('panel.no_recent_fatawas') ?? 'لا توجد فتاوى حديثة.'); ?></p>
-                    <?php endif; ?>
+                                    </li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
 
-                    <div class="mt-3 text-start">
-                        <a href="<?php echo e(route('frontend.fatawas.index')); ?>"
-                            class="th-btn new_pad"><?php echo e(__('panel.view_more') ?? 'عرض المزيد'); ?>
-
-                            <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                            <div class="mt-3 text-start">
+                                <a href="<?php echo e(route('frontend.fatawas.index')); ?>" class="th-btn">
+                                    <?php echo e(__('panel.view_more') ?? 'عرض المزيد'); ?> <i class="fa-solid fa-arrow-left ms-1"></i>
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <p class="text-muted mb-0"><?php echo e(__('panel.no_recent_fatawas') ?? 'لا توجد فتاوى حديثة.'); ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
-            </div>
+            </aside>
+
+
 
         </div>
     </div>

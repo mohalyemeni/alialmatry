@@ -30,110 +30,111 @@
 
                 </div>
             </div>
-            <!-- Sidebar -->
-            <div class="col-md-4">
-                <aside class="card p-3 sidebar-fatawa-card">
-                    <div class="card-header d-flex align-items-center justify-content-between bg-transparent px-0 pb-2">
-                        <h5 class="mb-0 d-flex align-items-center">
+            <!-- Sidebar (Fatawas) — styled to match saved sidebar template -->
+            <aside class="col-xxl-4 col-lg-4  pb-5">
+                <div class="card sticky-top" style="top:100px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3 d-flex align-items-center">
                             <i class="fa-solid fa-gavel me-2 text-primary"></i>
                             أحدث الفتاوى
                         </h5>
-                    </div>
 
-                    <?php
-                        $recentList =
-                            $recentFatawas ??
-                            \App\Models\Fatwa::with('category')
-                                ->where('status', 1)
-                                ->where(function ($q) {
-                                    $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                                })
-                                ->orderByDesc('published_on')
-                                ->take(6)
-                                ->get();
-                    ?>
+                        <?php
+                            $recentList =
+                                $recentFatawas ??
+                                \App\Models\Fatwa::with('category')
+                                    ->where('status', 1)
+                                    ->where(function ($q) {
+                                        $q->whereNull('published_on')->orWhere('published_on', '<=', now());
+                                    })
+                                    ->orderByDesc('published_on')
+                                    ->take(6)
+                                    ->get();
+                        ?>
 
-                    <?php if($recentList->isNotEmpty()): ?>
-                        <ul class="list-unstyled mb-0 recent-fatawas">
-                            <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php
-                                    // thumbnail resolution
-                                    $thumb = null;
-                                    if (!empty($item->img)) {
-                                        if (\Illuminate\Support\Str::startsWith($item->img, ['http://', 'https://'])) {
-                                            $thumb = $item->img;
-                                        } elseif (file_exists(public_path('assets/fatawa/images/' . $item->img))) {
-                                            $thumb = asset('assets/fatawa/images/' . $item->img);
-                                        } elseif (file_exists(public_path($item->img))) {
-                                            $thumb = asset($item->img);
-                                        } elseif (
-                                            \Illuminate\Support\Facades\Storage::disk('public')->exists($item->img)
-                                        ) {
-                                            $thumb = asset('storage/' . ltrim($item->img, '/'));
+                        <?php if($recentList->isNotEmpty()): ?>
+                            <ul class="list-unstyled mb-0 pr-0">
+                                <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        // thumbnail resolution (keep your logic)
+                                        $thumb = null;
+                                        if (!empty($item->img)) {
+                                            if (
+                                                \Illuminate\Support\Str::startsWith($item->img, ['http://', 'https://'])
+                                            ) {
+                                                $thumb = $item->img;
+                                            } elseif (file_exists(public_path('assets/fatawa/images/' . $item->img))) {
+                                                $thumb = asset('assets/fatawa/images/' . $item->img);
+                                            } elseif (file_exists(public_path($item->img))) {
+                                                $thumb = asset($item->img);
+                                            } elseif (
+                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($item->img)
+                                            ) {
+                                                $thumb = asset('storage/' . ltrim($item->img, '/'));
+                                            }
                                         }
-                                    }
-                                    $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                        $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
-                                    $rDate = $item->published_on
-                                        ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
-                                        : '';
-                                ?>
+                                        $rDate = $item->published_on
+                                            ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
+                                            : '';
+                                    ?>
 
-                                <li class="recent-fatawa-item d-flex align-items-start mb-3">
-                                    <a href="<?php echo e(route('frontend.fatawas.show', $item->slug)); ?>"
-                                        class="fatawa-thumb-link me-2">
-                                        <img src="<?php echo e($thumb); ?>" alt="<?php echo e(e($item->title)); ?>" class="fatawa-thumb"
-                                            style="width:72px; height:72px; object-fit:cover; border-radius:6px;">
-                                    </a>
+                                    <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
+                                        <a href="<?php echo e(route('frontend.fatawas.show', $item->slug)); ?>">
+                                            <img src="<?php echo e($thumb); ?>" alt="<?php echo e(e($item->title)); ?>"
+                                                class="recent-video-thumb recent-fatawa-thumb"
+                                                style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
+                                        </a>
 
-                                    <div class="fatawa-info flex-grow-1" style="min-width:0;">
-                                        <div class="d-flex align-items-center justify-content-between mb-1"
-                                            style="gap:8px;">
-                                            <div class="recent-post-meta1 text-muted small"><?php echo e($rDate); ?></div>
+                                        <div class="flex-grow-1" style="min-width:0;">
+                                            <a href="<?php echo e(route('frontend.fatawas.show', $item->slug)); ?>"
+                                                class="d-block fw-bold text-dark small mb-1">
+                                                <?php echo e(\Illuminate\Support\Str::limit($item->title, 72)); ?>
 
-                                            <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                                <span class="d-flex align-items-center"><i class="fa-solid fa-eye me-1"></i>
-                                                    <?php echo e($item->views ?? 0); ?></span>
+                                            </a>
+
+                                            <small class="text-muted d-block mb-1"><?php echo e($rDate); ?></small>
+
+                                            <div class="d-flex align-items-center text-muted small" style="gap:.5rem;">
+                                                <i class="fa-solid fa-eye me-1"></i> <?php echo e($item->views ?? 0); ?>
+
 
                                                 <?php if(!empty($item->category)): ?>
                                                     <a href="<?php echo e(route('frontend.fatawas.category', $item->category->slug ?? '#')); ?>"
-                                                        class="badge bg-light text-dark small text-decoration-none"
-                                                        style="padding:4px 8px;border-radius:999px;">
-                                                        <i class="fa-solid fa-folder-open me-1"
-                                                            style="font-size:0.75rem;"></i>
-                                                        <?php echo e(\Illuminate\Support\Str::limit($item->category->title, 18)); ?>
+                                                        class="recent-video-badge ms-2"
+                                                        title="<?php echo e(e($item->category->title)); ?>">
+                                                        <i class="fa-solid fa-folder-open" aria-hidden="true"
+                                                            style="font-size:0.78rem;"></i>
+                                                        <span class="recent-video-badge-text d-none d-sm-inline">
+                                                            <?php echo e(\Illuminate\Support\Str::limit($item->category->title, 18)); ?>
 
+                                                        </span>
                                                     </a>
                                                 <?php endif; ?>
                                             </div>
-                                        </div>
 
-                                        <a href="<?php echo e(route('frontend.fatawas.show', $item->slug)); ?>"
-                                            class="fatawa-title d-block mb-1 text-inherit" style="font-size:14px;">
-                                            <?php echo e(\Illuminate\Support\Str::limit($item->title, 70)); ?>
-
-                                        </a>
-
-                                        <div class="fatawa-meta small text-muted mb-0">
-                                            <p class="mb-0" style="line-height:1.2;">
+                                            <div class="rv-excerpt small text-muted mb-0 mt-1">
                                                 <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($item->excerpt ?? ($item->description ?? '')), 80))); ?>
 
-                                            </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
+                                    </li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
 
-                        <div class="mt-3 text-start">
-                            <a href="<?php echo e(route('frontend.fatawas.index')); ?>" class="th-btn new_pad">عرض المزيد <i
-                                    class="fa-solid fa-arrow-left ms-1"></i></a>
-                        </div>
-                    <?php else: ?>
-                        <p class="text-muted mb-0">لا توجد فتاوى حديثة.</p>
-                    <?php endif; ?>
-                </aside>
-            </div>
+                            <div class="mt-3 text-start">
+                                <a href="<?php echo e(route('frontend.fatawas.index')); ?>" class="th-btn">
+                                    عرض المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <p class="text-muted mb-0">لا توجد فتاوى حديثة.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </aside>
+
 
 
         </div>

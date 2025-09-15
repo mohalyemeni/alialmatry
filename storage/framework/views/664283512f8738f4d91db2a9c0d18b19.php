@@ -1,22 +1,21 @@
-@extends('layouts.app')
-@section('title', $blog->title)
+<?php $__env->startSection('title', $blog->title); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <!-- Breadcrumb Section -->
-    <div class="breadcumb-wrapper" style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}')">
+    <div class="breadcumb-wrapper" style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>')">
         <div class="container">
             <div class="breadcumb-content text-center text-white">
-                <h1 class="breadcumb-title">{{ e($blog->title) }}</h1>
+                <h1 class="breadcumb-title"><?php echo e(e($blog->title)); ?></h1>
                 <ul class="breadcumb-menu list-inline justify-content-center mt-3">
-                    <li class="list-inline-item"><a href="{{ route('frontend.index') }}" class="text-white">الرئيسية</a></li>
-                    <li class="list-inline-item"><a href="{{ route('frontend.blogs.index') }}"
+                    <li class="list-inline-item"><a href="<?php echo e(route('frontend.index')); ?>" class="text-white">الرئيسية</a></li>
+                    <li class="list-inline-item"><a href="<?php echo e(route('frontend.blogs.index')); ?>"
                             class="text-white">المقالات</a></li>
-                    @if ($blog->category)
-                        <li class="list-inline-item"><a href="{{ route('frontend.blogs.category', $blog->category->slug) }}"
-                                class="text-white">{{ e($blog->category->title) }}</a></li>
-                    @endif
-                    <li class="list-inline-item">{{ e($blog->title) }}</li>
+                    <?php if($blog->category): ?>
+                        <li class="list-inline-item"><a href="<?php echo e(route('frontend.blogs.category', $blog->category->slug)); ?>"
+                                class="text-white"><?php echo e(e($blog->category->title)); ?></a></li>
+                    <?php endif; ?>
+                    <li class="list-inline-item"><?php echo e(e($blog->title)); ?></li>
                 </ul>
             </div>
         </div>
@@ -27,16 +26,16 @@
         <div class="row">
             <!-- Blog Content Column -->
             <div class="col-xxl-8 col-lg-8">
-                @include('frontend.blogs.partials.show_partial', ['blog' => $blog])
+                <?php echo $__env->make('frontend.blogs.partials.show_partial', ['blog' => $blog], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
 
             <!-- Sidebar Column -->
-            <aside class="col-xxl-4 col-lg-4  pb-5">
+            <aside class="col-xxl-4 col-lg-4 pt-4 pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">أحدث المقالات</h5>
 
-                        @php
+                        <?php
                             $recentList =
                                 $recentBlogs ??
                                 \App\Models\Blog::with('category')
@@ -44,12 +43,12 @@
                                     ->orderByDesc('published_on')
                                     ->take(5)
                                     ->get();
-                        @endphp
+                        ?>
 
-                        @if ($recentList->isNotEmpty())
+                        <?php if($recentList->isNotEmpty()): ?>
                             <ul class="list-unstyled mb-0 pr-0">
-                                @foreach ($recentList as $item)
-                                    @php
+                                <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
                                         $thumbSrc = null;
                                         if (!empty($item->img)) {
                                             if (file_exists(public_path('assets/blogs/images/' . $item->img))) {
@@ -76,55 +75,58 @@
 
                                         $catTitle = $item->category->title ?? null;
                                         $catSlug = $item->category->slug ?? null;
-                                    @endphp
+                                    ?>
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
-                                        <a href="{{ route('frontend.blogs.show', $item->slug) }}">
-                                            <img src="{{ $thumbSrc }}" alt="{{ e($item->title) }}"
+                                        <a href="<?php echo e(route('frontend.blogs.show', $item->slug)); ?>">
+                                            <img src="<?php echo e($thumbSrc); ?>" alt="<?php echo e(e($item->title)); ?>"
                                                 class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 
                                         <div class="flex-grow-1" style="min-width:0;">
-                                            <a href="{{ route('frontend.blogs.show', $item->slug) }}"
+                                            <a href="<?php echo e(route('frontend.blogs.show', $item->slug)); ?>"
                                                 class="d-block fw-bold text-dark small mb-1">
-                                                {{ \Illuminate\Support\Str::limit($item->title, 70) }}
+                                                <?php echo e(\Illuminate\Support\Str::limit($item->title, 70)); ?>
+
                                             </a>
 
-                                            <small class="text-muted d-block mb-1">{{ $publishedFormatted }}</small>
+                                            <small class="text-muted d-block mb-1"><?php echo e($publishedFormatted); ?></small>
 
                                             <div class="d-flex align-items-center text-muted small" style="gap:.5rem;">
-                                                <i class="fa-solid fa-eye me-1"></i> {{ $item->views ?? 0 }}
+                                                <i class="fa-solid fa-eye me-1"></i> <?php echo e($item->views ?? 0); ?>
 
-                                                @if (!empty($catTitle))
-                                                    <a href="{{ $catSlug ? route('frontend.blogs.category', $catSlug) : '#' }}"
-                                                        class="recent-video-badge ms-2" title="{{ e($catTitle) }}">
+
+                                                <?php if(!empty($catTitle)): ?>
+                                                    <a href="<?php echo e($catSlug ? route('frontend.blogs.category', $catSlug) : '#'); ?>"
+                                                        class="recent-video-badge ms-2" title="<?php echo e(e($catTitle)); ?>">
                                                         <i class="fa-solid fa-folder-open" aria-hidden="true"
                                                             style="font-size:0.78rem;"></i>
                                                         <span class="recent-video-badge-text d-none d-sm-inline">
-                                                            {{ \Illuminate\Support\Str::limit($catTitle, 20) }}
+                                                            <?php echo e(\Illuminate\Support\Str::limit($catTitle, 20)); ?>
+
                                                         </span>
                                                     </a>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </li>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
-                        @else
+                        <?php else: ?>
                             <p class="text-muted mb-0">لا توجد مقالات حديثة.</p>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="mt-3 text-start">
-                            @if ($blog->category && !empty($blog->category->slug))
-                                <a href="{{ route('frontend.blogs.category', $blog->category->slug) }}" class="th-btn">
+                            <?php if($blog->category && !empty($blog->category->slug)): ?>
+                                <a href="<?php echo e(route('frontend.blogs.category', $blog->category->slug)); ?>" class="th-btn">
                                     عرض المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
                                 </a>
-                            @else
-                                <a href="{{ route('frontend.blogs.index') }}" class="th-btn">
+                            <?php else: ?>
+                                <a href="<?php echo e(route('frontend.blogs.index')); ?>" class="th-btn">
                                     عرض المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
                                 </a>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -132,4 +134,6 @@
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/frontend/blogs/show.blade.php ENDPATH**/ ?>

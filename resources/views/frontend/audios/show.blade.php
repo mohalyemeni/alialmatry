@@ -25,12 +25,12 @@
     </div>
 
     <style>
-        /* CSS محلي لتنسيق المشغل والـ sidebar (خاص بالصفحة) */
         .audio-player-row {
             display: flex;
             align-items: center;
             gap: 10px;
             width: 100%;
+            height: 50px !important;
         }
 
         .audio-player-row audio {
@@ -52,7 +52,6 @@
             font-size: 0.9rem;
         }
 
-        /* small screens: stack vertically so player is full width and download button below (or to the end) */
         @media (max-width: 576px) {
             .audio-player-row {
                 flex-direction: column;
@@ -64,7 +63,6 @@
             }
         }
 
-        /* sidebar styles (keep namespaced) */
         .audio-sidebar .recent-thumb {
             width: 84px;
             height: 64px;
@@ -103,21 +101,17 @@
             color: #0d6efd;
             text-decoration: underline;
         }
-
-        .audio-player-row {
-            height: 50px !important;
-        }
     </style>
 
     <div class="container py-4">
         <div class="row">
-            <!-- main -->
+            <!-- Main content -->
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
                     <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e($audio->title) }}</h3>
 
-                    {{-- Audio player row: player + download button (responsive) --}}
-                    <div class="audio-play-wrapp mb-3">
+                    {{-- Audio player + download --}}
+                    <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
                         @php
                             $hasAudioFile =
                                 !empty($audio->audio_file) &&
@@ -125,8 +119,14 @@
                             $audioFileUrl = $hasAudioFile ? asset('assets/audios/files/' . $audio->audio_file) : null;
                         @endphp
 
-
                         @if ($hasAudioFile)
+                            <div class="audio-player-row flex-grow-1">
+                                <audio controls preload="metadata" aria-label="{{ e($audio->title) }}">
+                                    <source src="{{ $audioFileUrl }}" type="audio/mpeg">
+                                    {{ __('panel.audio_not_supported') }}
+                                </audio>
+                            </div>
+
                             <div class="audio-download-btn ms-2">
                                 <a href="{{ route('frontend.audios.download', $audio->id) }}" class="th-btn style2 th-btn1"
                                     aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
@@ -135,20 +135,12 @@
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
                             </div>
-                            <div class="audio-player-row">
-                                <audio controls preload="metadata" aria-label="{{ e($audio->title) }}">
-                                    <source src="{{ $audioFileUrl }}" type="audio/mpeg">
-                                    {{ __('panel.audio_not_supported') }}
-                                </audio>
-
-
-                            </div>
                         @else
                             <div class="alert alert-secondary mb-0">{{ __('panel.no_audio_file') }}</div>
                         @endif
                     </div>
 
-                    {{-- other resource buttons (pdf/doc) kept below player, if any --}}
+                    {{-- PDF / DOC links --}}
                     <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
                         @if (!empty($audio->pdf_link))
                             <a href="{{ $audio->pdf_link }}" target="_blank" class="th-btn style2 th-btn1">
@@ -157,7 +149,6 @@
                                 <i class="fa-regular fa-file-pdf ms-2"></i>
                             </a>
                         @endif
-
                         @if (!empty($audio->doc_link))
                             <a href="{{ $audio->doc_link }}" target="_blank" class="th-btn style2 th-btn1">
                                 <span class="btn-text" data-back="{{ __('panel.documents') }}"
@@ -173,13 +164,12 @@
                 </div>
             </div>
 
-            <!-- sidebar -->
+            <!-- Sidebar -->
             <div class="col-lg-4">
-                <div class="card p-3 audio-sidebar">
+                <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
                     <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
 
                     @php
-                        // controller may pass $recentAudios; otherwise query here (with category eager-load)
                         $recent =
                             $recentAudios ??
                             \App\Models\Audio::with('category')
@@ -196,7 +186,6 @@
                         <ul class="list-unstyled recent-list mb-0">
                             @foreach ($recent as $rd)
                                 @php
-                                    // image resolution
                                     $rd_img = null;
                                     if (!empty($rd->img)) {
                                         if (\Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])) {
@@ -212,7 +201,6 @@
                                         }
                                     }
                                     $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
-
                                     $rd_date = $rd->published_on
                                         ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
                                         : '';
@@ -230,11 +218,9 @@
                                         <div class="flex-grow-1" style="min-width:0;">
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
-
                                                 <div class="text-muted small d-flex align-items-center" style="gap:8px;">
                                                     <span class="d-flex align-items-center"><i
                                                             class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}</span>
-
                                                     @if (!empty($rd->category))
                                                         <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
                                                             class="audio-badge bg-light text-dark text-decoration-none">
@@ -245,7 +231,6 @@
                                                     @endif
                                                 </div>
                                             </div>
-
                                             <h4 class="post-title1 mb-0 post-title-small">
                                                 <a class="text-inherit d-block"
                                                     href="{{ route('frontend.audios.show', $rd->slug) }}">
