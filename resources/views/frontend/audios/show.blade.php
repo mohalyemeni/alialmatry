@@ -30,7 +30,7 @@
             align-items: center;
             gap: 10px;
             width: 100%;
-            height: 50px !important;
+            height: 90px !important;
         }
 
         .audio-player-row audio {
