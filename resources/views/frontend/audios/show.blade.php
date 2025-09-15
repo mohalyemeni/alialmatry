@@ -120,20 +120,21 @@
                         @endphp
 
                         @if ($hasAudioFile)
-                            <div class="audio-player-row flex-grow-1">
-                                <audio controls preload="metadata" aria-label="{{ e($audio->title) }}">
-                                    <source src="{{ $audioFileUrl }}" type="audio/mpeg">
-                                    {{ __('panel.audio_not_supported') }}
-                                </audio>
-                            </div>
-
-                            <div class="audio-download-btn ms-2">
-                                <a href="{{ route('frontend.audios.download', $audio->id) }}" class="th-btn style2 th-btn1"
+                            <div class="audio-player-row flex-grow-1 d-flex align-items-center">
+                                {{-- زر التحميل على اليسار --}}
+                                <a href="{{ route('frontend.audios.download', $audio->id) }}"
+                                    class="th-btn style2 th-btn1 audio-download-btn me-2"
                                     aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
                                     <span class="btn-text" data-back="{{ __('panel.download') }}"
                                         data-front="{{ __('panel.download') }}"></span>
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
+
+                                {{-- مشغل الصوت --}}
+                                <audio controls preload="metadata" aria-label="{{ e($audio->title) }}" class="flex-grow-1">
+                                    <source src="{{ $audioFileUrl }}" type="audio/mpeg">
+                                    {{ __('panel.audio_not_supported') }}
+                                </audio>
                             </div>
                         @else
                             <div class="alert alert-secondary mb-0">{{ __('panel.no_audio_file') }}</div>

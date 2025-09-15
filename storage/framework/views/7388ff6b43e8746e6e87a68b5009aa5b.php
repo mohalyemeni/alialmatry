@@ -28,7 +28,7 @@
             align-items: center;
             gap: 10px;
             width: 100%;
-            height: 65px !important;
+            height: 50px !important;
         }
 
         .audio-player-row audio {
@@ -118,21 +118,22 @@
                         ?>
 
                         <?php if($hasAudioFile): ?>
-                            <div class="audio-player-row flex-grow-1">
-                                <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>">
-                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
-                                    <?php echo e(__('panel.audio_not_supported')); ?>
-
-                                </audio>
-                            </div>
-
-                            <div class="audio-download-btn ms-2">
-                                <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>" class="th-btn style2 th-btn1"
+                            <div class="audio-player-row flex-grow-1 d-flex align-items-center">
+                                
+                                <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>"
+                                    class="th-btn style2 th-btn1 audio-download-btn me-2"
                                     aria-label="<?php echo e(__('panel.download')); ?> <?php echo e(e($audio->title)); ?>">
                                     <span class="btn-text" data-back="<?php echo e(__('panel.download')); ?>"
                                         data-front="<?php echo e(__('panel.download')); ?>"></span>
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
+
+                                
+                                <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>" class="flex-grow-1">
+                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
+                                    <?php echo e(__('panel.audio_not_supported')); ?>
+
+                                </audio>
                             </div>
                         <?php else: ?>
                             <div class="alert alert-secondary mb-0"><?php echo e(__('panel.no_audio_file')); ?></div>
