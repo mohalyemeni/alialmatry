@@ -21,89 +21,43 @@
                 </div>
 
                 @if (isset($blogs) && $blogs->count())
-                    <div class="slider-area">
-                        <div class="swiper th-slider has-shadow background-image_privet" id="cousrseSlide"
-                            data-slider-options='{"loop":true,"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"768":{"slidesPerView":2},"992":{"slidesPerView":2},"1300":{"slidesPerView":2}}}'>
-                            <div class="swiper-wrapper">
-                                @foreach ($blogs as $b)
-                                    <div class="swiper-slide wow fadeInUp" data-wow-delay=".3s">
-                                        <div class="cousrse-card cousrse-card2">
-                                            <div class="box-img global-img tow_height">
-                                                @php
-                                                    // صورة افتراضية
-                                                    $img = asset('frontand/assets/img/normal/counter-image.jpg');
+                    @php
+                        $latestBlogs = $blogs->take(4);
+                    @endphp
 
-                                                    // إذا تم تخزين اسم الملف في الحقل img وكان موجودًا داخل public/assets/blogs/images/
-                                                    if (
-                                                        !empty($b->img) &&
-                                                        file_exists(public_path('assets/blogs/images/' . $b->img))
-                                                    ) {
-                                                        $img = asset('assets/blogs/images/' . $b->img);
-                                                    } elseif (
-                                                        !empty($b->img) &&
-                                                        \Illuminate\Support\Str::startsWith($b->img, [
-                                                            'http://',
-                                                            'https://',
-                                                        ])
-                                                    ) {
-                                                        $img = $b->img;
-                                                    }
-                                                @endphp
+                    <div class="list-group">
+                        @foreach ($latestBlogs as $blog)
+                            <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                                <div class="me-3" style="flex:1;">
+                                    <h5 class="mb-1">
+                                        <i class="fa fa-newspaper me-2 text-primary"></i>
+                                        <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
+                                            {{ e($blog->title) }}
+                                        </a>
+                                    </h5>
 
-                                                <a href="{{ route('frontend.blogs.show', $b->slug) }}"
-                                                    aria-label="عرض المقال {{ e($b->title) }}">
-                                                    <img src="{{ $img }}" alt="{{ e($b->title) }}"
-                                                        class="tow_height"
-                                                        style="width:100%; height:100%; object-fit:cover;">
-                                                </a>
-                                            </div>
+                                    @if (!empty($blog->excerpt ?? '') || !empty($blog->description ?? ''))
+                                        <p class="mb-1 text-muted small">
+                                            {{ e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120)) }}
+                                        </p>
+                                    @endif
+                                </div>
 
-                                            <div class="hei">
-                                                <h3 class="box-title">
-                                                    <a href="{{ route('frontend.blogs.show', $b->slug) }}">
-                                                        {{ e(\Illuminate\Support\Str::limit($b->title, 15)) }}
-                                                    </a>
-                                                </h3>
-
-                                                @if (!empty($b->excerpt))
-                                                    <p class="small text-muted mb-2">
-                                                        {{ e(\Illuminate\Support\Str::limit(strip_tags($b->excerpt), 35)) }}
-                                                    </p>
-                                                @endif
-
-                                                <p class="tags text-muted mb-2">
-                                                    {{ $b->category->name ?? '' }}
-                                                </p>
-
-                                                <div class="btn-group justify-content-between">
-
-                                                    <a class="th-btn border-btn2 new_pad"
-                                                        href="{{ route('frontend.blogs.index', ['category' => $b->category->slug ?? ($b->category->id ?? '')]) }}">
-                                                        {{ $b->category->name ?? 'التصنيف' }}
-                                                    </a>
-
-                                                    <a class="th-btn border-btn2 read-btn-custom new_pad"
-                                                        href="{{ route('frontend.blogs.show', $b->slug) }}">
-                                                        قراءة <i class="fa-solid fa-arrow-left"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                <div class="button-wrapp d-flex align-items-center">
+                                    <a href="{{ route('frontend.blogs.show', $blog->slug) }}"
+                                        class="th-btn style1 th-btn1">
+                                        <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
+                                        <i class="fa-solid fa-eye me-1"></i>
+                                    </a>
+                                </div>
                             </div>
-
-
-                        </div>
+                        @endforeach
                     </div>
                 @else
                     <p class="text-muted">لا توجد مقالات لعرضها حالياً.</p>
                 @endif
             </div>
 
-
-
-            {{-- الكتب والمؤلفات --}}
             <div class="col-12 col-xl-6">
                 <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                     <h3 class="widget_title mb-0 fadeInRight wow" data-wow-delay=".3s">
@@ -123,7 +77,6 @@
 
                 @if (isset($books) && $books->count())
                     @php
-                        // if $books is a Paginator, extract the underlying collection so we can use ->take()
                         $displayBooks = $books;
                         if ($books instanceof \Illuminate\Pagination\AbstractPaginator) {
                             $displayBooks = $books->getCollection();
@@ -132,7 +85,6 @@
 
                     <div class="services-replace">
                         <div class="row">
-
                             @foreach ($displayBooks->take(2) as $bk)
                                 <div class="col-12 col-sm-6">
                                     <div class="service-box2 wow fadeInUp mb-2" data-wow-delay=".3s">
@@ -159,8 +111,9 @@
                                             </div>
 
                                             <h3 class="box-title">
-                                                <a
-                                                    href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 25)) }}</a>
+                                                <a href="{{ route('frontend.books.show', $bk->slug) }}">
+                                                    {{ e(\Illuminate\Support\Str::limit($bk->title, 25)) }}
+                                                </a>
                                             </h3>
                                         </div>
 
@@ -171,8 +124,9 @@
                                                         alt="Icon">
                                                 </div>
                                                 <h3 class="box-title">
-                                                    <a
-                                                        href="{{ route('frontend.books.show', $bk->slug) }}">{{ e(\Illuminate\Support\Str::limit($bk->title, 20)) }}</a>
+                                                    <a href="{{ route('frontend.books.show', $bk->slug) }}">
+                                                        {{ e(\Illuminate\Support\Str::limit($bk->title, 20)) }}
+                                                    </a>
                                                 </h3>
                                                 @if (!empty($bk->excerpt ?? $bk->description))
                                                     <p class="small text-muted mt-2">
@@ -204,7 +158,6 @@
                     <p class="text-muted">لا توجد كتب لعرضها حالياً.</p>
                 @endif
             </div>
-
 
         </div>
     </div>

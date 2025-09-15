@@ -33,7 +33,7 @@ class FatwaContentRequest extends FormRequest
                 return [
                     'title'         => 'required|string|max:255|unique:fatawas,title,' . $this->route('fatawa'),
                     'description'   => 'required|string',
-                    'img'           => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
+                    'img'           => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'audio_file'    => 'nullable|file|mimes:mp3,wav,mpeg,ogg|max:204800',
                     'category_id'   => 'required|exists:categories,id',
                     'meta_keywords' => 'nullable|string',

@@ -79,8 +79,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="<?php echo e(route('frontend.blogs.show', $item->slug)); ?>">
-                                            <img src="<?php echo e($thumbSrc); ?>" alt="<?php echo e(e($item->title)); ?>"
-                                                class="recent-video-thumb"
+                                            <img src="<?php echo e($thumbSrc); ?>" alt="" class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 

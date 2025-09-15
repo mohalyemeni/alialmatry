@@ -18,7 +18,7 @@ class BlogCategoryRequest extends FormRequest
                 return [
                     'title'             => 'required|string|max:255',
                     'description'       => 'nullable|string',
-                    'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
+                    'img'               => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',
                     'meta_description'  => 'nullable|string',
                     'meta_slug'         => 'nullable|string',
@@ -34,7 +34,7 @@ class BlogCategoryRequest extends FormRequest
                 return [
                     'title'             => 'required|string|max:255',
                     'description'       => 'nullable|string',
-                    'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
+                    'img'               => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',
                     'meta_description'  => 'nullable|string',
                     'meta_slug'         => 'nullable|string',

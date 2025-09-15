@@ -1,7 +1,6 @@
 <?php $__env->startSection('title', $category->title); ?>
 
 <?php $__env->startSection('content'); ?>
-
     
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -18,176 +17,94 @@
         </div>
     </div>
 
-    <?php
-        use Illuminate\Support\Str;
-        use Illuminate\Support\Facades\Storage;
-
-        $cols = 3;
-        $rowsToShow = 4;
-        $initialCount = $cols * $rowsToShow;
-        $items = $blogs ?? $category->blogs()->where('status', 1)->latest()->get();
-        $total = $items->count();
-
-        $resolveImage = function ($raw) {
-            $raw = $raw ?? null;
-            if (empty($raw)) {
-                return null;
-            }
-
-            // إذا كان مصفوفة أو JSON خذ أول قيمة
-            if (is_string($raw) && (Str::startsWith($raw, '[') || Str::startsWith($raw, '{'))) {
-                try {
-                    $dec = json_decode($raw, true);
-                    if (is_array($dec) && count($dec)) {
-                        $raw = reset($dec);
-                    }
-                } catch (\Throwable $e) {
-                }
-            } elseif (is_array($raw)) {
-                $raw = reset($raw);
-            }
-
-            $raw = trim($raw);
-            $rawTrim = ltrim($raw, '/');
-
-            // روابط خارجية
-            if (Str::startsWith($rawTrim, ['http://', 'https://', '//'])) {
-                return $rawTrim;
-            }
-
-            // تحقق في public مباشرة
-            if (file_exists(public_path($rawTrim))) {
-                return asset($rawTrim);
-            }
-
-            // مجلد الاعتيادي assets/blogs/images
-            if (file_exists(public_path('assets/blogs/images/' . $rawTrim))) {
-                return asset('assets/blogs/images/' . $rawTrim);
-            }
-
-            // مجلد الصور العام عبر storage (بعد storage:link)
-            if (Storage::disk('public')->exists($rawTrim)) {
-                return asset('storage/' . $rawTrim);
-            }
-
-            // لم نجد شيء
-            return null;
-        };
-    ?>
-
+    
     <div class="container py-4">
         <div class="row">
-            <div class="col-12 col-xl-12">
-                <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">المقالات</h3>
-                <div class="section-head d-flex align-items-center justify-content-between mb-5 "></div>
+            
+            <div class="col-md-8">
+                <div class="list-group">
+                    <?php $__currentLoopData = $category->blogs()->where('status', 1)->latest()->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                            <div class="me-3" style="flex:1;">
+                                <h5 class="mb-1">
+                                    <i class="fa fa-newspaper me-2 text-primary"></i>
+                                    <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>">
+                                        <?php echo e(e($blog->title)); ?>
 
-                <div id="blogs-grid" class="row gy-4">
-                    <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php
-                            $hideInitially = $index >= $initialCount;
-                            $imgSrc = $resolveImage($blog->img ?? null);
-                        ?>
+                                    </a>
+                                </h5>
 
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 blog-item <?php echo e($hideInitially ? 'd-none hidden-by-js' : ''); ?>"
-                            data-index="<?php echo e($index); ?>">
-                            <div class="wow fadeInUp" data-wow-delay=".3s">
-                                
-                                <div class="cousrse-card cousrse-card2 <?php echo e($imgSrc ? 'has-image' : 'no-image'); ?>">
-                                    <?php if($imgSrc): ?>
-                                        <div class="box-img global-img tow_height">
-                                            <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>"
-                                                aria-label="<?php echo e(e($blog->title)); ?>">
-                                                <img src="<?php echo e($imgSrc); ?>" alt="<?php echo e(e($blog->title)); ?>"
-                                                    class="tow_height" loading="lazy" decoding="async">
-                                            </a>
-                                        </div>
-                                    <?php endif; ?>
+                                <?php if(!empty($blog->excerpt ?? '') || !empty($blog->description ?? '')): ?>
+                                    <p class="mb-1 text-muted small">
+                                        <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120))); ?>
 
-                                    <div class="hei">
-                                        <h3 class="box-title">
-                                            <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>">
-                                                <?php echo e(\Illuminate\Support\Str::limit(strip_tags($blog->title), 25)); ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
 
-                                            </a>
-                                        </h3>
-
-                                        <p class="tags text-muted">
-                                            <?php echo e(\Illuminate\Support\Str::limit(strip_tags($blog->description), 80)); ?>
-
-                                        </p>
-
-                                        <div class="btn-group justify-content-between">
-                                            <a class="th-btn border-btn2 new_pad"
-                                                href="<?php echo e(route('frontend.blogs.category', $blog->category->slug ?? ($blog->category->id ?? ''))); ?>">
-                                                <?php echo e(\Illuminate\Support\Str::limit(strip_tags($blog->title), 20)); ?>
-
-                                            </a>
-
-                                            <a class="th-btn border-btn2 read-btn-custom new_pad"
-                                                href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>">
-                                                <?php echo e(__('panel.read')); ?> <i class="fa-solid fa-arrow-left"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div> 
+                            <div class="button-wrapp d-flex align-items-center">
+                                <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>" class="th-btn style1 th-btn1">
+                                    <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
+                                    <i class="fa-solid fa-eye me-1"></i>
+                                </a>
                             </div>
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </div> 
-
-                <?php if($total > $initialCount): ?>
-                    <div class="text-center mt-4">
-                        <button id="show-more-btn" class="btn btn-primary">
-                            عرض المزيد (<?php echo e($total - $initialCount); ?>) <i class="fa fa-angle-down ms-1"></i>
-                        </button>
-                        <button id="show-less-btn" class="btn btn-outline-secondary d-none">
-                            عرض أقل <i class="fa fa-angle-up ms-1"></i>
-                        </button>
-                    </div>
-                <?php endif; ?>
-
+                </div>
             </div>
+
+            
+            <aside class="col-md-4">
+                <div class="card sticky-top" style="top:100px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-newspaper me-2 text-primary"></i>
+                            أحدث المقالات
+                        </h5>
+
+                        <?php
+                            $recentBlogs =
+                                $recentBlogs ?? $category->blogs()->where('status', 1)->latest()->take(6)->get();
+                        ?>
+
+                        <?php if($recentBlogs->isNotEmpty()): ?>
+                            <ul class="list-group list-unstyled mb-0">
+                                <?php $__currentLoopData = $recentBlogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                                        <div class="me-3" style="flex:1;">
+                                            <h6 class="mb-1">
+                                                <a href="<?php echo e(route('frontend.blogs.show', $item->slug)); ?>">
+                                                    <?php echo e(e(\Illuminate\Support\Str::limit($item->title, 50))); ?>
+
+                                                </a>
+                                            </h6>
+
+                                            <?php if(!empty($item->excerpt ?? '') || !empty($item->description ?? '')): ?>
+                                                <p class="mb-1 text-muted small">
+                                                    <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($item->excerpt ?? ($item->description ?? '')), 80))); ?>
+
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="button-wrapp d-flex align-items-center">
+                                            <a href="<?php echo e(route('frontend.blogs.show', $item->slug)); ?>"
+                                                class="th-btn style1 th-btn1">
+                                                <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
+                                                <i class="fa-solid fa-eye me-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-muted mb-0">لا توجد مقالات حديثة.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
-
-<?php $__env->stopSection(); ?>
-
-<?php $__env->startSection('script'); ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const showMoreBtn = document.getElementById('show-more-btn');
-            const showLessBtn = document.getElementById('show-less-btn');
-            const hiddenItems = Array.from(document.querySelectorAll('.hidden-by-js'));
-
-            if (hiddenItems.length === 0) {
-                if (showMoreBtn) showMoreBtn.style.display = 'none';
-                return;
-            }
-
-            showMoreBtn && showMoreBtn.addEventListener('click', function() {
-                hiddenItems.forEach(el => el.classList.remove('d-none'));
-                if (showMoreBtn) showMoreBtn.classList.add('d-none');
-                if (showLessBtn) showLessBtn.classList.remove('d-none');
-                if (typeof WOW !== 'undefined') {
-                    new WOW().init();
-                }
-            });
-
-            showLessBtn && showLessBtn.addEventListener('click', function() {
-                hiddenItems.forEach(el => el.classList.add('d-none'));
-                if (showLessBtn) showLessBtn.classList.add('d-none');
-                if (showMoreBtn) showMoreBtn.classList.remove('d-none');
-                if (typeof WOW !== 'undefined') {
-                    new WOW().init();
-                }
-
-                const grid = document.getElementById('blogs-grid');
-                if (grid) grid.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/frontend/blogs/category.blade.php ENDPATH**/ ?>

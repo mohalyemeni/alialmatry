@@ -31,7 +31,7 @@ class BookRequest extends FormRequest
                 return [
                     'title'         => 'required|string|max:255|unique:books,title,' . $this->route('book'),
                     'description'   => 'nullable|string',
-                    'img'           => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
+                    'img'           => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'file'     => 'nullable|file|mimes:pdf,epub,doc,docx|max:204800',
                     'meta_keywords' => 'nullable|string',
                     'meta_description' => 'nullable|string',
