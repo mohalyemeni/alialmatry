@@ -37,6 +37,7 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
+            height: 50px;
         }
 
         .audio-download-btn {
