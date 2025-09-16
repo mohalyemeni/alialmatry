@@ -4,7 +4,6 @@
             <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
 
             <section class="tabs-section col-lg-8 col-12">
-                
                 <ul class="nav nav-tabs    " id="audioTabs" role="tablist">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="nav-item" role="presentation">
@@ -21,7 +20,6 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
 
-                
                 <div class="tab-content    " id="audioTabsContent">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="tab-pane fade <?php echo e($i === 0 ? 'show active' : ''); ?>" id="audio-<?php echo e($cat->id); ?>"
@@ -33,7 +31,6 @@
 
                                 <?php $__empty_1 = true; $__currentLoopData = $audios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $audio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <?php
-                                        // determine download url: use absolute if starts with http(s), otherwise asset()
                                         $rawFile = $audio->audio_file ?? null;
                                         $downloadUrl = null;
                                         if (!empty($rawFile)) {
@@ -92,8 +89,8 @@
             </section>
 
             <div class="col-xxl-4 col-lg-4">
-                <aside class="sidebar-area pt-50">
-                    <h3 class="widget_title   mb-5 fadeInRight wow mt-5" data-wow-delay=".3s">الدرر السنية
+                <aside class="sidebar-area ">
+                    <h3 class="widget_title widget_title_new  mb-5 fadeInRight wow " data-wow-delay=".3s">الدرر السنية
                     </h3>
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
@@ -125,4 +122,15 @@
         </div>
     </section>
 <?php endif; ?>
+<style>
+    @media (max-width: 991px) {
+        .sidebar-area {
+            padding-top: 80px;
+        }
+
+        .widget_title_new {
+            margin-top: 30px;
+        }
+    }
+</style>
 <?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/frontend/sections/lectuers.blade.php ENDPATH**/ ?>

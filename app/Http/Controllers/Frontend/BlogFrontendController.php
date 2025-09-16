@@ -24,11 +24,13 @@ class BlogFrontendController extends Controller
         return Str::limit($collapsed, $limit);
     }
 
-
+    /**
+     * Resolve image path (public/storage/assets) or return null.
+     */
     protected function resolveImage($img)
     {
         if (empty($img)) {
-            return null; // لا صورة افتراضية بعد الآن
+            return null; // لا صورة افتراضية هنا
         }
 
         // absolute url
@@ -57,7 +59,7 @@ class BlogFrontendController extends Controller
     {
         $now = Carbon::now();
 
-         $featuredCats = Category::query()
+        $featuredCats = Category::query()
             ->where('section', Category::SECTION_ARTICLE)
             ->where('status', true)
             ->where('featured', 1)
@@ -76,7 +78,7 @@ class BlogFrontendController extends Controller
             ->orderBy('title')
             ->get();
 
-         $nonFeaturedCats = Category::query()
+        $nonFeaturedCats = Category::query()
             ->where('section', Category::SECTION_ARTICLE)
             ->where('status', true)
             ->where(function ($q) {
@@ -97,7 +99,7 @@ class BlogFrontendController extends Controller
             ->orderBy('title')
             ->get();
 
-         $categories = $featuredCats->concat($nonFeaturedCats);
+        $categories = $featuredCats->concat($nonFeaturedCats);
 
         if ($request->ajax()) {
             $html = view('frontend.blogs.partials.index_partial', compact('categories'))->render();
@@ -111,7 +113,6 @@ class BlogFrontendController extends Controller
         return view('frontend.blogs.index', compact('categories'));
     }
 
-
     public function category(Request $request, Category $category)
     {
         if ($category->section != Category::SECTION_ARTICLE) {
@@ -120,19 +121,36 @@ class BlogFrontendController extends Controller
 
         $now = Carbon::now();
 
+        // الجزء الرئيسي: paginate 6 لكل صفحة
         $blogs = $category->blogs()
             ->where('status', true)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(10);
+            ->paginate(6);
 
-         $blogs->getCollection()->transform(function ($b) {
+        // حل الصور وإنشاء excerpt للعناصر ضمن الصفحة الحالية
+        $blogs->getCollection()->transform(function ($b) {
             $b->img = $this->resolveImage($b->img ?? null);
             $b->excerpt = $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 180);
             return $b;
         });
+
+        // السايدبار: أحدث 4 مقالات من نفس التصنيف
+        $recentBlogs = $category->blogs()
+            ->where('status', true)
+            ->where(function ($q) use ($now) {
+                $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
+            })
+            ->orderByDesc('published_on')
+            ->take(4)
+            ->get()
+            ->map(function ($b) {
+                $b->img = $this->resolveImage($b->img ?? null);
+                $b->excerpt = $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 120);
+                return $b;
+            });
 
         if ($request->ajax()) {
             $html = view('frontend.blogs.partials.category_partial', compact('category', 'blogs'))->render();
@@ -143,7 +161,7 @@ class BlogFrontendController extends Controller
             ]);
         }
 
-        return view('frontend.blogs.category', compact('category', 'blogs'));
+        return view('frontend.blogs.category', compact('category', 'blogs', 'recentBlogs'));
     }
 
     public function show(Request $request, Blog $blog)
@@ -152,32 +170,32 @@ class BlogFrontendController extends Controller
             abort(404);
         }
 
-         $sessionKey = 'blog_viewed_' . $blog->id;
+        $sessionKey = 'blog_viewed_' . $blog->id;
 
-         $ua = substr($request->header('User-Agent', ''), 0, 120);
+        $ua = substr($request->header('User-Agent', ''), 0, 120);
         $visitorHash = sha1($request->ip() . '|' . $ua);
         $cacheKey = "blog_view_{$blog->id}_{$visitorHash}";
         $cacheTtlMinutes = 60;
-
 
         if (! $request->session()->has($sessionKey)) {
             if (! Cache::has($cacheKey)) {
                 try {
                     $blog->increment('views');
                 } catch (\Throwable $e) {
-                 }
-                 Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
+                    // تجاهل مشاكل الزيادة
+                }
+                Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
             }
-             $request->session()->put($sessionKey, now()->toDateTimeString());
+            $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-         $blog->img = $this->resolveImage($blog->img ?? null);
+        $blog->img = $this->resolveImage($blog->img ?? null);
         $blog->excerpt = $this->makeExcerpt($blog->excerpt ?? $blog->description ?? '', 220);
 
         $now = Carbon::now();
         $limit = 5;
 
-         $recent = Blog::with('category')
+        $recent = Blog::with('category')
             ->where('category_id', $blog->category_id)
             ->where('status', 1)
             ->where(function ($q) use ($now) {
@@ -188,7 +206,7 @@ class BlogFrontendController extends Controller
             ->take($limit)
             ->get();
 
-         if ($recent->count() < $limit) {
+        if ($recent->count() < $limit) {
             $needed = $limit - $recent->count();
             $additional = Blog::with('category')
                 ->where('status', 1)
@@ -207,15 +225,15 @@ class BlogFrontendController extends Controller
             $recent = $recent->concat($additional)->slice(0, $limit);
         }
 
-         $recentBlogs = $recent->map(function ($b) {
+        $recentBlogs = $recent->map(function ($b) {
             return (object) [
                 'id' => $b->id,
                 'title' => $b->title,
                 'slug' => $b->slug,
                 'img' => $this->resolveImage($b->img ?? null),
                 'excerpt' => $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 140),
-                'published_on' => $b->published_on ? Carbon::parse($b->published_on) : null, // Carbon instance
-                'category' => $b->category ?? null, // keep the relation (model) for blade usage
+                'published_on' => $b->published_on ? Carbon::parse($b->published_on) : null,
+                'category' => $b->category ?? null,
                 'views' => $b->views ?? 0,
             ];
         })->values();

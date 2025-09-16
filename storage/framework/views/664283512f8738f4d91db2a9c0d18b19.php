@@ -24,7 +24,7 @@
     <!-- Main Content Section -->
     <div class="container py-4 mt-5">
         <div class="row">
-            <!-- Blog Content Column -->
+
             <div class="col-xxl-8 col-lg-8">
                 <?php echo $__env->make('frontend.blogs.partials.show_partial', ['blog' => $blog], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>

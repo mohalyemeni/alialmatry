@@ -28,7 +28,8 @@
                 </h3>
 
                 <div class="list-group mt-3">
-                    @foreach ($category->blogs()->where('status', 1)->latest()->take(5)->get() as $blog)
+                    {{-- استخدم المتغير $blogs (paginated) --}}
+                    @forelse ($blogs as $blog)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">
                                 <h5 class="mb-1">
@@ -38,9 +39,9 @@
                                     </a>
                                 </h5>
 
-                                @if (!empty($blog->excerpt ?? '') || !empty($blog->description ?? ''))
+                                @if (!empty($blog->excerpt))
                                     <p class="mb-1 text-muted small">
-                                        {{ e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120)) }}
+                                        {{ e($blog->excerpt) }}
                                     </p>
                                 @endif
                             </div>
@@ -52,7 +53,14 @@
                                 </a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <p class="text-muted">لا توجد مقالات في هذا التصنيف.</p>
+                    @endforelse
+                </div>
+
+                {{-- pagination --}}
+                <div class="mt-4">
+                    {{ $blogs->links() }}
                 </div>
             </div>
 
@@ -65,12 +73,7 @@
                             أحدث المقالات
                         </h5>
 
-                        @php
-                            $recentBlogs =
-                                $recentBlogs ?? $category->blogs()->where('status', 1)->latest()->take(6)->get();
-                        @endphp
-
-                        @if ($recentBlogs->isNotEmpty())
+                        @if (!empty($recentBlogs) && $recentBlogs->count())
                             <ul class="list-group list-unstyled mb-0">
                                 @foreach ($recentBlogs as $item)
                                     <div class="list-group-item d-flex justify-content-between align-items-start py-3">
@@ -81,9 +84,9 @@
                                                 </a>
                                             </h6>
 
-                                            @if (!empty($item->excerpt ?? '') || !empty($item->description ?? ''))
+                                            @if (!empty($item->excerpt))
                                                 <p class="mb-1 text-muted small">
-                                                    {{ e(\Illuminate\Support\Str::limit(strip_tags($item->excerpt ?? ($item->description ?? '')), 80)) }}
+                                                    {{ e($item->excerpt) }}
                                                 </p>
                                             @endif
                                         </div>
