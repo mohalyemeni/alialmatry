@@ -43,7 +43,7 @@
 
         .audio-play-wrapp audio {
 
-            border: 1px solid var(--theme-color) !important;
+            border: 3px solid var(--theme-color) !important;
 
         }
 
