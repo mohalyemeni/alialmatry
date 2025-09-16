@@ -9,7 +9,7 @@
             <form action="<?php echo e(route('admin.settings.site_style.edit', 5)); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
 
-                
+
                 <div class="row mb-4">
                     <div class="col-md-2 pt-2">
                         <label for="site_logo_light" class="form-label">شعار فاتح</label>
@@ -51,7 +51,6 @@
                     </div>
                 </div>
 
-                
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-10">

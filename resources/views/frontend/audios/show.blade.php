@@ -76,7 +76,7 @@
 
         .audio-play-wrapp audio {
 
-            height: 50px;
+            height: 45px;
         }
 
         .audio-sidebar .recent-thumb {
