@@ -167,7 +167,7 @@ class FatawaFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(10);
+            ->paginate(8);
 
         // normalize fields for blade (use setAttribute)
         $fatawas->getCollection()->transform(function ($f) {

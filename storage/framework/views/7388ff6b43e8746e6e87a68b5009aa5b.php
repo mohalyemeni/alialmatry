@@ -28,7 +28,7 @@
             align-items: center;
             gap: 10px;
             width: 100%;
-            height: 50px !important;
+            height: 40px !important;
         }
 
         .audio-player-row audio {
@@ -36,6 +36,13 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
+
+        }
+
+        .audio-play-wrapp audio {
+
+            border: 3px solid var(--theme-color) !important;
+
         }
 
         .audio-download-btn {
@@ -59,6 +66,16 @@
             .audio-download-btn {
                 align-self: flex-end;
             }
+
+            .audio-player-row {
+
+                height: 90px !important;
+            }
+        }
+
+        .audio-play-wrapp audio {
+
+            height: 45px;
         }
 
         .audio-sidebar .recent-thumb {
@@ -103,12 +120,12 @@
 
     <div class="container py-4">
         <div class="row">
-            <!-- Main content -->
+
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
                     <h3 class="mb-4 widget_title title-header-noline fadeInRight wow"><?php echo e(e($audio->title)); ?></h3>
 
-                    
+
                     <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
                         <?php
                             $hasAudioFile =
@@ -119,7 +136,7 @@
 
                         <?php if($hasAudioFile): ?>
                             <div class="audio-player-row flex-grow-1 d-flex align-items-center">
-                                
+
                                 <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>"
                                     class="th-btn style2 th-btn1 audio-download-btn me-2"
                                     aria-label="<?php echo e(__('panel.download')); ?> <?php echo e(e($audio->title)); ?>">
@@ -128,7 +145,7 @@
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
 
-                                
+
                                 <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>" class="flex-grow-1">
                                     <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
                                     <?php echo e(__('panel.audio_not_supported')); ?>
@@ -140,7 +157,7 @@
                         <?php endif; ?>
                     </div>
 
-                    
+
                     <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
                         <?php if(!empty($audio->pdf_link)): ?>
                             <a href="<?php echo e($audio->pdf_link); ?>" target="_blank" class="th-btn style2 th-btn1">

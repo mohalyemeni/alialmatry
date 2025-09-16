@@ -17,6 +17,7 @@
             </div>
         </div>
     </div>
+
     <style>
         @media (max-width: 576px) {
             .custom-audio-item {
@@ -56,30 +57,34 @@
             }
         }
     </style>
+
     <div class="container py-4">
         <div class="row">
-            <!-- Main list -->
+
             <div class="col-xxl-8 col-lg-8">
                 <div class="list-group">
-                    @foreach ($audios as $audio)
-                        @php
-                            $excerpt = !empty($audio->excerpt)
-                                ? \Illuminate\Support\Str::limit(strip_tags($audio->excerpt), 120)
-                                : \Illuminate\Support\Str::limit(strip_tags($audio->description ?? ''), 120);
 
-                            $thumbSrc = null;
-                            if (!empty($audio->img)) {
-                                if (\Illuminate\Support\Str::startsWith($audio->img, ['http://', 'https://'])) {
-                                    $thumbSrc = $audio->img;
-                                } elseif (file_exists(public_path('assets/audios/images/' . $audio->img))) {
-                                    $thumbSrc = asset('assets/audios/images/' . $audio->img);
-                                } elseif (file_exists(public_path($audio->img))) {
-                                    $thumbSrc = asset($audio->img);
-                                } elseif (\Illuminate\Support\Facades\Storage::disk('public')->exists($audio->img)) {
-                                    $thumbSrc = asset('storage/' . ltrim($audio->img, '/'));
+                    @forelse ($audios as $audio)
+                        @php
+                            $excerpt = $audio->excerpt ?? '';
+                            $thumbSrc = $audio->img ?? null;
+
+                            if (!$thumbSrc) {
+                                if (!empty($audio->img)) {
+                                    if (\Illuminate\Support\Str::startsWith($audio->img, ['http://', 'https://'])) {
+                                        $thumbSrc = $audio->img;
+                                    } elseif (file_exists(public_path('assets/audios/images/' . $audio->img))) {
+                                        $thumbSrc = asset('assets/audios/images/' . $audio->img);
+                                    } elseif (file_exists(public_path($audio->img))) {
+                                        $thumbSrc = asset($audio->img);
+                                    } elseif (
+                                        \Illuminate\Support\Facades\Storage::disk('public')->exists($audio->img)
+                                    ) {
+                                        $thumbSrc = asset('storage/' . ltrim($audio->img, '/'));
+                                    }
                                 }
+                                $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/normal/counter-image.jpg');
                             }
-                            $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
                             $published = $audio->published_on
                                 ? \Carbon\Carbon::parse($audio->published_on)->format('d M, Y')
@@ -138,7 +143,9 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <p class="text-muted">لا توجد صوتيات في هذا التصنيف.</p>
+                    @endforelse
                 </div>
 
                 <div class="mt-4">
@@ -152,41 +159,11 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">أحدث الصوتيات</h5>
 
-                        @php
-                            $recentList =
-                                $recentAudios ??
-                                \App\Models\Audio::with('category')
-                                    ->where('status', 1)
-                                    ->where(function ($q) {
-                                        $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                                    })
-                                    ->orderByDesc('published_on')
-                                    ->take(6)
-                                    ->get();
-                        @endphp
-
-                        @if ($recentList->isNotEmpty())
+                        @if (!empty($recentAudios) && $recentAudios->count())
                             <ul class="list-unstyled mb-0 pr-0">
-                                @foreach ($recentList as $item)
+                                @foreach ($recentAudios as $item)
                                     @php
-                                        $rThumb = null;
-                                        if (!empty($item->img)) {
-                                            if (
-                                                \Illuminate\Support\Str::startsWith($item->img, ['http://', 'https://'])
-                                            ) {
-                                                $rThumb = $item->img;
-                                            } elseif (file_exists(public_path('assets/audios/images/' . $item->img))) {
-                                                $rThumb = asset('assets/audios/images/' . $item->img);
-                                            } elseif (file_exists(public_path($item->img))) {
-                                                $rThumb = asset($item->img);
-                                            } elseif (
-                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($item->img)
-                                            ) {
-                                                $rThumb = asset('storage/' . ltrim($item->img, '/'));
-                                            }
-                                        }
-                                        $rThumb = $rThumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
-
+                                        $rThumb = $item->img ?: asset('frontand/assets/img/normal/counter-image.jpg');
                                         $rDate = $item->published_on
                                             ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
                                             : '';
@@ -241,7 +218,7 @@
                     </div>
                 </div>
 
-                {{-- Featured categories --}}
+
                 @php
                     $featuredCats = \App\Models\Category::where('section', \App\Models\Category::SECTION_AUDIO)
                         ->where('status', 1)
@@ -253,7 +230,6 @@
                         ->take(6)
                         ->get();
                 @endphp
-
 
             </aside>
         </div>

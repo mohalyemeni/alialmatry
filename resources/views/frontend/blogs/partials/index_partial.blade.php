@@ -1,9 +1,8 @@
-{{-- resources/views/frontend/blogs/index.blade.php --}}
 <section class="blog-area overflow-hidden bg-white space" id="blog-sec">
     <div class="container">
 
         <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">تصنيفات المقالات</h3>
-        {{-- Grid (static, non-swiper) --}}
+
         <div class="container pt-30 pb-45">
             @if ($categories->isEmpty())
                 <p class="text-muted">لا توجد تصنيفات حالياً.</p>
@@ -11,10 +10,9 @@
                 <div class="row gy-4">
                     @foreach ($categories as $index => $category)
                         @php
-                            // small animation delay for wow
+
                             $delay = 0.3 + $index * 0.04;
 
-                            // image fallback resolution
                             $img = null;
                             if (
                                 !empty($category->img) &&

@@ -146,7 +146,6 @@
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
 
-
                                 <audio controls preload="metadata" aria-label="{{ e($audio->title) }}" class="flex-grow-1">
                                     <source src="{{ $audioFileUrl }}" type="audio/mpeg">
                                     {{ __('panel.audio_not_supported') }}
@@ -187,37 +186,39 @@
                     <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
 
                     @php
-                        $recent =
-                            $recentAudios ??
-                            \App\Models\Audio::with('category')
+
+                        if (!isset($recentAudios) || empty($recentAudios)) {
+                            $recentAudios = \App\Models\Audio::with('category')
                                 ->where('status', 1)
                                 ->where(function ($q) {
                                     $q->whereNull('published_on')->orWhere('published_on', '<=', now());
                                 })
+                                ->where('id', '!=', $audio->id)
                                 ->orderByDesc('published_on')
-                                ->limit(6)
-                                ->get();
+                                ->take(4)
+                                ->get()
+                                ->map(function ($a) {
+                                    $a->img =
+                                        \App\Http\Controllers\Frontend\AudioFrontendController::resolveImage(
+                                            $a->img ?? null,
+                                        ) ?? null;
+                                    return $a;
+                                });
+                        }
+
+                        $recentList = collect($recentAudios)->slice(0, 4);
                     @endphp
 
-                    @if ($recent->isNotEmpty())
+                    @if ($recentList->isNotEmpty())
                         <ul class="list-unstyled recent-list mb-0">
-                            @foreach ($recent as $rd)
+                            @foreach ($recentList as $rd)
                                 @php
-                                    $rd_img = null;
-                                    if (!empty($rd->img)) {
-                                        if (\Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])) {
-                                            $rd_img = $rd->img;
-                                        } elseif (file_exists(public_path('assets/audios/images/' . $rd->img))) {
-                                            $rd_img = asset('assets/audios/images/' . $rd->img);
-                                        } elseif (file_exists(public_path($rd->img))) {
-                                            $rd_img = asset($rd->img);
-                                        } elseif (
-                                            \Illuminate\Support\Facades\Storage::disk('public')->exists($rd->img)
-                                        ) {
-                                            $rd_img = asset('storage/' . ltrim($rd->img, '/'));
-                                        }
-                                    }
-                                    $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
+
+                                    $rd_img =
+                                        $rd->img ?:
+                                        (file_exists(public_path('assets/audios/images/' . ($rd->img ?? '')))
+                                            ? asset('assets/audios/images/' . $rd->img)
+                                            : asset('frontand/assets/img/normal/counter-image.jpg'));
                                     $rd_date = $rd->published_on
                                         ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
                                         : '';
@@ -242,7 +243,7 @@
                                                         <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
                                                             class="audio-badge bg-light text-dark text-decoration-none">
                                                             <i class="fa-solid fa-folder-open"
-                                                                style="font-size:0.72rem;"></i>
+                                                                style="font-size:0.72rem"></i>
                                                             <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
                                                         </a>
                                                     @endif

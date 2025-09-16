@@ -13,20 +13,34 @@
             </div>
         </div>
     </div>
+
+    <style>
+        @media (max-width: 575.98px) {
+            .service-box2 {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .service-box2 .box-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+
     <div class="container py-4">
         <div class="col-12 col-xl-12">
 
             <h3 class="title-header-noline widget_title  mb-5 fadeInRight wow" data-wow-delay=".3s">الكتب والمؤلفات</h3>
 
-
             <div class="services-replace">
                 <div class="row">
                     <?php $__empty_1 = true; $__currentLoopData = $books; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                        <div class="col-6 col-md-4 col-lg-3 mb-4">
-                            <div class="service-box2 wow fadeInUp" data-wow-delay=".3s">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="service-box2 wow fadeInUp h-100" data-wow-delay=".3s">
                                 <div class="box-img">
                                     <a href="<?php echo e(route('frontend.books.show', $book->slug)); ?>">
-                                        <img src="<?php echo e($book->img ? asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg')); ?>"
+                                        <img src="<?php echo e($book->img && file_exists(public_path('assets/books/images/' . $book->img)) ? asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg')); ?>"
                                             alt="<?php echo e($book->title); ?>">
                                     </a>
                                 </div>
@@ -50,7 +64,6 @@
                                         <h3 class="box-title">
                                             <a href="<?php echo e(route('frontend.books.show', $book->slug)); ?>">
                                                 <?php echo e(\Illuminate\Support\Str::limit(html_entity_decode(strip_tags($book->title)), 15)); ?>
-
 
                                             </a>
                                         </h3>

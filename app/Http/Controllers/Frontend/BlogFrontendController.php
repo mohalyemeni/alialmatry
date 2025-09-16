@@ -127,16 +127,15 @@ class BlogFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(1);
+            ->paginate(5);
 
-        // حل الصور وإنشاء excerpt للعناصر ضمن الصفحة الحالية
-        $blogs->getCollection()->transform(function ($b) {
+         $blogs->getCollection()->transform(function ($b) {
             $b->img = $this->resolveImage($b->img ?? null);
             $b->excerpt = $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 180);
             return $b;
         });
 
-        // السايدبار: أحدث 4 مقالات من نفس التصنيف
+
         $recentBlogs = $category->blogs()
             ->where('status', true)
             ->where(function ($q) use ($now) {

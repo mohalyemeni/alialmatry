@@ -35,7 +35,6 @@
 
                                 $img = null;
                                 if (!empty($category->img)) {
-                                    // تحقق من وجود الصورة في مجلد audio_categories
                                     $path = public_path('assets/audio_categories/' . $category->img);
                                     if (file_exists($path)) {
                                         $img = asset('assets/audio_categories/' . $category->img);

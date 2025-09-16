@@ -28,7 +28,7 @@
                 </h3>
 
                 <div class="list-group mt-3">
-                    {{-- استخدم المتغير $blogs (paginated) --}}
+
                     @forelse ($blogs as $blog)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">

@@ -22,31 +22,31 @@ class AudioFrontendController extends Controller
         return Str::limit($collapsed, $limit);
     }
 
-protected function resolveImage($img)
-{
-    if (empty($img)) {
+    protected function resolveImage($img)
+    {
+        if (empty($img)) {
+            return null;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($img, ['http://', 'https://'])) {
+            return $img;
+        }
+
+        $candidates = [
+            'assets/audio_categories/' . ltrim($img, '/'),
+            'assets/audios/images/' . ltrim($img, '/'),
+            'storage/' . ltrim($img, '/'),
+            $img,
+        ];
+
+        foreach ($candidates as $p) {
+            if (file_exists(public_path($p))) {
+                return asset($p);
+            }
+        }
+
         return null;
     }
-
-    if (\Illuminate\Support\Str::startsWith($img, ['http://', 'https://'])) {
-        return $img;
-    }
-
-    $candidates = [
-        'assets/audio_categories/' . ltrim($img, '/'),
-        'assets/audios/images/' . ltrim($img, '/'),
-        'storage/' . ltrim($img, '/'),
-        $img,
-    ];
-
-    foreach ($candidates as $p) {
-        if (file_exists(public_path($p))) {
-            return asset($p);
-        }
-    }
-
-    return null;
-}
 
     protected function resolveAudioUrl($file)
     {
@@ -120,7 +120,7 @@ protected function resolveImage($img)
 
         $categories = $featuredCats->concat($nonFeaturedCats);
 
-         $categories = $categories->map(function ($cat) use ($now) {
+        $categories = $categories->map(function ($cat) use ($now) {
             $latest = $cat->audios()
                 ->where('status', 1)
                 ->where(function ($q) use ($now) {
@@ -130,7 +130,7 @@ protected function resolveImage($img)
                 ->take(5)
                 ->get()
                 ->map(function ($a) {
-                     $a->img = $this->resolveImage($a->img ?? null);
+                    $a->img = $this->resolveImage($a->img ?? null);
                     $a->audio_url = $this->resolveAudioUrl($a->audio_file ?? null);
                     $a->excerpt = $this->makeExcerpt($a->excerpt ?? $a->description ?? '', 140);
                     return $a;
@@ -160,20 +160,36 @@ protected function resolveImage($img)
 
         $now = Carbon::now();
 
+
         $audios = $category->audios()
             ->where('status', 1)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(10);
+            ->paginate(5);
 
-         $audios->getCollection()->transform(function ($a) {
+        $audios->getCollection()->transform(function ($a) {
             $a->img = $this->resolveImage($a->img ?? null);
             $a->audio_url = $this->resolveAudioUrl($a->audio_file ?? null);
             $a->excerpt = $this->makeExcerpt($a->excerpt ?? $a->description ?? '', 160);
             return $a;
         });
+
+        $recentAudios = $category->audios()
+            ->where('status', 1)
+            ->where(function ($q) use ($now) {
+                $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
+            })
+            ->orderByDesc('published_on')
+            ->take(4)
+            ->get()
+            ->map(function ($a) {
+                $a->img = $this->resolveImage($a->img ?? null);
+                $a->audio_url = $this->resolveAudioUrl($a->audio_file ?? null);
+                $a->excerpt = $this->makeExcerpt($a->excerpt ?? $a->description ?? '', 120);
+                return $a;
+            });
 
         if ($request->ajax()) {
             $html = view('frontend.audio_partials.category_partial', compact('category', 'audios'))->render();
@@ -184,7 +200,7 @@ protected function resolveImage($img)
             ]);
         }
 
-        return view('frontend.audios.category', compact('category', 'audios'));
+        return view('frontend.audios.category', compact('category', 'audios', 'recentAudios'));
     }
 
 
@@ -195,9 +211,9 @@ protected function resolveImage($img)
             abort(404);
         }
 
-         $sessionKey = 'audio_viewed_' . $audio->id;
+        $sessionKey = 'audio_viewed_' . $audio->id;
 
-         $ua = substr($request->header('User-Agent', ''), 0, 120);
+        $ua = substr($request->header('User-Agent', ''), 0, 120);
         $visitorHash = sha1($request->ip() . '|' . $ua);
         $cacheKey = "audio_view_{$audio->id}_{$visitorHash}";
         $cacheTtlMinutes = 60;
@@ -215,7 +231,7 @@ protected function resolveImage($img)
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-         $audio->img = $this->resolveImage($audio->img ?? null);
+        $audio->img = $this->resolveImage($audio->img ?? null);
         $audio->audio_url = $this->resolveAudioUrl($audio->audio_file ?? null);
         $audio->excerpt = $this->makeExcerpt($audio->excerpt ?? $audio->description ?? '', 220);
 

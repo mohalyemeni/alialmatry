@@ -101,7 +101,7 @@ protected function resolveThumbnail($thumb)
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(10);
+            ->paginate(8);
 
         $videos->getCollection()->transform(function ($v) {
             $thumb = $v->thumbnail ?? null;
