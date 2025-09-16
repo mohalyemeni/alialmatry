@@ -41,6 +41,12 @@
 
         }
 
+        .audio-play-wrapp audio {
+
+            border: 1px solid var(--theme-color) !important;
+
+        }
+
         .audio-download-btn {
             flex: 0 0 auto;
             display: inline-flex;
