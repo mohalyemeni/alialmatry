@@ -1780,3 +1780,11 @@ body[dir="rtl"] .recent-thumb-link {
         padding-top: 70px;
     }
 }
+@media (max-width: 991px) {
+    .sidebar-area {
+        padding-top: 80px;
+    }
+}
+.widget_title_new {
+    margin-top: 30px;
+}

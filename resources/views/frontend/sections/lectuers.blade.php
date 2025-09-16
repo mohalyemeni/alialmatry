@@ -87,8 +87,8 @@
             </section>
 
             <div class="col-xxl-4 col-lg-4">
-                <aside class="sidebar-area pt-50">
-                    <h3 class="widget_title   mb-5 fadeInRight wow mt-5" data-wow-delay=".3s">الدرر السنية
+                <aside class="sidebar-area ">
+                    <h3 class="widget_title widget_title_new  mb-5 fadeInRight wow " data-wow-delay=".3s">الدرر السنية
                     </h3>
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
