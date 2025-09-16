@@ -1788,3 +1788,10 @@ body[dir="rtl"] .recent-thumb-link {
 .widget_title_new {
     margin-top: 30px;
 }
+.page-item.active .page-link {
+    background-color: #938447 !important;
+    border-color: #938447 !important;
+}
+.page-link {
+    color: #938447 !important;
+}
