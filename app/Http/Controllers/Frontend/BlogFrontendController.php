@@ -121,14 +121,13 @@ class BlogFrontendController extends Controller
 
         $now = Carbon::now();
 
-        // الجزء الرئيسي: paginate 6 لكل صفحة
         $blogs = $category->blogs()
             ->where('status', true)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(6);
+            ->paginate(1);
 
         // حل الصور وإنشاء excerpt للعناصر ضمن الصفحة الحالية
         $blogs->getCollection()->transform(function ($b) {

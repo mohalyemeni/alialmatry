@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', $category->title); ?>
 
 <?php $__env->startSection('content'); ?>
-    
+
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
         <div class="container">
@@ -17,17 +17,18 @@
         </div>
     </div>
 
-    
+
     <div class="container py-4">
         <div class="row">
-            
+
             <div class="col-12 col-xl-8">
                 <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">
                     المقالات
                 </h3>
 
                 <div class="list-group mt-3">
-                    <?php $__currentLoopData = $category->blogs()->where('status', 1)->latest()->take(5)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    
+                    <?php $__empty_1 = true; $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">
                                 <h5 class="mb-1">
@@ -38,9 +39,9 @@
                                     </a>
                                 </h5>
 
-                                <?php if(!empty($blog->excerpt ?? '') || !empty($blog->description ?? '')): ?>
+                                <?php if(!empty($blog->excerpt)): ?>
                                     <p class="mb-1 text-muted small">
-                                        <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($blog->excerpt ?? ($blog->description ?? '')), 120))); ?>
+                                        <?php echo e(e($blog->excerpt)); ?>
 
                                     </p>
                                 <?php endif; ?>
@@ -53,7 +54,15 @@
                                 </a>
                             </div>
                         </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <p class="text-muted">لا توجد مقالات في هذا التصنيف.</p>
+                    <?php endif; ?>
+                </div>
+
+                
+                <div class="mt-4">
+                    <?php echo e($blogs->links()); ?>
+
                 </div>
             </div>
 
@@ -66,12 +75,7 @@
                             أحدث المقالات
                         </h5>
 
-                        <?php
-                            $recentBlogs =
-                                $recentBlogs ?? $category->blogs()->where('status', 1)->latest()->take(6)->get();
-                        ?>
-
-                        <?php if($recentBlogs->isNotEmpty()): ?>
+                        <?php if(!empty($recentBlogs) && $recentBlogs->count()): ?>
                             <ul class="list-group list-unstyled mb-0">
                                 <?php $__currentLoopData = $recentBlogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="list-group-item d-flex justify-content-between align-items-start py-3">
@@ -83,9 +87,9 @@
                                                 </a>
                                             </h6>
 
-                                            <?php if(!empty($item->excerpt ?? '') || !empty($item->description ?? '')): ?>
+                                            <?php if(!empty($item->excerpt)): ?>
                                                 <p class="mb-1 text-muted small">
-                                                    <?php echo e(e(\Illuminate\Support\Str::limit(strip_tags($item->excerpt ?? ($item->description ?? '')), 80))); ?>
+                                                    <?php echo e(e($item->excerpt)); ?>
 
                                                 </p>
                                             <?php endif; ?>
