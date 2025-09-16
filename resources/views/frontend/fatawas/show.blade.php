@@ -30,6 +30,7 @@
             align-items: center;
             gap: 10px;
             width: 100%;
+            height: 40px !important;
         }
 
         .audio-player-row audio {
@@ -37,7 +38,7 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
-            height: 50px;
+
         }
 
         .audio-download-btn {
@@ -60,6 +61,11 @@
 
             .audio-download-btn {
                 align-self: flex-end;
+            }
+
+            .audio-player-row {
+
+                height: 90px !important;
             }
         }
 
