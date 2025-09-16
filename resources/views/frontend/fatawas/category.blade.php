@@ -109,9 +109,7 @@
                                                 @endif
                                             </div>
 
-                                            <div class="rv-excerpt small text-muted mb-0 mt-1">
-                                                {{ e(\Illuminate\Support\Str::limit(strip_tags($item->excerpt ?? ($item->description ?? '')), 80)) }}
-                                            </div>
+
                                         </div>
                                     </li>
                                 @endforeach
