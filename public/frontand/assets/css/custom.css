@@ -1775,3 +1775,8 @@ body[dir="rtl"] .recent-thumb-link {
 .blog-item {
     align-items: stretch;
 }
+@media (max-width: 991px) {
+    .sidebar-area {
+        padding-top: 70px;
+    }
+}

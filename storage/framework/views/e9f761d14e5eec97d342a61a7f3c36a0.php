@@ -23,7 +23,7 @@
 
                 <?php if(isset($blogs) && $blogs->count()): ?>
                     <?php
-                        $latestBlogs = $blogs->take(5); // أحدث 5 مقالات
+                        $latestBlogs = $blogs->take(4);
                     ?>
 
                     <div class="list-group">
@@ -61,7 +61,6 @@
                 <?php endif; ?>
             </div>
 
-            
             <div class="col-12 col-xl-6">
                 <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                     <h3 class="widget_title mb-0 fadeInRight wow" data-wow-delay=".3s">
