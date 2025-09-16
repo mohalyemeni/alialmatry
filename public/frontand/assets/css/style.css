@@ -36470,3 +36470,10 @@ form[id*="give-form"] #give-gateway-radio-list {
         padding-bottom: 70px;
     }
 }
+.page-item.active .page-link {
+    background-color: #938447 !important;
+    border-color: #938447 !important;
+}
+.page-link {
+    color: #938447 !important;
+}
