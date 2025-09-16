@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\CategoryRequest; // يفترض أنه موجود، سأضع مثالًا أدناه
+use App\Http\Requests\Backend\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -37,8 +37,7 @@ class VideoCategoryController extends Controller
             ->when(request()->status !== null, function ($query) {
                 $query->where('status', request()->status);
             })
-            // فلترة المميّز لو مرّت في الريكوست
-            ->when(request()->featured !== null, function ($query) {
+             ->when(request()->featured !== null, function ($query) {
                 $query->where('featured', request()->featured);
             })
             ->orderBy(request()->sort_by ?? 'created_at', request()->order_by ?? 'desc')
@@ -178,11 +177,9 @@ class VideoCategoryController extends Controller
         }
     }
 
-    // ✅ توجل الميّز (AJAX)
-    public function toggleFeatured(Request $request)
+     public function toggleFeatured(Request $request)
     {
-        // صلاحية سريعة: منعه لو ليس لديه الحق
-        if (! auth()->user() || ! auth()->user()->ability('admin', 'update_categories')) {
+         if (! auth()->user() || ! auth()->user()->ability('admin', 'update_categories')) {
             return response()->json(['error' => 'غير مصرح'], 403);
         }
 

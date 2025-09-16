@@ -14,20 +14,34 @@
             </div>
         </div>
     </div>
+
+    <style>
+        @media (max-width: 575.98px) {
+            .service-box2 {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .service-box2 .box-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+
     <div class="container py-4">
         <div class="col-12 col-xl-12">
 
             <h3 class="title-header-noline widget_title  mb-5 fadeInRight wow" data-wow-delay=".3s">الكتب والمؤلفات</h3>
 
-
             <div class="services-replace">
                 <div class="row">
                     @forelse ($books as $book)
-                        <div class="col-6 col-md-4 col-lg-3 mb-4">
-                            <div class="service-box2 wow fadeInUp" data-wow-delay=".3s">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                            <div class="service-box2 wow fadeInUp h-100" data-wow-delay=".3s">
                                 <div class="box-img">
                                     <a href="{{ route('frontend.books.show', $book->slug) }}">
-                                        <img src="{{ $book->img ? asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg') }}"
+                                        <img src="{{ $book->img && file_exists(public_path('assets/books/images/' . $book->img)) ? asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg') }}"
                                             alt="{{ $book->title }}">
                                     </a>
                                 </div>
@@ -50,7 +64,6 @@
                                         <h3 class="box-title">
                                             <a href="{{ route('frontend.books.show', $book->slug) }}">
                                                 {{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($book->title)), 15) }}
-
                                             </a>
                                         </h3>
                                         <p class="box-desc">

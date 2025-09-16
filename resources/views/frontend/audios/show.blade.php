@@ -1,4 +1,3 @@
-{{-- resources/views/frontend/audios/show.blade.php --}}
 @extends('layouts.app')
 @section('title', e($audio->title))
 
@@ -122,12 +121,12 @@
 
     <div class="container py-4">
         <div class="row">
-            <!-- Main content -->
+
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
                     <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e($audio->title) }}</h3>
 
-                    {{-- Audio player + download --}}
+
                     <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
                         @php
                             $hasAudioFile =
@@ -138,7 +137,7 @@
 
                         @if ($hasAudioFile)
                             <div class="audio-player-row flex-grow-1 d-flex align-items-center">
-                                {{-- زر التحميل على اليسار --}}
+
                                 <a href="{{ route('frontend.audios.download', $audio->id) }}"
                                     class="th-btn style2 th-btn1 audio-download-btn me-2"
                                     aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
@@ -147,7 +146,7 @@
                                     <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                 </a>
 
-                                {{-- مشغل الصوت --}}
+
                                 <audio controls preload="metadata" aria-label="{{ e($audio->title) }}" class="flex-grow-1">
                                     <source src="{{ $audioFileUrl }}" type="audio/mpeg">
                                     {{ __('panel.audio_not_supported') }}
@@ -158,7 +157,7 @@
                         @endif
                     </div>
 
-                    {{-- PDF / DOC links --}}
+
                     <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
                         @if (!empty($audio->pdf_link))
                             <a href="{{ $audio->pdf_link }}" target="_blank" class="th-btn style2 th-btn1">

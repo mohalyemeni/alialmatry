@@ -32,10 +32,8 @@
                                 $img = asset('frontand/assets/img/normal/counter-image.jpg');
                             }
 
-                            // title field: prefer title then name then slug
                             $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
 
-                            // count of articles (use precomputed count if available)
                             $articlesCount =
                                 $category->blogs_count ?? ($category->blogs()->where('status', 1)->count() ?? 0);
                         @endphp
@@ -51,7 +49,7 @@
                                 </div>
 
                                 <div class="blog-wrapper p-3">
-                                    {{-- show count as date badge style --}}
+
                                     <span class="date">
                                         <a
                                             href="{{ route('frontend.blogs.category', $category->slug ?? $category->id) }}">
@@ -80,7 +78,7 @@
                     @endforeach
                 </div>
 
-                {{-- all categories shown in static grid (no swiper) --}}
+
             @endif
         </div>
     </div>

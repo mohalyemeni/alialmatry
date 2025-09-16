@@ -96,7 +96,6 @@
                             <div class="recent-books-list">
                                 @foreach ($recentList as $rb)
                                     @php
-                                        // rb->img is expected to be a resolved URL if controller passed recentBooks
                                         $thumb =
                                             $rb->img ??
                                             (!empty($rb->img) &&

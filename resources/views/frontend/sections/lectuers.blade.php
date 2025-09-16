@@ -4,7 +4,6 @@
             <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
 
             <section class="tabs-section col-lg-8 col-12">
-                {{-- Nav tabs --}}
                 <ul class="nav nav-tabs    " id="audioTabs" role="tablist">
                     @foreach ($audioCategories as $i => $cat)
                         <li class="nav-item" role="presentation">
@@ -20,7 +19,6 @@
                     @endforeach
                 </ul>
 
-                {{-- Tab contents --}}
                 <div class="tab-content    " id="audioTabsContent">
                     @foreach ($audioCategories as $i => $cat)
                         <div class="tab-pane fade {{ $i === 0 ? 'show active' : '' }}" id="audio-{{ $cat->id }}"
@@ -32,7 +30,6 @@
 
                                 @forelse($audios as $audio)
                                     @php
-                                        // determine download url: use absolute if starts with http(s), otherwise asset()
                                         $rawFile = $audio->audio_file ?? null;
                                         $downloadUrl = null;
                                         if (!empty($rawFile)) {

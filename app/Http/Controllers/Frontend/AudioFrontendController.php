@@ -12,9 +12,7 @@ use Illuminate\Support\Str;
 
 class AudioFrontendController extends Controller
 {
-    /**
-     * Make a short excerpt from HTML/text safely.
-     */
+
     protected function makeExcerpt($text, $limit = 120)
     {
         $raw = (string) $text;
@@ -24,14 +22,10 @@ class AudioFrontendController extends Controller
         return Str::limit($collapsed, $limit);
     }
 
-    /**
-     * Resolve an image path for an audio item.
-     * Tries common locations, supports absolute URLs, falls back to default.
-     */
 protected function resolveImage($img)
 {
     if (empty($img)) {
-        return null; // لا شيء إذا لم يوجد
+        return null;
     }
 
     if (\Illuminate\Support\Str::startsWith($img, ['http://', 'https://'])) {
@@ -39,7 +33,7 @@ protected function resolveImage($img)
     }
 
     $candidates = [
-        'assets/audio_categories/' . ltrim($img, '/'), // مجلدك الفعلي
+        'assets/audio_categories/' . ltrim($img, '/'),
         'assets/audios/images/' . ltrim($img, '/'),
         'storage/' . ltrim($img, '/'),
         $img,
@@ -51,24 +45,19 @@ protected function resolveImage($img)
         }
     }
 
-    return null; // لا شيء إذا لم يوجد في أي مكان
+    return null;
 }
 
-    /**
-     * Resolve an audio file URL (local file in public or absolute URL or storage path).
-     */
     protected function resolveAudioUrl($file)
     {
         if (empty($file)) {
             return null;
         }
 
-        // إذا كان رابطًا خارجيًا
         if (Str::startsWith($file, ['http://', 'https://'])) {
             return $file;
         }
 
-        // البحث في المسارات المحتملة
         $paths = [
             'assets/audios/files/' . $file,
             'storage/audios/' . $file,
@@ -82,12 +71,9 @@ protected function resolveImage($img)
             }
         }
 
-        return null; // إذا لم يُعثر على الملف
+        return null;
     }
 
-    /**
-     * Index: list audio categories (featured first).
-     */
     public function index(Request $request)
     {
         $now = Carbon::now();
@@ -134,8 +120,7 @@ protected function resolveImage($img)
 
         $categories = $featuredCats->concat($nonFeaturedCats);
 
-        // Eager-load latest 5 audios for each category (respect published/status)
-        $categories = $categories->map(function ($cat) use ($now) {
+         $categories = $categories->map(function ($cat) use ($now) {
             $latest = $cat->audios()
                 ->where('status', 1)
                 ->where(function ($q) use ($now) {
@@ -145,8 +130,7 @@ protected function resolveImage($img)
                 ->take(5)
                 ->get()
                 ->map(function ($a) {
-                    // normalize image & audio url for blade convenience
-                    $a->img = $this->resolveImage($a->img ?? null);
+                     $a->img = $this->resolveImage($a->img ?? null);
                     $a->audio_url = $this->resolveAudioUrl($a->audio_file ?? null);
                     $a->excerpt = $this->makeExcerpt($a->excerpt ?? $a->description ?? '', 140);
                     return $a;
@@ -168,9 +152,6 @@ protected function resolveImage($img)
         return view('frontend.audios.index', compact('categories'));
     }
 
-    /**
-     * Show audio items under a category (paginated).
-     */
     public function category(Request $request, Category $category)
     {
         if ($category->section != Category::SECTION_AUDIO) {
@@ -187,8 +168,7 @@ protected function resolveImage($img)
             ->orderByDesc('published_on')
             ->paginate(10);
 
-        // normalize fields for blade
-        $audios->getCollection()->transform(function ($a) {
+         $audios->getCollection()->transform(function ($a) {
             $a->img = $this->resolveImage($a->img ?? null);
             $a->audio_url = $this->resolveAudioUrl($a->audio_file ?? null);
             $a->excerpt = $this->makeExcerpt($a->excerpt ?? $a->description ?? '', 160);
@@ -215,11 +195,9 @@ protected function resolveImage($img)
             abort(404);
         }
 
-        // Session key to prevent multiple increments within same session
-        $sessionKey = 'audio_viewed_' . $audio->id;
+         $sessionKey = 'audio_viewed_' . $audio->id;
 
-        // Cache key per visitor (IP + short User-Agent prefix) to avoid repeated increments across sessions
-        $ua = substr($request->header('User-Agent', ''), 0, 120);
+         $ua = substr($request->header('User-Agent', ''), 0, 120);
         $visitorHash = sha1($request->ip() . '|' . $ua);
         $cacheKey = "audio_view_{$audio->id}_{$visitorHash}";
         $cacheTtlMinutes = 60;
@@ -230,17 +208,14 @@ protected function resolveImage($img)
                 try {
                     $audio->increment('views');
                 } catch (\Throwable $e) {
-                    // ignore increment errors (DB issues etc.)
-                }
-                // set cache entry to block repeated increments from same visitor for a while
-                Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
+                 }
+                 Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
             }
 
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-        // normalize main audio fields
-        $audio->img = $this->resolveImage($audio->img ?? null);
+         $audio->img = $this->resolveImage($audio->img ?? null);
         $audio->audio_url = $this->resolveAudioUrl($audio->audio_file ?? null);
         $audio->excerpt = $this->makeExcerpt($audio->excerpt ?? $audio->description ?? '', 220);
 

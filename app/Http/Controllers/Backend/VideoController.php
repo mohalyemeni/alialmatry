@@ -82,11 +82,9 @@ class VideoController extends Controller
 
         if ($thumbnailInput) {
             if ($this->isLocalThumb($thumbnailInput)) {
-                // مسار محلي داخل public/upload أو مسارات أخرى معتمدة
-                $video->thumbnail = $thumbnailInput;
+                 $video->thumbnail = $thumbnailInput;
             } elseif (Str::startsWith($thumbnailInput, ['http://', 'https://'])) {
-                // جلب وحفظ في public/upload
-                $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'upload');
+                 $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'upload');
             } else {
                 $video->thumbnail = $thumbnailInput;
             }
@@ -167,8 +165,7 @@ class VideoController extends Controller
                     $this->maybeDeleteOldThumb($video, $localThumb);
                     $video->thumbnail = $localThumb;
                 } else {
-                    // فشل الحفظ الخارجي — إبقاء القديم أو معالجة خطأ حسب الحاجة
-                }
+                 }
 
             } else {
 
@@ -194,8 +191,7 @@ class VideoController extends Controller
     {
         if (!is_string($path) || $path === '') return false;
 
-        // قبول مسارات upload/ و videos/thumbnails/ و assets/... وغيرها إذا الملف موجود فعلاً داخل public
-        $candidates = [
+         $candidates = [
             $path,
             'upload/' . ltrim($path, '/'),
             'videos/thumbnails/' . ltrim($path, '/'),
@@ -343,8 +339,7 @@ class VideoController extends Controller
 
             $content = $response->body();
 
-            // استنتاج الامتداد
-            $ext = null;
+             $ext = null;
             $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH) ?? '');
             if (!empty($pathInfo['extension'])) {
                 $ext = strtolower($pathInfo['extension']);
@@ -359,20 +354,17 @@ class VideoController extends Controller
             }
             $ext = $ext ?: 'jpg';
 
-            // اسم فريد بحسب المحتوى
-            $hash = sha1($content);
+             $hash = sha1($content);
             $filename = $hash . '.' . $ext;
 
-            // مسار داخل public/upload
-            $folder = trim($folder, '/');
+             $folder = trim($folder, '/');
             $fullDir = public_path($folder);
             if (! is_dir($fullDir)) {
                 mkdir($fullDir, 0755, true);
             }
 
             $fullPath = $fullDir . DIRECTORY_SEPARATOR . $filename;
-            $relativePath = $folder . '/' . $filename; // هذا ما يخزن في DB
-
+            $relativePath = $folder . '/' . $filename;
             if (! file_exists($fullPath)) {
                 file_put_contents($fullPath, $content);
                 @chmod($fullPath, 0644);

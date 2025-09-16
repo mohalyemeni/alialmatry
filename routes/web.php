@@ -75,7 +75,7 @@ Route::get('/books/{slug}', [FrontBookController::class, 'show'])->name('fronten
 Route::get('/books/{slug}/download', [FrontBookController::class, 'download'])->name('frontend.books.download');
 
 Route::middleware(['auth', 'roles'])->group(function () {
-    // محمية — ضع راوتات محمية إضافية هنا إن احتجت
+
 });
 
 Route::get('/sheikh-intro', [FrontIntroController::class, 'index'])->name('frontend.sheikh-intro');
@@ -168,7 +168,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::patch('/account_settings',[BackendController::class,'update_account_settings'])->name('update_account_settings');
         Route::post('supervisors/toggle-status', [SupervisorController::class, 'toggleStatus'])->name('supervisors.toggleStatus');
 
-        // تصنيفات وباقي الراوتات (لم تتغير — أبقتها كما كانت)
+        // تصنيفات وباقي الراوتات
         Route::post('video_categories/toggle-status', [VideoCategoryController::class, 'toggleStatus'])->name('video_categories.toggleStatus');
         Route::post('video_categories/toggle-featured', [VideoCategoryController::class, 'toggleFeatured'])->name('video_categories.toggleFeatured');
         Route::resource('video_categories', VideoCategoryController::class);

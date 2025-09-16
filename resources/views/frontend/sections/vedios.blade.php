@@ -92,7 +92,6 @@
                                 </div>
                             </div>
                         @empty
-                            {{-- No small items --}}
                         @endforelse
                     </div>
                 </div>
@@ -132,7 +131,6 @@
         </div>
     </div>
 
-    {{-- Video modal --}}
     <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content bg-dark">

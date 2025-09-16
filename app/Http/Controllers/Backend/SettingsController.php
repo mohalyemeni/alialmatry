@@ -97,14 +97,12 @@ class SettingsController extends Controller
         return $this->update_meta_informations($request, $id);
     }
 
-    // generic remove-image route wrapper
-    public function remove_image(Request $request)
+     public function remove_image(Request $request)
     {
         return $this->remove_site_favicon($request);
     }
 
-    // compatibility named removers
-    public function remove_site_logo_large_light(Request $request) { return $this->remove_site_logo_light($request); }
+     public function remove_site_logo_large_light(Request $request) { return $this->remove_site_logo_light($request); }
     public function remove_site_logo_small_light(Request $request) { return $this->remove_site_logo_light($request); }
     public function remove_site_logo_large_dark(Request $request)  { return $this->remove_site_logo_dark($request); }
     public function remove_site_logo_small_dark(Request $request)  { return $this->remove_site_logo_dark($request); }
@@ -126,10 +124,6 @@ class SettingsController extends Controller
         return response()->json(['success' => true]);
     }
 
-    /**
-     * Remove image from album stored in value (value is array)
-     * expects: site_info_id and either file_name or index
-     */
     public function remove_site_settings_albums(Request $request)
     {
         $id = $request->input('site_info_id');
@@ -359,9 +353,7 @@ class SettingsController extends Controller
         ));
     }
 
-    /**
-     * Here we use ImageManager with Driver and ->read() as you requested
-     */
+
     public function update_format_informations(Request $request, $id = 5)
     {
         $request->validate([
@@ -370,8 +362,7 @@ class SettingsController extends Controller
             'site_favicon'    => ['nullable', 'image', 'max:2048'],
         ]);
 
-        // Use explicit Driver + ImageManager so ->read() is available
-        $manager = new ImageManager(new Driver());
+         $manager = new ImageManager(new Driver());
 
         $saveDir = public_path('assets/site_settings');
         if (!File::exists($saveDir)) {
@@ -379,14 +370,11 @@ class SettingsController extends Controller
         }
 
         $processWithRead = function ($file, $fileName) use ($manager, $saveDir) {
-            // use read() as requested (supports UploadedFile / resource / string)
-            $img = $manager->read($file);
-            // optional: resize or other processing here
-            $img->save($saveDir . DIRECTORY_SEPARATOR . $fileName);
+             $img = $manager->read($file);
+             $img->save($saveDir . DIRECTORY_SEPARATOR . $fileName);
         };
 
-        // site_logo_light
-        if ($image = $request->file('site_logo_light')) {
+         if ($image = $request->file('site_logo_light')) {
             $setting = SiteSetting::where('key', 'site_logo_light')->where('section', $id)->first();
             if ($setting && $setting->value && File::exists($saveDir . DIRECTORY_SEPARATOR . $setting->value)) {
                 unlink($saveDir . DIRECTORY_SEPARATOR . $setting->value);
@@ -399,8 +387,7 @@ class SettingsController extends Controller
             );
         }
 
-        // site_logo_dark
-        if ($image = $request->file('site_logo_dark')) {
+         if ($image = $request->file('site_logo_dark')) {
             $setting = SiteSetting::where('key', 'site_logo_dark')->where('section', $id)->first();
             if ($setting && $setting->value && File::exists($saveDir . DIRECTORY_SEPARATOR . $setting->value)) {
                 unlink($saveDir . DIRECTORY_SEPARATOR . $setting->value);
@@ -413,8 +400,7 @@ class SettingsController extends Controller
             );
         }
 
-        // site_favicon
-        if ($image = $request->file('site_favicon')) {
+         if ($image = $request->file('site_favicon')) {
             $setting = SiteSetting::where('key', 'site_favicon')->where('section', $id)->first();
             if ($setting && $setting->value && File::exists($saveDir . DIRECTORY_SEPARATOR . $setting->value)) {
                 unlink($saveDir . DIRECTORY_SEPARATOR . $setting->value);

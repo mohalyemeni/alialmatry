@@ -36,7 +36,6 @@
                         تاريخ النشر:
                         {{ optional($durar->published_on) ? \Carbon\Carbon::parse($durar->published_on)->format('Y-m-d') : '' }}
 
-                        {{-- عرض عدد المشاهدات بجانب التاريخ --}}
                         <span class="ms-3 d-inline-flex align-items-center">
                             <i class="fa-solid fa-eye me-1" aria-hidden="true"></i>
                             {{ $durar->views ?? 0 }}
@@ -96,7 +95,6 @@
                                                         {{ $rd->published_on ?? '' }}
                                                     </small>
 
-                                                    {{-- عرض المشاهدات لكل عنصر في القائمة --}}
                                                     <div class="text-muted small d-flex align-items-center"
                                                         style="gap:8px;">
                                                         <span class="d-flex align-items-center">

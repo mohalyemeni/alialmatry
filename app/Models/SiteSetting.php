@@ -15,40 +15,27 @@ class SiteSetting extends Model
 
     protected $guarded = [];
 
-    // نحتفظ بالـ casts للحقل status و published_on
+
     protected $casts = [
         'status' => 'boolean',
         'published_on' => 'datetime',
     ];
 
-    /**
-     * Accessor عمومي لحقل value:
-     * - لو القيمة مخزنة كـ JSON سيتم إرجاعها كمصفوفة (associative)
-     * - لو كانت نصًا عاديًا سيتم إرجاعها كنص
-     */
+
     public function getValueAttribute($value)
     {
-        // إذا كانت القيمة فارغة
         if ($value === null) {
             return null;
         }
-
-        // حاول فك JSON
         $decoded = json_decode($value, true);
 
         if (json_last_error() === JSON_ERROR_NONE) {
             return $decoded;
         }
 
-        // ليس JSON => أرجع النص كما هو
         return $value;
     }
 
-    /**
-     * Mutator لحقل value:
-     * - إذا أعطيته مصفوفة أو كائن، سيُخزن كـ JSON
-     * - إذا أعطيته نصًا سيخزَّن نصًا (حتى لو العمود json، Laravel/MySQL سيحاول تخزينه)
-     */
     public function setValueAttribute($value)
     {
         if (is_array($value) || is_object($value)) {
@@ -56,7 +43,6 @@ class SiteSetting extends Model
             return;
         }
 
-        // نص أو رقم أو null
         $this->attributes['value'] = $value;
     }
 

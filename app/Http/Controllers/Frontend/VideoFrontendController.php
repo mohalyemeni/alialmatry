@@ -14,7 +14,7 @@ class VideoFrontendController extends Controller
 protected function resolveThumbnail($thumb)
 {
     if (empty($thumb)) {
-        return null; // لا fallback
+        return null;
     }
 
     $thumb = ltrim($thumb, '/');
@@ -25,7 +25,7 @@ protected function resolveThumbnail($thumb)
         return asset($path);
     }
 
-    return null; // لا شيء إذا لم يوجد
+    return null;
 }
 
 
@@ -140,8 +140,7 @@ protected function resolveThumbnail($thumb)
         $now = Carbon::now();
         $limit = 5;
 
-        // eager-load category to avoid N+1
-        $recent = Video::with('category')->where('category_id', $video->category_id)
+         $recent = Video::with('category')->where('category_id', $video->category_id)
             ->where('status', 1)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);

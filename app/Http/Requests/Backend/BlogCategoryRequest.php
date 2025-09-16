@@ -24,10 +24,8 @@ class BlogCategoryRequest extends FormRequest
                     'meta_slug'         => 'nullable|string',
                     'published_on'      => 'required|date',
                     'status'            => 'required|boolean',
-                    // حقل المميز
-                    'featured'          => 'nullable|boolean',
-                    // (اختياري) لو ترسل section من الفورم
-                    'section'           => 'nullable|integer',
+                     'featured'          => 'nullable|boolean',
+                     'section'           => 'nullable|integer',
                 ];
             case 'PUT':
             case 'PATCH':
@@ -40,8 +38,7 @@ class BlogCategoryRequest extends FormRequest
                     'meta_slug'         => 'nullable|string',
                     'published_on'      => 'required|date',
                     'status'            => 'required|boolean',
-                    // حقل المميز
-                    'featured'          => 'nullable|boolean',
+                     'featured'          => 'nullable|boolean',
                     'section'           => 'nullable|integer',
                 ];
             default:

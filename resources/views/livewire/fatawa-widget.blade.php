@@ -120,7 +120,6 @@
             window.addEventListener('fatawa-debug', function(e) {
                 console.log("FATAWA DEBUG:", e.detail);
                 if (Array.isArray(e.detail.messages)) {
-                    // عرض معلومات التصحيح في عنصر التصحيح
                     const debugOutput = document.getElementById('debug-output');
                     if (debugOutput) {
                         let html = '';
@@ -132,14 +131,12 @@
                         debugOutput.scrollTop = debugOutput.scrollHeight;
                     }
 
-                    // أيضًا طباعة في console للمطورين
                     e.detail.messages.forEach(m => console.log(m));
                 }
             });
         });
 
         Livewire.on('fatawasLoaded', () => {
-            // يمكنك إضافة أية معالجة جانبية هنا إذا رغبت
             console.log('fatawas updated via Livewire');
         });
     </script>

@@ -24,12 +24,8 @@
                 }
             }
 
-            // لا نُعيّن placeholder هنا — نريد إختفاء الصورة لو لم توجد
-            // $imgSrc = $imgSrc ?? asset('frontand/assets/img/normal/counter-image.jpg');
-
         @endphp
 
-        {{-- فقط نعرض الـ box-img لو كانت الصورة موجودة --}}
         @if ($imgSrc)
             <div class="box-img global-img tow_height">
                 <a href="{{ route('frontend.blogs.show', $blog->slug) }}" aria-label="{{ e($blog->title) }}">

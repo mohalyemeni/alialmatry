@@ -172,14 +172,11 @@ if ($videosCollection->count() < $targetVideos) {
 $videos = $videosCollection->map(function ($v) {
     $thumb = $v->thumbnail;
     if ($thumb && !Str::startsWith($thumb, ['http://', 'https://'])) {
-        // نفضّل public/upload أولاً ثم نتراجع للمسارات القديمة
-        $thumbCandidate = null;
+         $thumbCandidate = null;
         $candidates = [
-            // new preferred paths
-            'upload/' . ltrim($thumb, '/'),
+             'upload/' . ltrim($thumb, '/'),
             'upload/' . basename($thumb),
-            // possible stored variants
-            ltrim($thumb, '/'),
+             ltrim($thumb, '/'),
             'storage/' . ltrim($thumb, '/'),
             'videos/thumbnails/' . ltrim($thumb, '/'),
             'assets/videos/thumbnails/' . ltrim($thumb, '/'),
@@ -193,8 +190,7 @@ $videos = $videosCollection->map(function ($v) {
             }
         }
 
-        // إن لم نجد أي ملف، حاول استخدام asset($thumb) أو placeholder لاحقاً
-        $thumb = $thumbCandidate ?: (file_exists(public_path($thumb)) ? asset($thumb) : $thumb);
+         $thumb = $thumbCandidate ?: (file_exists(public_path($thumb)) ? asset($thumb) : $thumb);
     }
 
     $thumb = $thumb ?: asset('frontand/assets/img/normal/counter-image.jpg');
@@ -574,24 +570,20 @@ $videosSmall = $videos->slice(1, 4)->values();
             })
             ->orderByDesc('id')->get();
 
-        // categories collection (to pass to view)
-        $categories = $fatawaCatsFeatured->concat($fatawaCatsNonFeatured);
+         $categories = $fatawaCatsFeatured->concat($fatawaCatsNonFeatured);
 
-        // If a category slug is passed via query string, show its fatawas (full list)
-        $selectedCategorySlug = $request->input('category', null);
+         $selectedCategorySlug = $request->input('category', null);
         $fatawasCollection = collect();
 
         if ($selectedCategorySlug) {
-            // try to find category by slug
-            $selectedCat = $categories->firstWhere('slug', $selectedCategorySlug)
+             $selectedCat = $categories->firstWhere('slug', $selectedCategorySlug)
                 ?? Category::where('section', Category::SECTION_FATWA)
                     ->where('slug', $selectedCategorySlug)
                     ->where('status', 1)
                     ->first();
 
             if ($selectedCat) {
-                // load all fatawas for this category (respect status & published_on)
-                $items = $selectedCat->fatawas()
+                 $items = $selectedCat->fatawas()
                     ->where('status', 1)
                     ->where(function ($q) use ($now) {
                         $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
@@ -613,12 +605,10 @@ $videosSmall = $videos->slice(1, 4)->values();
                     ]);
                 }
             } else {
-                // category slug provided but not found: empty collection
-                $fatawasCollection = collect();
+                 $fatawasCollection = collect();
             }
         } else {
-            // original behaviour (sample/aggregate across categories) kept when no category selected
-            $categoriesForSample = $categories;
+             $categoriesForSample = $categories;
             $catCount = $categoriesForSample->count();
             $targetTotal = 6;
 
@@ -722,31 +712,25 @@ $videosSmall = $videos->slice(1, 4)->values();
             }
         }
 
-        // final fatawas collection processing
-        $fatawas = $fatawasCollection
+         $fatawas = $fatawasCollection
             ->unique('id')
             ->sortByDesc(function ($it) {
                 return ($it->published_on) ?? null;
             })
             ->values();
 
-        // If a category is selected, set count to number of displayed fatawas,
-        // otherwise set to global count (or you may want global always — adjust if needed)
         $fatawasCount = $fatawas->count();
         if (!$selectedCategorySlug) {
-            // If you prefer the global count when no category selected, uncomment next block:
-            $fatawasCount = Fatwa::where('status', 1)
+             $fatawasCount = Fatwa::where('status', 1)
                 ->where(function ($q) use ($now) {
                     $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
                 })
                 ->count();
         }
 
-        // alias variable kept for backward compatibility in views
-        $fatawaCategories = $categories;
+         $fatawaCategories = $categories;
 
-        // PASS ALL TO VIEW
-        return view('frontend.index', compact(
+         return view('frontend.index', compact(
             'sliders',
             'intro',
             'videos',
@@ -762,8 +746,7 @@ $videosSmall = $videos->slice(1, 4)->values();
             'audiosCount',
             'audioCategories',
             'fatawaCategories',
-            // added variables for blade compatibility
-            'categories',
+             'categories',
             'selectedCategorySlug'
         ));
     }

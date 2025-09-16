@@ -69,16 +69,13 @@ class BookController extends Controller
             try {
                 $book->increment('views');
             } catch (\Throwable $e) {
-                // ignore
-            }
+             }
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-        // normalize main image
-        $img = $this->resolveImage($book->img ?? null);
+         $img = $this->resolveImage($book->img ?? null);
 
-        // prepare recent books (exclude current)
-        $recentBooksQuery = Book::where('status', true)
+         $recentBooksQuery = Book::where('status', true)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
@@ -94,7 +91,7 @@ class BookController extends Controller
                 'img' => $this->resolveImage($b->img ?? null),
                 'published_on' => $b->published_on ? Carbon::parse($b->published_on)->format('Y-m-d') : null,
                 'excerpt' => $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 120),
-                'views' => $b->views ?? 0, // <- أضف هذا السطر
+                'views' => $b->views ?? 0,
             ];
         });
 

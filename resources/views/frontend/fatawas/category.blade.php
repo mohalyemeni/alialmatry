@@ -30,7 +30,6 @@
                     {{ $fatawas->links() }}
                 </div>
             </div>
-            <!-- Sidebar (Fatawas) — styled to match saved sidebar template -->
             <aside class="col-xxl-4 col-lg-4  pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
@@ -56,7 +55,6 @@
                             <ul class="list-unstyled mb-0 pr-0">
                                 @foreach ($recentList as $item)
                                     @php
-                                        // thumbnail resolution (keep your logic)
                                         $thumb = null;
                                         if (!empty($item->img)) {
                                             if (

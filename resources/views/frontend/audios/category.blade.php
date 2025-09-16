@@ -1,4 +1,3 @@
-{{-- resources/views/frontend/audios/category.blade.php --}}
 @extends('layouts.app')
 @section('title', e($category->title))
 

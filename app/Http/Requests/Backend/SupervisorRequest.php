@@ -44,7 +44,7 @@ class SupervisorRequest extends FormRequest
                         'email'      => "required|email|max:255|unique:users,email,{$id}",
                         'mobile'     => "required|numeric|unique:users,mobile,{$id}",
                         'status'     => 'required',
-                        'password'   => 'nullable|min:8',       // أصبح اختياريًا
+                        'password'   => 'nullable|min:8',
                         'user_image' => 'nullable|mimes:png,jpg,jpeg,svg|max:20000',
                     ];
 

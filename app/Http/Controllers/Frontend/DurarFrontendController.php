@@ -10,9 +10,7 @@ use Illuminate\Support\Str;
 
 class DurarFrontendController extends Controller
 {
-    /**
-     * Make a clean excerpt from HTML/text
-     */
+
     protected function makeExcerpt($text, $limit = 80)
     {
         $raw = (string) $text;
@@ -22,9 +20,7 @@ class DurarFrontendController extends Controller
         return Str::limit($collapsed, $limit);
     }
 
-    /**
-     * Resolve image path for Durar (tries multiple candidates).
-     */
+
     protected function resolveImage($img)
     {
         $default = asset('frontand/assets/img/normal/counter-image.jpg');
@@ -33,8 +29,7 @@ class DurarFrontendController extends Controller
             return $default;
         }
 
-        // absolute url
-        if (Str::startsWith($img, ['http://', 'https://'])) {
+         if (Str::startsWith($img, ['http://', 'https://'])) {
             return $img;
         }
 
@@ -53,9 +48,7 @@ class DurarFrontendController extends Controller
         return $default;
     }
 
-    /**
-     * Index unchanged (keeps your existing logic).
-     */
+
     public function index(Request $request)
     {
         $now = Carbon::now();
@@ -78,31 +71,25 @@ class DurarFrontendController extends Controller
         return view('frontend.durars.index', compact('durars'));
     }
 
-    /**
-     * Show a single Durar: increment views once per session and prepare recent list.
-     */
+
     public function show(Request $request, $slug)
     {
         $now = Carbon::now();
 
         $durar = DurarDiniya::where('slug', $slug)->orWhere('id', $slug)->firstOrFail();
 
-        // increase views once per session
-        $sessionKey = 'durar_viewed_' . $durar->id;
+         $sessionKey = 'durar_viewed_' . $durar->id;
         if (! $request->session()->has($sessionKey)) {
             try {
                 $durar->increment('views');
             } catch (\Throwable $e) {
-                // ignore
-            }
+             }
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-        // resolve main image
-        $img = $this->resolveImage($durar->img ?? null);
+         $img = $this->resolveImage($durar->img ?? null);
 
-        // recent durars (exclude current)
-        $recentDurars = DurarDiniya::where('status', 1)
+         $recentDurars = DurarDiniya::where('status', 1)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })

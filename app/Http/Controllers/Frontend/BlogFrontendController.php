@@ -24,10 +24,7 @@ class BlogFrontendController extends Controller
         return Str::limit($collapsed, $limit);
     }
 
-    /**
-     * Resolve an image path for a blog item.
-     * Tries multiple common locations and falls back to a default placeholder.
-     */
+
     protected function resolveImage($img)
     {
         if (empty($img)) {
@@ -56,15 +53,11 @@ class BlogFrontendController extends Controller
         return null;
     }
 
-    /**
-     * Index: list article categories (prefer featured categories first).
-     */
     public function index(Request $request)
     {
         $now = Carbon::now();
 
-        // featured categories that have published blogs
-        $featuredCats = Category::query()
+         $featuredCats = Category::query()
             ->where('section', Category::SECTION_ARTICLE)
             ->where('status', true)
             ->where('featured', 1)
@@ -83,8 +76,7 @@ class BlogFrontendController extends Controller
             ->orderBy('title')
             ->get();
 
-        // non-featured categories that have published blogs
-        $nonFeaturedCats = Category::query()
+         $nonFeaturedCats = Category::query()
             ->where('section', Category::SECTION_ARTICLE)
             ->where('status', true)
             ->where(function ($q) {
@@ -105,8 +97,7 @@ class BlogFrontendController extends Controller
             ->orderBy('title')
             ->get();
 
-        // merge featured first
-        $categories = $featuredCats->concat($nonFeaturedCats);
+         $categories = $featuredCats->concat($nonFeaturedCats);
 
         if ($request->ajax()) {
             $html = view('frontend.blogs.partials.index_partial', compact('categories'))->render();
@@ -120,9 +111,7 @@ class BlogFrontendController extends Controller
         return view('frontend.blogs.index', compact('categories'));
     }
 
-    /**
-     * Show blogs in a category (paginated).
-     */
+
     public function category(Request $request, Category $category)
     {
         if ($category->section != Category::SECTION_ARTICLE) {
@@ -139,8 +128,7 @@ class BlogFrontendController extends Controller
             ->orderByDesc('published_on')
             ->paginate(10);
 
-        // normalize image urls and excerpt for display
-        $blogs->getCollection()->transform(function ($b) {
+         $blogs->getCollection()->transform(function ($b) {
             $b->img = $this->resolveImage($b->img ?? null);
             $b->excerpt = $this->makeExcerpt($b->excerpt ?? $b->description ?? '', 180);
             return $b;
@@ -158,51 +146,38 @@ class BlogFrontendController extends Controller
         return view('frontend.blogs.category', compact('category', 'blogs'));
     }
 
-    /**
-     * Show single blog, increment views once per session and with short cache protection, then prepare recent posts.
-     */
     public function show(Request $request, Blog $blog)
     {
         if (! $blog->category || $blog->category->section != Category::SECTION_ARTICLE) {
             abort(404);
         }
 
-        // Session key (prevents multiple increments within same session)
-        $sessionKey = 'blog_viewed_' . $blog->id;
+         $sessionKey = 'blog_viewed_' . $blog->id;
 
-        // Cache key per visitor (IP + partial User-Agent) to prevent repeated increments across sessions
-        $ua = substr($request->header('User-Agent', ''), 0, 120);
+         $ua = substr($request->header('User-Agent', ''), 0, 120);
         $visitorHash = sha1($request->ip() . '|' . $ua);
         $cacheKey = "blog_view_{$blog->id}_{$visitorHash}";
-        $cacheTtlMinutes = 60; // نافذة الحماية بالـدقائق (قابلة للتعديل)
+        $cacheTtlMinutes = 60;
 
-        // Logic:
-        // - If neither session nor cache exists: increment, set both.
-        // - If session missing but cache exists: set session (don't increment).
-        // - If session exists: do nothing.
+
         if (! $request->session()->has($sessionKey)) {
             if (! Cache::has($cacheKey)) {
                 try {
                     $blog->increment('views');
                 } catch (\Throwable $e) {
-                    // ignore increment errors
-                }
-                // set cache entry to block further increments from same visitor for a while
-                Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
+                 }
+                 Cache::put($cacheKey, true, now()->addMinutes($cacheTtlMinutes));
             }
-            // always set session key so within same session we won't increment again
-            $request->session()->put($sessionKey, now()->toDateTimeString());
+             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
 
-        // ensure main blog image/excerpt are ready for view
-        $blog->img = $this->resolveImage($blog->img ?? null);
+         $blog->img = $this->resolveImage($blog->img ?? null);
         $blog->excerpt = $this->makeExcerpt($blog->excerpt ?? $blog->description ?? '', 220);
 
         $now = Carbon::now();
         $limit = 5;
 
-        // recent from same category (exclude current) - eager load category
-        $recent = Blog::with('category')
+         $recent = Blog::with('category')
             ->where('category_id', $blog->category_id)
             ->where('status', 1)
             ->where(function ($q) use ($now) {
@@ -213,8 +188,7 @@ class BlogFrontendController extends Controller
             ->take($limit)
             ->get();
 
-        // fill globally if needed (exclude current and already collected) - eager load category
-        if ($recent->count() < $limit) {
+         if ($recent->count() < $limit) {
             $needed = $limit - $recent->count();
             $additional = Blog::with('category')
                 ->where('status', 1)
@@ -233,8 +207,7 @@ class BlogFrontendController extends Controller
             $recent = $recent->concat($additional)->slice(0, $limit);
         }
 
-        // map recent posts for view consumption — keep published_on as Carbon so blade can format it
-        $recentBlogs = $recent->map(function ($b) {
+         $recentBlogs = $recent->map(function ($b) {
             return (object) [
                 'id' => $b->id,
                 'title' => $b->title,

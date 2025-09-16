@@ -2,7 +2,7 @@
 @section('title', $category->title)
 
 @section('content')
-    {{-- Breadcrumb --}}
+
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
         <div class="container">
@@ -18,10 +18,10 @@
         </div>
     </div>
 
-    {{-- Main Content --}}
+
     <div class="container py-4">
         <div class="row">
-            {{-- مقالات --}}
+
             <div class="col-12 col-xl-8">
                 <h3 class="widget_title mb-0 fadeInRight wow title-header-noline" data-wow-delay=".3s">
                     المقالات

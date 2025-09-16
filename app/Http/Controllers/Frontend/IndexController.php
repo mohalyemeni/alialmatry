@@ -13,8 +13,7 @@ use App\Notifications\NewCommentForAdminNotify;
 use App\Notifications\NewCommentForPostOwnerNotify;
 use Illuminate\Support\Facades\Validator;
 use Stevebauman\Purify\Facades\Purify;
-// use Stevebauman\Purify\Purify;
-class IndexController extends Controller
+ class IndexController extends Controller
 {
     public function index()
     {

@@ -14,7 +14,6 @@ class FatawaWidget extends Component
     public $selectedCategoryId = null;
     public $fatawas;
 
-    // لتشخيص المشاكل مؤقتاً
     public $debug = true;
     protected $debugMessages = [];
 
@@ -23,7 +22,7 @@ class FatawaWidget extends Component
         $this->debugMessage("mount() start");
 
         try {
-            // جلب تصنيفات الفتاوى فقط
+
             $this->categories = Category::fatwas()
                 ->active()
                 ->orderByDesc('id')
@@ -36,7 +35,7 @@ class FatawaWidget extends Component
             $this->debugMessage("Exception loading categories: " . $e->getMessage());
         }
 
-        // إذا مرّ لنا slug ابتدائي
+
         if ($initialCategorySlug) {
             $this->selectCategory($initialCategorySlug);
         } else {
@@ -44,9 +43,7 @@ class FatawaWidget extends Component
         }
     }
 
-    /**
-     * اختيار بواسطة slug
-     */
+
     public function selectCategory($slug = null)
     {
         $this->debugMessage("selectCategory() called with slug: " . var_export($slug, true));
@@ -71,9 +68,7 @@ class FatawaWidget extends Component
         $this->loadFatawas();
     }
 
-    /**
-     * اختيار بواسطة id
-     */
+
     public function selectCategoryById($id = null)
     {
         $this->debugMessage("selectCategoryById() called with id: " . var_export($id, true));
@@ -97,9 +92,7 @@ class FatawaWidget extends Component
         $this->loadFatawas();
     }
 
-    /**
-     * تحميل الفتاوى
-     */
+
     protected function loadFatawas()
     {
         $this->debugMessage("loadFatawas() start");

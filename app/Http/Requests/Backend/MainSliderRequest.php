@@ -8,8 +8,7 @@ class MainSliderRequest extends FormRequest
 {
     public function authorize()
     {
-        // عدّله لوضع صلاحياتك الحقيقية؛ أثناء التطوير ضع true
-        return true;
+         return true;
     }
 
     public function rules()
@@ -17,25 +16,20 @@ class MainSliderRequest extends FormRequest
         switch ($this->method()) {
             case 'POST': {
                 return [
-                    // النصوص (أنت تحفظها لاحقًا كمصفوفة ['ar' => ...])
-                    'title'                 => 'required|string|max:255',
+                     'title'                 => 'required|string|max:255',
                     'subtitle'              => 'nullable|string|max:255',
                     'description'           => 'nullable|string',
                     'btn_title'             => 'nullable|string|max:255',
-                    // URL: إن أردت تحقق أقوى استعمل nullable|url
-                    'url'                   => 'nullable|url|max:2048',
+                     'url'                   => 'nullable|url|max:2048',
 
-                    // خيارات الزر واظهار الحقول (نستعمل in:0,1 لتفادي مشاكل boolean)
-                    'show_btn_title'        => 'required|in:0,1,1',
+                     'show_btn_title'        => 'required|in:0,1,1',
                     'target'                => 'required|in:_self,_blank',
                     'section'               => 'nullable|integer',
                     'show_info'             => 'required|in:0,1',
 
-                    // صورة مطلوبة عند الإنشاء — حقل واحد اسمه img
-                    'img'                   => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3072',
+                     'img'                   => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3072',
 
-                    // SEO
-                    'metadata_title'        => 'nullable|string|max:255',
+                     'metadata_title'        => 'nullable|string|max:255',
                     'metadata_description'  => 'nullable|string|max:500',
                     'metadata_keywords'     => 'nullable|string|max:500',
 
@@ -44,8 +38,7 @@ class MainSliderRequest extends FormRequest
                    'published_on' => 'nullable|date',
 
 
-                    // حقول من يرِدون من النظام (اختياري)
-                    'created_by'            => 'nullable|string|max:191',
+                     'created_by'            => 'nullable|string|max:191',
                     'updated_by'            => 'nullable|string|max:191',
                     'deleted_by'            => 'nullable|string|max:191',
                 ];
