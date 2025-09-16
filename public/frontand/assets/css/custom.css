@@ -1791,6 +1791,7 @@ body[dir="rtl"] .recent-thumb-link {
 .page-item.active .page-link {
     background-color: #938447 !important;
     border-color: #938447 !important;
+    color: #fff !important;
 }
 .page-link {
     color: #938447 !important;
