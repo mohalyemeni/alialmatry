@@ -68,6 +68,11 @@
             }
         }
 
+        .audio-play-wrapp audio {
+
+            height: 50px;
+        }
+
         .audio-sidebar .recent-thumb {
             width: 84px;
             height: 64px;
