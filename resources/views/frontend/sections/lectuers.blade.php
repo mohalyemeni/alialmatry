@@ -124,9 +124,9 @@
         .sidebar-area {
             padding-top: 80px;
         }
-    }
 
-    .widget_title_new {
-        margin-top: 30px;
+        .widget_title_new {
+            margin-top: 30px;
+        }
     }
 </style>
