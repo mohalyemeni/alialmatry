@@ -239,16 +239,16 @@
                                                 <div class="text-muted small d-flex align-items-center" style="gap:8px;">
                                                     <span class="d-flex align-items-center"><i
                                                             class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}</span>
-                                                    @if (!empty($rd->category))
-                                                        <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
-                                                            class="audio-badge bg-light text-dark text-decoration-none">
-                                                            <i class="fa-solid fa-folder-open"
-                                                                style="font-size:0.72rem"></i>
-                                                            <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
-                                                        </a>
-                                                    @endif
+
                                                 </div>
                                             </div>
+                                            @if (!empty($rd->category))
+                                                <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
+                                                    class="audio-badge bg-light text-dark text-decoration-none">
+                                                    <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
+                                                    <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
+                                                </a>
+                                            @endif
                                             <h4 class="post-title1 mb-0 post-title-small">
                                                 <a class="text-inherit d-block"
                                                     href="{{ route('frontend.audios.show', $rd->slug) }}">
