@@ -22,8 +22,8 @@
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/magnific-popup.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/fonts/feather-font/css/iconfont.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontand/assets/css/custom.css') }}">
 
     @yield('style')
 
