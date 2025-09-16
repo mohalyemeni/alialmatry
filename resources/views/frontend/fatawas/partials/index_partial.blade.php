@@ -1,4 +1,5 @@
 <div class="container pt-45 pb-45">
+    <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s"> التنصيفات</h3>
     @if ($categories->isEmpty())
         <p class="text-muted">لا توجد تصنيفات حالياً.</p>
     @else

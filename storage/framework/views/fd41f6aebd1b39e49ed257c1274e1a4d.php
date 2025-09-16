@@ -1,7 +1,7 @@
 <section class="blog-area overflow-hidden bg-white space" id="blog-sec">
     <div class="container">
 
-        <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">تصنيفات الفيديو</h3>
+        <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s"> التنصيفات</h3>
 
         <div class="container pt-30 pb-45">
             <?php if($categories->isEmpty()): ?>
