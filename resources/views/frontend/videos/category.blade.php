@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('title', $category->title ?? 'المرئيات')
+
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">

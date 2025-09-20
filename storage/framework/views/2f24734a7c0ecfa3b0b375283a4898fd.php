@@ -97,7 +97,6 @@
                             <div class="recent-books-list">
                                 <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rb): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php
-                                        // rb->img is expected to be a resolved URL if controller passed recentBooks
                                         $thumb =
                                             $rb->img ??
                                             (!empty($rb->img) &&

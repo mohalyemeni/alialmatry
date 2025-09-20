@@ -1,12 +1,13 @@
 @extends('layouts.app')
+@section('title', $video->title ?? 'المرئيات')
+
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
         <div class="container">
             <div class="breadcumb-content text-center text-white">
                 <h1 class="breadcumb-title">
-
-                    {{ $title ?? ($video->title ?? ($category->title ?? 'المرئيات')) }}
+                    {{ $video->title ?? 'المرئيات' }}
                 </h1>
                 <ul class="breadcumb-menu list-inline justify-content-center mt-3">
                     <li class="list-inline-item">
@@ -15,12 +16,13 @@
                     <li class="list-inline-item">
                         <a href="{{ route('frontend.videos.index') }}" class="text-white">المرئيات</a>
                     </li>
-                    @if (isset($category))
-                        <li class="list-inline-item">{{ $category->title }}</li>
+                    @if (isset($video->category))
+                        <li class="list-inline-item">
+                            <a href="{{ route('frontend.videos.category', $video->category->slug) }}"
+                                class="text-white">{{ $video->category->title }}</a>
+                        </li>
                     @endif
-                    @if (isset($video))
-                        <li class="list-inline-item">{{ $video->title }}</li>
-                    @endif
+                    <li class="list-inline-item">{{ $video->title }}</li>
                 </ul>
             </div>
         </div>
@@ -28,6 +30,7 @@
     <div id="ajax-content">
         @include('frontend.partials.show_partial', [
             'video' => $video,
+            'recentVideos' => $recentVideos,
         ])
     </div>
 @endsection

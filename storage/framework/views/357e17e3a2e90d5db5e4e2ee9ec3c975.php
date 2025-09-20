@@ -27,7 +27,7 @@
                 </h3>
 
                 <div class="list-group mt-3">
-                    
+
                     <?php $__empty_1 = true; $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">

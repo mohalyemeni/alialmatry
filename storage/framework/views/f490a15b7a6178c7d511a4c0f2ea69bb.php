@@ -1,3 +1,5 @@
+<?php $__env->startSection('title', 'المرئيات'); ?>
+
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -11,6 +13,7 @@
             </div>
         </div>
     </div>
+
     <div id="ajax-content">
         <?php echo $__env->make('frontend.partials.index_partial', ['categories' => $categories], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </div>

@@ -38,7 +38,6 @@
                             $thumb = $video->thumbnail ?? '';
 
                             if (!empty($thumb)) {
-                                // جلب الصور فقط من public/upload
                                 $candidate1 = 'upload/' . ltrim($thumb, '/');
                                 $candidate2 = 'upload/' . basename($thumb);
 
@@ -49,7 +48,6 @@
                                 }
                             }
 
-                            // fallback لليوتيوب أو صورة placeholder
                             if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
                                 $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
                             }

@@ -1,9 +1,8 @@
-
 <section class="blog-area overflow-hidden bg-white space" id="blog-sec">
     <div class="container">
 
         <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">تصنيفات المقالات</h3>
-        
+
         <div class="container pt-30 pb-45">
             <?php if($categories->isEmpty()): ?>
                 <p class="text-muted">لا توجد تصنيفات حالياً.</p>
@@ -11,10 +10,9 @@
                 <div class="row gy-4">
                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php
-                            // small animation delay for wow
+
                             $delay = 0.3 + $index * 0.04;
 
-                            // image fallback resolution
                             $img = null;
                             if (
                                 !empty($category->img) &&

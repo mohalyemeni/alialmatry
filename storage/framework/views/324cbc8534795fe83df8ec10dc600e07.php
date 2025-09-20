@@ -1,11 +1,12 @@
+<?php $__env->startSection('title', $video->title ?? 'المرئيات'); ?>
+
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
         <div class="container">
             <div class="breadcumb-content text-center text-white">
                 <h1 class="breadcumb-title">
-
-                    <?php echo e($title ?? ($video->title ?? ($category->title ?? 'المرئيات'))); ?>
+                    <?php echo e($video->title ?? 'المرئيات'); ?>
 
                 </h1>
                 <ul class="breadcumb-menu list-inline justify-content-center mt-3">
@@ -15,12 +16,13 @@
                     <li class="list-inline-item">
                         <a href="<?php echo e(route('frontend.videos.index')); ?>" class="text-white">المرئيات</a>
                     </li>
-                    <?php if(isset($category)): ?>
-                        <li class="list-inline-item"><?php echo e($category->title); ?></li>
+                    <?php if(isset($video->category)): ?>
+                        <li class="list-inline-item">
+                            <a href="<?php echo e(route('frontend.videos.category', $video->category->slug)); ?>"
+                                class="text-white"><?php echo e($video->category->title); ?></a>
+                        </li>
                     <?php endif; ?>
-                    <?php if(isset($video)): ?>
-                        <li class="list-inline-item"><?php echo e($video->title); ?></li>
-                    <?php endif; ?>
+                    <li class="list-inline-item"><?php echo e($video->title); ?></li>
                 </ul>
             </div>
         </div>
@@ -28,6 +30,7 @@
     <div id="ajax-content">
         <?php echo $__env->make('frontend.partials.show_partial', [
             'video' => $video,
+            'recentVideos' => $recentVideos,
         ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </div>
 <?php $__env->stopSection(); ?>

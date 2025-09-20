@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('title', 'المرئيات')
+
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -12,6 +14,7 @@
             </div>
         </div>
     </div>
+
     <div id="ajax-content">
         @include('frontend.partials.index_partial', ['categories' => $categories])
     </div>

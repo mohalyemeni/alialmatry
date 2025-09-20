@@ -1,3 +1,5 @@
+<?php $__env->startSection('title', $category->title ?? 'المرئيات'); ?>
+
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
