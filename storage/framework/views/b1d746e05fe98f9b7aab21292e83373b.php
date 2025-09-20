@@ -55,7 +55,6 @@
                     <?php endif; ?>
                 </p>
                 <div class="th-widget-about">
-                    
                     <?php if(isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value): ?>
                         <p class="footer-info">
                             <i class="fa-sharp fa-solid fa-phone"></i>
@@ -67,8 +66,6 @@
                             </span>
                         </p>
                     <?php endif; ?>
-
-                    
                     <?php if(isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value): ?>
                         <p class="footer-info">
                             <i class="fa-sharp fa-solid fa-envelope"></i>
@@ -81,7 +78,6 @@
                         </p>
                     <?php endif; ?>
 
-                    
                     <?php if(isset($siteSettings['site_address']->value) && $siteSettings['site_address']->value): ?>
                         <p class="footer-info">
                             <i class="fas fa-map-marker-alt"></i>
