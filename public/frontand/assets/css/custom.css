@@ -1796,3 +1796,42 @@ body[dir="rtl"] .recent-thumb-link {
 .page-link {
     color: #938447 !important;
 }
+div.tagsinput {
+    padding: 6px 6px 1px;
+    border-color: #e9ecef;
+    border-radius: 0.25rem;
+}
+
+div.tagsinput span.tag {
+    background: #6571ff;
+    color: #fff;
+    border: 0;
+    padding: 3px 7px;
+    font-family: inherit;
+    border-radius: 0.15rem;
+    margin-bottom: 4px;
+    float: right;
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+div.tagsinput span.tag a {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    opacity: 0.5;
+}
+
+div.tagsinput #tags_addTag {
+    float: right;
+    margin-right: 5px;
+}
+
+div.tagsinput input {
+    margin: 0;
+    padding: 1px;
+    border-radius: 0.25rem;
+}
+.new_colore {
+    background: #374868;
+}

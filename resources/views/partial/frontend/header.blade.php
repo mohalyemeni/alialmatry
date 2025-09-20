@@ -69,7 +69,7 @@
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
                 <div class="row align-items-center justify-content-between">
-                    <div class="col-9 col-md-10 col-lg-3">
+                    <div class="col-9 col-md-10 col-lg-3 new_colore">
                         <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">
                                 @if (isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value)

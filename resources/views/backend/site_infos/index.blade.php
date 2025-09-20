@@ -35,11 +35,13 @@
                 {{-- الكلمات المفتاحية --}}
                 <div class="row mb-3">
                     <div class="col-md-2 pt-2">
-                        <label for="site_keywords" class="form-label">الكلمات المفتاحية</label>
+                        <label for="tags" class="form-label">الكلمات المفتاحية</label>
                     </div>
                     <div class="col-md-10">
-                        <input type="text" name="site_keywords" id="site_keywords" class="form-control"
-                            value="{{ $site_keywords->value ?? '' }}">
+                        <div class="card p-2">
+
+                            <input name="site_keywords" id="tags" value="{{ $site_keywords->value ?? '' }}" />
+                        </div>
                     </div>
                 </div>
 
@@ -69,4 +71,24 @@
             </form>
         </div>
     </div>
+@endsection
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+
+        $('#tags').tagsInput({
+            'defaultText': 'أضف كلمة مفتاحية',
+            'height': 'auto',
+            'width': '100%'
+        });
+
+
+        $('#tags_meta').tagsInput({
+            'defaultText': 'أضف كلمة مفتاحية',
+            'height': 'auto',
+            'width': '100%'
+        });
+    });
+</script>
 @endsection

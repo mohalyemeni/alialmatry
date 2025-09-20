@@ -44,11 +44,13 @@
                 
                 <div class="row mb-4">
                     <div class="col-md-2 pt-2">
-                        <label for="site_keywords_meta" class="form-label">الكلمات المفتاحية</label>
+                        <label for="tags_meta" class="form-label">الكلمات المفتاحية</label>
                     </div>
                     <div class="col-md-10">
-                        <input type="text" name="site_keywords_meta" id="site_keywords_meta" class="form-control"
-                            value="<?php echo e($site_keywords_meta->value ?? ''); ?>">
+                        <div class="card p-2">
+                            <input name="site_keywords_meta" id="tags_meta"
+                                value="<?php echo e($site_keywords_meta->value ?? ''); ?>" />
+                        </div>
                     </div>
                 </div>
 
@@ -67,6 +69,25 @@
             </form>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/site_metas/index.blade.php ENDPATH**/ ?>

@@ -25,12 +25,21 @@
     <link href="{{ asset('frontand/assets/css/fontawesome.min.css') }}" rel="stylesheet" />
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/css/demo1/style-rtl.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/css/demo1/custom.css') }}">
     <!-- End layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/vendors/flatpickr/flatpickr-rtl.min.css') }}">
-    <link rel="shortcut icon" href="{{ asset('backend/images/favicon.png') }}" />
-    <link rel="stylesheet" href="{{ asset('backend/vendors/bootstrap-fileinput/css/fileinput.min.css') }}">
+    @if (isset($siteSettings['site_favicon']->value) && $siteSettings['site_favicon']->value)
+        <link rel="shortcut icon" href="{{ asset('assets/site_settings/' . $siteSettings['site_favicon']->value) }}"
+            type="image/x-icon">
+    @else
+        <link rel="shortcut icon" href="{{ asset('backend/images/favicon.png') }}" type="image/x-icon">
+    @endif
+
+    <link rel="stylesheet" href="{{ asset('backend/vendors/bootstrap-fileinpuسt/css/fileinput.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendors/summernote/summernote-bs4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/demo1/custom.css') }}">
+
+
     @livewireStyles
     @yield('style')
 </head>
@@ -70,6 +79,7 @@
     <script src="{{ asset('backend/vendors/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/flatpickr/flatpickr-rtl.min.js') }}"></script>
     <script src="{{ asset('backend/js/flatpickr.js') }}"></script>
+    <script src="{{ asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js') }}"></script>
     {{-- <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script> --}}
     @livewireScripts
 

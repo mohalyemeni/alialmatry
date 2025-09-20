@@ -25,12 +25,21 @@
     <link href="<?php echo e(asset('frontand/assets/css/fontawesome.min.css')); ?>" rel="stylesheet" />
     <!-- Layout styles -->
     <link rel="stylesheet" href="<?php echo e(asset('backend/css/demo1/style-rtl.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(asset('backend/css/demo1/custom.css')); ?>">
     <!-- End layout styles -->
     <link rel="stylesheet" href="<?php echo e(asset('backend/vendors/flatpickr/flatpickr-rtl.min.css')); ?>">
-    <link rel="shortcut icon" href="<?php echo e(asset('backend/images/favicon.png')); ?>" />
-    <link rel="stylesheet" href="<?php echo e(asset('backend/vendors/bootstrap-fileinput/css/fileinput.min.css')); ?>">
+    <?php if(isset($siteSettings['site_favicon']->value) && $siteSettings['site_favicon']->value): ?>
+        <link rel="shortcut icon" href="<?php echo e(asset('assets/site_settings/' . $siteSettings['site_favicon']->value)); ?>"
+            type="image/x-icon">
+    <?php else: ?>
+        <link rel="shortcut icon" href="<?php echo e(asset('backend/images/favicon.png')); ?>" type="image/x-icon">
+    <?php endif; ?>
+
+    <link rel="stylesheet" href="<?php echo e(asset('backend/vendors/bootstrap-fileinpuسt/css/fileinput.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('backend/vendors/summernote/summernote-bs4.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('backend/css/demo1/custom.css')); ?>">
+
+
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
     <?php echo $__env->yieldContent('style'); ?>
@@ -71,6 +80,7 @@
     <script src="<?php echo e(asset('backend/vendors/summernote/summernote-bs4.min.js')); ?>"></script>
     <script src="<?php echo e(asset('backend/vendors/flatpickr/flatpickr-rtl.min.js')); ?>"></script>
     <script src="<?php echo e(asset('backend/js/flatpickr.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js')); ?>"></script>
     
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
