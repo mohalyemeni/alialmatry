@@ -24,6 +24,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+
         //  if (!request()->is('admin*')) {
         //     view()->composer('*', function ($view) {
         //         if (!Cache::has('shop_categories_menu')) {

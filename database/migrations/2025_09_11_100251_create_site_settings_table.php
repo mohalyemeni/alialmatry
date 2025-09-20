@@ -16,8 +16,8 @@ class CreateSiteSettingsTable extends Migration
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
             $table->string('key')->nullable();
-            $table->longText('value')->nullable();   // نخزن القيمة كنص (دعم لغة واحدة)
-            $table->unsignedBigInteger('section')->default(1); // رقم القسم من 1 إلى 6 حسب الأقسام المعرفة
+            $table->longText('value')->nullable();
+            $table->unsignedBigInteger('section')->default(1);
 
             // حقول عامة
             $table->boolean('status')->default(true);

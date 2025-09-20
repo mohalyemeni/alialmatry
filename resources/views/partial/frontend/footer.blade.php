@@ -4,8 +4,8 @@
             <div class="row gy-4 justify-content-between align-items-center">
                 <div class="col-lg-6">
                     <div class="title-area mb-0 text-center text-lg-start">
-                        <span class="subtitle "> هل الهمك المحتوى ؟ أنضم الينا الان</span>
-                        <h2 class="sec-title ">كن جزء من مجتمعنا</h2>
+                        <span class="subtitle"> هل الهمك المحتوى ؟ أنضم الينا الان</span>
+                        <h2 class="sec-title">كن جزء من مجتمعنا</h2>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -18,7 +18,6 @@
                                 <span class="btn-text" data-back="تحميل التطبيق" data-front="تحميل التطبيق"></span>
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -33,12 +32,17 @@
                         <div class="th-widget-about">
                             <div class="about-logo">
                                 <a href="index.html">
-                                    <img src="{{ asset('frontand/assets/img/top-logo.png') }}" alt="tawba">
+                                    @if (isset($siteSettings['site_logo_dark']->value) && $siteSettings['site_logo_dark']->value)
+                                        <img src="{{ asset('assets/site_settings/' . $siteSettings['site_logo_dark']->value) }}"
+                                            alt="{{ $siteSettings['site_name']->value ?? 'شعار الموقع' }}">
+                                    @else
+                                        <img src="{{ asset('frontand/assets/img/top-logo.png') }}" alt="tawba">
+                                    @endif
                                 </a>
                             </div>
-                            <p class="about-text">تاريخ الإسلام شاهد على مرونة الحضارة الإسلامية وتأثيرها العميق، وهو
-                                قصة إيمان وابتكار ومساهمات دائمة للبشرية.</p>
-
+                            <p class="about-text">
+                                {{ $siteSettings['site_description']->value ?? 'تاريخ الإسلام شاهد على مرونة الحضارة الإسلامية وتأثيرها العميق، وهو قصة إيمان وابتكار ومساهمات دائمة للبشرية.' }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -47,31 +51,49 @@
                         <div class="th-widget-about">
                             <h3 class="widget_title text-center"> وسائل التواصل</h3>
                             <div class="th-social text-center">
+                                @if (isset($siteSettings['site_facebook']->value) && $siteSettings['site_facebook']->value)
+                                    <a href="{{ $siteSettings['site_facebook']->value }}"><i
+                                            class="fab fa-facebook-f"></i></a>
+                                @endif
 
-                                <a href="https://www.facebook.com/shalialmatry"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://twitter.com/shalialmatry"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.instagram.com/shalialmatry/"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-whatsapp"></i></a>
-                                <a href="https://www.youtube.com/ " target="_blank">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                                <a href="https://twitter.com/" target="_blank">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
+                                @if (isset($siteSettings['site_twitter']->value) && $siteSettings['site_twitter']->value)
+                                    <a href="{{ $siteSettings['site_twitter']->value }}"><i
+                                            class="fab fa-twitter"></i></a>
+                                @endif
+
+                                @if (isset($siteSettings['site_instagram']->value) && $siteSettings['site_instagram']->value)
+                                    <a href="{{ $siteSettings['site_instagram']->value }}"><i
+                                            class="fab fa-instagram"></i></a>
+                                @endif
+
+                                @if (isset($siteSettings['site_whatsapp']->value) && $siteSettings['site_whatsapp']->value)
+                                    <a href="{{ $siteSettings['site_whatsapp']->value }}"><i
+                                            class="fab fa-whatsapp"></i></a>
+                                @endif
+
+                                @if (isset($siteSettings['site_youtube']->value) && $siteSettings['site_youtube']->value)
+                                    <a href="{{ $siteSettings['site_youtube']->value }}" target="_blank">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                @endif
+
+                                @if (isset($siteSettings['site_linkedin']->value) && $siteSettings['site_linkedin']->value)
+                                    <a href="{{ $siteSettings['site_linkedin']->value }}" target="_blank">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                @endif
                             </div>
                             <div class="row mb-4  pt-25">
                                 <div class="col-lg-6 col-md-6 col-sm-6 footer-widget">
                                     <div class="counter-item text-center">
                                         <a href=""><img class="image"
                                                 src="{{ asset('frontand/assets/img/google.png') }}" alt=""></a>
-
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 footer-widget">
                                     <div class="counter-item text-center">
                                         <a href=""> <img class="image"
                                                 src="{{ asset('frontand/assets/img/apple.png') }}" alt=""></a>
-
                                     </div>
                                 </div>
                             </div>
@@ -81,9 +103,16 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="widget widget_nav_menu footer-widget email">
                         <h3 class="widget_title"> كما يسعدنا تواصلكم معنا</h3>
-                        <p class="about-text">للتواصل عبر الهاتف المحمول : 967779531500</p>
-                        <p class="about-text"> ويسعدنا التواصل معكم عبر البريد الالكتروني :<a href="">
-                                contact@sh-alialmatry.com</a></p>
+                        @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
+                            <p class="about-text">للتواصل عبر الهاتف المحمول :
+                                {{ $siteSettings['site_mobile']->value }}</p>
+                        @endif
+
+                        @if (isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value)
+                            <p class="about-text"> ويسعدنا التواصل معكم عبر البريد الالكتروني :<a
+                                    href="mailto:{{ $siteSettings['site_email']->value }}">
+                                    {{ $siteSettings['site_email']->value }}</a></p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -96,9 +125,10 @@
             <div class="row gy-2 align-items-center">
                 <div class="col-lg-6">
                     <p class="copyright-text">
-                        حقوق النشر <i class="fal fa-copyright"></i> 2025
-                        <a href="https://themeforest.net/user/themeholy">موقع فضيلة الشيخ ابو الحسن علي بن محمد بن عبده
-                            المطري</a>. جميع الحقوق محفوظة.
+                        حقوق النشر <i class="fal fa-copyright"></i> {{ date('Y') }}
+                        <a
+                            href="{{ $siteSettings['site_link']->value ?? '#' }}">{{ $siteSettings['site_name']->value ?? 'موقع فضيلة الشيخ ابو الحسن علي بن محمد بن عبده المطري' }}</a>.
+                        جميع الحقوق محفوظة.
                     </p>
                 </div>
                 <div class="col-lg-6 text-center text-lg-end">

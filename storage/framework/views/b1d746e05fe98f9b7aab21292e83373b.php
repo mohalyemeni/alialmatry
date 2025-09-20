@@ -39,36 +39,59 @@
     </div>
 </div>
 
-
 <div class="sidemenu-wrapper d-none d-lg-block">
     <div class="sidemenu-content">
         <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
         <div class="widget footer-widget">
-            <h3 class="widget_title">معلومات</h3>
+            <h3 class="widget_title mb-2">معلومات</h3>
             <div class="th-widget-about">
                 <p class="about-text">
-                    التاريخ الإسلامي دليل على الصمود والمرونة والتأثير العميق للحضارة الإسلامية.
-                    إنها قصة إيمان وابتكار ومساهمات خالدة للبشرية.
+                    <?php if(isset($siteSettings['site_description']->value) && $siteSettings['site_description']->value): ?>
+                        <?php echo e($siteSettings['site_description']->value); ?>
+
+                    <?php else: ?>
+                        التاريخ الإسلامي دليل على الصمود والمرونة والتأثير العميق للحضارة الإسلامية.
+                        إنها قصة إيمان وابتكار ومساهمات خالدة للبشرية.
+                    <?php endif; ?>
                 </p>
                 <div class="th-widget-about">
-                    <p class="footer-info">
-                        <i class="fa-sharp fa-solid fa-phone"></i>
-                        <span><a class="text-inherit" href="tel:+00123456789012">+967779531500</a></span>
-                    </p>
-                    <p class="footer-info">
-                        <i class="fa-sharp fa-solid fa-envelope"></i>
-                        <span><a class="text-inherit" href="mailto:infomail123@domain.com">
-                                contact@sh-alialmatry.com</a></span>
-                    </p>
-                    <p class="footer-info">
-                        <i class="fas fa-map-marker-alt"></i>
-                        اليمن - اب - ذي السفال
+                    
+                    <?php if(isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value): ?>
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-phone"></i>
+                            <span>
+                                <a class="text-inherit" href="tel:<?php echo e($siteSettings['site_mobile']->value); ?>">
+                                    <?php echo e($siteSettings['site_mobile']->value); ?>
 
-                    </p>
+                                </a>
+                            </span>
+                        </p>
+                    <?php endif; ?>
+
+                    
+                    <?php if(isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value): ?>
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-envelope"></i>
+                            <span>
+                                <a class="text-inherit" href="mailto:<?php echo e($siteSettings['site_email']->value); ?>">
+                                    <?php echo e($siteSettings['site_email']->value); ?>
+
+                                </a>
+                            </span>
+                        </p>
+                    <?php endif; ?>
+
+                    
+                    <?php if(isset($siteSettings['site_address']->value) && $siteSettings['site_address']->value): ?>
+                        <p class="footer-info">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <?php echo e($siteSettings['site_address']->value); ?>
+
+                        </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/partial/frontend/side_menu_and_preloader.blade.php ENDPATH**/ ?>

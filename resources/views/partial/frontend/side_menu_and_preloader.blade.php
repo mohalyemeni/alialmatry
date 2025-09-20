@@ -38,36 +38,51 @@
         </div>
     </div>
 </div>
-
 {{-- القائمة الجانبية --}}
 <div class="sidemenu-wrapper d-none d-lg-block">
     <div class="sidemenu-content">
         <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
         <div class="widget footer-widget">
-            <h3 class="widget_title">معلومات</h3>
+            <h3 class="widget_title mb-2">معلومات</h3>
             <div class="th-widget-about">
                 <p class="about-text">
-                    التاريخ الإسلامي دليل على الصمود والمرونة والتأثير العميق للحضارة الإسلامية.
-                    إنها قصة إيمان وابتكار ومساهمات خالدة للبشرية.
+                    @if (isset($siteSettings['site_description']->value) && $siteSettings['site_description']->value)
+                        {{ $siteSettings['site_description']->value }}
+                    @else
+                        التاريخ الإسلامي دليل على الصمود والمرونة والتأثير العميق للحضارة الإسلامية.
+                        إنها قصة إيمان وابتكار ومساهمات خالدة للبشرية.
+                    @endif
                 </p>
                 <div class="th-widget-about">
-                    <p class="footer-info">
-                        <i class="fa-sharp fa-solid fa-phone"></i>
-                        <span><a class="text-inherit" href="tel:+00123456789012">+967779531500</a></span>
-                    </p>
-                    <p class="footer-info">
-                        <i class="fa-sharp fa-solid fa-envelope"></i>
-                        <span><a class="text-inherit" href="mailto:infomail123@domain.com">
-                                contact@sh-alialmatry.com</a></span>
-                    </p>
-                    <p class="footer-info">
-                        <i class="fas fa-map-marker-alt"></i>
-                        اليمن - اب - ذي السفال
+                    @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-phone"></i>
+                            <span>
+                                <a class="text-inherit" href="tel:{{ $siteSettings['site_mobile']->value }}">
+                                    {{ $siteSettings['site_mobile']->value }}
+                                </a>
+                            </span>
+                        </p>
+                    @endif
+                    @if (isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value)
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-envelope"></i>
+                            <span>
+                                <a class="text-inherit" href="mailto:{{ $siteSettings['site_email']->value }}">
+                                    {{ $siteSettings['site_email']->value }}
+                                </a>
+                            </span>
+                        </p>
+                    @endif
 
-                    </p>
+                    @if (isset($siteSettings['site_address']->value) && $siteSettings['site_address']->value)
+                        <p class="footer-info">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ $siteSettings['site_address']->value }}
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
-
     </div>
 </div>

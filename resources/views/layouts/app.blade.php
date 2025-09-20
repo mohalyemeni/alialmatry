@@ -4,19 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>الموقع الرسمي لفضيلة الشيخ ابي الحسن علي بن محمد بن عبده المطري </title>
-    <meta name="author" content="themeholy">
+    <title>
+        {{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي لفضيلة الشيخ ابي الحسن علي بن محمد بن عبده المطري') }}
+    </title>
+
+    <meta name="author" content="فضيلة الشيخ علي المطري">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Tawba - Islamic Center HTML Template">
-    <meta name="keywords" content="Tawba - Islamic Center HTML Template">
+
+    <meta name="description"
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي للموقع') }}">
+    <meta name="keywords"
+        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
     <meta name="robots" content="INDEX,FOLLOW">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('frontand/assets/img/favicons/apple-icon-57x57.png') }}">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57"
+        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
+    <link rel="shortcut icon"
+        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
+        type="image/x-icon">
 
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/magnific-popup.min.css') }}">
@@ -26,6 +37,25 @@
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/custom.css') }}">
 
     @yield('style')
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title"
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي') }}">
+    <meta property="og:description"
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي') }}">
+    <meta property="og:image"
+        content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
+    <meta property="og:url" content="{{ $siteSettings['site_link_meta']->value ?? url()->current() }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title"
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي') }}">
+    <meta name="twitter:description"
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي') }}">
+    <meta name="twitter:image"
+        content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
 
     <style>
         .wa-float {
@@ -98,6 +128,7 @@
         }
     </style>
 </head>
+
 
 <body class="page-holder {{ request()->routeIs('frontend.detail') ? 'bg-light' : '' }}">
 
