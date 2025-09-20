@@ -4,18 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+
     <title>
-        <?php echo e($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>
+        <?php echo e(trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>
 
         <?php if(View::hasSection('title')): ?>
             | <?php echo $__env->yieldContent('title'); ?>
         <?php endif; ?>
     </title>
+
     <meta name="author" content="<?php echo $__env->yieldContent('author', config('app.APP_AUTHER')); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="<?php echo $__env->yieldContent('description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))); ?>">
-    <meta name="keywords" content="<?php echo $__env->yieldContent('keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS'))); ?>">
+
+    <meta name="description" content="<?php echo $__env->yieldContent('description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="keywords" content="<?php echo $__env->yieldContent('keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS'))))); ?>">
+
     <meta name="robots" content="INDEX,FOLLOW">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <meta name="country" content="YEMEN - اليمن">
@@ -24,20 +28,23 @@
     <meta name="robots" content="INDEX, FOLLOW" />
     <meta name="revisit-after" content="1 days" />
     <meta name="rating" content="General" />
+
     <meta property="og:type" content="<?php echo $__env->yieldContent('og_type', 'website'); ?>">
-    <meta property="og:site_name" content="<?php echo $__env->yieldContent('og_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>">
-    <meta property="og:title" content="<?php echo $__env->yieldContent('og_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>">
-    <meta property="og:description" content="<?php echo $__env->yieldContent('og_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))); ?>">
+    <meta property="og:site_name" content="<?php echo $__env->yieldContent('og_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta property="og:title" content="<?php echo $__env->yieldContent('og_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta property="og:description" content="<?php echo $__env->yieldContent('og_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
     <meta property="og:image" content="<?php echo $__env->yieldContent('og_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png'))); ?>">
     <meta property="og:url" content="<?php echo $__env->yieldContent('og_url', url()->current()); ?>">
-    <meta property="og:keywords" content="<?php echo $__env->yieldContent('og_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')); ?>">
+    <meta property="og:keywords" content="<?php echo $__env->yieldContent('og_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')))); ?>">
+
     <meta name="twitter:card" content="<?php echo $__env->yieldContent('twitter_card', 'summary_large_image'); ?>">
     <meta property="twitter:domain" content="<?php echo $__env->yieldContent('twitter_domain', parse_url(url()->current(), PHP_URL_HOST)); ?>">
-    <meta property="twitter:site_name" content="<?php echo $__env->yieldContent('twitter_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>">
-    <meta name="twitter:title" content="<?php echo $__env->yieldContent('twitter_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>">
-    <meta name="twitter:description" content="<?php echo $__env->yieldContent('twitter_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))); ?>">
+    <meta property="twitter:site_name" content="<?php echo $__env->yieldContent('twitter_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="twitter:title" content="<?php echo $__env->yieldContent('twitter_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="twitter:description" content="<?php echo $__env->yieldContent('twitter_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
     <meta name="twitter:image" content="<?php echo $__env->yieldContent('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png'))); ?>">
-    <meta property="twitter:keywords" content="<?php echo $__env->yieldContent('twitter_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')); ?>">
+    <meta property="twitter:keywords" content="<?php echo $__env->yieldContent('twitter_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')))); ?>">
+
     <link rel="canonical" href="<?php echo $__env->yieldContent('canonical', url()->current()); ?>">
     <link rel="apple-touch-icon" sizes="57x57"
         href="<?php echo e(asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png'))); ?>">

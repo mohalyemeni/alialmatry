@@ -4,17 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+
     <title>
-        {{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}
+        {{ trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))) }}
         @if (View::hasSection('title'))
             | @yield('title')
         @endif
     </title>
+
     <meta name="author" content="@yield('author', config('app.APP_AUTHER'))">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="@yield('description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
-    <meta name="keywords" content="@yield('keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')))">
+
+    <meta name="description" content="@yield('description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
+    <meta name="keywords" content="@yield('keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')))))">
+
     <meta name="robots" content="INDEX,FOLLOW">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="country" content="YEMEN - اليمن">
@@ -23,20 +27,23 @@
     <meta name="robots" content="INDEX, FOLLOW" />
     <meta name="revisit-after" content="1 days" />
     <meta name="rating" content="General" />
+
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:site_name" content="@yield('og_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
-    <meta property="og:title" content="@yield('og_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
-    <meta property="og:description" content="@yield('og_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
+    <meta property="og:site_name" content="@yield('og_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
+    <meta property="og:title" content="@yield('og_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
+    <meta property="og:description" content="@yield('og_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
     <meta property="og:image" content="@yield('og_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
     <meta property="og:url" content="@yield('og_url', url()->current())">
-    <meta property="og:keywords" content="@yield('og_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))">
+    <meta property="og:keywords" content="@yield('og_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))))">
+
     <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
     <meta property="twitter:domain" content="@yield('twitter_domain', parse_url(url()->current(), PHP_URL_HOST))">
-    <meta property="twitter:site_name" content="@yield('twitter_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
-    <meta name="twitter:title" content="@yield('twitter_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
-    <meta name="twitter:description" content="@yield('twitter_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
+    <meta property="twitter:site_name" content="@yield('twitter_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
+    <meta name="twitter:title" content="@yield('twitter_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
+    <meta name="twitter:description" content="@yield('twitter_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
     <meta name="twitter:image" content="@yield('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
-    <meta property="twitter:keywords" content="@yield('twitter_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))">
+    <meta property="twitter:keywords" content="@yield('twitter_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))))">
+
     <link rel="canonical" href="@yield('canonical', url()->current())">
     <link rel="apple-touch-icon" sizes="57x57"
         href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
