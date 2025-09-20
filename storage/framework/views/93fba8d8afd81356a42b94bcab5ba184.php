@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>
-        <?php if(View::hasSection('title')): ?>
-            <?php echo $__env->yieldContent('title'); ?> |
-        <?php endif; ?>
         <?php echo e($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))); ?>
 
+        <?php if(View::hasSection('title')): ?>
+            | <?php echo $__env->yieldContent('title'); ?>
+        <?php endif; ?>
     </title>
 
 

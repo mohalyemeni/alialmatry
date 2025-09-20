@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>
-        @if (View::hasSection('title'))
-            @yield('title') |
-        @endif
         {{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}
+        @if (View::hasSection('title'))
+            | @yield('title')
+        @endif
     </title>
 
 
