@@ -118,9 +118,10 @@
             <!-- main -->
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
-                    <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap"><?php echo e(e($fatawa->title)); ?></h3>
+                    <h3 class="mb-4 mt- widget_title title-header-noline fadeInRight wow text-wrap"><?php echo e(e($fatawa->title)); ?>
 
-                    
+                    </h3>
+
                     <div class="audio-play-wrapp mb-3">
                         <?php
                             $hasAudioFile =
@@ -153,7 +154,6 @@
                         <?php endif; ?>
                     </div>
 
-                    
                     <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
                         <?php if(!empty($fatawa->pdf_link)): ?>
                             <a href="<?php echo e($fatawa->pdf_link); ?>" target="_blank" class="th-btn style2 th-btn1">
@@ -179,7 +179,6 @@
                 </div>
             </div>
 
-            <!-- Sidebar (Fatawas) — adapted to saved sidebar template -->
             <aside class="col-xxl-4 col-lg-4  pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
@@ -202,7 +201,6 @@
                             <ul class="list-unstyled mb-0 pr-0">
                                 <?php $__currentLoopData = $recent; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php
-                                        // resolve thumbnail (kept your logic)
                                         $rd_img = null;
                                         if (!empty($rd->img)) {
                                             if (

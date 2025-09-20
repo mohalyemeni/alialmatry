@@ -5,20 +5,33 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>
-        {{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي لفضيلة الشيخ ابي الحسن علي بن محمد بن عبده المطري') }}
+        @if (View::hasSection('title'))
+            @yield('title') |
+        @endif
+        {{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}
     </title>
 
-    <meta name="author" content="فضيلة الشيخ علي المطري">
+
+    <meta name="author" content="{{ config('app.APP_AUTHER') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
 
     <meta name="description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي للموقع') }}">
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
     <meta name="keywords"
-        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
+        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')) }}">
     <meta name="robots" content="INDEX,FOLLOW">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="country" content="YEMEN - اليمن">
+    <meta name="resource-type" content="DOCUMENT" />
+    <meta name="distribution" content="Global" />
+    <meta name="robots" content="INDEX, FOLLOW" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="rating" content="General" />
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ $siteSettings['site_link_meta']->value ?? url()->current() }}">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57"
@@ -40,22 +53,33 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name"
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
     <meta property="og:title"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي') }}">
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
     <meta property="og:description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي') }}">
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
     <meta property="og:image"
         content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
     <meta property="og:url" content="{{ $siteSettings['site_link_meta']->value ?? url()->current() }}">
+    <meta property="og:keywords"
+        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
+
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain"
+        content="{{ parse_url($siteSettings['site_link_meta']->value ?? url()->current(), PHP_URL_HOST) }}">
+    <meta property="twitter:site_name"
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
     <meta name="twitter:title"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? 'الموقع الرسمي') }}">
+        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
     <meta name="twitter:description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? 'الوصف الافتراضي') }}">
+        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
     <meta name="twitter:image"
         content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
+    <meta property="twitter:keywords"
+        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
 
     <style>
         .wa-float {
@@ -128,6 +152,7 @@
         }
     </style>
 </head>
+
 
 
 <body class="page-holder {{ request()->routeIs('frontend.detail') ? 'bg-light' : '' }}">
