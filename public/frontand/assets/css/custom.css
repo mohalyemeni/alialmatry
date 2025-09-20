@@ -1834,4 +1834,5 @@ div.tagsinput input {
 }
 .new_colore {
     background: #374868;
+    padding: 0 !important;
 }
