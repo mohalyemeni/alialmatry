@@ -10,9 +10,9 @@
         <button data-color="#FC3737"><i class="fa-solid fa-droplet"></i></button>
         <button data-color="#8a2be2"><i class="fa-solid fa-droplet"></i></button>
     </div>
-    <a href="https://themeforest.net/user/themeholy" class="th-btn text-center w-100">
+    {{-- <a href="https://themeforest.net/user/themeholy" class="th-btn text-center w-100">
         <i class="fa fa-shopping-cart me-2"></i> شراء
-    </a>
+    </a> --}}
 </div>
 
 {{-- شاشة التحميل --}}
