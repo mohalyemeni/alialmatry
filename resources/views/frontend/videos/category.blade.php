@@ -1,5 +1,23 @@
 @extends('layouts.app')
+
 @section('title', $category->title ?? 'المرئيات')
+@section('description', $category->description ?? 'عرض الفيديوهات ضمن فئة ' . ($category->title ?? 'المرئيات'))
+@section('keywords', $category->keywords ?? 'فيديوهات, مرئيات, ' . ($category->title ?? ''))
+@section('canonical', urldecode(route('frontend.videos.category', $category->slug ?? '')))
+
+@section('og_type', 'website')
+@section('og_title', $category->title ?? 'المرئيات')
+@section('og_description', $category->description ?? 'عرض الفيديوهات ضمن فئة ' . ($category->title ?? 'المرئيات'))
+@section('og_image', $category->img ? asset('assets/video_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.videos.category', $category->slug ?? '')))
+@section('og_keywords', $category->keywords ?? 'فيديوهات, مرئيات, ' . ($category->title ?? ''))
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $category->title ?? 'المرئيات')
+@section('twitter_description', $category->description ?? 'عرض الفيديوهات ضمن فئة ' . ($category->title ?? 'المرئيات'))
+@section('twitter_image', $category->img ? asset('assets/video_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', $category->keywords ?? 'فيديوهات, مرئيات, ' . ($category->title ?? ''))
 
 @section('content')
     <div class="breadcumb-wrapper"

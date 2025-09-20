@@ -1,4 +1,19 @@
 <?php $__env->startSection('title', e($audio->title)); ?>
+<?php $__env->startSection('description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.audios.show', $audio->slug))); ?>
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($audio->title)); ?>
+<?php $__env->startSection('og_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('og_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.audios.show', $audio->slug))); ?>
+<?php $__env->startSection('og_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($audio->title)); ?>
+<?php $__env->startSection('twitter_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('twitter_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+
 
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"

@@ -10,37 +10,39 @@
             | @yield('title')
         @endif
     </title>
-
-
-    <meta name="author" content="{{ config('app.APP_AUTHER') }}">
+    <meta name="author" content="@yield('author', config('app.APP_AUTHER'))">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
-
-    <meta name="description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
-    <meta name="keywords"
-        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')) }}">
+    <meta name="description" content="@yield('description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
+    <meta name="keywords" content="@yield('keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')))">
     <meta name="robots" content="INDEX,FOLLOW">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <meta name="country" content="YEMEN - اليمن">
     <meta name="resource-type" content="DOCUMENT" />
     <meta name="distribution" content="Global" />
     <meta name="robots" content="INDEX, FOLLOW" />
     <meta name="revisit-after" content="1 days" />
     <meta name="rating" content="General" />
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ $siteSettings['site_link_meta']->value ?? url()->current() }}">
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="57x57"
-        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
-    <link rel="shortcut icon"
-        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:site_name" content="@yield('og_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
+    <meta property="og:title" content="@yield('og_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
+    <meta property="og:description" content="@yield('og_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
+    <meta property="og:image" content="@yield('og_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
+    <meta property="og:url" content="@yield('og_url', url()->current())">
+    <meta property="og:keywords" content="@yield('og_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))">
+    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
+    <meta property="twitter:domain" content="@yield('twitter_domain', parse_url(url()->current(), PHP_URL_HOST))">
+    <meta property="twitter:site_name" content="@yield('twitter_site_name', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
+    <meta name="twitter:title" content="@yield('twitter_title', $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))">
+    <meta name="twitter:description" content="@yield('twitter_description', $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))">
+    <meta name="twitter:image" content="@yield('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
+    <meta property="twitter:keywords" content="@yield('twitter_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+    <link rel="apple-touch-icon"
+        sizes="57x57"href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
+    <link
+        rel="shortcut icon"href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
         type="image/x-icon">
-
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/magnific-popup.min.css') }}">
@@ -51,35 +53,6 @@
 
     @yield('style')
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
-    <meta property="og:title"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
-    <meta property="og:description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
-    <meta property="og:image"
-        content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
-    <meta property="og:url" content="{{ $siteSettings['site_link_meta']->value ?? url()->current() }}">
-    <meta property="og:keywords"
-        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
-
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain"
-        content="{{ parse_url($siteSettings['site_link_meta']->value ?? url()->current(), PHP_URL_HOST) }}">
-    <meta property="twitter:site_name"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
-    <meta name="twitter:title"
-        content="{{ $siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')) }}">
-    <meta name="twitter:description"
-        content="{{ $siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')) }}">
-    <meta name="twitter:image"
-        content="{{ asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')) }}">
-    <meta property="twitter:keywords"
-        content="{{ $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '') }}">
 
     <style>
         .wa-float {
@@ -153,14 +126,10 @@
     </style>
 </head>
 
-
-
 <body class="page-holder {{ request()->routeIs('frontend.detail') ? 'bg-light' : '' }}">
 
     @include('partial.frontend.side_menu_and_preloader')
-
     @include('partial.frontend.mobile_menu')
-
     @include('partial.frontend.header')
 
     <div>

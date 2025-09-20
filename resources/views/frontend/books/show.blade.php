@@ -1,5 +1,23 @@
 @extends('layouts.app')
 @section('title', e($book->title ?? 'الكتاب'))
+@section('description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160))))
+@section('keywords', "كتب, {$book->title}, مؤلفات")
+@section('canonical', urldecode(route('frontend.books.show', $book->slug ?? '')))
+
+@section('og_type', 'article')
+@section('og_title', e($book->title ?? 'الكتاب'))
+@section('og_description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160))))
+@section('og_image', $book->img && file_exists(public_path('assets/books/images/' . $book->img)) ?
+    asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg'))
+@section('og_url', urldecode(route('frontend.books.show', $book->slug ?? '')))
+@section('og_keywords', "كتب, {$book->title}, مؤلفات")
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($book->title ?? 'الكتاب'))
+@section('twitter_description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160))))
+@section('twitter_image', $book->img && file_exists(public_path('assets/books/images/' . $book->img)) ?
+    asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg'))
+@section('twitter_keywords', "كتب, {$book->title}, مؤلفات")
 
 @section('content')
     <div class="breadcumb-wrapper"

@@ -1,4 +1,20 @@
 <?php $__env->startSection('title', 'الكتب والمؤلفات'); ?>
+<?php $__env->startSection('description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع'); ?>
+<?php $__env->startSection('keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب'); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.books.index'))); ?>
+
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', 'الكتب والمؤلفات'); ?>
+<?php $__env->startSection('og_description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع'); ?>
+<?php $__env->startSection('og_image', asset('frontand/assets/img/books/default.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.books.index'))); ?>
+<?php $__env->startSection('og_keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب'); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', 'الكتب والمؤلفات'); ?>
+<?php $__env->startSection('twitter_description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع'); ?>
+<?php $__env->startSection('twitter_image', asset('frontand/assets/img/books/default.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب'); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"

@@ -1,4 +1,22 @@
 <?php $__env->startSection('title', e($book->title ?? 'الكتاب')); ?>
+<?php $__env->startSection('description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160)))); ?>
+<?php $__env->startSection('keywords', "كتب, {$book->title}, مؤلفات"); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.books.show', $book->slug ?? ''))); ?>
+
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($book->title ?? 'الكتاب')); ?>
+<?php $__env->startSection('og_description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160)))); ?>
+<?php $__env->startSection('og_image', $book->img && file_exists(public_path('assets/books/images/' . $book->img)) ?
+    asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.books.show', $book->slug ?? ''))); ?>
+<?php $__env->startSection('og_keywords', "كتب, {$book->title}, مؤلفات"); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($book->title ?? 'الكتاب')); ?>
+<?php $__env->startSection('twitter_description', e($book->excerpt ?? strip_tags(Str::limit($book->description ?? '', 160)))); ?>
+<?php $__env->startSection('twitter_image', $book->img && file_exists(public_path('assets/books/images/' . $book->img)) ?
+    asset('assets/books/images/' . $book->img) : asset('frontand/assets/img/books/default.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', "كتب, {$book->title}, مؤلفات"); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"

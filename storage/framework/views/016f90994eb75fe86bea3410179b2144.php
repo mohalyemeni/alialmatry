@@ -1,4 +1,20 @@
 <?php $__env->startSection('title', e($category->title)); ?>
+<?php $__env->startSection('description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title)); ?>
+<?php $__env->startSection('keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title)); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.audios.category', $category->slug ?? $category->id))); ?>
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', e($category->title)); ?>
+<?php $__env->startSection('og_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title)); ?>
+<?php $__env->startSection('og_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.audios.category', $category->slug ?? $category->id))); ?>
+<?php $__env->startSection('og_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title)); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($category->title)); ?>
+<?php $__env->startSection('twitter_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title)); ?>
+<?php $__env->startSection('twitter_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title)); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"

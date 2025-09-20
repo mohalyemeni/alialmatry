@@ -1,7 +1,19 @@
-{{-- resources/views/frontend/fatawas/show.blade.php --}}
 @extends('layouts.app')
-@section('title', e($fatawa->title ?? 'الفتوى'))
-
+@section('title', e($fatawa->title))
+@section('description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160)))
+@section('keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title))
+@section('canonical', urldecode(route('frontend.fatawas.show', $fatawa->slug)))
+@section('og_type', 'article')
+@section('og_title', e($fatawa->title))
+@section('og_description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160)))
+@section('og_image', $fatawa->img ?? asset('frontand/assets/img/normal/counter-image.jpg'))
+@section('og_url', urldecode(route('frontend.fatawas.show', $fatawa->slug)))
+@section('og_keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title))
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($fatawa->title))
+@section('twitter_description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160)))
+@section('twitter_image', $fatawa->img ?? asset('frontand/assets/img/normal/counter-image.jpg'))
+@section('twitter_keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title))
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -225,8 +237,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.fatawas.show', $rd->slug) }}">
-                                            <img src="{{ $rd_img }}" alt="{{ e($rd->title) }}" loading="lazy"
-                                                class="recent-video-thumb"
+                                            <img src="{{ $rd_img }}" loading="lazy" class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 

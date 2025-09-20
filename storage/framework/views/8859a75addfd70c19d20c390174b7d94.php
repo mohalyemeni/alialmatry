@@ -1,3 +1,22 @@
+<?php $__env->startSection('title', e($durar->title ?? 'الدرر السنية')); ?>
+<?php $__env->startSection('description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160)))); ?>
+<?php $__env->startSection('keywords', "درر, {$durar->title}, إسلام, حديث"); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.durars.show', $durar->slug ?? ''))); ?>
+
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($durar->title ?? 'الدرر السنية')); ?>
+<?php $__env->startSection('og_description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160)))); ?>
+<?php $__env->startSection('og_image', $durar->img && file_exists(public_path('assets/durar_diniya/images/' . $durar->img)) ?
+    asset('assets/durar_diniya/images/' . $durar->img) : asset('frontand/assets/img/normal/counter-image.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.durars.show', $durar->slug ?? ''))); ?>
+<?php $__env->startSection('og_keywords', "درر, {$durar->title}, إسلام, حديث"); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($durar->title ?? 'الدرر السنية')); ?>
+<?php $__env->startSection('twitter_description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160)))); ?>
+<?php $__env->startSection('twitter_image', $durar->img && file_exists(public_path('assets/durar_diniya/images/' . $durar->img)) ?
+    asset('assets/durar_diniya/images/' . $durar->img) : asset('frontand/assets/img/normal/counter-image.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', "درر, {$durar->title}, إسلام, حديث"); ?>
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -24,7 +43,8 @@
             <!-- main -->
             <main class="col-12 col-lg-8">
                 <article class="durar-article">
-                    <h3 class=" widget_title title-header-noline fadeInRight wow mb-4 "><?php echo e(e($durar->title ?? '')); ?></h3>
+                    <h3 class=" widget_title title-header-noline fadeInRight wow mb-4  text-wrap">
+                        <?php echo e(e($durar->title ?? '')); ?></h3>
 
                     <div class="mb-4 blog-single-img-wrapper blog-img">
                         <img src="<?php echo e($img ?? asset('frontand/assets/img/normal/counter-image.jpg')); ?>"

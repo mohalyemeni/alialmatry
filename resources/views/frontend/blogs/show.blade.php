@@ -1,5 +1,26 @@
 @extends('layouts.app')
-@section('title', $blog->title)
+@section('title', e($blog->title))
+@section('description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''), 160)))
+@section('keywords', "مقالات, {$blog->title}, مدونة")
+@section('canonical', urldecode(route('frontend.blogs.show', $blog->slug)))
+
+@section('og_type', 'article')
+@section('og_title', e($blog->title))
+@section('og_description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''),
+    160)))
+@section('og_image', $blog->img ? asset('assets/blogs/images/' . $blog->img) :
+    asset('frontand/assets/img/blog/default.jpg'))
+@section('og_url', urldecode(route('frontend.blogs.show', $blog->slug)))
+@section('og_keywords', "مقالات, {$blog->title}, مدونة")
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($blog->title))
+@section('twitter_description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''),
+    160)))
+@section('twitter_image', $blog->img ? asset('assets/blogs/images/' . $blog->img) :
+    asset('frontand/assets/img/blog/default.jpg'))
+@section('twitter_keywords', "مقالات, {$blog->title}, مدونة")
+
 
 @section('content')
 

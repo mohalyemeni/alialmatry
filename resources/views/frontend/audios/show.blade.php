@@ -1,5 +1,20 @@
 @extends('layouts.app')
 @section('title', e($audio->title))
+@section('description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
+@section('keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
+@section('canonical', urldecode(route('frontend.audios.show', $audio->slug)))
+@section('og_type', 'article')
+@section('og_title', e($audio->title))
+@section('og_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
+@section('og_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.audios.show', $audio->slug)))
+@section('og_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($audio->title))
+@section('twitter_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
+@section('twitter_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
+
 
 @section('content')
     <div class="breadcumb-wrapper"

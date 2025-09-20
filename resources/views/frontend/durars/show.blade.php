@@ -1,5 +1,23 @@
 @extends('layouts.app')
+@section('title', e($durar->title ?? 'الدرر السنية'))
+@section('description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160))))
+@section('keywords', "درر, {$durar->title}, إسلام, حديث")
+@section('canonical', urldecode(route('frontend.durars.show', $durar->slug ?? '')))
 
+@section('og_type', 'article')
+@section('og_title', e($durar->title ?? 'الدرر السنية'))
+@section('og_description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160))))
+@section('og_image', $durar->img && file_exists(public_path('assets/durar_diniya/images/' . $durar->img)) ?
+    asset('assets/durar_diniya/images/' . $durar->img) : asset('frontand/assets/img/normal/counter-image.jpg'))
+@section('og_url', urldecode(route('frontend.durars.show', $durar->slug ?? '')))
+@section('og_keywords', "درر, {$durar->title}, إسلام, حديث")
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($durar->title ?? 'الدرر السنية'))
+@section('twitter_description', e($durar->excerpt ?? strip_tags(Str::limit($durar->description ?? '', 160))))
+@section('twitter_image', $durar->img && file_exists(public_path('assets/durar_diniya/images/' . $durar->img)) ?
+    asset('assets/durar_diniya/images/' . $durar->img) : asset('frontand/assets/img/normal/counter-image.jpg'))
+@section('twitter_keywords', "درر, {$durar->title}, إسلام, حديث")
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">

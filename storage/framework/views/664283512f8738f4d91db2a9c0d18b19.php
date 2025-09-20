@@ -1,4 +1,25 @@
-<?php $__env->startSection('title', $blog->title); ?>
+<?php $__env->startSection('title', e($blog->title)); ?>
+<?php $__env->startSection('description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''), 160))); ?>
+<?php $__env->startSection('keywords', "مقالات, {$blog->title}, مدونة"); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.blogs.show', $blog->slug))); ?>
+
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($blog->title)); ?>
+<?php $__env->startSection('og_description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''),
+    160))); ?>
+<?php $__env->startSection('og_image', $blog->img ? asset('assets/blogs/images/' . $blog->img) :
+    asset('frontand/assets/img/blog/default.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.blogs.show', $blog->slug))); ?>
+<?php $__env->startSection('og_keywords', "مقالات, {$blog->title}, مدونة"); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($blog->title)); ?>
+<?php $__env->startSection('twitter_description', e($blog->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($blog->description ?? ''),
+    160))); ?>
+<?php $__env->startSection('twitter_image', $blog->img ? asset('assets/blogs/images/' . $blog->img) :
+    asset('frontand/assets/img/blog/default.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', "مقالات, {$blog->title}, مدونة"); ?>
+
 
 <?php $__env->startSection('content'); ?>
 

@@ -1,5 +1,21 @@
 @extends('layouts.app')
 @section('title', e($category->title))
+@section('description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
+@section('canonical', urldecode(route('frontend.audios.category', $category->slug ?? $category->id)))
+@section('og_type', 'website')
+@section('og_title', e($category->title))
+@section('og_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('og_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.audios.category', $category->slug ?? $category->id)))
+@section('og_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($category->title))
+@section('twitter_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('twitter_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
 
 @section('content')
     <div class="breadcumb-wrapper"

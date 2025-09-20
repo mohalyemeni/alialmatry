@@ -1,5 +1,20 @@
 @extends('layouts.app')
+
 @section('title', 'الفتاوى')
+@section('description', 'عرض آخر الفتاوى المتاحة على الموقع')
+@section('keywords', 'فتاوى, أسئلة شرعية, موقعنا')
+@section('canonical', urldecode(route('frontend.fatawas.index')))
+@section('og_type', 'website')
+@section('og_title', 'الفتاوى')
+@section('og_description', 'عرض آخر الفتاوى المتاحة على الموقع')
+@section('og_image', asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', route('frontend.fatawas.index'))
+@section('og_keywords', 'فتاوى, أسئلة شرعية, موقعنا')
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', 'الفتاوى')
+@section('twitter_description', 'عرض آخر الفتاوى المتاحة على الموقع')
+@section('twitter_image', asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', 'فتاوى, أسئلة شرعية, موقعنا')
 
 @section('content')
     <div class="breadcumb-wrapper"

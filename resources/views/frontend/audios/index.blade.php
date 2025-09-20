@@ -1,5 +1,20 @@
 @extends('layouts.app')
-@section('title', __('panel.audios'))
+
+@section('title', 'الصوتيات')
+@section('description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع')
+@section('keywords', 'صوتيات, مرئيات, موقعنا')
+@section('canonical', urldecode(route('frontend.audios.index')))
+@section('og_type', 'website')
+@section('og_title', 'الصوتيات')
+@section('og_description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع')
+@section('og_image', asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', route('frontend.audios.index'))
+@section('og_keywords', 'صوتيات, مرئيات, موقعنا')
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', 'الصوتيات')
+@section('twitter_description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع')
+@section('twitter_image', asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', 'صوتيات, مرئيات, موقعنا')
 
 @section('content')
 
@@ -34,20 +49,7 @@
                             @php
                                 $delay = 0.3 + $index * 0.04;
 
-                                $img = null;
-                                if (!empty($category->img)) {
-                                    $path = public_path('assets/audio_categories/' . $category->img);
-                                    if (file_exists($path)) {
-                                        $img = asset('assets/audio_categories/' . $category->img);
-                                    } elseif (
-                                        \Illuminate\Support\Str::startsWith($category->img, ['http://', 'https://'])
-                                    ) {
-                                        $img = $category->img;
-                                    } elseif (file_exists(public_path($category->img))) {
-                                        $img = asset($category->img);
-                                    }
-                                }
-
+                                $img = $category->img ? asset('assets/audio_categories/' . $category->img) : null;
                                 $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
                                 $audiosCount =
                                     $category->audios_count ?? ($category->audios()->where('status', 1)->count() ?? 0);

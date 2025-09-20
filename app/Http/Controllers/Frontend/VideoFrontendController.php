@@ -12,31 +12,28 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoFrontendController extends Controller
 {
+
     protected function resolveThumbnail($thumb)
     {
         if (empty($thumb)) {
             return null;
         }
 
-        // إذا كان الرابط يحتوي على http أو https، نرجعه كما هو
         if (Str::startsWith($thumb, ['http://', 'https://'])) {
             return $thumb;
         }
 
         $thumb = ltrim($thumb, '/');
 
-        // نتحقق من وجود الملف في المسار العام
         if (file_exists(public_path($thumb))) {
             return asset($thumb);
         }
 
-        // إذا كان الملف موجود في مجلد assets/video_categories
         $pathInAssets = 'assets/video_categories/' . basename($thumb);
         if (file_exists(public_path($pathInAssets))) {
             return asset($pathInAssets);
         }
 
-        // إذا كان الملف موجود في التخزين
         if (Storage::disk('public')->exists($thumb)) {
             return Storage::disk('public')->url($thumb);
         }
@@ -50,21 +47,22 @@ class VideoFrontendController extends Controller
         $now = Carbon::now();
 
         try {
+
             $featuredCats = Category::query()
                 ->where('section', Category::SECTION_VIDEO)
                 ->where('status', true)
                 ->where('featured', 1)
                 ->whereHas('videos', function ($q) use ($now) {
                     $q->where('status', 1)
-                    ->where(function ($q2) use ($now) {
-                        $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                    });
+                      ->where(function ($q2) use ($now) {
+                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                      });
                 })
                 ->withCount(['videos' => function ($q) use ($now) {
                     $q->where('status', 1)
-                    ->where(function ($q2) use ($now) {
-                        $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                    });
+                      ->where(function ($q2) use ($now) {
+                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                      });
                 }])
                 ->orderByDesc('id')
                 ->get();
@@ -77,15 +75,15 @@ class VideoFrontendController extends Controller
                 })
                 ->whereHas('videos', function ($q) use ($now) {
                     $q->where('status', 1)
-                    ->where(function ($q2) use ($now) {
-                        $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                    });
+                      ->where(function ($q2) use ($now) {
+                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                      });
                 })
                 ->withCount(['videos' => function ($q) use ($now) {
                     $q->where('status', 1)
-                    ->where(function ($q2) use ($now) {
-                        $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                    });
+                      ->where(function ($q2) use ($now) {
+                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                      });
                 }])
                 ->orderByDesc('id')
                 ->get();
@@ -103,13 +101,10 @@ class VideoFrontendController extends Controller
 
             return view('frontend.videos.index', compact('categories'));
         } catch (\Exception $e) {
-
             \Log::error('Error in VideoFrontendController@index: ' . $e->getMessage());
-
             if ($request->ajax()) {
                 return response()->json(['error' => 'حدث خطأ ما'], 500);
             }
-
             return redirect()->route('frontend.index')->with('error', 'حدث خطأ ما، يرجى المحاولة لاحقاً');
         }
     }
@@ -131,8 +126,7 @@ class VideoFrontendController extends Controller
             ->paginate(8);
 
         $videos->getCollection()->transform(function ($v) {
-            $thumb = $v->thumbnail ?? null;
-            $v->thumbnail = $this->resolveThumbnail($thumb);
+            $v->thumbnail = $this->resolveThumbnail($v->thumbnail ?? null);
             return $v;
         });
 
@@ -148,9 +142,10 @@ class VideoFrontendController extends Controller
         return view('frontend.videos.category', compact('category', 'videos'));
     }
 
+
     public function show(Request $request, Video $video)
     {
-
+        // تحقق من وجود التصنيف وصلاحية القسم
         if (! $video->category || $video->category->section != Category::SECTION_VIDEO) {
             abort(404);
         }
@@ -160,6 +155,7 @@ class VideoFrontendController extends Controller
             try {
                 $video->increment('views');
             } catch (\Throwable $e) {
+                \Log::error("Error incrementing video views: {$e->getMessage()}");
             }
             $request->session()->put($sessionKey, now()->toDateTimeString());
         }
@@ -167,7 +163,8 @@ class VideoFrontendController extends Controller
         $now = Carbon::now();
         $limit = 5;
 
-         $recent = Video::with('category')->where('category_id', $video->category_id)
+        $recent = Video::with('category')
+            ->where('category_id', $video->category_id)
             ->where('status', 1)
             ->where(function ($q) use ($now) {
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
@@ -179,7 +176,8 @@ class VideoFrontendController extends Controller
 
         if ($recent->count() < $limit) {
             $needed = $limit - $recent->count();
-            $additional = Video::with('category')->where('status', 1)
+            $additional = Video::with('category')
+                ->where('status', 1)
                 ->where(function ($q) use ($now) {
                     $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
                 })
@@ -187,9 +185,7 @@ class VideoFrontendController extends Controller
                 ->orderByDesc('published_on')
                 ->take($limit + 5)
                 ->get()
-                ->reject(function ($item) use ($recent) {
-                    return $recent->contains('id', $item->id);
-                })
+                ->reject(fn($item) => $recent->contains('id', $item->id))
                 ->take($needed);
 
             $recent = $recent->concat($additional)->slice(0, $limit);
@@ -219,10 +215,26 @@ class VideoFrontendController extends Controller
             ];
         });
 
-        if (isset($video->thumbnail)) {
-            $video->thumbnail = $this->resolveThumbnail($video->thumbnail);
-        }
+        $video->thumbnail = $this->resolveThumbnail($video->thumbnail ?? null);
 
-        return view('frontend.videos.show', compact('video', 'recentVideos'));
+        $seoData = [
+            'title' => $video->title,
+            'description' => Str::limit($video->description, 160),
+            'keywords' => $video->tags ?? '',
+            'canonical' => url()->current(),
+            'og_type' => 'video',
+            'og_title' => $video->title,
+            'og_description' => Str::limit($video->description, 160),
+            'og_image' => $video->thumbnail ?? asset('assets/site_settings/logo.png'),
+            'og_url' => url()->current(),
+            'og_keywords' => $video->tags ?? '',
+            'twitter_card' => 'summary_large_image',
+            'twitter_title' => $video->title,
+            'twitter_description' => Str::limit($video->description, 160),
+            'twitter_image' => $video->thumbnail ?? asset('assets/site_settings/logo.png'),
+            'twitter_keywords' => $video->tags ?? '',
+        ];
+
+        return view('frontend.videos.show', compact('video', 'recentVideos'))->with($seoData);
     }
 }

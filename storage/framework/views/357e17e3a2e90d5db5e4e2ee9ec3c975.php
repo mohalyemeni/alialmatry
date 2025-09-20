@@ -1,4 +1,22 @@
-<?php $__env->startSection('title', $category->title); ?>
+<?php $__env->startSection('title', e($category->title)); ?>
+<?php $__env->startSection('description', "عرض المقالات ضمن تصنيف {$category->title}"); ?>
+<?php $__env->startSection('keywords', "مقالات, {$category->title}, مدونة"); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.blogs.category', $category->slug))); ?>
+
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', e($category->title)); ?>
+<?php $__env->startSection('og_description', "عرض المقالات ضمن تصنيف {$category->title}"); ?>
+<?php $__env->startSection('og_image', $category->img ? asset('assets/blog_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.blogs.category', $category->slug))); ?>
+<?php $__env->startSection('og_keywords', "مقالات, {$category->title}, مدونة"); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($category->title)); ?>
+<?php $__env->startSection('twitter_description', "عرض المقالات ضمن تصنيف {$category->title}"); ?>
+<?php $__env->startSection('twitter_image', $category->img ? asset('assets/blog_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', "مقالات, {$category->title}, مدونة"); ?>
 
 <?php $__env->startSection('content'); ?>
 

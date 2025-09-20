@@ -1,4 +1,18 @@
 <?php $__env->startSection('title', 'المقالات'); ?>
+<?php $__env->startSection('description', 'عرض آخر تصنيفات المقالات والمقالات المتاحة على الموقع'); ?>
+<?php $__env->startSection('keywords', 'مقالات, مدونة, موقعنا'); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.blogs.index'))); ?>
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', 'المقالات'); ?>
+<?php $__env->startSection('og_description', 'عرض آخر تصنيفات المقالات والمقالات المتاحة على الموقع'); ?>
+<?php $__env->startSection('og_image', asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', route('frontend.blogs.index')); ?>
+<?php $__env->startSection('og_keywords', 'مقالات, مدونة, موقعنا'); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', 'المقالات'); ?>
+<?php $__env->startSection('twitter_description', 'عرض آخر تصنيفات المقالات والمقالات المتاحة على الموقع'); ?>
+<?php $__env->startSection('twitter_image', asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', 'مقالات, مدونة, موقعنا'); ?>
 
 <?php $__env->startSection('content'); ?>
 

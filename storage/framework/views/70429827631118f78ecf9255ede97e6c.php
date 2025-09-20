@@ -1,4 +1,22 @@
-<?php $__env->startSection('title', $category->title); ?>
+<?php $__env->startSection('title', $category->title ?? 'الفتاوى'); ?>
+<?php $__env->startSection('description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? '')); ?>
+<?php $__env->startSection('keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية'); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.fatawas.category', $category->slug ?? ''))); ?>
+
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', $category->title ?? 'الفتاوى'); ?>
+<?php $__env->startSection('og_description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? '')); ?>
+<?php $__env->startSection('og_image', $category->img ? asset('assets/fatwa_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.fatawas.category', $category->slug ?? ''))); ?>
+<?php $__env->startSection('og_keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية'); ?>
+
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', $category->title ?? 'الفتاوى'); ?>
+<?php $__env->startSection('twitter_description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? '')); ?>
+<?php $__env->startSection('twitter_image', $category->img ? asset('assets/fatwa_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية'); ?>
 
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"

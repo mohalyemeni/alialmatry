@@ -1,5 +1,24 @@
 @extends('layouts.app')
-@section('title', $category->title)
+
+@section('title', $category->title ?? 'الفتاوى')
+@section('description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? ''))
+@section('keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية')
+@section('canonical', urldecode(route('frontend.fatawas.category', $category->slug ?? '')))
+
+@section('og_type', 'website')
+@section('og_title', $category->title ?? 'الفتاوى')
+@section('og_description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? ''))
+@section('og_image', $category->img ? asset('assets/fatwa_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.fatawas.category', $category->slug ?? '')))
+@section('og_keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية')
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $category->title ?? 'الفتاوى')
+@section('twitter_description', $category->description ?? 'عرض آخر الفتاوى ضمن تصنيف ' . ($category->title ?? ''))
+@section('twitter_image', $category->img ? asset('assets/fatwa_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', $category->keywords ?? 'فتاوى, ' . ($category->title ?? '') . ', أسئلة شرعية')
 
 @section('content')
     <div class="breadcumb-wrapper"

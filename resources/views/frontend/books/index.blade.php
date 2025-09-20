@@ -1,5 +1,21 @@
 @extends('layouts.app')
 @section('title', 'الكتب والمؤلفات')
+@section('description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع')
+@section('keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب')
+@section('canonical', urldecode(route('frontend.books.index')))
+
+@section('og_type', 'website')
+@section('og_title', 'الكتب والمؤلفات')
+@section('og_description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع')
+@section('og_image', asset('frontand/assets/img/books/default.jpg'))
+@section('og_url', urldecode(route('frontend.books.index')))
+@section('og_keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب')
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', 'الكتب والمؤلفات')
+@section('twitter_description', 'عرض جميع الكتب والمؤلفات المتاحة على الموقع')
+@section('twitter_image', asset('frontand/assets/img/books/default.jpg'))
+@section('twitter_keywords', 'كتب, مؤلفات, مكتبة, تحميل كتب')
 
 @section('content')
     <div class="breadcumb-wrapper"

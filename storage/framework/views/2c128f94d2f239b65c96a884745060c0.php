@@ -1,4 +1,18 @@
-<?php $__env->startSection('title', __('panel.audios')); ?>
+<?php $__env->startSection('title', 'الصوتيات'); ?>
+<?php $__env->startSection('description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع'); ?>
+<?php $__env->startSection('keywords', 'صوتيات, مرئيات, موقعنا'); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.audios.index'))); ?>
+<?php $__env->startSection('og_type', 'website'); ?>
+<?php $__env->startSection('og_title', 'الصوتيات'); ?>
+<?php $__env->startSection('og_description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع'); ?>
+<?php $__env->startSection('og_image', asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', route('frontend.audios.index')); ?>
+<?php $__env->startSection('og_keywords', 'صوتيات, مرئيات, موقعنا'); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', 'الصوتيات'); ?>
+<?php $__env->startSection('twitter_description', 'عرض آخر التصنيفات الصوتية والصوتيات المتاحة على الموقع'); ?>
+<?php $__env->startSection('twitter_image', asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', 'صوتيات, مرئيات, موقعنا'); ?>
 
 <?php $__env->startSection('content'); ?>
 
@@ -33,20 +47,7 @@
                             <?php
                                 $delay = 0.3 + $index * 0.04;
 
-                                $img = null;
-                                if (!empty($category->img)) {
-                                    $path = public_path('assets/audio_categories/' . $category->img);
-                                    if (file_exists($path)) {
-                                        $img = asset('assets/audio_categories/' . $category->img);
-                                    } elseif (
-                                        \Illuminate\Support\Str::startsWith($category->img, ['http://', 'https://'])
-                                    ) {
-                                        $img = $category->img;
-                                    } elseif (file_exists(public_path($category->img))) {
-                                        $img = asset($category->img);
-                                    }
-                                }
-
+                                $img = $category->img ? asset('assets/audio_categories/' . $category->img) : null;
                                 $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
                                 $audiosCount =
                                     $category->audios_count ?? ($category->audios()->where('status', 1)->count() ?? 0);

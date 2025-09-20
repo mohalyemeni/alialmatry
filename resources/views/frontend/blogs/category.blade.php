@@ -1,5 +1,24 @@
 @extends('layouts.app')
-@section('title', $category->title)
+
+@section('title', e($category->title))
+@section('description', "عرض المقالات ضمن تصنيف {$category->title}")
+@section('keywords', "مقالات, {$category->title}, مدونة")
+@section('canonical', urldecode(route('frontend.blogs.category', $category->slug)))
+
+@section('og_type', 'website')
+@section('og_title', e($category->title))
+@section('og_description', "عرض المقالات ضمن تصنيف {$category->title}")
+@section('og_image', $category->img ? asset('assets/blog_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.blogs.category', $category->slug)))
+@section('og_keywords', "مقالات, {$category->title}, مدونة")
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', e($category->title))
+@section('twitter_description', "عرض المقالات ضمن تصنيف {$category->title}")
+@section('twitter_image', $category->img ? asset('assets/blog_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', "مقالات, {$category->title}, مدونة")
 
 @section('content')
 

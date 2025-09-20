@@ -1,5 +1,18 @@
-<?php $__env->startSection('title', e($fatawa->title ?? 'الفتوى')); ?>
-
+<?php $__env->startSection('title', e($fatawa->title)); ?>
+<?php $__env->startSection('description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160))); ?>
+<?php $__env->startSection('keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title)); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.fatawas.show', $fatawa->slug))); ?>
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($fatawa->title)); ?>
+<?php $__env->startSection('og_description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160))); ?>
+<?php $__env->startSection('og_image', $fatawa->img ?? asset('frontand/assets/img/normal/counter-image.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.fatawas.show', $fatawa->slug))); ?>
+<?php $__env->startSection('og_keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title)); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($fatawa->title)); ?>
+<?php $__env->startSection('twitter_description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160))); ?>
+<?php $__env->startSection('twitter_image', $fatawa->img ?? asset('frontand/assets/img/normal/counter-image.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title)); ?>
 <?php $__env->startSection('content'); ?>
     <div class="breadcumb-wrapper"
         style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -226,8 +239,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="<?php echo e(route('frontend.fatawas.show', $rd->slug)); ?>">
-                                            <img src="<?php echo e($rd_img); ?>" alt="<?php echo e(e($rd->title)); ?>" loading="lazy"
-                                                class="recent-video-thumb"
+                                            <img src="<?php echo e($rd_img); ?>" loading="lazy" class="recent-video-thumb"
                                                 style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
                                         </a>
 
