@@ -38,10 +38,10 @@
     <meta name="twitter:image" content="@yield('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
     <meta property="twitter:keywords" content="@yield('twitter_keywords', $siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))">
     <link rel="canonical" href="@yield('canonical', url()->current())">
-    <link rel="apple-touch-icon"
-        sizes="57x57"href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
-    <link
-        rel="shortcut icon"href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
+    <link rel="apple-touch-icon" sizes="57x57"
+        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
+    <link rel="shortcut icon"
+        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
         type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/css/fontawesome.min.css') }}">
