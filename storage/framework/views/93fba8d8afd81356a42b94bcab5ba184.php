@@ -6,21 +6,22 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>
-        {{ trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))) }}
-        @if (View::hasSection('title'))
-            | @yield('title')
-        @endif
+        <?php echo e(trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>
+
+        <?php if(View::hasSection('title')): ?>
+            | <?php echo $__env->yieldContent('title'); ?>
+        <?php endif; ?>
     </title>
 
-    <meta name="author" content="@yield('author', config('app.APP_AUTHER'))">
+    <meta name="author" content="<?php echo $__env->yieldContent('author', config('app.APP_AUTHER')); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <meta name="description" content="@yield('description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
-    <meta name="keywords" content="@yield('keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS')))))">
+    <meta name="description" content="<?php echo $__env->yieldContent('description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="keywords" content="<?php echo $__env->yieldContent('keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? config('app.APP_KEYWORDS'))))); ?>">
 
     <meta name="robots" content="INDEX,FOLLOW">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <meta name="country" content="YEMEN - اليمن">
     <meta name="resource-type" content="DOCUMENT" />
     <meta name="distribution" content="Global" />
@@ -28,37 +29,37 @@
     <meta name="revisit-after" content="1 days" />
     <meta name="rating" content="General" />
 
-    <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:site_name" content="@yield('og_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
-    <meta property="og:title" content="@yield('og_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
-    <meta property="og:description" content="@yield('og_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
-    <meta property="og:image" content="@yield('og_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
-    <meta property="og:url" content="@yield('og_url', url()->current())">
-    <meta property="og:keywords" content="@yield('og_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))))">
+    <meta property="og:type" content="<?php echo $__env->yieldContent('og_type', 'website'); ?>">
+    <meta property="og:site_name" content="<?php echo $__env->yieldContent('og_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta property="og:title" content="<?php echo $__env->yieldContent('og_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta property="og:description" content="<?php echo $__env->yieldContent('og_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta property="og:image" content="<?php echo $__env->yieldContent('og_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png'))); ?>">
+    <meta property="og:url" content="<?php echo $__env->yieldContent('og_url', url()->current()); ?>">
+    <meta property="og:keywords" content="<?php echo $__env->yieldContent('og_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')))); ?>">
 
-    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
-    <meta property="twitter:domain" content="@yield('twitter_domain', parse_url(url()->current(), PHP_URL_HOST))">
-    <meta property="twitter:site_name" content="@yield('twitter_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
-    <meta name="twitter:title" content="@yield('twitter_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME')))))">
-    <meta name="twitter:description" content="@yield('twitter_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME')))))">
-    <meta name="twitter:image" content="@yield('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png')))">
-    <meta property="twitter:keywords" content="@yield('twitter_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? ''))))">
+    <meta name="twitter:card" content="<?php echo $__env->yieldContent('twitter_card', 'summary_large_image'); ?>">
+    <meta property="twitter:domain" content="<?php echo $__env->yieldContent('twitter_domain', parse_url(url()->current(), PHP_URL_HOST)); ?>">
+    <meta property="twitter:site_name" content="<?php echo $__env->yieldContent('twitter_site_name', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="twitter:title" content="<?php echo $__env->yieldContent('twitter_title', trim(strip_tags($siteSettings['site_name_meta']->value ?? ($siteSettings['site_name']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="twitter:description" content="<?php echo $__env->yieldContent('twitter_description', trim(strip_tags($siteSettings['site_description_meta']->value ?? ($siteSettings['site_description']->value ?? config('app.APP_NAME'))))); ?>">
+    <meta name="twitter:image" content="<?php echo $__env->yieldContent('twitter_image', asset('assets/site_settings/' . ($siteSettings['site_logo_light']->value ?? 'logo.png'))); ?>">
+    <meta property="twitter:keywords" content="<?php echo $__env->yieldContent('twitter_keywords', trim(strip_tags($siteSettings['site_keywords_meta']->value ?? ($siteSettings['site_keywords']->value ?? '')))); ?>">
 
-    <link rel="canonical" href="@yield('canonical', url()->current())">
+    <link rel="canonical" href="<?php echo $__env->yieldContent('canonical', url()->current()); ?>">
     <link rel="apple-touch-icon" sizes="57x57"
-        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}">
+        href="<?php echo e(asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png'))); ?>">
     <link rel="shortcut icon"
-        href="{{ asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png')) }}"
+        href="<?php echo e(asset('assets/site_settings/' . ($siteSettings['site_favicon']->value ?? 'favicon.png'))); ?>"
         type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/magnific-popup.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/swiper-bundle.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/fonts/feather-font/css/iconfont.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontand/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/bootstrap.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/fontawesome.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/magnific-popup.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/swiper-bundle.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/style.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/fonts/feather-font/css/iconfont.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontand/assets/css/custom.css')); ?>">
 
-    @yield('style')
+    <?php echo $__env->yieldContent('style'); ?>
 
 
     <style>
@@ -133,17 +134,17 @@
     </style>
 </head>
 
-<body class="page-holder {{ request()->routeIs('frontend.detail') ? 'bg-light' : '' }}">
+<body class="page-holder <?php echo e(request()->routeIs('frontend.detail') ? 'bg-light' : ''); ?>">
 
-    @include('partial.frontend.side_menu_and_preloader')
-    @include('partial.frontend.mobile_menu')
-    @include('partial.frontend.header')
+    <?php echo $__env->make('partial.frontend.side_menu_and_preloader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('partial.frontend.mobile_menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('partial.frontend.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div>
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </div>
 
-    @include('partial.frontend.footer')
+    <?php echo $__env->make('partial.frontend.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="popup-search-box d-none d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
@@ -153,21 +154,21 @@
         </form>
     </div>
 
-    <script src="{{ asset('frontand/assets/js/vendor/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/circle-progress.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/nice-select.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/gsap.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/ScrollTrigger.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/SplitText.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/lenis.min.js') }}"></script>
-    <script src="{{ asset('frontand/assets/js/wow.min.js') }}"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/vendor/jquery-3.7.1.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/swiper-bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/jquery.magnific-popup.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/circle-progress.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/jquery.counterup.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/jquery-ui.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/imagesloaded.pkgd.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/isotope.pkgd.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/nice-select.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/gsap.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/ScrollTrigger.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/SplitText.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/lenis.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/wow.min.js')); ?>"></script>
 
     <div class="scroll-top">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
@@ -189,9 +190,9 @@
         </a>
     </div>
 
-    <script src="{{ asset('frontand/assets/js/main.js') }}"></script>
+    <script src="<?php echo e(asset('frontand/assets/js/main.js')); ?>"></script>
 
-    @yield('script')
+    <?php echo $__env->yieldContent('script'); ?>
 
     <script>
         (function() {
@@ -340,3 +341,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/layouts/app.blade.php ENDPATH**/ ?>
