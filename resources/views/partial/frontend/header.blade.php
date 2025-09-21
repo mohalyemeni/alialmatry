@@ -11,7 +11,7 @@
                             @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
                                 <li>
                                     <i class="far fa-phone"></i>
-                                    <a
+                                    <a class="css_for_phone"
                                         href="tel:{{ $siteSettings['site_mobile']->value }}">{{ $siteSettings['site_mobile']->value }}</a>
                                 </li>
                             @endif
@@ -54,13 +54,13 @@
 
                                     @foreach ($socials as $key => $icon)
                                         @php
-                                            // احصل على الرابط وقم بتنظيفه من المسافات الزائدة
+
                                             $url = isset($siteSettings[$key])
                                                 ? trim($siteSettings[$key]->value ?? '')
                                                 : '';
                                         @endphp
 
-                                        {{-- تحقق من أن الرابط صالح (ليس فارغًا، وليس #، وليس 0) --}}
+
                                         @if ($url && $url !== '#' && $url !== '0')
                                             <a href="{{ $url }}" target="_blank">
                                                 <i class="{{ $icon }}"></i>

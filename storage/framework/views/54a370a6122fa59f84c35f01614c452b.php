@@ -88,7 +88,7 @@
                 </div>
             </section>
 
-            <div class="col-xxl-5 col-lg-4">
+            <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
                     <h3 class="widget_title widget_title_new  mb-5 title-header-noline fadeInRight wow "
                         data-wow-delay=".3s">الدرر السنية

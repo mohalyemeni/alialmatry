@@ -11,7 +11,7 @@
                             <?php if(isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value): ?>
                                 <li>
                                     <i class="far fa-phone"></i>
-                                    <a
+                                    <a class="css_for_phone"
                                         href="tel:<?php echo e($siteSettings['site_mobile']->value); ?>"><?php echo e($siteSettings['site_mobile']->value); ?></a>
                                 </li>
                             <?php endif; ?>
@@ -55,13 +55,13 @@
 
                                     <?php $__currentLoopData = $socials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php
-                                            // احصل على الرابط وقم بتنظيفه من المسافات الزائدة
+
                                             $url = isset($siteSettings[$key])
                                                 ? trim($siteSettings[$key]->value ?? '')
                                                 : '';
                                         ?>
 
-                                        
+
                                         <?php if($url && $url !== '#' && $url !== '0'): ?>
                                             <a href="<?php echo e($url); ?>" target="_blank">
                                                 <i class="<?php echo e($icon); ?>"></i>

@@ -109,8 +109,9 @@
                     <div class="widget widget_nav_menu footer-widget email">
                         <h3 class="widget_title"> كما يسعدنا تواصلكم معنا</h3>
                         <?php if(isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value): ?>
-                            <p class="about-text">للتواصل عبر الهاتف المحمول :
-                                <?php echo e($siteSettings['site_mobile']->value); ?></p>
+                            <p class="about-text ">للتواصل عبر الهاتف المحمول :
+                                <a href="#" class="css_for_phone"> <?php echo e($siteSettings['site_mobile']->value); ?></a>
+                            </p>
                         <?php endif; ?>
 
                         <?php if(isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value): ?>
