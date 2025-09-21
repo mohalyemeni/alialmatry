@@ -70,10 +70,19 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
 <?php $__env->startSection('script'); ?>
     <script>
         $(document).ready(function() {
+
             $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
                 'defaultText': 'أضف كلمة مفتاحية',
                 'height': 'auto',
                 'width': '100%'

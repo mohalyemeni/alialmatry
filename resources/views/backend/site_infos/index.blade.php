@@ -72,23 +72,23 @@
         </div>
     </div>
 @endsection
-@endsection
+
 @section('script')
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-        $('#tags').tagsInput({
-            'defaultText': 'أضف كلمة مفتاحية',
-            'height': 'auto',
-            'width': '100%'
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
         });
-
-
-        $('#tags_meta').tagsInput({
-            'defaultText': 'أضف كلمة مفتاحية',
-            'height': 'auto',
-            'width': '100%'
-        });
-    });
-</script>
+    </script>
 @endsection
