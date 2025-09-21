@@ -2,7 +2,7 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
-            <section class="tabs-section col-lg-8 col-12">
+            <section class="tabs-section col-lg-7 col-12">
                 <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
                 <ul class="nav nav-tabs    " id="audioTabs" role="tablist">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -88,7 +88,7 @@
                 </div>
             </section>
 
-            <div class="col-xxl-4 col-lg-4">
+            <div class="col-xxl-5 col-lg-4">
                 <aside class="sidebar-area ">
                     <h3 class="widget_title widget_title_new  mb-5 title-header-noline fadeInRight wow "
                         data-wow-delay=".3s">الدرر السنية
