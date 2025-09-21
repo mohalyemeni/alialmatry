@@ -1,0 +1,296 @@
+<?php $__env->startSection('title', e($audio->title)); ?>
+<?php $__env->startSection('description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+<?php $__env->startSection('canonical', urldecode(route('frontend.audios.show', $audio->slug))); ?>
+<?php $__env->startSection('og_type', 'article'); ?>
+<?php $__env->startSection('og_title', e($audio->title)); ?>
+<?php $__env->startSection('og_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('og_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('og_url', urldecode(route('frontend.audios.show', $audio->slug))); ?>
+<?php $__env->startSection('og_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+<?php $__env->startSection('twitter_card', 'summary_large_image'); ?>
+<?php $__env->startSection('twitter_title', e($audio->title)); ?>
+<?php $__env->startSection('twitter_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160))); ?>
+<?php $__env->startSection('twitter_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>
+<?php $__env->startSection('twitter_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title)); ?>
+
+
+<?php $__env->startSection('content'); ?>
+    <div class="breadcumb-wrapper"
+        style="background-image: url('<?php echo e(asset('frontand/assets/img/hero/hero_5_3.jpg')); ?>'); background-size: cover; background-position: center; padding: 80px 0;">
+        <div class="container">
+            <div class="breadcumb-content text-center text-white">
+                <h1 class="breadcumb-title"><?php echo e(e($audio->title)); ?></h1>
+                <ul class="breadcumb-menu list-inline justify-content-center mt-3">
+                    <li class="list-inline-item"><a href="<?php echo e(route('frontend.index')); ?>"
+                            class="text-white"><?php echo e(__('panel.home')); ?></a></li>
+                    <li class="list-inline-item"><a href="<?php echo e(route('frontend.audios.index')); ?>"
+                            class="text-white"><?php echo e(__('panel.audios')); ?></a></li>
+                    <?php if(!empty($audio->category)): ?>
+                        <li class="list-inline-item"><a
+                                href="<?php echo e(route('frontend.audios.category', $audio->category->slug)); ?>"
+                                class="text-white"><?php echo e(e($audio->category->title)); ?></a></li>
+                    <?php endif; ?>
+                    <li class="list-inline-item"><?php echo e(e(\Illuminate\Support\Str::limit($audio->title, 60))); ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .audio-player-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            height: 40px !important;
+        }
+
+        .audio-player-row audio {
+            flex: 1 1 auto;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+        }
+
+        .audio-play-wrapp audio {
+
+            border: 3px solid var(--theme-color) !important;
+
+        }
+
+        .audio-download-btn {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-download-btn .th-btn {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 576px) {
+            .audio-player-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .audio-download-btn {
+                align-self: flex-end;
+            }
+
+            .audio-player-row {
+
+                height: 90px !important;
+            }
+        }
+
+        .audio-play-wrapp audio {
+
+            height: 45px;
+        }
+
+        .audio-sidebar .recent-thumb {
+            width: 84px;
+            height: 64px;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .audio-sidebar .recent-post {
+            gap: 12px;
+            align-items: flex-start;
+            display: flex;
+        }
+
+        .audio-sidebar .audio-badge {
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .audio-sidebar .post-title-small {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .audio-sidebar .post-title-small a {
+            color: #0f172a;
+            text-decoration: none;
+        }
+
+        .audio-sidebar .post-title-small a:hover {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container py-4">
+        <div class="row">
+
+            <div class="col-lg-8">
+                <div class="card p-3 sermon-card">
+                    <h3 class="mb-4 widget_title title-header-noline fadeInRight wow"><?php echo e(e($audio->title)); ?></h3>
+
+
+                    <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
+                        <?php
+                            $hasAudioFile =
+                                !empty($audio->audio_file) &&
+                                file_exists(public_path('assets/audios/files/' . $audio->audio_file));
+                            $audioFileUrl = $hasAudioFile ? asset('assets/audios/files/' . $audio->audio_file) : null;
+                        ?>
+
+                        <?php if($hasAudioFile): ?>
+                            <div class="audio-player-row flex-grow-1 d-flex align-items-center">
+
+                                <a href="<?php echo e(route('frontend.audios.download', $audio->id)); ?>"
+                                    class="th-btn style2 th-btn1 audio-download-btn me-2"
+                                    aria-label="<?php echo e(__('panel.download')); ?> <?php echo e(e($audio->title)); ?>">
+                                    <span class="btn-text" data-back="<?php echo e(__('panel.download')); ?>"
+                                        data-front="<?php echo e(__('panel.download')); ?>"></span>
+                                    <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                </a>
+
+                                <audio controls preload="metadata" aria-label="<?php echo e(e($audio->title)); ?>" class="flex-grow-1">
+                                    <source src="<?php echo e($audioFileUrl); ?>" type="audio/mpeg">
+                                    <?php echo e(__('panel.audio_not_supported')); ?>
+
+                                </audio>
+                            </div>
+                        <?php else: ?>
+                            <div class="alert alert-secondary mb-0"><?php echo e(__('panel.no_audio_file')); ?></div>
+                        <?php endif; ?>
+                    </div>
+
+
+                    <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
+                        <?php if(!empty($audio->pdf_link)): ?>
+                            <a href="<?php echo e($audio->pdf_link); ?>" target="_blank" class="th-btn style2 th-btn1">
+                                <span class="btn-text" data-back="<?php echo e(__('panel.pdf')); ?>"
+                                    data-front="<?php echo e(__('panel.pdf')); ?>"></span>
+                                <i class="fa-regular fa-file-pdf ms-2"></i>
+                            </a>
+                        <?php endif; ?>
+                        <?php if(!empty($audio->doc_link)): ?>
+                            <a href="<?php echo e($audio->doc_link); ?>" target="_blank" class="th-btn style2 th-btn1">
+                                <span class="btn-text" data-back="<?php echo e(__('panel.documents')); ?>"
+                                    data-front="<?php echo e(__('panel.documents')); ?>"></span>
+                                <i class="fa-solid fa-file ms-2"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="sermon-text mb-3">
+                        <?php echo $audio->description ?? ''; ?>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
+                    <h5 class="mb-3"><?php echo e(__('panel.recent_audios')); ?></h5>
+
+                    <?php
+
+                        if (!isset($recentAudios) || empty($recentAudios)) {
+                            $recentAudios = \App\Models\Audio::with('category')
+                                ->where('status', 1)
+                                ->where(function ($q) {
+                                    $q->whereNull('published_on')->orWhere('published_on', '<=', now());
+                                })
+                                ->where('id', '!=', $audio->id)
+                                ->orderByDesc('published_on')
+                                ->take(4)
+                                ->get()
+                                ->map(function ($a) {
+                                    $a->img =
+                                        \App\Http\Controllers\Frontend\AudioFrontendController::resolveImage(
+                                            $a->img ?? null,
+                                        ) ?? null;
+                                    return $a;
+                                });
+                        }
+
+                        $recentList = collect($recentAudios)->slice(0, 4);
+                    ?>
+
+                    <?php if($recentList->isNotEmpty()): ?>
+                        <ul class="list-unstyled recent-list mb-0">
+                            <?php $__currentLoopData = $recentList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
+
+                                    $rd_img =
+                                        $rd->img ?:
+                                        (file_exists(public_path('assets/audios/images/' . ($rd->img ?? '')))
+                                            ? asset('assets/audios/images/' . $rd->img)
+                                            : asset('frontand/assets/img/normal/counter-image.jpg'));
+                                    $rd_date = $rd->published_on
+                                        ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
+                                        : '';
+                                ?>
+
+                                <li class="mb-3">
+                                    <div class="recent-post">
+                                        <div class="media-img me-2" style="flex:0 0 auto;">
+                                            <a href="<?php echo e(route('frontend.audios.show', $rd->slug)); ?>">
+                                                <img src="<?php echo e($rd_img); ?>" alt="<?php echo e(e($rd->title)); ?>"
+                                                    class="recent-thumb">
+                                            </a>
+                                        </div>
+
+                                        <div class="flex-grow-1" style="min-width:0;">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <div class="recent-post-meta1 text-muted small"><?php echo e($rd_date); ?></div>
+                                                <div class="text-muted small d-flex align-items-center" style="gap:8px;">
+                                                    <span class="d-flex align-items-center"><i
+                                                            class="fa-solid fa-eye me-1"></i> <?php echo e($rd->views ?? 0); ?></span>
+
+                                                </div>
+                                            </div>
+                                            <?php if(!empty($rd->category)): ?>
+                                                <a href="<?php echo e(route('frontend.audios.category', $rd->category->slug ?? '#')); ?>"
+                                                    class="audio-badge bg-light text-dark text-decoration-none">
+                                                    <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
+                                                    <span><?php echo e(\Illuminate\Support\Str::limit($rd->category->title, 18)); ?></span>
+                                                </a>
+                                            <?php endif; ?>
+                                            <h4 class="post-title1 mb-0 post-title-small">
+                                                <a class="text-inherit d-block"
+                                                    href="<?php echo e(route('frontend.audios.show', $rd->slug)); ?>">
+                                                    <?php echo e(\Illuminate\Support\Str::limit($rd->title, 70)); ?>
+
+                                                </a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="text-muted mb-0"><?php echo e(__('panel.no_recent_audios')); ?></p>
+                    <?php endif; ?>
+
+                    <div class="mt-3 text-start">
+                        <a href="<?php echo e(route('frontend.audios.index')); ?>" class="th-btn new_pad"><?php echo e(__('panel.view_more')); ?>
+
+                            <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/frontend/audios/show.blade.php ENDPATH**/ ?>

@@ -1,90 +1,61 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use App\Models\Blog;
+use App\Models\Video;
+use App\Models\Audio;
+use App\Models\Fatwa;
+use App\Models\Book;
+use App\Models\DurarDiniya;
 
 class SearchController extends Controller
 {
-    public function index(Request $request)
+  public function search(Request $request)
     {
-        $request->validate([
-            'q' => ['required','string','min:1']
-        ]);
+        $query = $request->input('query');
 
-        $term = trim(strip_tags($request->get('q')));
-        $sources = config('search.sources', []);
-        $results = [];
-
-        foreach ($sources as $key => $cfg) {
-            $modelClass = $cfg['model'] ?? null;
-            $fields = $cfg['fields'] ?? [];
-            $perPage = $cfg['per_page'] ?? 6;
-
-            if (!$modelClass || !class_exists($modelClass) || empty($fields)) {
-                continue;
-            }
-
-            try {
-                $query = $modelClass::query();
-
-                // بناء شروط where ديناميكياً على الحقول المحددة
-                $query->where(function ($w) use ($fields, $term) {
-                    foreach ($fields as $i => $field) {
-                        if ($i === 0) {
-                            $w->where($field, 'LIKE', "%{$term}%");
-                        } else {
-                            $w->orWhere($field, 'LIKE', "%{$term}%");
-                        }
-                    }
-                });
-
-                // لو الموديل يملك scopePublished (scopePublished) نستدعيه
-                if (method_exists($modelClass, 'scopePublished')) {
-                    $query = $query->published();
-                }
-
-                // ترتيب افتراضي
-                if (schemaHasColumn($modelClass, 'created_at')) {
-                    $query = $query->orderBy('created_at', 'desc');
-                }
-
-                // اختيار أعمدة للعرض (لا نسترجع الحقول الثقيلة دوماً)
-                $select = array_unique(array_merge(['id'], array_slice($fields, 0, 1)));
-                $items = $query->select($select)->paginate($perPage, ['*'], $key . '_page');
-
-                $results[$key] = [
-                    'items' => $items,
-                    'config' => $cfg,
-                ];
-            } catch (\Throwable $e) {
-                \Log::error("Search error for source {$key}: " . $e->getMessage());
-                // تجاهل هذا المصدر لو فشل
-            }
+        if (!$query) {
+            return redirect()->back();
         }
 
-        return view('frontend.search-results', [
-            'q' => $term,
-            'results' => $results,
-        ]);
-    }
-}
+       $blogs = Blog::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
 
-/**
- * Helper بسيط: يحاول التحقق إن كان العمود موجود في جدول الموديل.
- * ملاحظة: يستخدم DB facade لذا يتطلب DB connection سليمة.
- */
-if (!function_exists('schemaHasColumn')) {
-    function schemaHasColumn($modelClass, $column)
-    {
-        try {
-            $instance = new $modelClass;
-            $table = $instance->getTable();
-            return \Schema::hasColumn($table, $column);
-        } catch (\Throwable $e) {
-            return false;
-        }
+        // البحث في الفيديوهات
+        $videos = Video::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
+
+        // البحث في المقاطع الصوتية
+        $audios = Audio::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
+
+        // البحث في الفتاوى - تصحيح: البحث في حقل 'description' بدلاً من 'question' و 'answer' غير الموجودين
+        $fatawas = Fatwa::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
+
+        // البحث في الكتب - تصحيح: إزالة البحث في حقل 'author' غير الموجود
+        $books = Book::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
+
+        // البحث في الدرر
+        $durars = DurarDiniya::published()->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })->limit(6)->get();
+
+        return view('frontend.search-results', compact('query', 'blogs', 'videos', 'audios', 'fatawas', 'books', 'durars'));
     }
 }

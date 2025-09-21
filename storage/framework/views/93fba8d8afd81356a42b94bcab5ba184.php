@@ -148,8 +148,8 @@
 
     <div class="popup-search-box d-none d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
-        <form action="#">
-            <input type="text" placeholder="إبحث هنا...">
+        <form action="<?php echo e(route('frontend.search')); ?>" method="GET">
+            <input type="text" name="query" placeholder="إبحث هنا..." required>
             <button type="submit"><i class="fal fa-search"></i></button>
         </form>
     </div>
@@ -337,6 +337,34 @@
                 });
             });
         })();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // فتح وإغلاق صندوق البحث
+            const searchIcon = document.querySelector('.search-icon');
+            const searchBox = document.querySelector('.popup-search-box');
+            const searchClose = document.querySelector('.searchClose');
+
+            if (searchIcon && searchBox) {
+                searchIcon.addEventListener('click', function() {
+                    searchBox.classList.remove('d-none');
+                    searchBox.querySelector('input').focus();
+                });
+            }
+
+            if (searchClose && searchBox) {
+                searchClose.addEventListener('click', function() {
+                    searchBox.classList.add('d-none');
+                });
+            }
+
+            // إغلاق صندوق البحث عند الضغط على ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && searchBox && !searchBox.classList.contains('d-none')) {
+                    searchBox.classList.add('d-none');
+                }
+            });
+        });
     </script>
 </body>
 

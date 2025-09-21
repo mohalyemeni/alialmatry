@@ -30,6 +30,10 @@ class DurarDiniya extends Model
         'status',
     ];
 
+    public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
     protected $searchable = [
         'columns' => [
             'durar_diniya.title' => 10,

@@ -31,6 +31,10 @@ class Fatwa extends Model
                     ->where('section', Category::SECTION_FATWA);
     }
 
+    public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');

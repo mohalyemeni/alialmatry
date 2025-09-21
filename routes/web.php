@@ -38,7 +38,7 @@ use App\Http\Controllers\Frontend\SheikhIntroController as FrontIntroController;
 */
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
 
-Route::get('/search', [SearchController::class, 'index'])->name('frontend.search');
+Route::get('/search', [SearchController::class, 'search'])->name('frontend.search');
 
 Route::prefix('Videos')->group(function () {
     Route::get('/', [VideoFrontendController::class, 'index'])->name('frontend.videos.index');

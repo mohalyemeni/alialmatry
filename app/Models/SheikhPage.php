@@ -27,7 +27,10 @@ class SheikhPage extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
+public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
         public function sluggable(): array
     {
         return [

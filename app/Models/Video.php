@@ -135,4 +135,8 @@ class Video extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
 }

@@ -30,6 +30,10 @@ class Category extends Model
     const SECTION_FATWA   = 3;
     const SECTION_ARTICLE = 4;
 
+    public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
     public function sluggable(): array
     {
         return [

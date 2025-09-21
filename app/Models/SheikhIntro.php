@@ -21,7 +21,10 @@ class SheikhIntro extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
+public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
 
         public function sluggable(): array
     {

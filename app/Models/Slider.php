@@ -26,7 +26,10 @@ protected $casts = [
     'status' => 'boolean',
     'show_btn_title' => 'boolean',
 ];
-
+public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
     protected $searchable = [
         'columns' => [
             'sliders.title' => 10,

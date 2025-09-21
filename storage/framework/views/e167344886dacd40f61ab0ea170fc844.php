@@ -53,7 +53,7 @@
 
                                     <?php $__currentLoopData = $socials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php if(isset($siteSettings[$key]->value) && $siteSettings[$key]->value): ?>
-                                            <a href="<?php echo e($siteSettings[$key]->value); ?>" target="_blank" rel="noopener">
+                                            <a href="<?php echo e($siteSettings[$key]->value); ?>" target="_blank">
                                                 <i class="<?php echo e($icon); ?>"></i>
                                             </a>
                                         <?php endif; ?>
@@ -95,8 +95,7 @@
                                         <li><a href="<?php echo e(route('frontend.blogs.index')); ?>"
                                                 class="ajax-link">المقالات</a></li>
                                         <li><a href="<?php echo e(route('frontend.books.index')); ?>"> الكتب والؤلفات</a></li>
-                                        <li><a href="<?php echo e(route('frontend.contact') ?? 'contact.html'); ?>"> اتصل بنا</a>
-                                        </li>
+                                        <li><a href="contact.html"> اتصل بنا</a></li>
                                     </ul>
                                 </nav>
                                 <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
@@ -105,7 +104,7 @@
                             </div>
                             <div class="col-2 d-none d-xxl-block d-xl-block">
                                 <div class="header-button">
-                                    <button type="button" class="icon-style2 searchBoxToggler" aria-label="فتح البحث">
+                                    <button type="button" class="icon-style2 searchBoxToggler">
                                         <i class="far fa-search"></i>
                                     </button>
                                     <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
@@ -121,23 +120,4 @@
         </div>
     </div>
 </header>
-
-<!-- =========================
-     نافذة البحث (Popup)
-   ========================= -->
-<div id="popup-search-box" class="popup-search-box d-none" aria-hidden="true" role="dialog" aria-label="نافذة البحث">
-    <div id="popup-search-overlay" class="popup-search-overlay" tabindex="-1"></div>
-
-    <div class="popup-search-panel" role="document" aria-modal="true">
-        <button type="button" class="searchClose" aria-label="إغلاق البحث">&times;</button>
-
-        <form action="<?php echo e(route('frontend.search')); ?>" method="GET" class="search-form" role="search"
-            autocomplete="off">
-            <label for="search-input" class="visually-hidden">ابحث</label>
-            <input id="search-input" name="q" type="search" placeholder="ابحث هنا..." required
-                autocomplete="off" />
-            <button type="submit" aria-label="ابحث"><i class="far fa-search"></i></button>
-        </form>
-    </div>
-</div>
 <?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/partial/frontend/header.blade.php ENDPATH**/ ?>

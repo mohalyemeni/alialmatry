@@ -29,6 +29,10 @@ class Book extends Model
         'status',
     ];
 
+    public function scopePublished($query)
+{
+    return $query->where('status', true)->where('published_on', '<=', now());
+}
     protected $searchable = [
         'columns' => [
             'books.title' => 10,
