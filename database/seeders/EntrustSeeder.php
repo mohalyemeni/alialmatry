@@ -760,6 +760,34 @@ $updateSiteMetas = Permission::create([
     'appear' => 0
 ]);
 
+// Community & App Links (Section 7)
+$displayCommunityLinks = Permission::create([
+    'name' => 'display_community_links',
+    'display_name' => 'المجتمع والتطبيق',
+    'route' => 'settings.community_links',
+    'module' => 'settings',
+    'as' => 'settings.community_links.show',
+    'icon' => 'fa fa-users',
+    'parent' => $manageSiteSettings->id,
+    'parent_original' => $manageSiteSettings->id,
+    'parent_show' => $manageSiteSettings->id,
+    'sidebar_link' => 1,
+    'appear' => 1,
+    'ordering' => 7
+]);
 
+$updateCommunityLinks = Permission::create([
+    'name' => 'update_community_links',
+    'display_name' => 'تعديل روابط المجتمع والتطبيق',
+    'route' => 'settings.community_links',
+    'module' => 'settings',
+    'as' => 'settings.community_links.edit',
+    'icon' => null,
+    'parent' => $manageSiteSettings->id,
+    'parent_original' => $manageSiteSettings->id,
+    'parent_show' => $manageSiteSettings->id,
+    'sidebar_link' => 0,
+    'appear' => 0
+]);
 }
 }

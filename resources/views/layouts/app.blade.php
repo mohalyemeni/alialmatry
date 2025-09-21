@@ -105,8 +105,8 @@
             position: absolute;
             font-size: 30px;
             color: #ffffff;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(180deg, #25D366, #128C7E);
             border-radius: 50%;
             display: inline-flex;

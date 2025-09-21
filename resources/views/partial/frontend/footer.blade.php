@@ -1,3 +1,10 @@
+@php
+    $communityLink = isset($siteSettings['site_community_link'])
+        ? trim($siteSettings['site_community_link']->value ?? '')
+        : '';
+    $appLink = isset($siteSettings['site_app_link']) ? trim($siteSettings['site_app_link']->value ?? '') : '';
+@endphp
+
 <footer class="footer-wrapper footer-layout1">
     <div class="container">
         <div class="footer-top">
@@ -11,12 +18,16 @@
                 <div class="col-lg-6">
                     <div class="footer-top-btn">
                         <div class="btn-group justify-content-center justify-content-lg-end">
-                            <a href="contact.html" class="th-btn">
-                                <span class="btn-text" data-back="انضم للمجتمع" data-front="انضم للمجتمع"></span>
-                            </a>
-                            <a href="contact.html" class="th-btn style2 th-btn12">
-                                <span class="btn-text" data-back="تحميل التطبيق" data-front="تحميل التطبيق"></span>
-                            </a>
+                            @if ($communityLink && $communityLink !== '#' && $communityLink !== '0')
+                                <a href="{{ $communityLink }}" class="th-btn" target="_blank">
+                                    <span class="btn-text" data-back="انضم للمجتمع" data-front="انضم للمجتمع"></span>
+                                </a>
+                            @endif
+                            @if ($appLink && $appLink !== '#' && $appLink !== '0')
+                                <a href="{{ $appLink }}" class="th-btn style2 th-btn12" target="_blank">
+                                    <span class="btn-text" data-back="تحميل التطبيق" data-front="تحميل التطبيق"></span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -51,37 +62,29 @@
                         <div class="th-widget-about">
                             <h3 class="widget_title text-center"> وسائل التواصل</h3>
                             <div class="th-social text-center">
-                                @if (isset($siteSettings['site_facebook']->value) && $siteSettings['site_facebook']->value)
-                                    <a href="{{ $siteSettings['site_facebook']->value }}"><i
-                                            class="fab fa-facebook-f"></i></a>
-                                @endif
+                                @php
+                                    $socials = [
+                                        'site_facebook' => 'fab fa-facebook-f',
+                                        'site_twitter' => 'fab fa-twitter',
+                                        'site_instagram' => 'fab fa-instagram',
+                                        'site_whatsapp' => 'fab fa-whatsapp',
+                                        'site_youtube' => 'fab fa-youtube',
+                                        'site_linkedin' => 'fab fa-linkedin-in',
+                                        'site_snapchat' => 'fab fa-snapchat-ghost',
+                                    ];
+                                @endphp
 
-                                @if (isset($siteSettings['site_twitter']->value) && $siteSettings['site_twitter']->value)
-                                    <a href="{{ $siteSettings['site_twitter']->value }}"><i
-                                            class="fab fa-twitter"></i></a>
-                                @endif
+                                @foreach ($socials as $key => $icon)
+                                    @php
+                                        $url = isset($siteSettings[$key]) ? trim($siteSettings[$key]->value ?? '') : '';
+                                    @endphp
 
-                                @if (isset($siteSettings['site_instagram']->value) && $siteSettings['site_instagram']->value)
-                                    <a href="{{ $siteSettings['site_instagram']->value }}"><i
-                                            class="fab fa-instagram"></i></a>
-                                @endif
-
-                                @if (isset($siteSettings['site_whatsapp']->value) && $siteSettings['site_whatsapp']->value)
-                                    <a href="{{ $siteSettings['site_whatsapp']->value }}"><i
-                                            class="fab fa-whatsapp"></i></a>
-                                @endif
-
-                                @if (isset($siteSettings['site_youtube']->value) && $siteSettings['site_youtube']->value)
-                                    <a href="{{ $siteSettings['site_youtube']->value }}" target="_blank">
-                                        <i class="fab fa-youtube"></i>
-                                    </a>
-                                @endif
-
-                                @if (isset($siteSettings['site_linkedin']->value) && $siteSettings['site_linkedin']->value)
-                                    <a href="{{ $siteSettings['site_linkedin']->value }}" target="_blank">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                @endif
+                                    @if ($url && $url !== '#' && $url !== '0')
+                                        <a href="{{ $url }}" target="_blank">
+                                            <i class="{{ $icon }}"></i>
+                                        </a>
+                                    @endif
+                                @endforeach
                             </div>
                             <div class="row mb-4  pt-25">
                                 <div class="col-lg-6 col-md-6 col-sm-6 footer-widget">
@@ -97,6 +100,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

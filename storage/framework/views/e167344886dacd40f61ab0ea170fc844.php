@@ -48,12 +48,22 @@
                                             'site_instagram' => 'fab fa-instagram',
                                             'site_snapchat' => 'fab fa-snapchat-ghost',
                                             'site_youtube' => 'fab fa-youtube',
+                                            'site_whatsapp' => 'fab fa-whatsapp',
+                                            'site_linkedin' => 'fab fa-linkedin',
                                         ];
                                     ?>
 
                                     <?php $__currentLoopData = $socials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <?php if(isset($siteSettings[$key]->value) && $siteSettings[$key]->value): ?>
-                                            <a href="<?php echo e($siteSettings[$key]->value); ?>" target="_blank">
+                                        <?php
+                                            // احصل على الرابط وقم بتنظيفه من المسافات الزائدة
+                                            $url = isset($siteSettings[$key])
+                                                ? trim($siteSettings[$key]->value ?? '')
+                                                : '';
+                                        ?>
+
+                                        
+                                        <?php if($url && $url !== '#' && $url !== '0'): ?>
+                                            <a href="<?php echo e($url); ?>" target="_blank">
                                                 <i class="<?php echo e($icon); ?>"></i>
                                             </a>
                                         <?php endif; ?>

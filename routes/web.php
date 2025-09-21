@@ -161,6 +161,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
             // Site Style (Section 5)
             Route::get('site_setting/site-style', [SettingsController::class, 'show_format_informations'])->name('settings.site_style.show');
             Route::post('site_setting/site-style', [SettingsController::class, 'update_format_informations'])->name('settings.site_style.edit');
+
+            // Site Community & App (Section 7)
+            Route::get('site_setting/community-links', [SettingsController::class, 'show_community_informations'])->name('settings.community_links.show');
+            Route::post('site_setting/community-links', [SettingsController::class, 'update_community_informations'])->name('settings.community_links.edit');
         // ===== end settings routes =====
 
         // العملاء

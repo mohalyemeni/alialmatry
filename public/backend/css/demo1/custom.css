@@ -549,3 +549,7 @@ div.tagsinput input {
     color: #000;
     outline: 0px;
 }
+.css_for_phone {
+    direction: ltr;
+    text-align: end;
+}

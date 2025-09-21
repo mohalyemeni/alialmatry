@@ -28,7 +28,7 @@
                         <label for="site_mobile" class="form-label">الهاتف</label>
                     </div>
                     <div class="col-md-10">
-                        <input type="text" name="site_mobile" id="site_mobile" class="form-control"
+                        <input type="text" name="site_mobile" id="site_mobile" class="form-control css_for_phone"
                             value="{{ $site_mobile->value ?? '' }}">
                     </div>
                 </div>

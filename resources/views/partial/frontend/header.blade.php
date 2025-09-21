@@ -47,12 +47,22 @@
                                             'site_instagram' => 'fab fa-instagram',
                                             'site_snapchat' => 'fab fa-snapchat-ghost',
                                             'site_youtube' => 'fab fa-youtube',
+                                            'site_whatsapp' => 'fab fa-whatsapp',
+                                            'site_linkedin' => 'fab fa-linkedin',
                                         ];
                                     @endphp
 
                                     @foreach ($socials as $key => $icon)
-                                        @if (isset($siteSettings[$key]->value) && $siteSettings[$key]->value)
-                                            <a href="{{ $siteSettings[$key]->value }}" target="_blank">
+                                        @php
+                                            // احصل على الرابط وقم بتنظيفه من المسافات الزائدة
+                                            $url = isset($siteSettings[$key])
+                                                ? trim($siteSettings[$key]->value ?? '')
+                                                : '';
+                                        @endphp
+
+                                        {{-- تحقق من أن الرابط صالح (ليس فارغًا، وليس #، وليس 0) --}}
+                                        @if ($url && $url !== '#' && $url !== '0')
+                                            <a href="{{ $url }}" target="_blank">
                                                 <i class="{{ $icon }}"></i>
                                             </a>
                                         @endif

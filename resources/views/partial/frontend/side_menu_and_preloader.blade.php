@@ -1,20 +1,3 @@
-{{-- مبدل الألوان --}}
-<div class="color-scheme-wrap active">
-    <button class="switchIcon"><i class="fa-solid fa-palette"></i></button>
-    <h4 class="color-scheme-wrap-title"><i class="far fa-palette me-2"></i>تغيير النمط</h4>
-    <div class="color-switch-btns">
-        <button data-color="#3E66F3"><i class="fa-solid fa-droplet"></i></button>
-        <button data-color="#684DF4"><i class="fa-solid fa-droplet"></i></button>
-        <button data-color="#008080"><i class="fa-solid fa-droplet"></i></button>
-        <button data-color="#323F7C"><i class="fa-solid fa-droplet"></i></button>
-        <button data-color="#FC3737"><i class="fa-solid fa-droplet"></i></button>
-        <button data-color="#8a2be2"><i class="fa-solid fa-droplet"></i></button>
-    </div>
-    {{-- <a href="https://themeforest.net/user/themeholy" class="th-btn text-center w-100">
-        <i class="fa fa-shopping-cart me-2"></i> شراء
-    </a> --}}
-</div>
-
 {{-- شاشة التحميل --}}
 <div class="preloader">
     <button class="th-btn style1 preloaderCls">إلغاء شاشة التحميل</button>

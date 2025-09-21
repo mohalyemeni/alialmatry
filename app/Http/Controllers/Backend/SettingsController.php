@@ -212,9 +212,11 @@ class SettingsController extends Controller
             'site_linkedin', 'site_instagram', 'site_snapchat','site_youtube'
         ]);
         foreach ($data as $key => $value) {
+            $finalValue = empty(trim($value ?? '')) ? '#' : $value;
+
             SiteSetting::updateOrCreate(
                 ['key' => $key, 'section' => $id],
-                ['value' => $value, 'status' => true]
+                ['value' => $finalValue, 'status' => true]
             );
         }
         $this->updateCache();
@@ -223,6 +225,7 @@ class SettingsController extends Controller
             'alert-type' => 'success'
         ]);
     }
+
     public function show_payment_methods()
     {
         $payment = SiteSetting::where('key', 'site_payment_methods')->first();
@@ -370,6 +373,33 @@ class SettingsController extends Controller
         $this->updateCache();
         return redirect()->route('admin.settings.site_meta.show')->with([
             'message' => 'تم تحديث إعدادات محركات البحث بنجاح',
+            'alert-type' => 'success'
+        ]);
+    }
+        public function show_community_informations()
+    {
+        $site_community_link = SiteSetting::where('key', 'site_community_link')->first();
+        $site_app_link = SiteSetting::where('key', 'site_app_link')->first();
+        return view('backend.site_community.index', compact(
+            'site_community_link', 'site_app_link'
+        ));
+    }
+
+    public function update_community_informations(Request $request, $id = 7)
+    {
+        $data = $request->only([
+            'site_community_link', 'site_app_link'
+        ]);
+        foreach ($data as $key => $value) {
+            $finalValue = empty(trim($value ?? '')) ? '#' : $value;
+            SiteSetting::updateOrCreate(
+                ['key' => $key, 'section' => $id],
+                ['value' => $finalValue, 'status' => true]
+            );
+        }
+        $this->updateCache();
+        return redirect()->route('admin.settings.community_links.show')->with([
+            'message' => 'تم تحديث روابط المجتمع والتطبيق بنجاح',
             'alert-type' => 'success'
         ]);
     }

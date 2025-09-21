@@ -203,5 +203,20 @@ class SiteSettingSeeder extends Seeder
             'section' => 6,
             'published_on' => $faker->dateTime()
         ]);
+                // القسم 7: المجتمع والتطبيق
+        SiteSetting::create([
+            'key' => 'site_community_link',
+            'value' => '#',
+            'status' => true,
+            'section' => 7,
+            'published_on' => $faker->dateTime()
+        ]);
+        SiteSetting::create([
+            'key' => 'site_app_link',
+            'value' => '#',
+            'status' => true,
+            'section' => 7,
+            'published_on' => $faker->dateTime()
+        ]);
     }
 }

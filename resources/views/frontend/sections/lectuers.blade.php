@@ -1,9 +1,9 @@
 @if (isset($audioCategories) && $audioCategories->count())
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
-            <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
 
             <section class="tabs-section col-lg-8 col-12">
+                <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
                 <ul class="nav nav-tabs    " id="audioTabs" role="tablist">
                     @foreach ($audioCategories as $i => $cat)
                         <li class="nav-item" role="presentation">
@@ -88,7 +88,8 @@
 
             <div class="col-xxl-4 col-lg-4">
                 <aside class="sidebar-area ">
-                    <h3 class="widget_title widget_title_new  mb-5 fadeInRight wow " data-wow-delay=".3s">الدرر السنية
+                    <h3 class="widget_title widget_title_new  mb-5 title-header-noline fadeInRight wow "
+                        data-wow-delay=".3s">الدرر السنية
                     </h3>
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">

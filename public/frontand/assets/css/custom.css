@@ -1900,3 +1900,9 @@ div.tagsinput input {
     background-color: #fff;
     border-color: #374868;
 }
+.copyright-text a {
+    color: #fff;
+}
+.copyright-text a:hover {
+    color: #938447;
+}

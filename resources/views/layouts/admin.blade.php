@@ -34,9 +34,9 @@
         <link rel="shortcut icon" href="{{ asset('backend/images/favicon.png') }}" type="image/x-icon">
     @endif
 
-    <link rel="stylesheet" href="{{ asset('backend/vendors/bootstrap-fileinpuسt/css/fileinput.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/vendors/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendors/bootstrap-fileinput/css/fileinput.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendors/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/demo1/custom.css') }}">
 
 
@@ -72,6 +72,7 @@
     <script src="{{ asset('backend/vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('backend/js/template.js') }}"></script>
     <script src="{{ asset('backend/js/custom.js') }}"></script>
+    <script src="{{ asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/bootstrap-fileinput/js/plugins/piexif.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/bootstrap-fileinput/js/plugins/sortable.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
@@ -79,7 +80,6 @@
     <script src="{{ asset('backend/vendors/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/flatpickr/flatpickr-rtl.min.js') }}"></script>
     <script src="{{ asset('backend/js/flatpickr.js') }}"></script>
-    <script src="{{ asset('frontand/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js') }}"></script>
     {{-- <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script> --}}
     @livewireScripts
 
