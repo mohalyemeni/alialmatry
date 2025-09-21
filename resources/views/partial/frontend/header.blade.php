@@ -68,7 +68,7 @@
     <div class="sticky-wrapper">
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
-                <div class="row align-items-center justify-content-between">
+                <div class="row align-items-center justify-content-between back_spec_c">
                     <div class="col-9 col-md-10 col-lg-3 new_colore">
                         <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">

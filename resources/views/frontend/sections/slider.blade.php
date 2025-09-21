@@ -107,7 +107,7 @@
                 data-slider-options='{"effect":"fade","loop":true,"autoplay":{"delay":5000}}'>
                 <div class="swiper-wrapper">
                     @php
-                        $imgPath = asset('frontand/test.jpg');
+                        $imgPath = asset('frontand/defualt-slider.jpg');
                         $title = 'الموقع الرسمي لفضيلة الشيخ ابي الحسن علي بن محمد بن عبده المطري';
                         $description = 'مرحبا';
                     @endphp

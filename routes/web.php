@@ -1,21 +1,19 @@
 <?php
 
-use App\Http\Controllers\Frontend\DurarFrontendController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Backend\MainSliderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\TagController;
-use App\Http\Controllers\Frontend\SheikhIntroController as FrontIntroController;
-use App\Http\Controllers\Frontend\BookController as FrontBookController;
 use App\Http\Controllers\Backend\BlogController;
-use App\Http\Controllers\Frontend\BlogFrontendController;
 use App\Http\Controllers\Backend\BookController;
 use App\Http\Controllers\Backend\AudioController;
 use App\Http\Controllers\Backend\VideoController;
 use App\Http\Controllers\Backend\FatawaController;
 use App\Http\Controllers\Backend\BackendController;
+use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\Backend\MainSliderController;
 use App\Http\Controllers\Backend\SheikhPageController;
 use App\Http\Controllers\Backend\SupervisorController;
 use App\Http\Controllers\Backend\UsefulLinkController;
@@ -24,11 +22,14 @@ use App\Http\Controllers\Backend\SheikhIntroController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\AudioCategoryController;
 use App\Http\Controllers\Backend\VideoCategoryController;
+use App\Http\Controllers\Frontend\BlogFrontendController;
 use App\Http\Controllers\Backend\FatawaCategoryController;
 use App\Http\Controllers\Frontend\AudioFrontendController;
+use App\Http\Controllers\Frontend\DurarFrontendController;
 use App\Http\Controllers\Frontend\VideoFrontendController;
 use App\Http\Controllers\Frontend\FatawaFrontendController;
-use App\Http\Controllers\Backend\SettingsController;
+use App\Http\Controllers\Frontend\BookController as FrontBookController;
+use App\Http\Controllers\Frontend\SheikhIntroController as FrontIntroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,8 @@ use App\Http\Controllers\Backend\SettingsController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+
+Route::get('/search', [SearchController::class, 'index'])->name('frontend.search');
 
 Route::prefix('Videos')->group(function () {
     Route::get('/', [VideoFrontendController::class, 'index'])->name('frontend.videos.index');
@@ -107,6 +110,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::get('/index',[BackendController::class,'index'])->name('index');
         Route::get('/account_settings',[BackendController::class,'account_settings'])->name('account_settings');
         Route::delete('remove-image', [BackendController::class, 'remove_image'])->name('remove_image');
+
+
 
         // ===== Site Settings routes =====
 
