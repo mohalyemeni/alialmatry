@@ -1,58 +1,58 @@
-@extends('layouts.admin')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between">
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
                     <i class="fa fa-plus-square"></i>
-                    {{ __('panel.add_video') }}
+                    <?php echo e(__('panel.add_video')); ?>
+
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li><a href="{{ route('admin.index') }}">{{ __('panel.home') }}</a> /</li>
-                    <li class="ms-1"><a href="{{ route('admin.videos.index') }}">{{ __('panel.manage_videos') }}</a></li>
+                    <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.home')); ?></a> /</li>
+                    <li class="ms-1"><a href="<?php echo e(route('admin.videos.index')); ?>"><?php echo e(__('panel.manage_videos')); ?></a></li>
                 </ul>
             </div>
         </div>
 
         <div class="card-body">
 
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 <div class="alert alert-danger pt-0 pb-0 mb-3">
                     <ul class="px-2 py-3 m-0" style="list-style-type: circle">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <div id="step1" class="mb-4">
                 <div class="row">
                     <div class="col-sm-12 col-md-2 pt-2">
-                        <label for="initial_category">{{ __('panel.category') }}</label>
+                        <label for="initial_category"><?php echo e(__('panel.category')); ?></label>
                     </div>
                     <div class="col-sm-12 col-md-6 pt-2">
                         <select id="initial_category" class="form-select">
-                            <option value="">{{ __('panel.select_category') }}</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->title }}</option>
-                            @endforeach
+                            <option value=""><?php echo e(__('panel.select_category')); ?></option>
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>"><?php echo e($category->title); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
                     <div class="col-sm-12 col-md-4 pt-2 text-end">
-                        @ability('admin', 'create_videos')
-                            <a href="{{ route('admin.videos.create') }}" class="btn btn-outline-secondary">
-                                {{ __('panel.reset') }}
+                        <?php if (\Entrust::ability('admin', 'create_videos')) : ?>
+                            <a href="<?php echo e(route('admin.videos.create')); ?>" class="btn btn-outline-secondary">
+                                <?php echo e(__('panel.reset')); ?>
+
                             </a>
-                        @endability
+                        <?php endif; // Entrust::ability ?>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-sm-12 col-md-2 pt-2">
-                        <label for="youtube_url">{{ __('panel.youtube_url') }}</label>
+                        <label for="youtube_url"><?php echo e(__('panel.youtube_url')); ?></label>
                     </div>
                     <div class="col-sm-12 col-md-8 pt-2">
                         <input type="text" id="youtube_url" class="form-control"
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-sm-12 col-md-2 pt-2">
                         <button id="fetchBtn" class="btn btn-primary w-100" type="button">
-                            <span id="fetchBtnText">{{ __('panel.fetch_data') ?? 'جلب البيانات' }}</span>
+                            <span id="fetchBtnText"><?php echo e(__('panel.fetch_data') ?? 'جلب البيانات'); ?></span>
                         </button>
                     </div>
                 </div>
@@ -69,45 +69,52 @@
                 <div id="fetchAlert" class="mt-3"></div>
             </div>
 
-            <form id="fullForm" action="{{ route('admin.videos.store') }}" method="POST" class="d-none">
-                @csrf
+            <form id="fullForm" action="<?php echo e(route('admin.videos.store')); ?>" method="POST" class="d-none">
+                <?php echo csrf_field(); ?>
 
-                <input type="hidden" name="category_id" id="category_id_hidden" value="{{ old('category_id') }}">
-                <input type="hidden" name="youtube_id" id="youtube_id" value="{{ old('youtube_id') }}">
-                <input type="hidden" name="thumbnail" id="thumbnail" value="{{ old('thumbnail') }}">
+                <input type="hidden" name="category_id" id="category_id_hidden" value="<?php echo e(old('category_id')); ?>">
+                <input type="hidden" name="youtube_id" id="youtube_id" value="<?php echo e(old('youtube_id')); ?>">
+                <input type="hidden" name="thumbnail" id="thumbnail" value="<?php echo e(old('thumbnail')); ?>">
 
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="content-tab" data-bs-toggle="tab" data-bs-target="#content"
                             type="button" role="tab" aria-controls="content"
-                            aria-selected="true">{{ __('panel.content') }}</button>
+                            aria-selected="true"><?php echo e(__('panel.content')); ?></button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo" type="button"
-                            role="tab" aria-controls="seo" aria-selected="false">{{ __('panel.seo') }}</button>
+                            role="tab" aria-controls="seo" aria-selected="false"><?php echo e(__('panel.seo')); ?></button>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
-                    {{-- Content tab --}}
+                    
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label for="title">{{ __('panel.title') }}</label>
+                                <label for="title"><?php echo e(__('panel.title')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
-                                <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                <input type="text" name="title" id="title" value="<?php echo e(old('title')); ?>"
                                     class="form-control" required>
-                                @error('title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label>{{ __('panel.category') }}</label>
+                                <label><?php echo e(__('panel.category')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
                                 <input type="text" id="selected_category_display" class="form-control" readonly>
@@ -117,7 +124,7 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label for="video_url">{{ __('panel.youtube_url') }}</label>
+                                <label for="video_url"><?php echo e(__('panel.youtube_url')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
                                 <input type="text" id="video_url" name="video_url" class="form-control" readonly>
@@ -126,19 +133,26 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label for="description">{{ __('panel.description') }}</label>
+                                <label for="description"><?php echo e(__('panel.description')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
-                                <textarea name="description" id="description" rows="8" class="form-control summernote">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <textarea name="description" id="description" rows="8" class="form-control summernote"><?php echo e(old('description')); ?></textarea>
+                                <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label>{{ __('panel.preview') }}</label>
+                                <label><?php echo e(__('panel.preview')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
                                 <div id="video_embed_container" style="max-width: 100%;">
@@ -150,40 +164,54 @@
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label for="published_on">{{ __('panel.publish_date') }}</label>
+                                <label for="published_on"><?php echo e(__('panel.publish_date')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
                                 <div class="input-group flatpickr" id="flatpickr-datetime">
-                                    <input type="text" name="published_on" value="{{ old('published_on') }}"
+                                    <input type="text" name="published_on" value="<?php echo e(old('published_on')); ?>"
                                         class="form-control" data-input>
                                     <span class="input-group-text input-group-addon" data-toggle><i
                                             data-feather="calendar"></i></span>
                                 </div>
-                                @error('published_on')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['published_on'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2 pt-2">
-                                <label class="control-label">{{ __('panel.status') }}</label>
+                                <label class="control-label"><?php echo e(__('panel.status')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-2">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="status" id="status_active"
                                         value="1" checked>
-                                    <label class="form-check-label" for="status_active">{{ __('panel.active') }}</label>
+                                    <label class="form-check-label" for="status_active"><?php echo e(__('panel.active')); ?></label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="status" id="status_inactive"
                                         value="0">
                                     <label class="form-check-label"
-                                        for="status_inactive">{{ __('panel.inactive') }}</label>
+                                        for="status_inactive"><?php echo e(__('panel.inactive')); ?></label>
                                 </div>
-                                @error('status')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -192,43 +220,61 @@
                     <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="seo-tab">
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-3 pt-2">
-                                <label for="meta_title">{{ __('panel.seo_title') }}</label>
+                                <label for="meta_title"><?php echo e(__('panel.seo_title')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-9 pt-2">
-                                <input type="text" name="meta_title" id="meta_title" value="{{ old('meta_title') }}"
+                                <input type="text" name="meta_title" id="meta_title" value="<?php echo e(old('meta_title')); ?>"
                                     class="form-control">
-                                @error('meta_title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['meta_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <hr>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-3 pt-2">
-                                <label for="meta_description">{{ __('panel.seo_description') }}</label>
+                                <label for="meta_description"><?php echo e(__('panel.seo_description')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-9 pt-2">
                                 <input type="text" name="meta_description" id="meta_description"
-                                    value="{{ old('meta_description') }}" class="form-control">
-                                @error('meta_description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    value="<?php echo e(old('meta_description')); ?>" class="form-control">
+                                <?php $__errorArgs = ['meta_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                        <div class="row mt-3">
+                            <div class="col-sm-12 col-md-3 pt-2">
+                                <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
                             </div>
-                            <div class="col-md-10">
-                                <div class="card p-2">
-
-                                    <input name="meta_keywords" id="tags" value="{{ $meta_keywords->value ?? '' }}"
-                                        class="form-control" />
-                                    @error('meta_keywords')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                            <div class="col-sm-12 col-md-9 pt-2">
+                                <input name="meta_keywords" id="tags1" value="<?php echo e(old('meta_keywords')); ?>"
+                                    class="form-control" />
+                                <?php $__errorArgs = ['meta_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -240,13 +286,16 @@
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="save"></i> {{ __('panel.save') }}
+                            <i class="icon-lg me-2" data-feather="save"></i> <?php echo e(__('panel.save')); ?>
+
                         </button>
                         <button id="backToStep1" type="button" class="btn btn-outline-secondary">
-                            <i class="icon-lg me-2" data-feather="corner-up-left"></i> {{ __('panel.back') }}
+                            <i class="icon-lg me-2" data-feather="corner-up-left"></i> <?php echo e(__('panel.back')); ?>
+
                         </button>
-                        <a href="{{ route('admin.videos.index') }}" class="btn btn-outline-danger">
-                            <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
+                        <a href="<?php echo e(route('admin.videos.index')); ?>" class="btn btn-outline-danger">
+                            <i class="icon-lg me-2" data-feather="x"></i> <?php echo e(__('panel.cancel')); ?>
+
                         </a>
                     </div>
                 </div>
@@ -255,15 +304,15 @@
 
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
     <script>
         $(function() {
 
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 }
             });
 
@@ -295,7 +344,7 @@
                 $fetchBtn.prop('disabled', true);
                 $('#fetchBtnText').text('جاري الجلب...');
 
-                $.post("{{ route('admin.videos.fetch_data') }}", {
+                $.post("<?php echo e(route('admin.videos.fetch_data')); ?>", {
                         url: url
                     })
                     .done(function(res) {
@@ -303,7 +352,7 @@
                             $('#title').val(res.title || '');
                             $('#description').val(res.title || '');
                             $('#thumbnail_preview').attr('src', res.thumbnail ||
-                                '{{ asset('backend/images/placeholder.png') }}');
+                                '<?php echo e(asset('backend/images/placeholder.png')); ?>');
                             $('#thumbnail').val(res.thumbnail || '');
                             $('#youtube_id').val(res.youtube_id || '');
 
@@ -320,7 +369,7 @@
                                 $('#video_embed_container').html(iframe);
                             } else {
                                 $('#video_embed_container').html(
-                                    '<p class="text-muted">{{ __('panel.no_preview_available') }}</p>'
+                                    '<p class="text-muted"><?php echo e(__('panel.no_preview_available')); ?></p>'
                                 );
                             }
 
@@ -362,7 +411,7 @@
                     })
                     .always(function() {
                         $fetchBtn.prop('disabled', false);
-                        $('#fetchBtnText').text('{{ __('panel.fetch_data') ?? 'جلب البيانات' }}');
+                        $('#fetchBtnText').text('<?php echo e(__('panel.fetch_data') ?? 'جلب البيانات'); ?>');
                     });
             });
 
@@ -386,7 +435,7 @@
             'use strict';
             const locale = "ar";
             if ($('#flatpickr-datetime').length) {
-                const oldDate = "{{ old('published_on') }}";
+                const oldDate = "<?php echo e(old('published_on')); ?>";
 
                 const defaultDate = oldDate ? oldDate : new Date();
 
@@ -402,21 +451,6 @@
             }
         });
     </script>
-    <script>
-        $(document).ready(function() {
+<?php $__env->stopSection(); ?>
 
-            $('#tags').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
-            });
-
-
-            $('#tags_meta').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
-            });
-        });
-    </script>
-@endsection
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/videos/create.blade.php ENDPATH**/ ?>

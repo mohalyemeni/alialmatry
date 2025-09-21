@@ -293,15 +293,21 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-3"><label for="metadata_keywords">الكلمات المفتاحية</label></div>
-                            <div class="col-md-9">
-                                <input type="text" name="metadata_keywords" id="metadata_keywords"
-                                    value="{{ $currMetadataKeywords }}" class="form-control">
-                                <small class="text-muted">افصل بين الكلمات بفاصلة</small>
-                                @error('metadata_keywords')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card p-2">
+
+                                    <input name="metadata_keywords" id="tags"
+                                        value="{{ old('currMetadataKeywords', $category->currMetadataKeywords) }}"
+                                        class="form-control" />
+                                    @error('meta_keywords')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -388,6 +394,23 @@
                     defaultDate: defaultDate,
                 });
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
         });
     </script>
 @endsection

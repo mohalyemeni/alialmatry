@@ -44,7 +44,7 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
-                     
+
 
                         <div class="row mt-3">
                             <label for="category_id" class="col-sm-12 col-md-2 pt-3">{{ __('panel.category') }}</label>
@@ -187,15 +187,20 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <label for="meta_keywords"
-                                class="col-sm-12 col-md-3 pt-3">{{ __('panel.seo_keywords') }}</label>
-                            <div class="col-sm-12 col-md-9 pt-3">
-                                <input name="meta_keywords" id="tags1"
-                                    value="{{ old('meta_keywords', $fatwa->meta_keywords) }}" class="form-control" />
-                                @error('meta_keywords')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card p-2">
+
+                                    <input name="meta_keywords" id="tags"
+                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
+                                        class="form-control" />
+                                    @error('meta_keywords')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -342,6 +347,23 @@
                     defaultDate: defaultDate,
                 });
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
         });
     </script>
 @endsection

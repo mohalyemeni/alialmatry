@@ -174,15 +174,20 @@
                             </div>
                         </div>
 
-                        <div class="mb-3 row">
-                            <label for="meta_keywords"
-                                class="col-md-3 col-form-label">{{ __('panel.seo_keywords') }}</label>
-                            <div class="col-md-9">
-                                <input type="text" id="meta_keywords" name="meta_keywords" class="form-control"
-                                    value="{{ old('meta_keywords', $category->meta_keywords) }}">
-                                @error('meta_keywords')
-                                    <div class="text-danger small">{{ $message }}</div>
-                                @enderror
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card p-2">
+
+                                    <input name="meta_keywords" id="tags"
+                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
+                                        class="form-control" />
+                                    @error('meta_keywords')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -306,6 +311,23 @@
                     $icon.removeClass('far text-muted').addClass('fas text-warning');
                     $(this).attr('aria-pressed', 'true');
                 }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
             });
         });
     </script>

@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <div class="card shadow mb-4">
 
@@ -12,29 +10,29 @@
                 </h3>
                 <ul class="breadcrumb pt-3">
                     <li>
-                        <a href="{{ route('admin.index') }}">الرئيسية</a>
+                        <a href="<?php echo e(route('admin.index')); ?>">الرئيسية</a>
                         \
                     </li>
                     <li class="ms-1">
-                        <a href="{{ route('admin.main_sliders.index') }}">عرض السلايدر</a>
+                        <a href="<?php echo e(route('admin.main_sliders.index')); ?>">عرض السلايدر</a>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="card-body">
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 <div class="alert alert-danger pt-0 pb-0 mb-0">
                     <ul class="px-2 py-3 m-0" style="list-style-type: circle">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            <form action="{{ route('admin.main_sliders.store') }}" method="post" enctype="multipart/form-data">
-                @csrf
+            <form action="<?php echo e(route('admin.main_sliders.store')); ?>" method="post" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -63,11 +61,18 @@
                                 <label for="title">العنوان</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                <input type="text" name="title" id="title" value="<?php echo e(old('title')); ?>"
                                     class="form-control">
-                                @error('title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -76,11 +81,18 @@
                                 <label for="subtitle">العنوان الفرعي</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" name="subtitle" id="subtitle" value="{{ old('subtitle') }}"
+                                <input type="text" name="subtitle" id="subtitle" value="<?php echo e(old('subtitle')); ?>"
                                     class="form-control">
-                                @error('subtitle')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['subtitle'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -89,10 +101,17 @@
                                 <label for="description">الوصف</label>
                             </div>
                             <div class="col-md-10">
-                                <textarea id="tinymceExample" name="description" rows="7" class="form-control">{!! old('description') !!}</textarea>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <textarea id="tinymceExample" name="description" rows="7" class="form-control"><?php echo old('description'); ?></textarea>
+                                <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -105,9 +124,16 @@
                             <div class="col-md-10">
                                 <!-- حقل ملف واحد باسم img -->
                                 <input type="file" name="img" id="img" class="form-control" accept="image/*" />
-                                @error('img')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['img'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -119,11 +145,18 @@
                                 <label for="btn_title">نص زر التصفح</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" name="btn_title" id="btn_title" value="{{ old('btn_title') }}"
+                                <input type="text" name="btn_title" id="btn_title" value="<?php echo e(old('btn_title')); ?>"
                                     class="form-control">
-                                @error('btn_title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['btn_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -132,11 +165,18 @@
                                 <label for="url">الرابط</label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" name="url" id="url" value="{{ old('url') }}"
+                                <input type="text" name="url" id="url" value="<?php echo e(old('url')); ?>"
                                     class="form-control" placeholder="https://example.com">
-                                @error('url')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['url'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -147,17 +187,24 @@
                             <div class="col-md-9">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" name="target" value="_self" id="target_self"
-                                        class="form-check-input" {{ old('target', '_self') == '_self' ? 'checked' : '' }}>
+                                        class="form-check-input" <?php echo e(old('target', '_self') == '_self' ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="target_self">في نفس التبويب</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" name="target" value="_blank" id="target_blank"
-                                        class="form-check-input" {{ old('target') == '_blank' ? 'checked' : '' }}>
+                                        class="form-check-input" <?php echo e(old('target') == '_blank' ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="target_blank">في تبويب جديد</label>
                                 </div>
-                                @error('target')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['target'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -168,17 +215,24 @@
                             <div class="col-md-9">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" name="show_btn_title" value="1" id="show_btn_yes"
-                                        class="form-check-input" {{ old('show_btn_title', '1') == '1' ? 'checked' : '' }}>
+                                        class="form-check-input" <?php echo e(old('show_btn_title', '1') == '1' ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="show_btn_yes">نعم</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" name="show_btn_title" value="0" id="show_btn_no"
-                                        class="form-check-input" {{ old('show_btn_title') == '0' ? 'checked' : '' }}>
+                                        class="form-check-input" <?php echo e(old('show_btn_title') == '0' ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="show_btn_no">لا</label>
                                 </div>
-                                @error('show_btn_title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['show_btn_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -192,14 +246,21 @@
                                 <div class="col-md-9">
                                     <div class="input-group flatpickr" id="flatpickr-datetime">
                                         <!-- data-input مطلوب عند wrap: true -->
-                                        <input type="text" name="published_on" value="{{ old('published_on') }}"
+                                        <input type="text" name="published_on" value="<?php echo e(old('published_on')); ?>"
                                             class="form-control" placeholder="Y/m/d h:i AM/PM" data-input>
                                         <span class="input-group-text input-group-addon" data-toggle><i
                                                 data-feather="calendar"></i></span>
                                     </div>
-                                    @error('published_on')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <?php $__errorArgs = ['published_on'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
 
@@ -208,17 +269,24 @@
                                 <div class="col-md-9">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" name="status" value="1" id="status_active"
-                                            class="form-check-input" {{ old('status', '1') == '1' ? 'checked' : '' }}>
+                                            class="form-check-input" <?php echo e(old('status', '1') == '1' ? 'checked' : ''); ?>>
                                         <label class="form-check-label" for="status_active">مفعل</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="radio" name="status" value="0" id="status_inactive"
-                                            class="form-check-input" {{ old('status') == '0' ? 'checked' : '' }}>
+                                            class="form-check-input" <?php echo e(old('status') == '0' ? 'checked' : ''); ?>>
                                         <label class="form-check-label" for="status_inactive">معطل</label>
                                     </div>
-                                    @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </fieldset>
@@ -230,17 +298,24 @@
                                 <div class="col-md-9">
                                     <div class="form-check form-check-inline">
                                         <input type="radio" name="show_info" value="1" id="show_info_yes"
-                                            class="form-check-input" {{ old('show_info', '1') == '1' ? 'checked' : '' }}>
+                                            class="form-check-input" <?php echo e(old('show_info', '1') == '1' ? 'checked' : ''); ?>>
                                         <label class="form-check-label" for="show_info_yes">نعم</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input type="radio" name="show_info" value="0" id="show_info_no"
-                                            class="form-check-input" {{ old('show_info') == '0' ? 'checked' : '' }}>
+                                            class="form-check-input" <?php echo e(old('show_info') == '0' ? 'checked' : ''); ?>>
                                         <label class="form-check-label" for="show_info_no">لا</label>
                                     </div>
-                                    @error('show_info')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <?php $__errorArgs = ['show_info'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </fieldset>
@@ -252,10 +327,17 @@
                             <div class="col-md-3"><label for="metadata_title">عنوان SEO</label></div>
                             <div class="col-md-9">
                                 <input type="text" name="metadata_title" id="metadata_title"
-                                    value="{{ old('metadata_title') }}" class="form-control">
-                                @error('metadata_title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    value="<?php echo e(old('metadata_title')); ?>" class="form-control">
+                                <?php $__errorArgs = ['metadata_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -263,26 +345,40 @@
                             <div class="col-md-3"><label for="metadata_description">وصف SEO</label></div>
                             <div class="col-md-9">
                                 <input type="text" name="metadata_description" id="metadata_description"
-                                    value="{{ old('metadata_description') }}" class="form-control">
-                                @error('metadata_description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    value="<?php echo e(old('metadata_description')); ?>" class="form-control">
+                                <?php $__errorArgs = ['metadata_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
 
                         <div class="row">
                             <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                                <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
                             </div>
                             <div class="col-md-10">
                                 <div class="card p-2">
 
                                     <input name="metadata_keywords" id="tags"
-                                        value="{{ $metadata_keywords->value ?? '' }}" class="form-control" />
-                                    @error('meta_keywords')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                        value="<?php echo e($metadata_keywords->value ?? ''); ?>" class="form-control" />
+                                    <?php $__errorArgs = ['meta_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +392,7 @@
                         <button type="submit" class="btn btn-primary">
                             حفظ
                         </button>
-                        <a href="{{ route('admin.main_sliders.index') }}" class="btn btn-outline-danger">إلغاء</a>
+                        <a href="<?php echo e(route('admin.main_sliders.index')); ?>" class="btn btn-outline-danger">إلغاء</a>
                     </div>
                 </div>
 
@@ -304,9 +400,9 @@
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
     <script>
         $(function() {
             // fileinput (حقل واحد)
@@ -330,7 +426,7 @@
         $(function() {
             if ($('#flatpickr-datetime').length) {
                 // استخدم القيمة القديمة إن وُجدت وإلا التوقيت الحالي
-                const oldVal = {!! json_encode(old('published_on') ?: null) !!};
+                const oldVal = <?php echo json_encode(old('published_on') ?: null); ?>;
                 const defaultDate = oldVal ? oldVal : new Date();
 
                 flatpickr("#flatpickr-datetime", {
@@ -363,4 +459,6 @@
             });
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/main_sliders/create.blade.php ENDPATH**/ ?>

@@ -165,14 +165,20 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <label for="meta_description"
-                                class="col-sm-12 col-md-3 pt-3">{{ __('panel.seo_description') }}</label>
-                            <div class="col-sm-12 col-md-9 pt-3">
-                                <textarea name="meta_description" id="meta_description" rows="3" class="form-control">{{ old('meta_description', $blog->meta_description) }}</textarea>
-                                @error('meta_description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3 pt-3">
+                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card p-2">
+
+                                    <input name="meta_keywords" id="tags"
+                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
+                                        class="form-control" />
+                                    @error('meta_keywords')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -312,6 +318,23 @@
                     defaultDate: defaultDate,
                 });
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
         });
     </script>
 @endsection
