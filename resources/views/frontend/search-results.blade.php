@@ -130,7 +130,7 @@
                                         {{ Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 100) }}
                                     </p>
                                     <a href="{{ route('frontend.durars.show', $durar->slug) }}"
-                                        class="btn btn-primary">قراءة المزيد</a>
+                                        class="btn btn-primary1">قراءة المزيد</a>
                                 </div>
                             </div>
                         </div>

@@ -1890,3 +1890,13 @@ div.tagsinput input {
     background-color: #374868;
     border-color: #374868;
 }
+.btn-primary1 {
+    color: #fff;
+    background-color: #374868;
+    border-color: #374868;
+}
+.btn-primary1:hover {
+    color: #374868;
+    background-color: #fff;
+    border-color: #374868;
+}

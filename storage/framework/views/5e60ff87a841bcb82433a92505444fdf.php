@@ -130,7 +130,7 @@
 
                                     </p>
                                     <a href="<?php echo e(route('frontend.durars.show', $durar->slug)); ?>"
-                                        class="btn btn-primary">قراءة المزيد</a>
+                                        class="btn btn-primary1">قراءة المزيد</a>
                                 </div>
                             </div>
                         </div>
