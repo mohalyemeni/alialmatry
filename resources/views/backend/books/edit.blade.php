@@ -241,7 +241,7 @@
                     'width': '100%',
                     'interactive': true,
                     'removeWithBackspace': true,
-                    'delimiter': ',', // الفاصل بين الكلمات
+                    'delimiter': ',',
                     'minChars': 1,
                     'maxChars': 50
                 });

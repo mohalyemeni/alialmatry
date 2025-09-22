@@ -126,7 +126,7 @@
 
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($book->description))), 80)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($book->description))), 30)); ?>
 
                                 </p>
                             </div>

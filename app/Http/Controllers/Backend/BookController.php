@@ -54,6 +54,13 @@ class BookController extends Controller
         $book->description = $request->description;
         $book->status = $request->status;
 
+        // ====== SEO fields ======
+        $book->meta_keywords = $request->meta_keywords ?? null;
+        $book->meta_description = $request->meta_description ?? null;
+        $book->meta_slug = $request->meta_slug ?? null;
+        // published_on (optional)
+        $book->published_on = $request->published_on ?? null;
+
         if ($request->hasFile('img')) {
             $image = $request->file('img');
             $imageName = 'book_' . time() . '.' . $image->getClientOriginalExtension();
@@ -99,6 +106,12 @@ class BookController extends Controller
         $book->description = $request->description;
         $book->status = $request->status;
 
+        // ====== SEO fields ======
+        $book->meta_keywords = $request->meta_keywords ?? null;
+        $book->meta_description = $request->meta_description ?? null;
+        $book->meta_slug = $request->meta_slug ?? null;
+        // published_on (optional)
+        $book->published_on = $request->published_on ?? null;
 
         if ($request->hasFile('img')) {
             $oldImagePath = public_path('assets/books/images/' . $book->img);
