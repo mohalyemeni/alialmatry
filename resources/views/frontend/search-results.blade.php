@@ -61,7 +61,7 @@
                     @foreach ($audios as $audio)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fa fa-volume-up me-2 icon_color"></i>{{ $audio->title }}</h5>
+                                <h5 class="mb-1"><i class="fa fa-volume-up ms-2 icon_color"></i>{{ $audio->title }}</h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 120) }}
                                 </p>
