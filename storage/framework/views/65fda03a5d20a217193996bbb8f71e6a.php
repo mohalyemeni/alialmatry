@@ -35,7 +35,7 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0"><?php echo e(__('panel.title')); ?></th>
-                        <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.author')); ?></th>
+                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.author')); ?></th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.status')); ?></th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.featured')); ?></th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.published_on')); ?></th>

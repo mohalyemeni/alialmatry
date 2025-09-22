@@ -36,7 +36,7 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0">{{ __('panel.title') }}</th>
-                        <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.author') }}</th>
+                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.author') }}</th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.status') }}</th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.featured') }}</th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.published_on') }}</th>

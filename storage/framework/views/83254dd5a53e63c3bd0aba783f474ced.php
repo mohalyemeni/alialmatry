@@ -4,19 +4,19 @@
         <div class="card-header py-3 d-flex justify-content-between">
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
-                    <i class="fa fa-folder"></i>
-                    <?php echo e(__('panel.manage_blog_categories')); ?>
+                    <i class="fa fa-gavel"></i>
+                    <?php echo e(__('panel.manage_fatawa_categories')); ?>
 
                 </h3>
                 <ul class="breadcrumb pt-3">
                     <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.main')); ?></a> \</li>
-                    <li class="ms-1"><?php echo e(__('panel.show_blog_categories')); ?></li>
+                    <li class="ms-1"><?php echo e(__('panel.show_fatawa_categories')); ?></li>
                 </ul>
             </div>
 
             <div class="ml-auto">
-                <?php if (\Entrust::ability('admin', 'create_categories')) : ?>
-                    <a href="<?php echo e(route('admin.blog_categories.create')); ?>" class="btn btn-primary">
+                <?php if (\Entrust::ability('admin', 'create_fatawa_categories')) : ?>
+                    <a href="<?php echo e(route('admin.fatawa_categories.create')); ?>" class="btn btn-primary">
                         <span class="icon text-white-50 d-none d-sm-inline-block">
                             <i class="fa fa-plus-square"></i>
                         </span>
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <?php echo $__env->make('backend.blog_categories.filter.filter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php echo $__env->make('backend.fatawa_categories.filter.filter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <div class="card-body">
             <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
@@ -34,10 +34,12 @@
                 <thead>
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
-                        <th class="wd-35p border-bottom-0"><?php echo e(__('panel.title')); ?></th>
-                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.author')); ?></th>
-                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.status')); ?></th>
-                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.featured')); ?></th>
+                        <th class="wd-30p border-bottom-0"><?php echo e(__('panel.title')); ?></th>
+                        <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.author')); ?></th>
+                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell text-center"><?php echo e(__('panel.status')); ?></th>
+                        <th class="wd-10p border-bottom-0 d-none d-sm-table-cell text-center"><?php echo e(__('panel.featured')); ?>
+
+                        </th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.published_on')); ?></th>
                         <th class="text-center border-bottom-0" style="width: 120px;"><?php echo e(__('panel.actions')); ?></th>
                     </tr>
@@ -58,9 +60,9 @@
                             </td>
 
                             <td class="d-none d-sm-table-cell text-center">
-                                <a href="javascript:void(0);" class="updateBlogCategoryStatus"
-                                    id="blog-category-<?php echo e($page_category->id); ?>"
-                                    blog_category_id="<?php echo e($page_category->id); ?>">
+                                <a href="javascript:void(0);" class="updateFatawaCategoryStatus"
+                                    id="fatawa-category-<?php echo e($page_category->id); ?>"
+                                    fatawa_category_id="<?php echo e($page_category->id); ?>">
                                     <?php if($page_category->status): ?>
                                         <i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>
                                     <?php else: ?>
@@ -70,9 +72,9 @@
                             </td>
 
                             <td class="d-none d-sm-table-cell text-center">
-                                <a href="javascript:void(0);" class="toggleBlogCategoryFeatured"
-                                    id="blog-category-featured-<?php echo e($page_category->id); ?>"
-                                    blog_category_id="<?php echo e($page_category->id); ?>">
+                                <a href="javascript:void(0);" class="toggleFatawaCategoryFeatured"
+                                    id="fatawa-category-featured-<?php echo e($page_category->id); ?>"
+                                    fatawa_category_id="<?php echo e($page_category->id); ?>">
                                     <?php if($page_category->featured): ?>
                                         <i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>
                                     <?php else: ?>
@@ -105,19 +107,19 @@
                                         <div class="dropdown-menu"
                                             aria-labelledby="dropdownMenuButton<?php echo e($page_category->id); ?>">
                                             <a class="dropdown-item d-flex align-items-center"
-                                                href="<?php echo e(route('admin.blog_categories.edit', $page_category->id)); ?>">
+                                                href="<?php echo e(route('admin.fatawa_categories.edit', $page_category->id)); ?>">
                                                 <i data-feather="edit-2" class="icon-sm me-2"></i>
                                                 <span><?php echo e(__('panel.operation_edit')); ?></span>
                                             </a>
 
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-blog-category-<?php echo e($page_category->id); ?>', '<?php echo e(__('panel.confirm_delete_message')); ?>', '<?php echo e(__('panel.yes_delete')); ?>', '<?php echo e(__('panel.cancel')); ?>')">
+                                                onclick="confirmDelete('delete-fatawa-category-<?php echo e($page_category->id); ?>', '<?php echo e(__('panel.confirm_delete_message')); ?>', '<?php echo e(__('panel.yes_delete')); ?>', '<?php echo e(__('panel.cancel')); ?>')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 <span><?php echo e(__('panel.operation_delete')); ?></span>
                                             </a>
 
-                                            <form id="delete-blog-category-<?php echo e($page_category->id); ?>"
-                                                action="<?php echo e(route('admin.blog_categories.destroy', $page_category->id)); ?>"
+                                            <form id="delete-fatawa-category-<?php echo e($page_category->id); ?>"
+                                                action="<?php echo e(route('admin.fatawa_categories.destroy', $page_category->id)); ?>"
                                                 method="POST" class="d-none">
                                                 <?php echo csrf_field(); ?>
                                                 <?php echo method_field('DELETE'); ?>
@@ -148,14 +150,14 @@
 <?php $__env->startSection('script'); ?>
     <script>
         $(document).ready(function() {
-            // تغيير الحالة (status)
-            $(document).on('click', '.updateBlogCategoryStatus', function() {
+            // تغيير الحالة
+            $(document).on('click', '.updateFatawaCategoryStatus', function() {
                 var el = $(this);
-                var category_id = el.attr('blog_category_id');
+                var category_id = el.attr('fatawa_category_id');
 
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo e(route('admin.blog_categories.toggleStatus')); ?>',
+                    url: '<?php echo e(route('admin.fatawa_categories.toggleStatus')); ?>',
                     data: {
                         _token: '<?php echo e(csrf_token()); ?>',
                         category_id: category_id
@@ -171,31 +173,28 @@
                             );
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('toggle status error:', xhr.status, error, xhr
-                            .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير الحالة';
-                        if (xhr.status === 403) msg += ' — ليس لديك صلاحية.';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة (CSRF).';
-                        alert(msg);
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert('حدث خطأ أثناء تغيير الحالة');
                     }
                 });
             });
 
-            // تغيير الميّز (featured)
-            $(document).on('click', '.toggleBlogCategoryFeatured', function() {
+            // تغيير المميز (featured)
+            $(document).on('click', '.toggleFatawaCategoryFeatured', function() {
                 var el = $(this);
-                var category_id = el.attr('blog_category_id');
+                var category_id = el.attr('fatawa_category_id');
 
                 $.ajax({
                     type: 'POST',
-                    url: '<?php echo e(route('admin.blog_categories.toggleFeatured')); ?>',
+                    url: '<?php echo e(route('admin.fatawa_categories.toggleFeatured')); ?>',
                     data: {
                         _token: '<?php echo e(csrf_token()); ?>',
                         category_id: category_id
                     },
                     success: function(response) {
-                        if (response.featured) {
+                        // تقبل قيمة 1/0 أو true/false
+                        if (response.featured == 1 || response.featured === true) {
                             el.html(
                                 '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
                             );
@@ -205,29 +204,34 @@
                             );
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('toggle featured error:', xhr.status, error, xhr
-                            .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير حالة المميز';
-                        if (xhr.status === 403) msg += ' — ليس لديك صلاحية.';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة (CSRF).';
-                        alert(msg);
+                    error: function(xhr) {
+                        console.error(xhr);
+                        if (xhr.status === 403) {
+                            alert('غير مصرح لك بتغيير هذه الخاصية');
+                        } else if (xhr.status === 404) {
+                            alert('التصنيف غير موجود أو ليس ضمن قسم الفتاوى');
+                        } else {
+                            alert('حدث خطأ أثناء تغيير حالة المميز');
+                        }
                     }
                 });
             });
         });
-    </script>
 
-    <script>
         function confirmDelete(formId, message, yesText, cancelText) {
             if (confirm(message)) {
+                console.log('Submitting form: ' + formId);
                 const form = document.getElementById(formId);
                 if (form) {
                     form.submit();
+                } else {
+                    console.error('Form not found: ' + formId);
                 }
+            } else {
+                console.log('User cancelled deletion');
             }
         }
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/blog_categories/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/fatawa_categories/index.blade.php ENDPATH**/ ?>
