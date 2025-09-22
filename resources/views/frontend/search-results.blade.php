@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-5">
+    <div class="container py-5 px-5">
         <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap">
             نتائج البحث عن: "{{ $query }}"
         </h3>
