@@ -25,7 +25,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $blogs->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $blogs->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
@@ -49,7 +51,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $videos->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $videos->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
@@ -72,7 +76,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $audios->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $audios->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
@@ -95,7 +101,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $fatawas->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $fatawas->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
@@ -125,7 +133,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $books->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $books->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
@@ -148,7 +158,9 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3">{{ $durars->withQueryString()->links() }}</div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $durars->withQueryString()->links() }}
+                </div>
             </section>
         @endif
 
