@@ -152,5 +152,16 @@
             </section>
         @endif
 
+        @if (
+            $blogs->count() == 0 &&
+                $videos->count() == 0 &&
+                $audios->count() == 0 &&
+                $fatawas->count() == 0 &&
+                $books->count() == 0 &&
+                $durars->count() == 0)
+            <div class="alert alert-info text-center">
+                لم يتم العثور على نتائج للبحث "{{ $query }}"
+            </div>
+        @endif
     </div>
 @endsection
