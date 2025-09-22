@@ -118,7 +118,7 @@
                                 <h5 class="mb-1"><i class="fas fa-book-reader ms-2 icon_color"></i>{{ $book->title }}
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($book->description))), 80) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($book->description))), 30) }}
                                 </p>
                             </div>
                             <div class="d-flex gap-2">
