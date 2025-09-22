@@ -4,7 +4,7 @@
             <div class="row align-items-center justify-content-center justify-content-lg-between">
                 <div class="col-12">
                     <div class="blog-grid style2">
-                        <div class="blog-img blog-img1 global-img wow fadeInLeft" data-wow-delay=".3s">
+                        <div class="blog-img blog-img1 global-img1 global-img wow fadeInLeft" data-wow-delay=".3s">
                             @php
                                 $img = $intro->img ?? asset('frontand/assets/img/team/nobtha.jpg');
                             @endphp
