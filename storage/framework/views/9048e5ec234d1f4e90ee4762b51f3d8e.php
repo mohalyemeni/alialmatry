@@ -255,7 +255,7 @@ unset($__errorArgs, $__bag); ?>
                             <div class="col-sm-12 col-md-3 pt-3">
                                 <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <div class="card p-2">
 
                                     <input name="meta_keywords" id="tags" value="<?php echo e($meta_keywords->value ?? ''); ?>"

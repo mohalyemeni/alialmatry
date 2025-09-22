@@ -91,4 +91,23 @@
             });
         });
     </script>
+    <script>
+        (function($) {
+            $(document).ready(function() {
+
+
+                if ($('#tags1').length) {
+                    $('#tags1').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                    });
+                }
+
+            });
+        })(jQuery);
+    </script>
 @endsection

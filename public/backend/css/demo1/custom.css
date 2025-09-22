@@ -553,3 +553,6 @@ div.tagsinput input {
     direction: ltr;
     text-align: end;
 }
+div.tagsinput div {
+    float: right !important;
+}

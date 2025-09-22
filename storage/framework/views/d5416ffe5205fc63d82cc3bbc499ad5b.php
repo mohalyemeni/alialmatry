@@ -3,14 +3,16 @@
         <div class="card-header py-3 d-flex justify-content-between">
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
-                    <i class="fa fa-edit"></i> <?php echo e(__('panel.edit_blog')); ?>
+                    <i class="fa fa-edit"></i> <?php echo e(__('panel.edit_audio')); ?>
 
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.home')); ?></a> /</li>
-                    <li class="ms-1"><a href="<?php echo e(route('admin.blogs.index')); ?>"><?php echo e(__('panel.manage_blogs')); ?></a> /</li>
-                    <li class="ms-1"> <a href=""> <?php echo e($blog->title); ?></a></li>
+                    <li><a href="<?php echo e(route('admin.index_route')); ?>"><?php echo e(__('panel.home')); ?></a> /</li>
+                    <li class="ms-1"><a href="<?php echo e(route('admin.audios.index')); ?>"><?php echo e(__('panel.manage_audios')); ?></a> /</li>
+                    <li class="ms-1"> <a href=""> <?php echo e($audio->title); ?> </a></li>
+
                 </ul>
+
             </div>
         </div>
         <div class="card-body">
@@ -23,7 +25,7 @@
                     </ul>
                 </div>
             <?php endif; ?>
-            <form action="<?php echo e(route('admin.blogs.update', $blog->id)); ?>" method="POST" enctype="multipart/form-data"
+            <form action="<?php echo e(route('admin.audios.update', $audio->id)); ?>" method="POST" enctype="multipart/form-data"
                 novalidate>
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
@@ -45,7 +47,6 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
-
                         <div class="row mt-3">
                             <label for="category_id" class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.category')); ?></label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -61,7 +62,7 @@ unset($__errorArgs, $__bag); ?>" required>
                                     <option value=""><?php echo e(__('panel.select_category')); ?></option>
                                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($category->id); ?>"
-                                            <?php echo e(old('category_id', $blog->category_id) == $category->id ? 'selected' : ''); ?>>
+                                            <?php echo e(old('category_id', $audio->category_id) == $category->id ? 'selected' : ''); ?>>
                                             <?php echo e($category->title); ?>
 
                                         </option>
@@ -79,12 +80,11 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
-
                         <div class="row mt-3">
                             <label for="title" class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.title')); ?></label>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <input type="text" name="title" id="title"
-                                    value="<?php echo e(old('title', $blog->title)); ?>"
+                                    value="<?php echo e(old('title', $audio->title)); ?>"
                                     class="form-control <?php $__errorArgs = ['title'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -105,7 +105,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
-
                         <div class="row mt-3">
                             <label for="description" class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.description')); ?></label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -117,7 +116,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"><?php echo old('description', $blog->description); ?></textarea>
+unset($__errorArgs, $__bag); ?>"><?php echo old('description', $audio->description); ?></textarea>
                                 <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -130,7 +129,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
-
 
                         <div class="row mt-3">
                             <label for="img" class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.change_image')); ?>
@@ -152,13 +150,46 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <label class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.current_audio_file')); ?></label>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <?php if($audio->audio_file): ?>
+                                    <audio controls style="width: 100%; max-width: 400px;">
+                                        <source src="<?php echo e(asset('assets/audios/files/' . $audio->audio_file)); ?>"
+                                            type="audio/mpeg">
+                                        <?php echo e(__('panel.audio_not_supported')); ?>
 
+                                    </audio>
+                                <?php else: ?>
+                                    <p><?php echo e(__('panel.no_audio_uploaded')); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label for="audio_file"
+                                class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.change_audio_file')); ?></label>
+                            <div class="col-sm-12 col-md-10 pt-3">
+                                <input type="file" name="audio_file" id="audio_file" class="form-control"
+                                    accept="audio/*">
+                                <small class="text-muted"><?php echo e(__('panel.leave_empty_to_keep_current')); ?></small>
+                                <?php $__errorArgs = ['audio_file'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
                         <div class="row mt-3">
                             <label class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.publish_date')); ?></label>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="input-group flatpickr" id="flatpickr-datetime">
                                     <input type="text" name="published_on"
-                                        value="<?php echo e(old('published_on', $blog->published_on?->format('Y-m-d H:i'))); ?>"
+                                        value="<?php echo e(old('published_on', $audio->published_on?->format('Y-m-d H:i'))); ?>"
                                         class="form-control" placeholder="<?php echo e(__('panel.publish_date')); ?>" data-input
                                         required>
                                     <span class="input-group-text input-group-addon" data-toggle>
@@ -177,21 +208,20 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
-
                         <div class="row mt-3">
                             <label for="status"
                                 class="col-sm-12 col-md-2 pt-3 control-label"><?php echo e(__('panel.status')); ?></label>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" name="status" id="status_active"
-                                        value="1" <?php echo e(old('status', $blog->status) == '1' ? 'checked' : ''); ?>
+                                        value="1" <?php echo e(old('status', $audio->status) == '1' ? 'checked' : ''); ?>
 
                                         required>
                                     <label class="form-check-label" for="status_active"><?php echo e(__('panel.active')); ?></label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" name="status" id="status_inactive"
-                                        value="0" <?php echo e(old('status', $blog->status) == '0' ? 'checked' : ''); ?>
+                                        value="0" <?php echo e(old('status', $audio->status) == '0' ? 'checked' : ''); ?>
 
                                         required>
                                     <label class="form-check-label"
@@ -210,13 +240,12 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
                         <div class="row mt-3">
                             <label for="meta_slug" class="col-sm-12 col-md-3 pt-3"><?php echo e(__('panel.seo_slug')); ?></label>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="meta_slug" id="meta_slug"
-                                    value="<?php echo e(old('meta_slug', $blog->meta_slug)); ?>" class="form-control">
+                                    value="<?php echo e(old('meta_slug', $audio->meta_slug)); ?>" class="form-control">
                                 <?php $__errorArgs = ['meta_slug'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -263,7 +292,7 @@ unset($__errorArgs, $__bag); ?>
                             <i class="icon-lg me-2" data-feather="save"></i> <?php echo e(__('panel.update')); ?>
 
                         </button>
-                        <a href="<?php echo e(route('admin.blogs.index')); ?>" class="btn btn-outline-danger">
+                        <a href="<?php echo e(route('admin.audios.index')); ?>" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> <?php echo e(__('panel.cancel')); ?>
 
                         </a>
@@ -274,7 +303,6 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 <?php $__env->stopSection(); ?>
-
 <?php $__env->startSection('script'); ?>
     <script src="<?php echo e(asset('backend/vendors/select2/select2.min.js')); ?>"></script>
     <script>
@@ -296,21 +324,21 @@ unset($__errorArgs, $__bag); ?>
                 overwriteInitial: false,
                 maxFileCount: 1,
                 initialPreview: [
-                    <?php if($blog->img): ?>
-                        "<?php echo e(asset('assets/blogs/images/' . $blog->img)); ?>"
+                    <?php if($audio->img): ?>
+                        "<?php echo e(asset('assets/audios/images/' . $audio->img)); ?>"
                     <?php endif; ?>
                 ],
                 initialPreviewAsData: true,
                 initialPreviewFileType: 'image',
                 initialPreviewConfig: [
-                    <?php if($blog->img): ?>
+                    <?php if($audio->img): ?>
                         {
-                            caption: "<?php echo e(basename($blog->img)); ?>",
-                            url: "<?php echo e(route('admin.blogs.remove_image')); ?>",
-                            key: "<?php echo e($blog->id); ?>",
+                            caption: "<?php echo e(basename($audio->img)); ?>",
+                            url: "<?php echo e(route('admin.audios.remove_image')); ?>",
+                            key: "<?php echo e($audio->id); ?>",
                             extra: {
                                 _token: "<?php echo e(csrf_token()); ?>",
-                                id: "<?php echo e($blog->id); ?>"
+                                id: "<?php echo e($audio->id); ?>"
                             }
                         }
                     <?php endif; ?>
@@ -322,7 +350,6 @@ unset($__errorArgs, $__bag); ?>
                     removeIcon: '<i class="fas fa-trash"></i>',
                 }
             });
-
             $("#audio_file").fileinput({
                 theme: "fa5",
                 allowedFileTypes: ['audio'],
@@ -332,21 +359,21 @@ unset($__errorArgs, $__bag); ?>
                 overwriteInitial: false,
                 maxFileCount: 1,
                 initialPreview: [
-                    <?php if($blog->audio_file): ?>
-                        "<?php echo e(asset('assets/blogs/files/' . $blog->audio_file)); ?>"
+                    <?php if($audio->img): ?>
+                        "<?php echo e(asset('assets/audios/files/' . $audio->img)); ?>"
                     <?php endif; ?>
                 ],
                 initialPreviewAsData: true,
                 initialPreviewFileType: 'audio',
                 initialPreviewConfig: [
-                    <?php if($blog->audio_file): ?>
+                    <?php if($audio->audio_file): ?>
                         {
-                            caption: "<?php echo e(basename($blog->audio_file)); ?>",
-                            url: "<?php echo e(route('admin.blogs.remove_audio')); ?>",
-                            key: "<?php echo e($blog->id); ?>",
+                            caption: "<?php echo e(basename($audio->audio_file)); ?>",
+                            url: "<?php echo e(route('admin.audios.remove_audio')); ?>",
+                            key: "<?php echo e($audio->id); ?>",
                             extra: {
                                 _token: "<?php echo e(csrf_token()); ?>",
-                                id: "<?php echo e($blog->id); ?>"
+                                id: "<?php echo e($audio->id); ?>"
                             }
                         }
                     <?php endif; ?>
@@ -363,7 +390,6 @@ unset($__errorArgs, $__bag); ?>
                     },
                 }
             });
-
             $('.summernote').summernote({
                 tabSize: 2,
                 height: 200,
@@ -377,10 +403,9 @@ unset($__errorArgs, $__bag); ?>
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ]
             });
-
             const locale = "ar";
             if ($('#flatpickr-datetime').length) {
-                const defaultDate = "<?php echo e(old('published_on', $blog->published_on?->format('Y-m-d H:i'))); ?>" ||
+                const defaultDate = "<?php echo e(old('published_on', $audio->published_on?->format('Y-m-d H:i'))); ?>" ||
                     new Date();
                 flatpickr("#flatpickr-datetime", {
                     enableTime: true,
@@ -413,4 +438,4 @@ unset($__errorArgs, $__bag); ?>
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/blogs/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/audio/edit.blade.php ENDPATH**/ ?>

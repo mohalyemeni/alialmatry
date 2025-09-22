@@ -258,23 +258,26 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <hr>
-                        <div class="row mt-3">
-                            <div class="col-sm-12 col-md-3 pt-2">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3 pt-3">
                                 <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
                             </div>
-                            <div class="col-sm-12 col-md-9 pt-2">
-                                <input name="meta_keywords" id="tags1" value="<?php echo e(old('meta_keywords')); ?>"
-                                    class="form-control" />
-                                <?php $__errorArgs = ['meta_keywords'];
+                            <div class="col-md-10">
+                                <div class="card p-2">
+
+                                    <input name="meta_keywords" id="tags" value="<?php echo e($meta_keywords->value ?? ''); ?>"
+                                        class="form-control" />
+                                    <?php $__errorArgs = ['meta_keywords'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-danger"><?php echo e($message); ?></span>
-                                <?php unset($message);
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -449,6 +452,23 @@ unset($__errorArgs, $__bag); ?>
                     defaultDate: defaultDate,
                 });
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tags').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
+
+
+            $('#tags_meta').tagsInput({
+                'defaultText': 'أضف كلمة مفتاحية',
+                'height': 'auto',
+                'width': '100%'
+            });
         });
     </script>
 <?php $__env->stopSection(); ?>

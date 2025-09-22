@@ -201,7 +201,7 @@
                             <div class="col-sm-12 col-md-3 pt-3">
                                 <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <div class="card p-2">
 
                                     <input name="meta_keywords" id="tags"

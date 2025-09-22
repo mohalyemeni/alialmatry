@@ -256,4 +256,50 @@
             }
         });
     </script>
+    <script>
+        (function($) {
+            $(document).ready(function() {
+
+                if ($('#tags1').length) {
+                    $('#tags1').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                        'minChars': 1,
+                        'maxChars': 50,
+                        'onAddTag': function(tag) {
+
+                        },
+                        'onRemoveTag': function(tag) {
+
+                        }
+                    });
+
+
+                }
+
+                if ($('#tags').length) {
+                    $('#tags').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'delimiter': ',',
+                    });
+                }
+
+                if ($('#tags_meta').length) {
+                    $('#tags_meta').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'delimiter': ',',
+                    });
+                }
+
+            });
+        })(jQuery);
+    </script>
 @endsection

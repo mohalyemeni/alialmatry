@@ -153,6 +153,7 @@
                             <div class="col-sm-12 col-md-3 pt-3"><label
                                     for="meta_keywords">{{ __('panel.seo_keywords') }}</label></div>
                             <div class="col-sm-12 col-md-9 pt-3">
+
                                 <input name="meta_keywords" id="tags1" value="{{ old('meta_keywords') }}"
                                     class="form-control" />
                                 @error('meta_keywords')
@@ -194,6 +195,7 @@
                 maxFileCount: 1
             });
 
+
             $('.summernote').summernote({
                 tabSize: 2,
                 height: 200,
@@ -227,5 +229,49 @@
                 });
             }
         });
+    </script>
+    <script>
+        // تأكد أن jQuery و jquery.tagsinput محملين قبل هذا السكربت
+        (function($) {
+            $(document).ready(function() {
+
+                // تهيئة حقل site keywords (id="tags")
+                if ($('#tags').length) {
+                    $('#tags').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',', // الفاصل بين الكلمات
+                    });
+                }
+
+                // تهيئة حقل مماثل (id="tags_meta") إذا وجد
+                if ($('#tags_meta').length) {
+                    $('#tags_meta').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                    });
+                }
+
+                // تهيئة حقل meta_keywords (id="tags1") في نموذج الـ SEO
+                if ($('#tags1').length) {
+                    $('#tags1').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                    });
+                }
+
+            });
+        })(jQuery);
     </script>
 @endsection

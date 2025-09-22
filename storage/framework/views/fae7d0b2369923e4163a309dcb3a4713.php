@@ -319,7 +319,18 @@ unset($__errorArgs, $__bag); ?>
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ]
             });
-
+            if ($('#tags1').length && typeof $.fn.tagsInput === 'function') {
+                $('#tags1').tagsInput({
+                    'defaultText': 'أضف كلمة مفتاحية',
+                    'height': 'auto',
+                    'width': '100%',
+                    'interactive': true,
+                    'removeWithBackspace': true,
+                    'delimiter': ',', // الفاصل بين الكلمات
+                    'minChars': 1,
+                    'maxChars': 50
+                });
+            }
             // Flatpickr
             const locale = "ar";
             if ($('#flatpickr-datetime').length) {

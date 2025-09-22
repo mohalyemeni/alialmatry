@@ -24,7 +24,7 @@ class DurarDiniyaRequest extends FormRequest
                     'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',
                     'meta_description'  => 'nullable|string',
-                    'meta_slug'         => 'nullable|string|alpha_dash',
+                    'meta_slug'         => 'nullable|string',
                     'published_on'      => 'required|date',
                     'status'            => 'required|boolean',
                 ];
@@ -41,7 +41,7 @@ class DurarDiniyaRequest extends FormRequest
                     'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',
                     'meta_description'  => 'nullable|string',
-                    'meta_slug'         => 'nullable|string|alpha_dash',
+                    'meta_slug'         => 'nullable|string',
                     'published_on'      => 'required|date',
                     'status'            => 'required|boolean',
                 ];

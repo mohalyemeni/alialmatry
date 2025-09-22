@@ -330,6 +330,55 @@ unset($__errorArgs, $__bag); ?>
             }
         });
     </script>
+    <script>
+        (function($) {
+            $(document).ready(function() {
+
+                // تهيئة حقل meta_keywords في صفحة التحرير (id="tags1")
+                if ($('#tags1').length) {
+                    $('#tags1').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',', // الفاصل بين الكلمات
+                        'minChars': 1,
+                        'maxChars': 50, // اجعل الطول الأقصى للكلمة هنا
+                        'onAddTag': function(tag) {
+                            // حدث اختياري عند إضافة تاج
+                        },
+                        'onRemoveTag': function(tag) {
+                            // حدث اختياري عند إزالة تاج
+                        }
+                    });
+
+                    // ملاحظة: إذا كانت القيمة المخزنة في DB كـ "tag1,tag2,tag3"
+                    // فالمكتبة ستعرضها تلقائياً كمفاتيح عند التحميل.
+                }
+
+                // لو عندك حقول أخرى مشابهة (مثلاً tags أو tags_meta) فممكن تهيئها هنا بنفس الطريقة:
+                if ($('#tags').length) {
+                    $('#tags').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'delimiter': ',',
+                    });
+                }
+
+                if ($('#tags_meta').length) {
+                    $('#tags_meta').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'delimiter': ',',
+                    });
+                }
+
+            });
+        })(jQuery);
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new\alshaik\root\resources\views/backend/durar_diniya/edit.blade.php ENDPATH**/ ?>
