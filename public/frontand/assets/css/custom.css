@@ -1915,3 +1915,6 @@ div.tagsinput input {
     -ms-transform: scale(1.1);
     transform: scale(1.1);
 }
+.icon_color {
+    color: #374868 !important;
+}

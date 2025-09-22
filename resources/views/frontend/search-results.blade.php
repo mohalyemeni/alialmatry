@@ -9,12 +9,12 @@
         {{-- المدونات --}}
         @if ($blogs->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-blog text-primary"></i> المدونات</h4>
+                <h4 class="mb-3"><i class="fas fa-blog icon_color"></i> المدونات</h4>
                 <div class="list-group">
                     @foreach ($blogs as $blog)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="far fa-newspaper me-2 text-muted"></i>{{ $blog->title }}</h5>
+                                <h5 class="mb-1"><i class="far fa-newspaper ms-2 icon_color"></i>{{ $blog->title }}</h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($blog->description))), 120) }}
                                 </p>
@@ -32,12 +32,12 @@
         {{-- الفيديوهات --}}
         @if ($videos->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-video text-danger"></i> الفيديوهات</h4>
+                <h4 class="mb-3"><i class="fas fa-video icon_color"></i> الفيديوهات</h4>
                 <div class="list-group">
                     @foreach ($videos as $video)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fas fa-play-circle me-2 text-danger"></i>{{ $video->title }}
+                                <h5 class="mb-1"><i class="fas fa-play-circle ms-2 icon_color"></i>{{ $video->title }}
                                 </h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($video->description))), 120) }}
@@ -56,12 +56,12 @@
         {{-- المقاطع الصوتية --}}
         @if ($audios->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-headphones text-success"></i> المقاطع الصوتية</h4>
+                <h4 class="mb-3"><i class="fas fa-headphones icon_color"></i> المقاطع الصوتية</h4>
                 <div class="list-group">
                     @foreach ($audios as $audio)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fas fa-music me-2 text-success"></i>{{ $audio->title }}</h5>
+                                <h5 class="mb-1"><i class="fa fa-volume-up me-2 icon_color"></i>{{ $audio->title }}</h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 120) }}
                                 </p>
@@ -79,12 +79,12 @@
         {{-- الفتاوى --}}
         @if ($fatawas->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-book-open text-warning"></i> الفتاوى</h4>
+                <h4 class="mb-3"><i class="fas fa-book-open icon_color"></i> الفتاوى</h4>
                 <div class="list-group">
                     @foreach ($fatawas as $fatawa)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fas fa-scroll me-2 text-warning"></i>{{ $fatawa->title }}</h5>
+                                <h5 class="mb-1"><i class="fas fa-scroll ms-2 icon_color"></i>{{ $fatawa->title }}</h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($fatawa->description))), 120) }}
                                 </p>
@@ -102,12 +102,12 @@
         {{-- الكتب --}}
         @if ($books->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-book text-info"></i> الكتب</h4>
+                <h4 class="mb-3"><i class="fas fa-book icon_color"></i> الكتب</h4>
                 <div class="list-group">
                     @foreach ($books as $book)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fas fa-book-reader me-2 text-info"></i>{{ $book->title }}
+                                <h5 class="mb-1"><i class="fas fa-book-reader ms-2 icon_color"></i>{{ $book->title }}
                                 </h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($book->description))), 120) }}
@@ -132,12 +132,12 @@
         {{-- الدرر --}}
         @if ($durars->count() > 0)
             <section class="mb-5">
-                <h4 class="mb-3"><i class="fas fa-gem text-secondary"></i> الدرر</h4>
+                <h4 class="mb-3"><i class="fas fa-gem icon_color"></i> الدرر</h4>
                 <div class="list-group">
                     @foreach ($durars as $durar)
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3">
                             <div>
-                                <h5 class="mb-1"><i class="fas fa-gem me-2 text-secondary"></i>{{ $durar->title }}</h5>
+                                <h5 class="mb-1"><i class="fas fa-gem ms-2 icon_color "></i>{{ $durar->title }}</h5>
                                 <p class="mb-1 text-muted small">
                                     {{ Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 120) }}
                                 </p>
