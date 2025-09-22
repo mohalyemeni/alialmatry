@@ -152,7 +152,6 @@
             </section>
         @endif
 
-        {{-- لا توجد نتائج --}}
         @if (
             $blogs->count() == 0 &&
                 $videos->count() == 0 &&
