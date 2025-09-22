@@ -99,6 +99,7 @@ class BookController extends Controller
         $book->description = $request->description;
         $book->status = $request->status;
 
+
         if ($request->hasFile('img')) {
             $oldImagePath = public_path('assets/books/images/' . $book->img);
             if (File::exists($oldImagePath)) File::delete($oldImagePath);
