@@ -127,11 +127,6 @@
             color: #0f172a;
             text-decoration: none;
         }
-
-        .audio-sidebar .post-title-small a:hover {
-            color: #0d6efd;
-            text-decoration: underline;
-        }
     </style>
 
     <div class="container py-4">
