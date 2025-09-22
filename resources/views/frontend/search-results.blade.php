@@ -16,7 +16,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="far fa-newspaper ms-2 icon_color"></i>{{ $blog->title }}</h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($blog->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($blog->description))), 80) }}
                                 </p>
                             </div>
                             <a href="{{ route('frontend.blogs.show', $blog->slug) }}" class="btn btn-sm btn-primary">
@@ -42,7 +42,7 @@
                                 <h5 class="mb-1"><i class="fas fa-play-circle ms-2 icon_color"></i>{{ $video->title }}
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($video->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($video->description))), 80) }}
                                 </p>
                             </div>
                             <a href="{{ route('frontend.videos.show', $video->slug) }}" class="btn btn-sm btn-primary">
@@ -67,7 +67,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fa fa-volume-up ms-2 icon_color"></i>{{ $audio->title }}</h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 80) }}
                                 </p>
                             </div>
                             <a href="{{ route('frontend.audios.show', $audio->slug) }}" class="btn btn-sm btn-primary">
@@ -92,7 +92,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fas fa-scroll ms-2 icon_color"></i>{{ $fatawa->title }}</h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($fatawa->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($fatawa->description))), 80) }}
                                 </p>
                             </div>
                             <a href="{{ route('frontend.fatawas.show', $fatawa->slug) }}" class="btn btn-sm btn-primary">
@@ -118,7 +118,7 @@
                                 <h5 class="mb-1"><i class="fas fa-book-reader ms-2 icon_color"></i>{{ $book->title }}
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($book->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($book->description))), 80) }}
                                 </p>
                             </div>
                             <div class="d-flex gap-2">
@@ -149,7 +149,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fas fa-gem ms-2 icon_color "></i>{{ $durar->title }}</h5>
                                 <p class="mb-1 text-muted small">
-                                    {{ Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 120) }}
+                                    {{ Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 80) }}
                                 </p>
                             </div>
                             <a href="{{ route('frontend.durars.show', $durar->slug) }}" class="btn btn-sm btn-primary">

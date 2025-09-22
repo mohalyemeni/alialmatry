@@ -1,5 +1,5 @@
 <?php $__env->startSection('content'); ?>
-    <div class="container py-5">
+    <div class="container py-5 px-5">
         <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap">
             نتائج البحث عن: "<?php echo e($query); ?>"
         </h3>
@@ -14,7 +14,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="far fa-newspaper ms-2 icon_color"></i><?php echo e($blog->title); ?></h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($blog->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($blog->description))), 100)); ?>
 
                                 </p>
                             </div>
@@ -43,7 +43,7 @@
 
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($video->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($video->description))), 100)); ?>
 
                                 </p>
                             </div>
@@ -70,7 +70,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fa fa-volume-up ms-2 icon_color"></i><?php echo e($audio->title); ?></h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($audio->description))), 100)); ?>
 
                                 </p>
                             </div>
@@ -97,7 +97,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fas fa-scroll ms-2 icon_color"></i><?php echo e($fatawa->title); ?></h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($fatawa->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($fatawa->description))), 100)); ?>
 
                                 </p>
                             </div>
@@ -126,7 +126,7 @@
 
                                 </h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($book->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($book->description))), 100)); ?>
 
                                 </p>
                             </div>
@@ -159,7 +159,7 @@
                             <div>
                                 <h5 class="mb-1"><i class="fas fa-gem ms-2 icon_color "></i><?php echo e($durar->title); ?></h5>
                                 <p class="mb-1 text-muted small">
-                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 120)); ?>
+                                    <?php echo e(Str::limit(trim(strip_tags(html_entity_decode($durar->description))), 100)); ?>
 
                                 </p>
                             </div>
