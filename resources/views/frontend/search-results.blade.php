@@ -6,7 +6,6 @@
             نتائج البحث عن: "{{ $query }}"
         </h3>
 
-        {{-- المدونات --}}
         @if ($blogs->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-blog icon_color"></i> المدونات</h4>
@@ -31,7 +30,6 @@
             </section>
         @endif
 
-        {{-- الفيديوهات --}}
         @if ($videos->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-video icon_color"></i> الفيديوهات</h4>
@@ -57,7 +55,6 @@
             </section>
         @endif
 
-        {{-- المقاطع الصوتية --}}
         @if ($audios->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-headphones icon_color"></i> المقاطع الصوتية</h4>
@@ -82,7 +79,6 @@
             </section>
         @endif
 
-        {{-- الفتاوى --}}
         @if ($fatawas->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-book-open icon_color"></i> الفتاوى</h4>
@@ -107,7 +103,6 @@
             </section>
         @endif
 
-        {{-- الكتب --}}
         @if ($books->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-book icon_color"></i> الكتب</h4>
@@ -139,7 +134,6 @@
             </section>
         @endif
 
-        {{-- الدرر --}}
         @if ($durars->count() > 0)
             <section class="mb-5">
                 <h4 class="mb-3"><i class="fas fa-gem icon_color"></i> الدرر</h4>
