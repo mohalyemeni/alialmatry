@@ -67,6 +67,7 @@ class TransferSeeder extends Seeder
                 'updated_at'       =>$ved->modified_by ,
                 'category_id'      => $newcat->id,
             ]);
+
             $this->saveRemoteImage($imgUrl, 'blogs/images');
             }
         }
