@@ -391,6 +391,57 @@ namespace App\Models{
 /**
  * 
  *
+ * @property int $cid
+ * @property string $title
+ * @property string $content
+ * @property string $img
+ * @property string $meta_keywords
+ * @property string $meta_description
+ * @property string $published_at
+ * @property string $published_at_gmt
+ * @property string $created_at
+ * @property string $created_at_gmt
+ * @property int $created_by
+ * @property string $modified_at
+ * @property string $modified_at_gmt
+ * @property int $modified_by
+ * @property int $views
+ * @property int $status
+ * @property string $guide
+ * @property int $post_count
+ * @property string $options
+ * @property int $sections
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereCid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereCreatedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereGuide($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereImg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereMetaDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereMetaKeywords($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereModifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereModifiedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereModifiedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory wherePostCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory wherePublishedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereSections($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OldCategory whereViews($value)
+ */
+	class OldCategory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property int $id
  * @property string $name
  * @property string|null $display_name
@@ -469,6 +520,57 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Photo whereUpdatedAt($value)
  */
 	class Photo extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $pid
+ * @property string $title
+ * @property string $content
+ * @property string $img
+ * @property string $attatches
+ * @property string $meta_keywords
+ * @property string $meta_description
+ * @property string $published_at
+ * @property string $published_at_gmt
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property string $created_at_gmt
+ * @property int $created_by
+ * @property string $modified_at
+ * @property string $modified_at_gmt
+ * @property int $modified_by
+ * @property int $views
+ * @property int $status
+ * @property string $guide
+ * @property string $options
+ * @property int $cid
+ * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereAttatches($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereGuide($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereImg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereMetaDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereMetaKeywords($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereModifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereModifiedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereModifiedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post wherePid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post wherePublishedAtGmt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Post whereViews($value)
+ */
+	class Post extends \Eloquent {}
 }
 
 namespace App\Models{

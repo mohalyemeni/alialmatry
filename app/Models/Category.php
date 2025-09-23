@@ -25,8 +25,8 @@ class Category extends Model
         'status'       => 'boolean',
     ];
 
-    const SECTION_VIDEO   = 1;
-    const SECTION_AUDIO   = 2;
+    const SECTION_AUDIO   = 1;
+    const SECTION_VIDEO   = 2;
     const SECTION_FATWA   = 3;
     const SECTION_ARTICLE = 4;
 

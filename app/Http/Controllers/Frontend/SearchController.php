@@ -20,48 +20,47 @@ class SearchController extends Controller
             return redirect()->back();
         }
 
-        // نستخدم paginate بدل limit لسهولة العرض مع روابط الصفحات
         $blogs = Blog::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'blogs_page');
+            ->paginate(10, ['*'], 'blogs_page');
 
         $videos = Video::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'videos_page');
+            ->paginate(10, ['*'], 'videos_page');
 
         $audios = Audio::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'audios_page');
+            ->paginate(10, ['*'], 'audios_page');
 
         $fatawas = Fatwa::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'fatawas_page');
+            ->paginate(10, ['*'], 'fatawas_page');
 
         $books = Book::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'books_page');
+            ->paginate(10, ['*'], 'books_page');
 
         $durars = DurarDiniya::published()
             ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('description', 'like', "%{$query}%");
             })
-            ->paginate(6, ['*'], 'durars_page');
+            ->paginate(10, ['*'], 'durars_page');
 
         return view('frontend.search-results', compact(
             'query',

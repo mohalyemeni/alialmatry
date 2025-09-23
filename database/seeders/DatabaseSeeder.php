@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EntrustSeeder::class,
             SiteSettingSeeder::class,
+            // TransferSeeder::class,
 
         ]);
     }

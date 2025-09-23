@@ -200,9 +200,10 @@ class SettingsController extends Controller
         $site_instagram = SiteSetting::where('key', 'site_instagram')->first();
         $site_snapchat = SiteSetting::where('key', 'site_snapchat')->first();
         $site_youtube = SiteSetting::where('key', 'site_youtube')->first();
+        $telegram = SiteSetting::where('key', 'telegram')->first();
         return view('backend.site_socials.index', compact(
             'site_facebook', 'site_twitter', 'site_whatsapp',
-            'site_linkedin', 'site_instagram', 'site_snapchat', 'site_youtube'
+            'site_linkedin', 'site_instagram', 'site_snapchat', 'site_youtube','telegram'
         ));
     }
     public function update_social_informations(Request $request, $id = 3)

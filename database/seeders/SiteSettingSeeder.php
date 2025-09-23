@@ -135,6 +135,13 @@ class SiteSettingSeeder extends Seeder
             'published_on' => $faker->dateTime()
         ]);
         SiteSetting::create([
+            'key' => 'telegram',
+            'value' => 'https://www.snapchat.com/add/shalialmatry?share_id=71-coE4W4_U&locale=ar-SA',
+            'status' => true,
+            'section' => 3,
+            'published_on' => $faker->dateTime()
+        ]);
+        SiteSetting::create([
             'key' => 'site_youtube',
             'value' => 'https://www.youtube.com/@shalialmatry',
             'status' => true,
@@ -203,7 +210,7 @@ class SiteSettingSeeder extends Seeder
             'section' => 6,
             'published_on' => $faker->dateTime()
         ]);
-                // القسم 7: المجتمع والتطبيق
+
         SiteSetting::create([
             'key' => 'site_community_link',
             'value' => '#',

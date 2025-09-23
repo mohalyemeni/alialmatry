@@ -88,6 +88,16 @@
                             value="{{ $site_youtube->value ?? '' }}">
                     </div>
                 </div>
+                {{-- يوتيوب --}}
+                <div class="row mb-4">
+                    <div class="col-md-2 pt-2">
+                        <label for="telegram" class="form-label"><i class="fab fa-telegram me-1"></i> تيليجرام</label>
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="telegram" id="telegram" class="form-control"
+                            value="{{ $telegram->value ?? '' }}">
+                    </div>
+                </div>
 
                 {{-- أزرار الحفظ والإلغاء --}}
                 <div class="row">
