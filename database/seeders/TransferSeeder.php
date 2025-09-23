@@ -21,55 +21,56 @@ class TransferSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->saveAudios();
 
-        $oldCat = collect(OldCategory::whereSections(4)->get());
+    }
+
+    private function saveAudios(){
+        $oldCat = collect(OldCategory::whereSections(1)->get());
 
         foreach($oldCat as $ocat){
             $url = $ocat->img;
-            // $newcat = Category::create([
-            //     'title'            => $ocat->title,
-            //     'description'      => $ocat->content,
-            //     'img'              => basename($url),
-            //     'meta_keywords'     => $ocat->meta_keywords,
-            //     'meta_description' => $ocat->meta_description,
-            //     'published_on'     => $ocat->published_at,
-            //     'created_by'       => 1,
-            //     'updated_by'       => 1,
-            //     'views'            =>$ocat->views,
-            //     'status'           =>$ocat->status,
-            //     'created_at'       =>$ocat->created_at,
-            //     'updated_at'       =>$ocat->modified_by,
-            //     'section'         =>1,
-            // ]);
+            $newcat = Category::create([
+                'title'            => $ocat->title,
+                'description'      => $ocat->content,
+                'img'              => basename($url),
+                'meta_keywords'     => $ocat->meta_keywords,
+                'meta_description' => $ocat->meta_description,
+                'published_on'     => $ocat->published_at,
+                'created_by'       => 1,
+                'updated_by'       => 1,
+                'views'            =>$ocat->views,
+                'status'           =>$ocat->status,
+                'created_at'       =>$ocat->created_at,
+                'updated_at'       =>$ocat->modified_by,
+                'section'         =>1,
+            ]);
 
             $this->saveRemoteImage($url, 'blog_categories');
             $oldVedios = Post::where('cid', $ocat->cid)->get();
             foreach($oldVedios as $ved){
             $imgUrl = $ved->img;
-            //     $newved = Video::create([
+                $newved = Video::create([
 
-            //     'title'            => $ved->title,
-            //     'description'      => $ved->content,
-            //     'youtube_id'       => $ved->attatches,
-            //     'thumbnail'        => basename($imgUrl),
-            //     'meta_keyword'     => $ved->meta_keywords,
-            //     'meta_description' => $ved->meta_description,
-            //     'published_on'     => $ved->published_at,
-            //     'created_by'       => 1,
-            //     'updated_by'       => 1,
-            //     'views'            =>$ved->views,
-            //     'status'           =>$ved->status,
-            //     'created_at'       =>$ved->created_at,
-            //     'updated_at'       =>$ved->modified_by ,
-            //     'category_id'      => $newcat->id,
-            // ]);
+                'title'            => $ved->title,
+                'description'      => $ved->content,
+                'youtube_id'       => $ved->attatches,
+                'thumbnail'        => basename($imgUrl),
+                'meta_keyword'     => $ved->meta_keywords,
+                'meta_description' => $ved->meta_description,
+                'published_on'     => $ved->published_at,
+                'created_by'       => 1,
+                'updated_by'       => 1,
+                'views'            =>$ved->views,
+                'status'           =>$ved->status,
+                'created_at'       =>$ved->created_at,
+                'updated_at'       =>$ved->modified_by ,
+                'category_id'      => $newcat->id,
+            ]);
             $this->saveRemoteImage($imgUrl, 'blogs/images');
             }
-
         }
     }
-
-
 
     private function saveRemoteImage(?string $url, string $folder = 'upload')
     {
