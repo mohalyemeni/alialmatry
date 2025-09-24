@@ -38,8 +38,8 @@
                             $thumb = $video->thumbnail ?? '';
 
                             if (!empty($thumb)) {
-                                $candidate1 = 'upload/' . ltrim($thumb, '/');
-                                $candidate2 = 'upload/' . basename($thumb);
+                                $candidate1 = 'assets/upload/' . ltrim($thumb, '/');
+                                $candidate2 = 'assets/upload/' . basename($thumb);
 
                                 if (file_exists(public_path($candidate1))) {
                                     $thumbnailSrc = asset($candidate1);
@@ -118,8 +118,8 @@
                                         $rvThumbnailSrc = null;
 
                                         if (!empty($rvThumb)) {
-                                            $candidate1 = 'upload/' . ltrim($rvThumb, '/');
-                                            $candidate2 = 'upload/' . basename($rvThumb);
+                                            $candidate1 = 'assets/upload/' . ltrim($rvThumb, '/');
+                                            $candidate2 = 'assets/upload/' . basename($rvThumb);
 
                                             if (file_exists(public_path($candidate1))) {
                                                 $rvThumbnailSrc = asset($candidate1);

@@ -13,8 +13,8 @@
                     $thumbnailSrc = null;
 
                     if (!empty($thumbField)) {
-                        $candidate1 = 'upload/' . ltrim($thumbField, '/');
-                        $candidate2 = 'upload/' . basename($thumbField);
+                        $candidate1 = 'assets/upload/' . ltrim($thumbField, '/');
+                        $candidate2 = 'assets/upload/' . basename($thumbField);
 
                         if (file_exists(public_path($candidate1))) {
                             $thumbnailSrc = asset($candidate1);

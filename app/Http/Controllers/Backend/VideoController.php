@@ -84,7 +84,7 @@ class VideoController extends Controller
             if ($this->isLocalThumb($thumbnailInput)) {
                  $video->thumbnail = $thumbnailInput;
             } elseif (Str::startsWith($thumbnailInput, ['http://', 'https://'])) {
-                 $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'upload');
+                 $video->thumbnail = $this->saveRemoteImage($thumbnailInput, 'assets/upload');
             } else {
                 $video->thumbnail = $thumbnailInput;
             }
@@ -160,7 +160,7 @@ class VideoController extends Controller
 
             } elseif (Str::startsWith($thumbnailInput, ['http://','https://'])) {
 
-                $localThumb = $this->saveRemoteImage($thumbnailInput, 'upload');
+                $localThumb = $this->saveRemoteImage($thumbnailInput, 'assets/upload');
                 if ($localThumb) {
                     $this->maybeDeleteOldThumb($video, $localThumb);
                     $video->thumbnail = $localThumb;
@@ -193,7 +193,7 @@ class VideoController extends Controller
 
          $candidates = [
             $path,
-            'upload/' . ltrim($path, '/'),
+            'assets/upload/' . ltrim($path, '/'),
             'videos/thumbnails/' . ltrim($path, '/'),
             'assets/videos/thumbnails/' . ltrim($path, '/'),
             'assets/video_categories/' . ltrim($path, '/'),
@@ -325,7 +325,7 @@ class VideoController extends Controller
         return false;
     }
 
-    private function saveRemoteImage(?string $url, string $folder = 'upload')
+    private function saveRemoteImage(?string $url, string $folder = 'assets/upload')
     {
         if (empty($url)) {
             return null;
@@ -339,7 +339,7 @@ class VideoController extends Controller
 
             $content = $response->body();
 
-             $ext = null;
+            $ext = null;
             $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH) ?? '');
             if (!empty($pathInfo['extension'])) {
                 $ext = strtolower($pathInfo['extension']);
@@ -354,18 +354,18 @@ class VideoController extends Controller
             }
             $ext = $ext ?: 'jpg';
 
-             $hash = sha1($content);
+            $hash = sha1($content);
             $filename = $hash . '.' . $ext;
 
-             $folder = trim($folder, '/');
+            $folder = trim($folder, '/');
             $fullDir = public_path($folder);
-            if (! is_dir($fullDir)) {
+            if (!is_dir($fullDir)) {
                 mkdir($fullDir, 0755, true);
             }
 
             $fullPath = $fullDir . DIRECTORY_SEPARATOR . $filename;
             $relativePath = $folder . '/' . $filename;
-            if (! file_exists($fullPath)) {
+            if (!file_exists($fullPath)) {
                 file_put_contents($fullPath, $content);
                 @chmod($fullPath, 0644);
             }
@@ -376,6 +376,7 @@ class VideoController extends Controller
             return null;
         }
     }
+
 
     public function toggleStatus(Request $request)
     {

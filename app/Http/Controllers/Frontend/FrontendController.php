@@ -174,8 +174,8 @@ $videos = $videosCollection->map(function ($v) {
     if ($thumb && !Str::startsWith($thumb, ['http://', 'https://'])) {
          $thumbCandidate = null;
         $candidates = [
-             'upload/' . ltrim($thumb, '/'),
-            'upload/' . basename($thumb),
+             'assets/upload/' . ltrim($thumb, '/'),
+            'assets/upload/' . basename($thumb),
              ltrim($thumb, '/'),
             'storage/' . ltrim($thumb, '/'),
             'videos/thumbnails/' . ltrim($thumb, '/'),
