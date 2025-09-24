@@ -1,6 +1,7 @@
 <div class="container pt-45 pb-45 pt-60">
     <h3 class="widget_title title-header-noline mb-5 wow fadeInRight widget_title22 mt-5" data-wow-delay=".3s"> الفيديوهات
     </h3>
+
     @if ($videos->isEmpty())
         <p>لا توجد فيديوهات في هذا التصنيف بعد.</p>
     @else
@@ -8,50 +9,8 @@
             @foreach ($videos as $index => $video)
                 @php
                     $delay = 0.3 + $index * 0.05;
-
-                    $thumbField = $video->thumbnail ?? '';
-                    $thumbnailSrc = null;
-
-                    // تنظيف وإعداد قيمة الثمبنيل
-                    $thumb = trim((string) $thumbField);
-
-                    // 1) إذا كان رابط كامل http/https أو data: استخدمه مباشرة
-                    if ($thumb !== '' && (str_starts_with($thumb, 'http://') || str_starts_with($thumb, 'https://') || str_starts_with($thumb, 'data:'))) {
-                        $thumbnailSrc = $thumb;
-                    } else {
-                        // حاول عدة مواقع ممكن تحفظ فيها الثمبنيل
-                        $candidates = [
-                            $thumb, // قد يكون مسار كامل نسبي مثل "assets/upload/xxx.jpg"
-                            'assets/upload/' . ltrim($thumb, '/'),
-                            'assets/upload/' . basename($thumb),
-                            'upload/' . ltrim($thumb, '/'),
-                            'upload/' . basename($thumb),
-                            'assets/videos/thumbnails/' . basename($thumb),
-                            'assets/video_categories/' . basename($thumb),
-                        ];
-
-                        foreach ($candidates as $c) {
-                            if (!empty($c) && file_exists(public_path($c))) {
-                                $thumbnailSrc = asset($c);
-                                break;
-                            }
-                        }
-
-                        // تحقق على القرص العام إذا كنت تستخدم storage:link
-                        if (!$thumbnailSrc && !empty($thumb) && \Illuminate\Support\Facades\Storage::disk('public')->exists($thumb)) {
-                            $thumbnailSrc = \Illuminate\Support\Facades\Storage::disk('public')->url($thumb);
-                        }
-                    }
-
-                    // لو ما لقينا ثمبنيل محلي استخدم صورة يوتيوب لو متاح
-                    if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
-                        $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
-                    }
-
-                    // fallback نهائي
-                    if (empty($thumbnailSrc)) {
-                        $thumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
-                    }
+                    // نفترض أن الكنترولر سبق وحول thumbnail إلى رابط صالح عبر resolveThumbnail()
+                    $thumbnailSrc = $video->thumbnail ?? asset('frontand/assets/img/normal/counter-image.jpg');
                 @endphp
 
                 <div class="col-md-6 col-lg-4 col-xl-3">
@@ -66,8 +25,7 @@
                             </div>
 
                             <div class="card-body text-center vc-body">
-                                <h5 class="card-title vc-title">{{ \Illuminate\Support\Str::limit($video->title, 70) }}
-                                </h5>
+                                <h5 class="card-title vc-title">{{ \Illuminate\Support\Str::limit($video->title, 70) }}</h5>
                             </div>
                         </a>
                     </div>
@@ -76,7 +34,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-4">
-            {!! $videos->links() !!}
+            {{ $videos->links() }}
         </div>
     @endif
 </div>

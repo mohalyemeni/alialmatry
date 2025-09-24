@@ -15,30 +15,44 @@ class VideoFrontendController extends Controller
     protected function resolveThumbnail($thumb)
     {
         if (empty($thumb)) {
-            return null;
+            return asset('frontand/assets/img/normal/counter-image.jpg');
         }
 
-        if (Str::startsWith($thumb, ['http://', 'https://'])) {
+        $thumb = trim((string) $thumb);
+
+        if (Str::startsWith($thumb, ['http://', 'https://', 'data:'])) {
             return $thumb;
         }
 
         $thumb = ltrim($thumb, '/');
 
-        if (file_exists(public_path($thumb))) {
-            return asset($thumb);
+        $candidates = [
+            $thumb,
+            'assets/upload/' . $thumb,
+            'assets/upload/' . basename($thumb),
+            'upload/' . $thumb,
+            'upload/' . basename($thumb),
+            'assets/videos/thumbnails/' . $thumb,
+            'assets/videos/thumbnails/' . basename($thumb),
+            'assets/video_categories/' . $thumb,
+            'assets/video_categories/' . basename($thumb),
+            'videos/thumbnails/' . $thumb,
+            'storage/' . $thumb,
+        ];
+
+        foreach ($candidates as $p) {
+            if (!empty($p) && file_exists(public_path($p))) {
+                return asset($p);
+            }
         }
 
-        $pathInAssets = 'assets/video_categories/' . basename($thumb);
-        if (file_exists(public_path($pathInAssets))) {
-            return asset($pathInAssets);
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($thumb)) {
+            return \Illuminate\Support\Facades\Storage::disk('public')->url($thumb);
         }
 
-        if (Storage::disk('public')->exists($thumb)) {
-            return Storage::disk('public')->url($thumb);
-        }
-
-        return null;
+        return asset('frontand/assets/img/normal/counter-image.jpg');
     }
+
 
     public function index(Request $request)
     {
