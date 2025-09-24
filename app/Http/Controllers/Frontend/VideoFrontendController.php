@@ -65,7 +65,7 @@ class VideoFrontendController extends Controller
                       });
                 }])
                 ->orderByDesc('id')
-                ->get();
+                 ->paginate(12);
 
             $nonFeaturedCats = Category::query()
                 ->where('section', Category::SECTION_VIDEO)
@@ -86,7 +86,7 @@ class VideoFrontendController extends Controller
                       });
                 }])
                 ->orderByDesc('id')
-                ->get();
+                 ->paginate(12);
 
             $categories = $featuredCats->concat($nonFeaturedCats);
 
