@@ -29,7 +29,9 @@
             </div>
         </div>
     </div>
-
+    <div id="ajax-content">
+        @include('frontend.videos.partials.index_partial', ['categories' => $categories])
+    </div>
     <div id="ajax-content">
         @include('frontend.partials.index_partial', ['categories' => $categories])
     </div>
