@@ -1,10 +1,5 @@
 <div>
     @if ($debug)
-        <div class="debug-container"
-            style="position: fixed; bottom: 0; right: 0; background: #000; color: #fff; padding: 10px; z-index: 9999; max-width: 400px; max-height: 300px; overflow: auto; font-size: 12px;">
-            <h4 style="margin: 0 0 10px 0;">التصحيح</h4>
-            <div id="debug-output"></div>
-        </div>
     @endif
 
     <div class="pt-80 overflow-hidden space-extra-bottom" id="faq-sec" wire:init>
@@ -15,8 +10,12 @@
                     <div class="accordion-area style2 load-more-active accordion" id="faqAccordion">
                         <h3 class="widget_title title-header-noline mb-5 fadeInRight wow">الفتاوى</h3>
 
-                        @if (!empty($fatawas) && count($fatawas))
-                            @foreach ($fatawas as $index => $faq)
+                        @php
+                            $displayFatawas = ($fatawas instanceof \Illuminate\Support\Collection) ? $fatawas->take(5) : collect($fatawas)->take(5);
+                        @endphp
+
+                        @if ($displayFatawas->isNotEmpty())
+                            @foreach ($displayFatawas as $index => $faq)
                                 <div class="accordion-card style2 {{ $index === 0 ? 'active' : '' }} fadeInUp wow"
                                     data-wow-delay="{{ 0.2 + $index * 0.1 }}s" wire:key="faq-{{ $faq->id }}">
                                     <div class="accordion-header" id="collapse-item-{{ $index + 1 }}">
@@ -47,15 +46,12 @@
                             @endforeach
                         @else
                             <p class="text-muted">لا توجد فتاوى حالياً.</p>
-                            @if ($debug && $selectedCategoryId)
-                                <p class="text-warning">التصنيف المحدد: {{ $selectedCategoryId }}</p>
-                            @endif
                         @endif
 
                         <div class="d-flex justify-content-between align-items-center mt-3 px-1">
                             <div class="fw-bold flex_mine fadeInUp wow">
                                 <p class="tags text-muted">عدد الفتاوى</p>
-                                <span class="num_fata count_span">{{ isset($fatawas) ? count($fatawas) : 0 }}</span>
+                                <span class="num_fata count_span">{{ isset($fatawasCount) ? $fatawasCount : (is_array($fatawas) ? count($fatawas) : ( $fatawas instanceof \Illuminate\Support\Collection ? $fatawas->count() : 0 )) }}</span>
                             </div>
                             <a href="{{ route('frontend.fatawas.index') }}" class="th-btn new_pad fadeInRight wow">
                                 قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
