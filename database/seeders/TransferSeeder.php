@@ -56,7 +56,7 @@ class TransferSeeder extends Seeder
                 'section'         =>2,
             ]);
 
-            $this->saveRemoteImage($url, 'vedio_categories');
+            $this->saveRemoteImage($url, 'video_categories');
             $oldVedios = Post::where('cid', $ocat->cid)->get();
             foreach($oldVedios as $ved){
             $imgUrl = $ved->img;
