@@ -192,52 +192,70 @@ class TransferSeeder extends Seeder
         }
     }
 // =========================================================
-    private function saveBlogs(){
-        $oldCat = collect(OldCategory::whereSections(4)->get());
+private function saveBlogs()
+{
+    $oldCat = collect(OldCategory::whereSections(4)->get());
 
-        foreach($oldCat as $ocat){
-            $url = $ocat->img;
-            $newcat = Category::create([
-                'title'            => $ocat->title,
-                'description'      => $ocat->content,
-                'img'              => basename($url),
-                'meta_keywords'     => $ocat->meta_keywords,
-                'meta_description' => $ocat->meta_description,
-                'published_on'     => $ocat->published_at,
-                'created_by'       => 1,
-                'updated_by'       => 1,
-                'views'            =>$ocat->views,
-                'status'           =>$ocat->status,
-                'created_at'       =>$ocat->created_at,
-                'updated_at'       =>$ocat->modified_by,
-                'section'         =>4,
-            ]);
+    foreach ($oldCat as $ocat) {
+        $url = $ocat->img;
 
-            $this->saveRemoteImage($url, 'blog_categories');
-            $oldBlog = Post::where('cid', $ocat->cid)->get();
-            foreach($oldBlog as $blog){
+         $newcat = Category::create([
+            'title'            => $ocat->title,
+            'description'      => $ocat->content,
+            'img'              => basename($url),
+            'meta_keywords'    => $ocat->meta_keywords,
+            'meta_description' => $ocat->meta_description,
+            'published_on'     => $ocat->published_at,
+            'created_by'       => 1,
+            'updated_by'       => 1,
+            'views'            => $ocat->views,
+            'status'           => $ocat->status,
+            'created_at'       => $ocat->created_at,
+            'updated_at'       => $ocat->modified_by,
+            'section'          => 4,
+        ]);
+
+        $this->saveRemoteImage($url, 'blog_categories');
+
+        $oldBlog = Post::where('cid', $ocat->cid)->get();
+        foreach ($oldBlog as $blog) {
             $imgUrl = $blog->img;
-                $newblog = Blog::create([
 
+            // generate unique slug
+            $slug = Str::slug($blog->title ?: 'post');
+            $originalSlug = $slug;
+            $counter = 1;
+            while (Blog::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $counter++;
+            }
+
+            $data = [
                 'title'            => $blog->title,
                 'description'      => $blog->content,
-                'img'        => basename($imgUrl),
-                'meta_keywords'     => $blog->meta_keywords,
+                'img'              => basename($imgUrl),
+                'meta_keywords'    => $blog->meta_keywords,
                 'meta_description' => $blog->meta_description,
                 'published_on'     => $blog->published_at,
                 'created_by'       => 1,
                 'updated_by'       => 1,
-                'views'            =>$blog->views,
-                'status'           =>$blog->status,
-                'created_at'       =>$blog->created_at,
-                'updated_at'       =>$blog->modified_by ,
+                'views'            => $blog->views,
+                'status'           => $blog->status,
+                'created_at'       => $blog->created_at,
+                'updated_at'       => $blog->modified_by,
                 'category_id'      => $newcat->id,
-            ]);
+                'slug'             => $slug,
+            ];
 
-            $this->saveRemoteImage($imgUrl, 'blogs/images');
-            }
+             \App\Models\Blog::updateOrCreate(
+                ['title' => $blog->title],
+                $data
+            );
+
+             $this->saveRemoteImage($imgUrl, 'blogs/images');
         }
     }
+}
+
 // =========================================================
 private function saveBooks()
 {
