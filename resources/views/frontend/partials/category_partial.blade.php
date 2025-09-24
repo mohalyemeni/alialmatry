@@ -12,21 +12,43 @@
                     $thumbField = $video->thumbnail ?? '';
                     $thumbnailSrc = null;
 
-                    if (!empty($thumbField)) {
-                        $candidate1 = 'assets/upload/' . ltrim($thumbField, '/');
-                        $candidate2 = 'assets/upload/' . basename($thumbField);
+                    // تنظيف وإعداد قيمة الثمبنيل
+                    $thumb = trim((string) $thumbField);
 
-                        if (file_exists(public_path($candidate1))) {
-                            $thumbnailSrc = asset($candidate1);
-                        } elseif (file_exists(public_path($candidate2))) {
-                            $thumbnailSrc = asset($candidate2);
+                    // 1) إذا كان رابط كامل http/https أو data: استخدمه مباشرة
+                    if ($thumb !== '' && (str_starts_with($thumb, 'http://') || str_starts_with($thumb, 'https://') || str_starts_with($thumb, 'data:'))) {
+                        $thumbnailSrc = $thumb;
+                    } else {
+                        // حاول عدة مواقع ممكن تحفظ فيها الثمبنيل
+                        $candidates = [
+                            $thumb, // قد يكون مسار كامل نسبي مثل "assets/upload/xxx.jpg"
+                            'assets/upload/' . ltrim($thumb, '/'),
+                            'assets/upload/' . basename($thumb),
+                            'upload/' . ltrim($thumb, '/'),
+                            'upload/' . basename($thumb),
+                            'assets/videos/thumbnails/' . basename($thumb),
+                            'assets/video_categories/' . basename($thumb),
+                        ];
+
+                        foreach ($candidates as $c) {
+                            if (!empty($c) && file_exists(public_path($c))) {
+                                $thumbnailSrc = asset($c);
+                                break;
+                            }
+                        }
+
+                        // تحقق على القرص العام إذا كنت تستخدم storage:link
+                        if (!$thumbnailSrc && !empty($thumb) && \Illuminate\Support\Facades\Storage::disk('public')->exists($thumb)) {
+                            $thumbnailSrc = \Illuminate\Support\Facades\Storage::disk('public')->url($thumb);
                         }
                     }
 
+                    // لو ما لقينا ثمبنيل محلي استخدم صورة يوتيوب لو متاح
                     if (empty($thumbnailSrc) && !empty($video->youtube_id)) {
                         $thumbnailSrc = "https://img.youtube.com/vi/{$video->youtube_id}/hqdefault.jpg";
                     }
 
+                    // fallback نهائي
                     if (empty($thumbnailSrc)) {
                         $thumbnailSrc = asset('frontand/assets/img/normal/counter-image.jpg');
                     }
@@ -38,7 +60,6 @@
                             class="ajax-link text-decoration-none">
                             <div class="box-img global-img tow_height position-relative vc-img">
                                 <img src="{{ $thumbnailSrc }}" alt="{{ $video->title }}" class="tow_height w-100">
-
                                 <span class="play-btn custom-center-play-btn vc-play" aria-hidden="true">
                                     <i class="fa-solid fa-play fa-flip-horizontal"></i>
                                 </span>
