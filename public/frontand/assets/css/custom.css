@@ -42,9 +42,7 @@
     border-color: #198754 #198754 white;
 }
 
-.tab-content {
-    height: 86%;
-}
+
 .blog-img.position-relative {
     position: relative;
 }
@@ -1642,7 +1640,7 @@ body[dir="rtl"] .recent-thumb-link {
 .service-box2 .box-content .box-wrapp {
     padding: 40px;
 
-    padding-bottom: 77px;
+    padding-bottom: 265px;
 }
 /* __________________________________-- */
 

@@ -15,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 
 class AudioCategoryController extends Controller
 {
-    protected $section = 2;
+    protected $section = 1;
     protected ImageManager $imageManager;
 
     public function __construct()

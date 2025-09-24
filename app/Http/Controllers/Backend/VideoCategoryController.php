@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VideoCategoryController extends Controller
 {
-    protected $section = 1;
+    protected $section = 2;
     protected ImageManager $imageManager;
 
     public function __construct()
