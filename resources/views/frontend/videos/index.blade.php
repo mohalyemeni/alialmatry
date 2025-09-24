@@ -33,8 +33,5 @@
     <div id="ajax-content">
         @include('frontend.partials.index_partial', ['categories' => $categories])
 
-<div class="d-flex justify-content-center mt-4">
-    {{ $categories->links() }}
-</div>
     </div>
 @endsection
