@@ -29,10 +29,12 @@
             </div>
         </div>
     </div>
-    <div id="ajax-content">
-        @include('frontend.videos.partials.index_partial', ['categories' => $categories])
-    </div>
+
     <div id="ajax-content">
         @include('frontend.partials.index_partial', ['categories' => $categories])
+
+<div class="d-flex justify-content-center mt-4">
+    {{ $categories->links() }}
+</div>
     </div>
 @endsection

@@ -41,14 +41,16 @@
 
                                 <div class="blog-wrapper p-3">
                                     <span class="date">
-                                        <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                        <a
+                                            href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                             {{ $videosCount }} <span>فيديو</span>
                                         </a>
                                     </span>
 
                                     <div class="blog-content mt-2">
                                         <h3 class="box-title mb-2" style="font-size:1rem;">
-                                            <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                            <a
+                                                href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                                 {{ e(\Illuminate\Support\Str::limit($title, 70)) }}
                                             </a>
                                         </h3>
@@ -63,10 +65,6 @@
                         </div>
                     @endforeach
                 </div>
-
-                <div class="d-flex justify-content-center mt-4">
-                    {!! $categories->links() !!}
-                 </div>
             @endif
         </div>
     </div>
