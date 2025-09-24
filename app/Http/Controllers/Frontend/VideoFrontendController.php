@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoFrontendController extends Controller
 {
-
     protected function resolveThumbnail($thumb)
     {
         if (empty($thumb)) {
@@ -41,54 +40,29 @@ class VideoFrontendController extends Controller
         return null;
     }
 
-
     public function index(Request $request)
     {
         $now = Carbon::now();
 
         try {
-
-            $featuredCats = Category::query()
+            $categories = Category::query()
                 ->where('section', Category::SECTION_VIDEO)
                 ->where('status', true)
-                ->where('featured', 1)
                 ->whereHas('videos', function ($q) use ($now) {
                     $q->where('status', 1)
-                      ->where(function ($q2) use ($now) {
-                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                      });
+                        ->where(function ($q2) use ($now) {
+                            $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                        });
                 })
                 ->withCount(['videos' => function ($q) use ($now) {
                     $q->where('status', 1)
-                      ->where(function ($q2) use ($now) {
-                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                      });
+                        ->where(function ($q2) use ($now) {
+                            $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
+                        });
                 }])
+                ->orderByDesc('featured') // featured أولاً
                 ->orderByDesc('id')
-                ->get();
-
-            $nonFeaturedCats = Category::query()
-                ->where('section', Category::SECTION_VIDEO)
-                ->where('status', true)
-                ->where(function ($q) {
-                    $q->where('featured', 0)->orWhereNull('featured');
-                })
-                ->whereHas('videos', function ($q) use ($now) {
-                    $q->where('status', 1)
-                      ->where(function ($q2) use ($now) {
-                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                      });
-                })
-                ->withCount(['videos' => function ($q) use ($now) {
-                    $q->where('status', 1)
-                      ->where(function ($q2) use ($now) {
-                          $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
-                      });
-                }])
-                ->orderByDesc('id')
-                ->get();
-
-            $categories = $featuredCats->concat($nonFeaturedCats);
+                ->paginate(8); // عدد التصنيفات بالصفحة
 
             if ($request->ajax()) {
                 $html = view('frontend.videos.partials.index_partial', compact('categories'))->render();
@@ -142,10 +116,8 @@ class VideoFrontendController extends Controller
         return view('frontend.videos.category', compact('category', 'videos'));
     }
 
-
     public function show(Request $request, Video $video)
     {
-        // تحقق من وجود التصنيف وصلاحية القسم
         if (! $video->category || $video->category->section != Category::SECTION_VIDEO) {
             abort(404);
         }

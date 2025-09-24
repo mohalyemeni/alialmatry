@@ -1,7 +1,7 @@
 <section class="blog-area overflow-hidden bg-white space" id="blog-sec">
     <div class="container">
 
-        <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s"> التنصيفات</h3>
+        <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">التصنيفات</h3>
 
         <div class="container pt-30 pb-45">
             @if ($categories->isEmpty())
@@ -41,16 +41,14 @@
 
                                 <div class="blog-wrapper p-3">
                                     <span class="date">
-                                        <a
-                                            href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                        <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                             {{ $videosCount }} <span>فيديو</span>
                                         </a>
                                     </span>
 
                                     <div class="blog-content mt-2">
                                         <h3 class="box-title mb-2" style="font-size:1rem;">
-                                            <a
-                                                href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                            <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                                 {{ e(\Illuminate\Support\Str::limit($title, 70)) }}
                                             </a>
                                         </h3>
@@ -64,6 +62,11 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+
+                {{-- الباجنيشن --}}
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $categories->links() }}
                 </div>
             @endif
         </div>
