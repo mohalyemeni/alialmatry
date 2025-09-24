@@ -16,7 +16,7 @@ class BookRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'title'         => 'required|string|max:255|unique:books,title',
+                    'title'         => 'required|string|max:255',
                     'description'   => 'nullable|string',
                     'img'           => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'file'     => 'required|file|mimes:pdf,epub,doc,docx|max:204800',
@@ -29,7 +29,7 @@ class BookRequest extends FormRequest
             case 'PUT':
             case 'PATCH':
                 return [
-                    'title'         => 'required|string|max:255|unique:books,title,' . $this->route('book'),
+                    'title'         => 'required|string|max:255' . $this->route('book'),
                     'description'   => 'nullable|string',
                     'img'           => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'file'     => 'nullable|file|mimes:pdf,epub,doc,docx|max:204800',

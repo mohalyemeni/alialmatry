@@ -8,18 +8,15 @@ class DurarDiniyaRequest extends FormRequest
 {
     public function authorize()
     {
-
         return true;
     }
 
     public function rules()
     {
-        $id = $this->route('durar_diniya') ?? $this->route('id') ?? null;
-
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'title'             => 'required|string|max:255|unique:durar_diniya,title',
+                    'title'             => 'required|string|max:255',
                     'description'       => 'nullable|string',
                     'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',
@@ -32,11 +29,10 @@ class DurarDiniyaRequest extends FormRequest
             case 'PATCH':
                 return [
                     'title'             => [
-                                            'required',
-                                            'string',
-                                            'max:255',
-                                            $id ? "unique:durar_diniya,title,{$id},id" : 'unique:durar_diniya,title',
-                                           ],
+                        'required',
+                        'string',
+                        'max:255',
+                    ],
                     'description'       => 'nullable|string',
                     'img'               => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'meta_keywords'     => 'nullable|string',

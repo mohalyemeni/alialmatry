@@ -16,7 +16,7 @@ class FatwaContentRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'title'         => 'required|string|max:255|unique:fatawas,title',
+                    'title'         => 'required|string',
                     'description'   => 'required|string',
                     'img'           => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'audio_file'    => 'nullable|file|mimes:mp3,wav,mpeg,ogg|max:204800',
@@ -31,7 +31,7 @@ class FatwaContentRequest extends FormRequest
             case 'PUT':
             case 'PATCH':
                 return [
-                    'title'         => 'required|string|max:255|unique:fatawas,title,' . $this->route('fatawa'),
+                    'title'         => 'required|string|max:255' . $this->route('fatawa'),
                     'description'   => 'required|string',
                     'img'           => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'audio_file'    => 'nullable|file|mimes:mp3,wav,mpeg,ogg|max:204800',

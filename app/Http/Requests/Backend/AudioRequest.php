@@ -16,7 +16,7 @@ class AudioRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'title'         => 'required|string|max:255|unique:audios,title',
+                    'title'         => 'required|string|max:255',
                     'description'   => 'nullable|string',
                     'img'           => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'audio_file'    => 'required|file|mimes:mp3,wav,mpeg,ogg|max:204800',
@@ -30,7 +30,7 @@ class AudioRequest extends FormRequest
             case 'PUT':
             case 'PATCH':
                 return [
-                    'title'         => 'required|string|max:255|unique:audios,title,' . $this->route('audio'),
+                    'title'         => 'required|string|max:255,' . $this->route('audio'),
                     'description'   => 'nullable|string',
                     'img'           => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:3000',
                     'audio_file' => 'nullable|mimes:mp3,wav,ogg,aac,flac|max:204800',

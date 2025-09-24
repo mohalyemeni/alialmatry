@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('fatawas', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->string('slug')->unique();
+            $table->string('title');
+            $table->string('slug');
             $table->text('description');
             $table->string('img')->nullable();
 
