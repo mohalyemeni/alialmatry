@@ -26,10 +26,10 @@ class TransferSeeder extends Seeder
 {
     public function run(): void
     {
-        // $this->saveVedios();
-        // $this->saveAudios();
-        // $this->saveFatwas();
-        // $this->saveBlogs();
+        $this->saveVedios();
+        $this->saveAudios();
+        $this->saveFatwas();
+        $this->saveBlogs();
         $this->saveBooks();
         $this->saveDurarDiniya();
 
