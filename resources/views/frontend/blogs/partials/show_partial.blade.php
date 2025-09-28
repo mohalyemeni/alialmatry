@@ -7,7 +7,7 @@
                 ? asset('assets/blogs/images/' . $blog->img)
                 : (!empty($blog->img) && \Illuminate\Support\Str::startsWith($blog->img, ['http://', 'https://'])
                     ? $blog->img
-                    : asset('frontand/assets/img/blog/default.jpg')));
+                    : asset('frontand/assets/img/No-Image.png')));
     @endphp
 
     @if ($mainImage)
