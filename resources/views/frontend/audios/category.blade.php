@@ -87,7 +87,7 @@
                                     <h5 class="mb-1">
                                         <a href="{{ route('frontend.audios.show', $audio->slug) }}"
                                            class="text-dark text-decoration-none">
-                                            {{ e(\Illuminate\Support\Str::limit($audio->title, 10)) }}
+                                            {{ e(\Illuminate\Support\Str::limit($audio->title, 50)) }}
                                         </a>
                                     </h5>
 
