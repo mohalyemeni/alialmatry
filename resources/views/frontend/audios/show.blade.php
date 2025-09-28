@@ -234,40 +234,42 @@
                                         : '';
                                 @endphp
 
-                                <li class="mb-3">
-                                    <div class="recent-post">
-                                        <div class="media-img me-2" style="flex:0 0 auto;">
-                                            <a href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                                <img src="{{ $rd_img }}" alt="{{ e($rd->title) }}"
-                                                    class="recent-thumb">
-                                            </a>
-                                        </div>
+                            <li class="mb-3">
+    <div class="recent-post">
+        <div class="media-img me-2" style="flex:0 0 auto;">
+            <a href="{{ route('frontend.audios.show', $rd->slug) }}">
+                <div class="recent-audio-thumb d-flex align-items-center justify-content-center">
+                    <i class="fa fa-volume-up icon_color"></i>
+                </div>
+            </a>
+        </div>
 
-                                        <div class="flex-grow-1" style="min-width:0;">
-                                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
-                                                <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                                    <span class="d-flex align-items-center"><i
-                                                            class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}</span>
+        <div class="flex-grow-1" style="min-width:0;">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
+                <div class="text-muted small d-flex align-items-center" style="gap:8px;">
+                    <span class="d-flex align-items-center">
+                        <i class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}
+                    </span>
+                </div>
+            </div>
+            @if (!empty($rd->category))
+                <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
+                    class="audio-badge bg-light text-dark text-decoration-none">
+                    <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
+                    <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
+                </a>
+            @endif
+            <h4 class="post-title1 mb-0 post-title-small">
+                <a class="text-inherit d-block"
+                    href="{{ route('frontend.audios.show', $rd->slug) }}">
+                    {{ \Illuminate\Support\Str::limit($rd->title, 70) }}
+                </a>
+            </h4>
+        </div>
+    </div>
+</li>
 
-                                                </div>
-                                            </div>
-                                            @if (!empty($rd->category))
-                                                <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
-                                                    class="audio-badge bg-light text-dark text-decoration-none">
-                                                    <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
-                                                    <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
-                                                </a>
-                                            @endif
-                                            <h4 class="post-title1 mb-0 post-title-small">
-                                                <a class="text-inherit d-block"
-                                                    href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                                    {{ \Illuminate\Support\Str::limit($rd->title, 70) }}
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </li>
                             @endforeach
                         </ul>
                     @else
