@@ -74,9 +74,9 @@ class VideoFrontendController extends Controller
                             $q2->whereNull('published_on')->orWhere('published_on', '<=', $now);
                         });
                 }])
-                ->orderByDesc('featured') // featured أولاً
+                ->orderByDesc('featured')
                 ->orderByDesc('id')
-                ->paginate(8); // عدد التصنيفات بالصفحة
+                ->paginate(40);
 
             if ($request->ajax()) {
                 $html = view('frontend.videos.partials.index_partial', compact('categories'))->render();
@@ -111,7 +111,7 @@ class VideoFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(8);
+            ->paginate(40);
 
         $videos->getCollection()->transform(function ($v) {
             $v->thumbnail = $this->resolveThumbnail($v->thumbnail ?? null);

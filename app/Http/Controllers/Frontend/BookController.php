@@ -53,7 +53,7 @@ class BookController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', now());
             })
             ->orderByDesc('published_on')
-            ->paginate(8);
+            ->paginate(40);
 
         return view('frontend.books.index', compact('books'));
     }

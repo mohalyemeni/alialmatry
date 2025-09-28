@@ -167,7 +167,7 @@ class AudioFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(5);
+            ->paginate(40);
 
         $audios->getCollection()->transform(function ($a) {
             $a->img = $this->resolveImage($a->img ?? null);

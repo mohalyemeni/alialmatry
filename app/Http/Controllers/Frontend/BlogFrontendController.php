@@ -127,7 +127,7 @@ class BlogFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(5);
+            ->paginate(40);
 
          $blogs->getCollection()->transform(function ($b) {
             $b->img = $this->resolveImage($b->img ?? null);
