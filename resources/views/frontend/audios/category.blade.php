@@ -72,43 +72,7 @@
         }
 
         /* استجابة للشاشات الصغيرة */
-        @media (max-width: 576px) {
-            .custom-audio-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
 
-            .custom-audio-item>div:first-child {
-                flex: 0 0 auto;
-                width: 100%;
-            }
-
-            .audio-thumb {
-                width: 100%;
-                height: 180px;
-                font-size: 48px;
-                border-radius: 6px;
-            }
-
-            .custom-audio-item>div:nth-child(2) {
-                width: 100%;
-            }
-
-            .custom-audio-item .d-flex.align-items-center.justify-content-between {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .custom-audio-item .meta-buttons {
-                width: 100%;
-                display: flex;
-                justify-content: flex-start;
-                gap: 10px;
-                margin-top: 5px;
-            }
-        }
 
         /* ضبط الشريط الجانبي للعنصر الحديث */
         .recent-video-thumb {
