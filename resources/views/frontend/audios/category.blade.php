@@ -142,12 +142,12 @@
                             <div style="flex:0 0 120px;">
                                 <a href="{{ route('frontend.audios.show', $audio->slug) }}" aria-label="تشغيل {{ e($audio->title) }}">
                                     <div class="audio-thumb" role="img" aria-hidden="true">
-                                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                                        <i class="fa fa-volume-up ms-2 icon_color" aria-hidden="true"></i>
                                     </div>
                                 </a>
                             </div>
 
-                            <div style="flex:1; min-width:0;">
+                            <div style="flex:1; min-width:0; padding: 11px;">
                                 <h5 class="mb-1">
                                     <a href="{{ route('frontend.audios.show', $audio->slug) }}" class="d-block text-dark">
                                         {{ e(\Illuminate\Support\Str::limit($audio->title, 80)) }}
@@ -219,9 +219,9 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.audios.show', $item->slug) }}">
-                                            {{-- استبدلنا الصورة المصغرة بأيقونة --}}
+
                                             <div class="recent-audio-thumb" aria-hidden="true">
-                                                <i class="fa-solid fa-play"></i>
+                                                <i class="fa fa-volume-up ms-2 icon_color"></i>
                                             </div>
                                         </a>
 
