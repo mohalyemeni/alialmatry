@@ -67,7 +67,7 @@
                 @endif
             </div>
         </div>
-        <div class="mt-4 d-flex justify-content-center">
-           {{ $categories->links() }}
-       </div>
-</section>
+    </section>
+    <div class="mt-4 d-flex justify-content-center">
+       {{ $categories->links() }}
+   </div>
