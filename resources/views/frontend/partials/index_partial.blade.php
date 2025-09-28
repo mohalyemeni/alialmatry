@@ -72,5 +72,5 @@
 </section>
 
 <div class="mt-4 d-flex justify-content-center">
-   {{ $categories->links() }}
+   {{ $categories->onEachSide(1)->links() }}
 </div>
