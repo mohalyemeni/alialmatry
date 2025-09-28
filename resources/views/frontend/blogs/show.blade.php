@@ -85,7 +85,7 @@
                                                 $thumbSrc = asset('storage/' . ltrim($item->img, '/'));
                                             }
                                         }
-                                        $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/blog/default.jpg');
+                                        $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/No-Image.png');
 
                                         try {
                                             $publishedFormatted = $item->published_on
