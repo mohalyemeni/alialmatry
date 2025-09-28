@@ -167,7 +167,7 @@
                                         </div>
                                         @if (!empty($rd->category))
                                             <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
-                                                class="audio-badge bg-light text-dark text-decoration-none">
+                                                class="audio-badge  text-dark text-decoration-none">
                                                 <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
                                                 <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
                                             </a>
