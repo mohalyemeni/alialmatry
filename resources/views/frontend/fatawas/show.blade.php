@@ -184,8 +184,8 @@
                         @endif
                     </div>
 
-                  <div class="sermon-text mb-3">
-    {!! preg_replace('/<(\w+)[^>]*>\s*<\/\1>/', '', $fatawa->description ?? '') !!}
+                   <div class="sermon-text mb-3">
+    {{ strip_tags($fatawa->description ?? '') }}
 </div>
 
                 </div>
