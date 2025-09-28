@@ -33,8 +33,8 @@
             @endforeach
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
-            {{ $videos->links() }}
-        </div>
-    @endif
-</div>
+        @endif
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        {{ $videos->links() }}
+    </div>

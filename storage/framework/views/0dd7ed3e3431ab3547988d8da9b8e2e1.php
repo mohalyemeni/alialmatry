@@ -30,6 +30,7 @@
 
     <div id="ajax-content">
         <?php echo $__env->make('frontend.partials.index_partial', ['categories' => $categories], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     </div>
 <?php $__env->stopSection(); ?>
 

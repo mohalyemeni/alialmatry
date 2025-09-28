@@ -10,8 +10,12 @@
                     <div class="accordion-area style2 load-more-active accordion" id="faqAccordion">
                         <h3 class="widget_title title-header-noline mb-5 fadeInRight wow">الفتاوى</h3>
 
-                        <!--[if BLOCK]><![endif]--><?php if(!empty($fatawas) && count($fatawas)): ?>
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $fatawas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                            $displayFatawas = ($fatawas instanceof \Illuminate\Support\Collection) ? $fatawas->take(5) : collect($fatawas)->take(5);
+                        ?>
+
+                        <!--[if BLOCK]><![endif]--><?php if($displayFatawas->isNotEmpty()): ?>
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $displayFatawas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="accordion-card style2 <?php echo e($index === 0 ? 'active' : ''); ?> fadeInUp wow"
                                     data-wow-delay="<?php echo e(0.2 + $index * 0.1); ?>s" wire:key="faq-<?php echo e($faq->id); ?>">
                                     <div class="accordion-header" id="collapse-item-<?php echo e($index + 1); ?>">
@@ -43,13 +47,12 @@
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         <?php else: ?>
                             <p class="text-muted">لا توجد فتاوى حالياً.</p>
-
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         <div class="d-flex justify-content-between align-items-center mt-3 px-1">
                             <div class="fw-bold flex_mine fadeInUp wow">
                                 <p class="tags text-muted">عدد الفتاوى</p>
-                                <span class="num_fata count_span"><?php echo e(isset($fatawas) ? count($fatawas) : 0); ?></span>
+                                <span class="num_fata count_span"><?php echo e(isset($fatawasCount) ? $fatawasCount : (is_array($fatawas) ? count($fatawas) : ( $fatawas instanceof \Illuminate\Support\Collection ? $fatawas->count() : 0 ))); ?></span>
                             </div>
                             <a href="<?php echo e(route('frontend.fatawas.index')); ?>" class="th-btn new_pad fadeInRight wow">
                                 قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
@@ -126,7 +129,6 @@
                         debugOutput.scrollTop = debugOutput.scrollHeight;
                     }
 
-                    // أيضًا طباعة في console للمطورين
                     e.detail.messages.forEach(m => console.log(m));
                 }
             });
