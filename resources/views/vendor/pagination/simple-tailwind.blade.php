@@ -26,13 +26,13 @@
                class="th-btn style1 th-btn1 next-btn relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md focus:outline-none"
                aria-label="{{ __('pagination.next') }}">
                 <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>
-                <span class="btn-text" data-back=" التالي" data-front=" التالي">{!! __('pagination.next') !!}</span>
+                <span class="btn-text" data-back=" التالي" data-front=" التالي"> </span>
             </a>
         @else
             <span class="th-btn style1 th-btn1 next-btn disabled relative inline-flex items-center px-4 py-2 text-sm font-medium cursor-default leading-5 rounded-md"
                   aria-disabled="true" style="pointer-events:none; opacity:0.6;">
                 <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>
-                <span class="btn-text" data-back=" التالي" data-front=" التالي">{!! __('pagination.next') !!}</span>
+                <span class="btn-text" data-back=" التالي" data-front=" التالي"> </span>
             </span>
         @endif
     </nav>
