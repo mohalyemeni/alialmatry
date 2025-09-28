@@ -1941,3 +1941,22 @@ div.tagsinput input {
 .page-link {
     padding: 0.575rem 1rem !important;
 }
+/* اجعل nav حاوية نسبية */
+.pagination-nav {
+  position: relative;
+  width: 100%; /* تأكيد */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* المحتوى الوسطي يبقى، لكن الأزرار سنضعها مطلقة */
+}
+
+/* اجعل الأزرار في الحواف */
+.pagination-nav .prev-btn {
+  position: absolute;
+  right: 1rem; /* زر السابق على اليمين */
+}
+
+.pagination-nav .next-btn {
+  position: absolute;
+  left: 1rem;  /* زر التالي على اليسار */
+}
