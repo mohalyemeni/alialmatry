@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('title', e($fatawa->title))
 @section('description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160)))
 @section('keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title))
@@ -15,7 +14,6 @@
 @section('twitter_description', $fatawa->excerpt ?? strip_tags(Str::limit($fatawa->description ?? '', 160)))
 @section('twitter_image', $fatawa->img ?? asset('frontand/assets/img/normal/counter-image.jpg'))
 @section('twitter_keywords', 'فتاوى, أسئلة شرعية, ' . e($fatawa->title))
-
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -38,7 +36,6 @@
         </div>
     </div>
 
-    {{-- 🎵 تنسيقات مشغّل الصوت --}}
     <style>
         .audio-player-row {
             display: flex;
@@ -53,10 +50,13 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
+
         }
 
         .audio-play-wrapp audio {
+
             border: 3px solid var(--theme-color) !important;
+
         }
 
         .audio-download-btn {
@@ -75,11 +75,15 @@
             .audio-player-row {
                 flex-direction: column;
                 align-items: stretch;
-                height: 90px !important;
             }
 
             .audio-download-btn {
                 align-self: flex-end;
+            }
+
+            .audio-player-row {
+
+                height: 90px !important;
             }
         }
 
@@ -128,9 +132,9 @@
             <!-- main -->
             <div class="col-lg-8">
                 <div class="card p-3 sermon-card">
-                    <h3 class="mb-4 mt- widget_title title-header-noline fadeInRight wow text-wrap">{{ e($fatawa->title) }}</h3>
+                    <h3 class="mb-4 mt- widget_title title-header-noline fadeInRight wow text-wrap">{{ e($fatawa->title) }}
+                    </h3>
 
-                    {{-- 🎧 مشغّل الصوت --}}
                     <div class="audio-play-wrapp mb-3">
                         @php
                             $hasAudioFile =
@@ -158,12 +162,10 @@
                             </div>
                         @else
                             <div class="alert alert-secondary mb-0">
-                                {{ __('panel.no_audio_file') ?? 'لا يوجد ملف صوتي متاح لهذه الفتوى.' }}
-                            </div>
+                                {{ __('panel.no_audio_file') ?? 'لا يوجد ملف صوتي متاح لهذه الفتوى.' }}</div>
                         @endif
                     </div>
 
-                    {{-- 📄 روابط PDF و DOC --}}
                     <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
                         @if (!empty($fatawa->pdf_link))
                             <a href="{{ $fatawa->pdf_link }}" target="_blank" class="th-btn style2 th-btn1">
@@ -182,19 +184,13 @@
                         @endif
                     </div>
 
-                    {{-- 📝 وصف الفتوى (مع تنظيف الوسوم الفارغة) --}}
-                    <div class="sermon-text mb-3">
-                        {!! preg_replace(
-                            ['/<strong>\s*<\/strong>/', '/<p>\s*<\/p>/'],
-                            '',
-                            $fatawa->description ?? ''
-                        ) !!}
-                    </div>
+                    {{-- <div class="sermon-text mb-3">
+                        {!! $fatawa->description ?? '' !!}
+                    </div> --}}
                 </div>
             </div>
 
-            {{-- 🔗 الشريط الجانبي --}}
-            <aside class="col-xxl-4 col-lg-4 pb-5">
+            <aside class="col-xxl-4 col-lg-4  pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">{{ __('panel.recent_fatawas') ?? 'أحدث الفتاوى' }}</h5>
@@ -218,13 +214,17 @@
                                     @php
                                         $rd_img = null;
                                         if (!empty($rd->img)) {
-                                            if (\Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])) {
+                                            if (
+                                                \Illuminate\Support\Str::startsWith($rd->img, ['http://', 'https://'])
+                                            ) {
                                                 $rd_img = $rd->img;
                                             } elseif (file_exists(public_path('assets/fatawa/images/' . $rd->img))) {
                                                 $rd_img = asset('assets/fatawa/images/' . $rd->img);
                                             } elseif (file_exists(public_path($rd->img))) {
                                                 $rd_img = asset($rd->img);
-                                            } elseif (\Illuminate\Support\Facades\Storage::disk('public')->exists($rd->img)) {
+                                            } elseif (
+                                                \Illuminate\Support\Facades\Storage::disk('public')->exists($rd->img)
+                                            ) {
                                                 $rd_img = asset('storage/' . ltrim($rd->img, '/'));
                                             }
                                         }
@@ -284,6 +284,12 @@
                     </div>
                 </div>
             </aside>
+
+
+
         </div>
     </div>
 @endsection
+
+
+
