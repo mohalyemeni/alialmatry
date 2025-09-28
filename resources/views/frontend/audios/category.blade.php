@@ -62,22 +62,6 @@
             font-size: 20px;
         }
 
-        /* تأثير hover مشابه للأزرار */
-        .audio-thumb:hover,
-        .recent-audio-thumb:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(2,6,23,0.08);
-            transition: transform .16s ease, box-shadow .18s ease;
-            cursor: pointer;
-        }
-
-        /* استجابة للشاشات الصغيرة */
-
-
-        /* ضبط الشريط الجانبي للعنصر الحديث */
-        .recent-video-thumb {
-            display: none; /* نخفي الصورة القديمة لو كانت موجودة عبر كلاس قديم */
-        }
     </style>
 
     <div class="container py-4">
