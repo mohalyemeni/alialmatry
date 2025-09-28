@@ -110,11 +110,7 @@
                                     </div>
                                 </div>
 
-                                @if (!empty($excerpt))
-                                    <p class="mb-1 text-muted small">
-                                        {{ e(\Illuminate\Support\Str::limit(strip_tags($excerpt), 120)) }}
-                                    </p>
-                                @endif
+
                             </div>
                         </div>
                     @empty
