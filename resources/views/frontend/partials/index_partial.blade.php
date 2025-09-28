@@ -35,7 +35,7 @@
                                             <img src="{{ $img }}" alt="{{ e($title) }}"
                                                  style="width:100%; height:100%; object-fit:cover;">
                                         @else
-                                            <img src="{{ asset('assets/No-Image') }}"
+                                            <img src="{{ asset('frontand/assets/img/No-Image.png') }}"
 
                                                  style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
                                         @endif
