@@ -36,7 +36,6 @@
                                                  style="width:100%; height:100%; object-fit:cover;">
                                         @else
                                             <img src="{{ asset('frontand/assets/img/No-Image.png') }}"
-
                                                  style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
                                         @endif
                                     </a>
@@ -71,6 +70,6 @@
     </div>
 </section>
 
-<div class="mt-4 d-flex justify-content-center">
+ <div class="mt-4 d-flex justify-content-center">
    {{ $categories->onEachSide(1)->links() }}
 </div>
