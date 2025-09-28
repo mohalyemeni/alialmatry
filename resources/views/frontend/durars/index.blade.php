@@ -65,7 +65,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $durars->links() }}
+                {{ $durars->links('pagination::simple-tailwind') }}
             </div>
         @else
             <p class="text-muted">لا توجد درر لعرضها حالياً.</p>

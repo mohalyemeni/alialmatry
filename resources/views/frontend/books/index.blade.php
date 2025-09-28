@@ -110,7 +110,7 @@
             <!-- pagination -->
             <div class="row mt-3">
                 <div class="col-12">
-                    {{ $books->links() }}
+                    {{ $books->links('pagination::simple-tailwind') }}
                 </div>
             </div>
         </div>

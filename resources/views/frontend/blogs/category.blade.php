@@ -79,7 +79,7 @@
 
                 {{-- pagination --}}
                 <div class="mt-4">
-                    {{ $blogs->links() }}
+                    {{ $blogs->links('pagination::simple-tailwind') }}
                 </div>
             </div>
 
