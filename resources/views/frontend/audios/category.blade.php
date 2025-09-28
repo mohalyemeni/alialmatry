@@ -34,7 +34,87 @@
         </div>
     </div>
 
+    <style>
+        /* ----- أيقونة الصوت بديل الصورة ----- */
+        .audio-thumb,
+        .recent-audio-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
+        }
+
+        .audio-thumb {
+            width: 120px;
+            height: 120px;
+            font-size: 42px;
+        }
+
+        .audio-thumb .fa-play,
+        .audio-thumb .fa-circle-play {
+            font-size: 42px;
+        }
+
+        .recent-audio-thumb {
+            width: 88px;
+            height: 64px;
+            border-radius: 6px;
+            font-size: 20px;
+        }
+
+        /* تأثير hover مشابه للأزرار */
+        .audio-thumb:hover,
+        .recent-audio-thumb:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.08);
+            transition: transform .16s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 576px) {
+            .custom-audio-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .custom-audio-item>div:first-child {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .audio-thumb {
+                width: 100%;
+                height: 180px;
+                font-size: 48px;
+                border-radius: 6px;
+            }
+
+            .custom-audio-item>div:nth-child(2) {
+                width: 100%;
+            }
+
+            .custom-audio-item .d-flex.align-items-center.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .custom-audio-item .meta-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                margin-top: 5px;
+            }
+        }
+
+        /* ضبط الشريط الجانبي للعنصر الحديث */
+        .recent-video-thumb {
+            display: none; /* نخفي الصورة القديمة لو كانت موجودة عبر كلاس قديم */
+        }
+    </style>
 
     <div class="container py-4">
         <div class="row">
