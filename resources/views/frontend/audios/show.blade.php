@@ -127,6 +127,23 @@
             color: #0f172a;
             text-decoration: none;
         }
+        .custom-audio-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .custom-audio-item>div:first-child {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .audio-thumb {
+                width: 100%;
+                height: 180px;
+                font-size: 48px;
+                border-radius: 6px;
+            }
     </style>
 
     <div class="container py-4">
