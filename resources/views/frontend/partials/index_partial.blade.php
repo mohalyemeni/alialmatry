@@ -29,15 +29,18 @@
 
                         <div class="col-md-6 col-lg-4 col-xl-3">
                             <div class="blog-box style2 wow fadeInUp" data-wow-delay="{{ $delay }}s">
-                                @if ($img)
-                                    <div class="blog-img blog-img11 global-img" style="height:220px; overflow:hidden;">
-                                        <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}"
-                                            class="d-block">
+                                <div class="blog-img blog-img11 global-img" style="height:220px; overflow:hidden;">
+                                    <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}" class="d-block">
+                                        @if ($img)
                                             <img src="{{ $img }}" alt="{{ e($title) }}"
-                                                style="width:100%; height:100%; object-fit:cover;">
-                                        </a>
-                                    </div>
-                                @endif
+                                                 style="width:100%; height:100%; object-fit:cover;">
+                                        @else
+                                            <img src="{{ asset('frontand/assets/img/No-Image') }}"
+
+                                                 style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+                                        @endif
+                                    </a>
+                                </div>
 
                                 <div class="blog-wrapper p-3">
                                     <span class="date">
@@ -54,8 +57,8 @@
                                         </h3>
 
                                         <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}"
-                                            class="th-btn border-btn">
-                                            تصفح <i class="fa-solid fa-arrow-left ms-1"></i>
+                                           class="th-btn border-btn">
+                                           تصفح <i class="fa-solid fa-arrow-left ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -63,11 +66,11 @@
                         </div>
                     @endforeach
                 </div>
-
-                @endif
-            </div>
+            @endif
         </div>
-    </section>
-    <div class="mt-4 d-flex justify-content-center">
-       {{ $categories->links() }}
-   </div>
+    </div>
+</section>
+
+<div class="mt-4 d-flex justify-content-center">
+   {{ $categories->links() }}
+</div>
