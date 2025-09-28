@@ -64,11 +64,10 @@
                     @endforeach
                 </div>
 
-                {{-- الباجنيشن --}}
-                <div class="mt-4 d-flex justify-content-center">
-                    {{ $categories->links() }}
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
-    </div>
+        <div class="mt-4 d-flex justify-content-center">
+           {{ $categories->links() }}
+       </div>
 </section>
