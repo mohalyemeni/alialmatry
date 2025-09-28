@@ -229,7 +229,7 @@
                                                 $rd_img = asset('storage/' . ltrim($rd->img, '/'));
                                             }
                                         }
-                                        $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
+                                        $rd_img = $rd_img ?: asset('frontand/assets/img/No-Image.png');
 
                                         $rd_date = $rd->published_on
                                             ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
