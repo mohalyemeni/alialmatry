@@ -76,7 +76,7 @@ class VideoFrontendController extends Controller
                 }])
                 ->orderByDesc('featured')
                 ->orderByDesc('id')
-                ->paginate(40);
+                ->paginate(28);
 
             if ($request->ajax()) {
                 $html = view('frontend.videos.partials.index_partial', compact('categories'))->render();
@@ -111,7 +111,7 @@ class VideoFrontendController extends Controller
                 $q->whereNull('published_on')->orWhere('published_on', '<=', $now);
             })
             ->orderByDesc('published_on')
-            ->paginate(40);
+            ->paginate(28);
 
         $videos->getCollection()->transform(function ($v) {
             $v->thumbnail = $this->resolveThumbnail($v->thumbnail ?? null);

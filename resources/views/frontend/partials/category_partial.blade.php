@@ -35,6 +35,6 @@
 
         @endif
     </div>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $videos->links() }}
+    <div class="d-flex justify-content-center mt-4 mb-5">
+        {{ $videos->links('pagination::simple-tailwind') }}
     </div>

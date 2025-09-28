@@ -123,7 +123,7 @@
                             html += '<div style="border-bottom: 1px solid #333; padding: 5px 0;">' +
                                 m + '</div>';
                         });
-                        debugOutput.innerHTML = html;
+                        debugOutput.innerHTML = html ;
                         debugOutput.scrollTop = debugOutput.scrollHeight;
                     }
 

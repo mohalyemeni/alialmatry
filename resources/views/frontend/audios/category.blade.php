@@ -35,6 +35,47 @@
     </div>
 
     <style>
+        /* ----- أيقونة الصوت بديل الصورة ----- */
+        .audio-thumb,
+        .recent-audio-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6; /* خلفية فاتحة */
+            color: #0ea5a4; /* لون الأيقونة (يمكن تغييره) */
+            border-radius: 8px;
+            border: 1px solid rgba(15, 23, 42, 0.05);
+            box-shadow: 0 2px 8px rgba(2,6,23,0.03);
+        }
+
+        .audio-thumb {
+            width: 120px;
+            height: 120px;
+            font-size: 42px;
+        }
+
+        .audio-thumb .fa-play,
+        .audio-thumb .fa-circle-play {
+            font-size: 42px;
+        }
+
+        .recent-audio-thumb {
+            width: 88px;
+            height: 64px;
+            border-radius: 6px;
+            font-size: 20px;
+        }
+
+        /* تأثير hover مشابه للأزرار */
+        .audio-thumb:hover,
+        .recent-audio-thumb:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.08);
+            transition: transform .16s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+
+        /* استجابة للشاشات الصغيرة */
         @media (max-width: 576px) {
             .custom-audio-item {
                 flex-direction: column;
@@ -47,11 +88,11 @@
                 width: 100%;
             }
 
-            .custom-audio-item img {
+            .audio-thumb {
                 width: 100%;
-                height: auto;
-                object-fit: cover;
-                border-radius: 5px;
+                height: 180px;
+                font-size: 48px;
+                border-radius: 6px;
             }
 
             .custom-audio-item>div:nth-child(2) {
@@ -72,6 +113,11 @@
                 margin-top: 5px;
             }
         }
+
+        /* ضبط الشريط الجانبي للعنصر الحديث */
+        .recent-video-thumb {
+            display: none; /* نخفي الصورة القديمة لو كانت موجودة عبر كلاس قديم */
+        }
     </style>
 
     <div class="container py-4">
@@ -83,24 +129,8 @@
                     @forelse ($audios as $audio)
                         @php
                             $excerpt = $audio->excerpt ?? '';
+                            // نحتفظ بالthumbSrc لو احتجته لاحقاً
                             $thumbSrc = $audio->img ?? null;
-
-                            if (!$thumbSrc) {
-                                if (!empty($audio->img)) {
-                                    if (\Illuminate\Support\Str::startsWith($audio->img, ['http://', 'https://'])) {
-                                        $thumbSrc = $audio->img;
-                                    } elseif (file_exists(public_path('assets/audios/images/' . $audio->img))) {
-                                        $thumbSrc = asset('assets/audios/images/' . $audio->img);
-                                    } elseif (file_exists(public_path($audio->img))) {
-                                        $thumbSrc = asset($audio->img);
-                                    } elseif (
-                                        \Illuminate\Support\Facades\Storage::disk('public')->exists($audio->img)
-                                    ) {
-                                        $thumbSrc = asset('storage/' . ltrim($audio->img, '/'));
-                                    }
-                                }
-                                $thumbSrc = $thumbSrc ?: asset('frontand/assets/img/normal/counter-image.jpg');
-                            }
 
                             $published = $audio->published_on
                                 ? \Carbon\Carbon::parse($audio->published_on)->format('d M, Y')
@@ -108,9 +138,12 @@
                         @endphp
 
                         <div class="list-group-item custom-audio-item d-flex align-items-start gap-3">
+                            {{-- هنا استبدلنا الصورة بـ أيقونة صوت --}}
                             <div style="flex:0 0 120px;">
-                                <a href="{{ route('frontend.audios.show', $audio->slug) }}">
-                                    <img src="{{ $thumbSrc }}" alt="">
+                                <a href="{{ route('frontend.audios.show', $audio->slug) }}" aria-label="تشغيل {{ e($audio->title) }}">
+                                    <div class="audio-thumb" role="img" aria-hidden="true">
+                                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                                    </div>
                                 </a>
                             </div>
 
@@ -141,7 +174,7 @@
 
                                     <div class="meta-buttons">
                                         <a href="{{ route('frontend.audios.show', $audio->slug) }}"
-                                            class="th-btn style1 th-btn1">
+                                            class="th-btn style1 th-btn1" aria-label="تشغيل {{ e($audio->title) }}">
                                             <span class="btn-text" data-back="{{ __('panel.play') }}"
                                                 data-front="{{ __('panel.play') }}"></span>
                                             <i class="fa-solid fa-play me-1"></i>
@@ -149,7 +182,7 @@
 
                                         @if (!empty($audio->audio_file))
                                             <a href="{{ route('frontend.audios.download', $audio->id) }}"
-                                                class="th-btn style2 th-btn1">
+                                                class="th-btn style2 th-btn1" aria-label="تحميل {{ e($audio->title) }}">
                                                 <span class="btn-text" data-back="{{ __('panel.download') }}"
                                                     data-front="{{ __('panel.download') }}"></span>
                                                 <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
@@ -164,8 +197,8 @@
                     @endforelse
                 </div>
 
-                <div class="mt-4">
-                    {{ $audios->links() }}
+                <div class="mt-4 d-flex justify-content-center mb-5">
+                    {{ $audios->links('pagination::simple-tailwind') }}
                 </div>
             </div>
 
@@ -179,7 +212,6 @@
                             <ul class="list-unstyled mb-0 pr-0">
                                 @foreach ($recentAudios as $item)
                                     @php
-                                        $rThumb = $item->img ?: asset('frontand/assets/img/normal/counter-image.jpg');
                                         $rDate = $item->published_on
                                             ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
                                             : '';
@@ -187,8 +219,10 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.audios.show', $item->slug) }}">
-                                            <img src="{{ $rThumb }}" alt="" class="recent-video-thumb"
-                                                style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
+                                            {{-- استبدلنا الصورة المصغرة بأيقونة --}}
+                                            <div class="recent-audio-thumb" aria-hidden="true">
+                                                <i class="fa-solid fa-play"></i>
+                                            </div>
                                         </a>
 
                                         <div class="flex-grow-1" style="min-width:0;">
@@ -233,7 +267,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 @php
                     $featuredCats = \App\Models\Category::where('section', \App\Models\Category::SECTION_AUDIO)

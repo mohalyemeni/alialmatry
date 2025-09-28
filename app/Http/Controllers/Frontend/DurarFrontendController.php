@@ -66,7 +66,7 @@ class DurarFrontendController extends Controller
             });
         }
 
-        $durars = $query->paginate(40);
+        $durars = $query->paginate(28);
 
         return view('frontend.durars.index', compact('durars'));
     }
