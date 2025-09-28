@@ -1,198 +1,282 @@
 @extends('layouts.app')
-@section('title', e($audio->title))
-@section('description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
-@section('keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
-@section('canonical', urldecode(route('frontend.audios.show', $audio->slug)))
-@section('og_type', 'article')
-@section('og_title', e($audio->title))
-@section('og_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
-@section('og_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg'))
-@section('og_url', urldecode(route('frontend.audios.show', $audio->slug)))
-@section('og_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
+@section('title', e($category->title))
+@section('description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
+@section('canonical', urldecode(route('frontend.audios.category', $category->slug ?? $category->id)))
+@section('og_type', 'website')
+@section('og_title', e($category->title))
+@section('og_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('og_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('og_url', urldecode(route('frontend.audios.category', $category->slug ?? $category->id)))
+@section('og_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
 @section('twitter_card', 'summary_large_image')
-@section('twitter_title', e($audio->title))
-@section('twitter_description', $audio->excerpt ?? strip_tags(Str::limit($audio->description ?? '', 160)))
-@section('twitter_image', $audio->img ?? asset('frontand/assets/img/hero/hero_5_3.jpg'))
-@section('twitter_keywords', $audio->meta_keywords ?? 'صوتيات, ' . e($audio->title))
+@section('twitter_title', e($category->title))
+@section('twitter_description', $category->description ?? 'عرض الصوتيات ضمن تصنيف ' . e($category->title))
+@section('twitter_image', $category->img ? asset('assets/audio_categories/' . $category->img) :
+    asset('frontand/assets/img/hero/hero_5_3.jpg'))
+@section('twitter_keywords', $category->meta_keywords ?? 'صوتيات, تصنيف, ' . e($category->title))
 
 @section('content')
-<div class="breadcumb-wrapper"
-    style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
-    <div class="container">
-        <div class="breadcumb-content text-center text-white">
-            <h1 class="breadcumb-title">{{ e($audio->title) }}</h1>
-            <ul class="breadcumb-menu list-inline justify-content-center mt-3">
-                <li class="list-inline-item"><a href="{{ route('frontend.index') }}"
-                        class="text-white">{{ __('panel.home') }}</a></li>
-                <li class="list-inline-item"><a href="{{ route('frontend.audios.index') }}"
-                        class="text-white">{{ __('panel.audios') }}</a></li>
-                @if (!empty($audio->category))
-                    <li class="list-inline-item"><a
-                            href="{{ route('frontend.audios.category', $audio->category->slug) }}"
-                            class="text-white">{{ e($audio->category->title) }}</a></li>
-                @endif
-                <li class="list-inline-item">{{ e(\Illuminate\Support\Str::limit($audio->title, 60)) }}</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* نفس تنسيقات الأيقونات من صفحة التصنيف */
-    .audio-thumb,
-    .recent-audio-thumb {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .recent-audio-thumb {
-        width: 88px;
-        height: 64px;
-        border-radius: 6px;
-        font-size: 20px;
-        background: #f9fafb;
-    }
-    .recent-audio-thumb i {
-        font-size: 20px;
-        color: var(--theme-color, #0f172a);
-    }
-    .recent-audio-thumb:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(2,6,23,0.08);
-        transition: transform .16s ease, box-shadow .18s ease;
-        cursor: pointer;
-    }
-</style>
-
-<div class="container py-4">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card p-3 sermon-card">
-                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e($audio->title) }}</h3>
-
-                <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
-                    @php
-                        $hasAudioFile =
-                            !empty($audio->audio_file) &&
-                            file_exists(public_path('assets/audios/files/' . $audio->audio_file));
-                        $audioFileUrl = $hasAudioFile ? asset('assets/audios/files/' . $audio->audio_file) : null;
-                    @endphp
-
-                    @if ($hasAudioFile)
-                        <div class="audio-player-row flex-grow-1 d-flex align-items-center">
-                            <a href="{{ route('frontend.audios.download', $audio->id) }}"
-                                class="th-btn style2 th-btn1 audio-download-btn me-2"
-                                aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
-                                <span class="btn-text" data-back="{{ __('panel.download') }}"
-                                    data-front="{{ __('panel.download') }}"></span>
-                                <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
-                            </a>
-
-                            <audio controls preload="metadata" aria-label="{{ e($audio->title) }}" class="flex-grow-1">
-                                <source src="{{ $audioFileUrl }}" type="audio/mpeg">
-                                {{ __('panel.audio_not_supported') }}
-                            </audio>
-                        </div>
-                    @else
-                        <div class="alert alert-secondary mb-0">{{ __('panel.no_audio_file') }}</div>
-                    @endif
-                </div>
-
-                <div class="button-wrapp pt-15 d-flex flex-wrap gap-2 wow fadeInRight" data-wow-delay=".4s">
-                    @if (!empty($audio->pdf_link))
-                        <a href="{{ $audio->pdf_link }}" target="_blank" class="th-btn style2 th-btn1">
-                            <span class="btn-text" data-back="{{ __('panel.pdf') }}"
-                                data-front="{{ __('panel.pdf') }}"></span>
-                            <i class="fa-regular fa-file-pdf ms-2"></i>
-                        </a>
-                    @endif
-                    @if (!empty($audio->doc_link))
-                        <a href="{{ $audio->doc_link }}" target="_blank" class="th-btn style2 th-btn1">
-                            <span class="btn-text" data-back="{{ __('panel.documents') }}"
-                                data-front="{{ __('panel.documents') }}"></span>
-                            <i class="fa-solid fa-file ms-2"></i>
-                        </a>
-                    @endif
-                </div>
-
-                <div class="sermon-text mb-3">
-                    {!! $audio->description ?? '' !!}
-                </div>
+    <div class="breadcumb-wrapper"
+        style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
+        <div class="container">
+            <div class="breadcumb-content text-center text-white">
+                <h1 class="breadcumb-title">{{ e($category->title) }}</h1>
+                <ul class="breadcumb-menu list-inline justify-content-center mt-3">
+                    <li class="list-inline-item"><a href="{{ route('frontend.index') }}"
+                            class="text-white">{{ __('panel.home') }}</a></li>
+                    <li class="list-inline-item"><a href="{{ route('frontend.audios.index') }}"
+                            class="text-white">{{ __('panel.audios') }}</a></li>
+                    <li class="list-inline-item">{{ $category->title }}</li>
+                </ul>
             </div>
         </div>
+    </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
-                <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
+    <style>
+        /* ----- أيقونة الصوت بديل الصورة ----- */
+        .audio-thumb,
+        .recent-audio-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-                @php
-                    if (!isset($recentAudios) || empty($recentAudios)) {
-                        $recentAudios = \App\Models\Audio::with('category')
-                            ->where('status', 1)
-                            ->where(function ($q) {
-                                $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                            })
-                            ->where('id', '!=', $audio->id)
-                            ->orderByDesc('published_on')
-                            ->take(4)
-                            ->get();
-                    }
-                    $recentList = collect($recentAudios)->slice(0, 4);
-                @endphp
+        }
 
-                @if ($recentList->isNotEmpty())
-                    <ul class="list-unstyled recent-list mb-0">
-                        @foreach ($recentList as $rd)
-                            @php
-                                $rd_date = $rd->published_on
-                                    ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
-                                    : '';
-                            @endphp
-                            <li class="mb-3">
-                                <div class="recent-post d-flex gap-3 align-items-start">
-                                    <a href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                        <div class="recent-audio-thumb">
-                                            <i class="fa fa-volume-up"></i>
-                                        </div>
+        .audio-thumb {
+            width: 120px;
+            height: 120px;
+            font-size: 42px;
+        }
+
+        .audio-thumb .fa-play,
+        .audio-thumb .fa-circle-play {
+            font-size: 42px;
+        }
+
+        .recent-audio-thumb {
+            width: 88px;
+            height: 64px;
+            border-radius: 6px;
+            font-size: 20px;
+        }
+
+        /* تأثير hover مشابه للأزرار */
+        .audio-thumb:hover,
+        .recent-audio-thumb:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.08);
+            transition: transform .16s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 576px) {
+            .custom-audio-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .custom-audio-item>div:first-child {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .audio-thumb {
+                width: 100%;
+                height: 180px;
+                font-size: 48px;
+                border-radius: 6px;
+            }
+
+            .custom-audio-item>div:nth-child(2) {
+                width: 100%;
+            }
+
+            .custom-audio-item .d-flex.align-items-center.justify-content-between {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .custom-audio-item .meta-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                margin-top: 5px;
+            }
+        }
+
+        /* ضبط الشريط الجانبي للعنصر الحديث */
+        .recent-video-thumb {
+            display: none; /* نخفي الصورة القديمة لو كانت موجودة عبر كلاس قديم */
+        }
+    </style>
+
+    <div class="container py-4">
+        <div class="row">
+
+            <div class="col-xxl-8 col-lg-8">
+                <div class="list-group">
+
+                    @forelse ($audios as $audio)
+                        @php
+                            $excerpt = $audio->excerpt ?? '';
+                            // نحتفظ بالthumbSrc لو احتجته لاحقاً
+                            $thumbSrc = $audio->img ?? null;
+
+                            $published = $audio->published_on
+                                ? \Carbon\Carbon::parse($audio->published_on)->format('d M, Y')
+                                : '';
+                        @endphp
+
+                        <div class="list-group-item custom-audio-item d-flex align-items-start gap-3">
+
+                            <div style="flex:0 0 120px;">
+                                <a href="{{ route('frontend.audios.show', $audio->slug) }}" aria-label="تشغيل {{ e($audio->title) }}">
+                                    <div class="audio-thumb" role="img" aria-hidden="true">
+                                        <i class="fa fa-volume-up ms-2 icon_color" aria-hidden="true"></i>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div style="flex:1; min-width:0; padding: 11px;">
+                                <h5 class="mb-1">
+                                    <a href="{{ route('frontend.audios.show', $audio->slug) }}" class="d-block text-dark">
+                                        {{ e(\Illuminate\Support\Str::limit($audio->title, 80)) }}
                                     </a>
-                                    <div class="flex-grow-1" style="min-width:0;">
-                                        <div class="d-flex align-items-center justify-content-between mb-1">
-                                            <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
-                                            <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        @if (!empty($rd->category))
-                                            <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
-                                                class="audio-badge bg-light text-dark text-decoration-none">
-                                                <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
-                                                <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
+                                </h5>
+
+                                @if (!empty($excerpt))
+                                    <small class="text-muted d-block mb-2"
+                                        style="line-height:1.2;">{{ e($excerpt) }}</small>
+                                @endif
+
+                                <div class="d-flex align-items-center justify-content-between" style="gap:8px;">
+                                    <div class="text-muted small d-flex align-items-center" style="gap:12px;">
+                                        <span><i class="fa-solid fa-calendar-days me-1"></i> {{ $published }}</span>
+                                        <span><i class="fa-solid fa-eye me-1"></i> {{ $audio->views ?? 0 }}</span>
+                                        @if (!empty($audio->category))
+                                            <a href="{{ route('frontend.audios.category', $audio->category->slug ?? '#') }}"
+                                                class="recent-video-badge" style="padding:4px 8px;border-radius:999px;">
+                                                <i class="fa-solid fa-folder-open me-1" style="font-size:0.75rem;"></i>
+                                                {{ \Illuminate\Support\Str::limit($audio->category->title, 20) }}
                                             </a>
                                         @endif
-                                        <h4 class="post-title1 mb-0 post-title-small">
-                                            <a class="text-inherit d-block"
-                                                href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                                {{ \Illuminate\Support\Str::limit($rd->title, 70) }}
+                                    </div>
+
+                                    <div class="meta-buttons">
+                                        <a href="{{ route('frontend.audios.show', $audio->slug) }}"
+                                            class="th-btn style1 th-btn1" aria-label="تشغيل {{ e($audio->title) }}">
+                                            <span class="btn-text" data-back="{{ __('panel.play') }}"
+                                                data-front="{{ __('panel.play') }}"></span>
+                                            <i class="fa-solid fa-play me-1"></i>
+                                        </a>
+
+                                        @if (!empty($audio->audio_file))
+                                            <a href="{{ route('frontend.audios.download', $audio->id) }}"
+                                                class="th-btn style2 th-btn1" aria-label="تحميل {{ e($audio->title) }}">
+                                                <span class="btn-text" data-back="{{ __('panel.download') }}"
+                                                    data-front="{{ __('panel.download') }}"></span>
+                                                <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                                             </a>
-                                        </h4>
+                                        @endif
                                     </div>
                                 </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <p class="text-muted mb-0">{{ __('panel.no_recent_audios') }}</p>
-                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-muted">لا توجد صوتيات في هذا التصنيف.</p>
+                    @endforelse
+                </div>
 
-                <div class="mt-3 text-start">
-                    <a href="{{ route('frontend.audios.index') }}" class="th-btn new_pad">{{ __('panel.view_more') }}
-                        <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                <div class="mt-4 d-flex justify-content-center mb-5">
+                    {{ $audios->links('pagination::simple-tailwind') }}
                 </div>
             </div>
+
+            <!-- Sidebar -->
+            <aside class="col-xxl-4 col-lg-4  pb-5">
+                <div class="card sticky-top" style="top:100px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">أحدث الصوتيات</h5>
+
+                        @if (!empty($recentAudios) && $recentAudios->count())
+                            <ul class="list-unstyled mb-0 pr-0">
+                                @foreach ($recentAudios as $item)
+                                    @php
+                                        $rDate = $item->published_on
+                                            ? \Carbon\Carbon::parse($item->published_on)->format('d M, Y')
+                                            : '';
+                                    @endphp
+
+                                    <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
+                                        <a href="{{ route('frontend.audios.show', $item->slug) }}">
+
+                                            <div class="recent-audio-thumb" aria-hidden="true">
+                                                <i class="fa fa-volume-up ms-2 icon_color"></i>
+                                            </div>
+                                        </a>
+
+                                        <div class="flex-grow-1" style="min-width:0;">
+                                            <a href="{{ route('frontend.audios.show', $item->slug) }}"
+                                                class="d-block fw-bold text-dark small mb-1">
+                                                {{ \Illuminate\Support\Str::limit($item->title, 70) }}
+                                            </a>
+
+                                            <small class="text-muted d-block mb-1">{{ $rDate }}</small>
+
+                                            <div class="d-flex align-items-center text-muted small" style="gap:.5rem;">
+                                                <i class="fa-solid fa-eye me-1"></i> {{ $item->views ?? 0 }}
+
+                                                @if (!empty($item->category))
+                                                    <a href="{{ route('frontend.audios.category', $item->category->slug ?? '#') }}"
+                                                        class="recent-video-badge ms-2"
+                                                        title="{{ e($item->category->title) }}">
+                                                        <i class="fa-solid fa-folder-open" aria-hidden="true"
+                                                            style="font-size:0.78rem;"></i>
+                                                        <span class="recent-video-badge-text d-none d-sm-inline">
+                                                            {{ \Illuminate\Support\Str::limit($item->category->title, 18) }}
+                                                        </span>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-muted mb-0">لا توجد صوتيات حديثة.</p>
+                        @endif
+
+                        <div class="mt-3 text-start">
+                            @if ($category->slug)
+                                <a href="{{ route('frontend.audios.category', $category->slug) }}" class="th-btn">عرض
+                                    المزيد <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                            @else
+                                <a href="{{ route('frontend.audios.index') }}" class="th-btn">عرض المزيد <i
+                                        class="fa-solid fa-arrow-left ms-1"></i></a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                @php
+                    $featuredCats = \App\Models\Category::where('section', \App\Models\Category::SECTION_AUDIO)
+                        ->where('status', 1)
+                        ->where('featured', 1)
+                        ->whereHas('audios', function ($q) {
+                            $q->where('status', 1);
+                        })
+                        ->orderByDesc('id')
+                        ->take(6)
+                        ->get();
+                @endphp
+
+            </aside>
         </div>
     </div>
-</div>
 @endsection
