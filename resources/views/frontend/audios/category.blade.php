@@ -80,30 +80,15 @@
                                     <i class="fa fa-volume-up icon_color"></i>
                                 </div>
 
-                                <!-- العنوان + باقي المعلومات -->
                                 <div class="flex-grow-1 min-w-0">
                                     <h5 class="mb-1 d-flex align-items-center">
                                         {{ e(\Illuminate\Support\Str::limit($audio->title, 80)) }}
                                     </h5>
 
-                                    @if (!empty($excerpt))
-                                        <small class="text-muted d-block mb-2" style="line-height:1.2;">
-                                            {{ e($excerpt) }}
-                                        </small>
-                                    @endif
+
 
                                     <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap:8px;">
-                                        <div class="text-muted small d-flex align-items-center flex-wrap" style="gap:12px;">
-                                            <span><i class="fa-solid fa-calendar-days me-1"></i> {{ $published }}</span>
-                                            <span><i class="fa-solid fa-eye me-1"></i> {{ $audio->views ?? 0 }}</span>
-                                            @if (!empty($audio->category))
-                                                <a href="{{ route('frontend.audios.category', $audio->category->slug ?? '#') }}"
-                                                   class="recent-video-badge" style="padding:4px 8px;border-radius:999px;">
-                                                    <i class="fa-solid fa-folder-open me-1" style="font-size:0.75rem;"></i>
-                                                    {{ \Illuminate\Support\Str::limit($audio->category->title, 20) }}
-                                                </a>
-                                            @endif
-                                        </div>
+
 
                                         <div class="meta-buttons mt-2 mt-sm-0">
                                             <a href="{{ route('frontend.audios.show', $audio->slug) }}"
