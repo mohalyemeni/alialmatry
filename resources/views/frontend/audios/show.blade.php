@@ -50,7 +50,7 @@
         height: 64px;
         border-radius: 6px;
         font-size: 20px;
-        background: #f9fafb;
+
     }
     .recent-audio-thumb i {
         font-size: 20px;
