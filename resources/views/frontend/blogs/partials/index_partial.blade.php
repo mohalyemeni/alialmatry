@@ -27,7 +27,7 @@
                             } elseif (!empty($category->img) && file_exists(public_path($category->img))) {
                                 $img = asset($category->img);
                             } else {
-                                $img = asset('frontand/assets/img/normal/counter-image.jpg');
+                                $img = asset('frontand/assets/img/No-Image.png');
                             }
 
                             $title = $category->title ?? ($category->name ?? ($category->slug ?? 'تصنيف'));
