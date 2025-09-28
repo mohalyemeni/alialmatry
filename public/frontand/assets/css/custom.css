@@ -1963,9 +1963,9 @@ div.tagsinput input {
 
 .pagination-nav .prev-btn,
 .pagination-nav .next-btn {
-  background: #1f2937;
+  background: #1f2937 !important;
   color: #ffffff;
-  border: 1px solid #374151;
+  border: 1px solid #374151 !important;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   border-radius: 0.375rem;
@@ -1979,7 +1979,7 @@ div.tagsinput input {
 
 .pagination-nav .prev-btn:hover,
 .pagination-nav .next-btn:hover {
-  background: #111827;
+  background: #111827 !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
@@ -2001,8 +2001,11 @@ div.tagsinput input {
 }
 
 
-.pagination-nav .prev-btn { background: #059669; border-color: #059669; }
-.pagination-nav .next-btn { background: #2563eb; border-color: #2563eb; }
+.pagination-nav .prev-btn {
+     background: #374868 !important;
+     border-color: #374868 !important;
+    }
+.pagination-nav .next-btn { background: #374868 !important; border-color: #374868 !important; }
 
-.dark .pagination-nav .prev-btn { background: #047857; border-color: #047857; }
-.dark .pagination-nav .next-btn { background: #1e40af; border-color: #1e40af; }
+.dark .pagination-nav .prev-btn { background: #374868 !important; border-color:#374868 !important; }
+.dark .pagination-nav .next-btn { background: #374868 !important; border-color: #374868 !important; }
