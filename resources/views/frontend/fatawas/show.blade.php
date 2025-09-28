@@ -189,8 +189,8 @@
                     </div>
                 </div>
             </div>
-<div  class="col-xxl-4 col-lg-4  pb-5">
-            <aside>
+
+            <aside class="col-xxl-4 col-lg-4  pb-5">
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">{{ __('panel.recent_fatawas') ?? 'أحدث الفتاوى' }}</h5>
@@ -228,7 +228,7 @@
                                                 $rd_img = asset('storage/' . ltrim($rd->img, '/'));
                                             }
                                         }
-                                        $rd_img = $rd_img ?: asset('frontand/assets/img/No-Image.png');
+                                        $rd_img = $rd_img ?: asset('frontand/assets/img/normal/counter-image.jpg');
 
                                         $rd_date = $rd->published_on
                                             ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
@@ -284,7 +284,7 @@
                     </div>
                 </div>
             </aside>
-</div>
+
 
 
         </div>
