@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="mt-4">
-                    {{ $fatawas->links() }}
+                    {{ $fatawas->links('pagination::simple-tailwind') }}
                 </div>
             </div>
             <aside class="col-xxl-4 col-lg-4  pb-5">
@@ -99,9 +99,7 @@
 
                                     <li class="d-flex align-items-start mb-3 recent-video-item gap-3">
                                         <a href="{{ route('frontend.fatawas.show', $item->slug) }}">
-                                            <img src="{{ $thumb }}" alt=""
-                                                class="recent-video-thumb recent-fatawa-thumb"
-                                                style="width:88px;height:64px;object-fit:cover;border-radius:6px;">
+                          <i class="fa fa-gavel me-2 text-primary"></i>
                                         </a>
 
                                         <div class="flex-grow-1" style="min-width:0;">
