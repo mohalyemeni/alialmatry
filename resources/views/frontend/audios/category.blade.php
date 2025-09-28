@@ -41,11 +41,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f3f4f6; /* خلفية فاتحة */
-            color: #0ea5a4; /* لون الأيقونة (يمكن تغييره) */
-            border-radius: 8px;
-            border: 1px solid rgba(15, 23, 42, 0.05);
-            box-shadow: 0 2px 8px rgba(2,6,23,0.03);
+
         }
 
         .audio-thumb {
