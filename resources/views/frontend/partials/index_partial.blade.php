@@ -71,5 +71,5 @@
 </section>
 
  <div class="mt-4 d-flex justify-content-center">
-   {{ $categories->onEachSide(1)->links() }}
+ {{ $categories->links('pagination::simple-tailwind') }}
 </div>
