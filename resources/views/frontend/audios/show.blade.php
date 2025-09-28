@@ -226,7 +226,7 @@
 
                                     $rd_img =
                                         $rd->img ?:
-                                        (file_exists(public_path('assets/audios/images/' . ($rd->img ?? '')))
+                                        (file_exists(public_path('frontand/assets/img/No-Image.png))
                                             ? asset('assets/audios/images/' . $rd->img)
                                             : asset('frontand/assets/img/No-Image.png'));
                                     $rd_date = $rd->published_on
