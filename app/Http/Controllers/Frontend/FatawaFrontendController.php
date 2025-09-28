@@ -23,7 +23,7 @@ class FatawaFrontendController extends Controller
 
     protected function resolveImage($img)
     {
-        $default = asset('frontand/assets/img/normal/counter-image.jpg');
+        $default = asset('frontand/assets/img/No-Image.png');
 
         if (empty($img)) {
             return $default;
