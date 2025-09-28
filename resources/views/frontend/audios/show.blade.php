@@ -228,7 +228,7 @@
                                         $rd->img ?:
                                         (file_exists(public_path('assets/audios/images/' . ($rd->img ?? '')))
                                             ? asset('assets/audios/images/' . $rd->img)
-                                            : asset('frontand/assets/img/No-Image.png'));
+                                            : asset('frontand/assets/img/normal/counter-image.jpg'));
                                     $rd_date = $rd->published_on
                                         ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
                                         : '';
@@ -238,7 +238,7 @@
                                     <div class="recent-post">
                                         <div class="media-img me-2" style="flex:0 0 auto;">
                                             <a href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                                <img src="{{asset('frontand/assets/img/No-Image.png')) }}" alt="{{ e($rd->title) }}"
+                                                <img src="{{ $rd_img }}" alt="{{ e($rd->title) }}"
                                                     class="recent-thumb">
                                             </a>
                                         </div>
