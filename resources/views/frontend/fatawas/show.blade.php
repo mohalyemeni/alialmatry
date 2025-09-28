@@ -189,8 +189,8 @@
                     </div>
                 </div>
             </div>
-
-            <aside class="col-xxl-4 col-lg-4  pb-5">
+<div  class="col-xxl-4 col-lg-4  pb-5">
+            <aside>
                 <div class="card sticky-top" style="top:100px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">{{ __('panel.recent_fatawas') ?? 'أحدث الفتاوى' }}</h5>
@@ -284,7 +284,7 @@
                     </div>
                 </div>
             </aside>
-
+</div>
 
 
         </div>
