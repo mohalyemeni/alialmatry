@@ -53,7 +53,7 @@
     <div class="card shadow-sm border-0 sticky-top" style="top:100px; border-radius:12px;">
         <div class="card-body">
             <h5 class="card-title mb-4 d-flex align-items-center text-primary fw-bold">
-                <i class="fa-solid fa-gavel me-2"></i>
+                <i class="fa-solid fa-gavel me-2 ms-2"></i>
                 أحدث الفتاوى
             </h5>
 
@@ -82,7 +82,7 @@
                         <li class="d-flex align-items-start mb-3 pb-3 border-bottom recent-fatwa-item">
                             <div class="me-2 flex-shrink-0">
                                 <a href="{{ route('frontend.fatawas.show', $item->slug) }}"
-                                   class="d-flex align-items-center justify-content-center bg-light rounded-circle"
+                                   class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-3"
                                    style="width:40px;height:40px;">
                                     <i class="fa fa-gavel text-primary"></i>
                                 </a>
