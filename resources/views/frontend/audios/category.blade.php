@@ -80,10 +80,10 @@
 
                             <!-- العنوان + الأزرار -->
                             <div class="flex-grow-1">
-                                <div class="audio-thumb me-3">
-                                    <i class="fa fa-volume-up icon_color"></i>
-                                </div>
                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                    <div class="audio-thumb me-3">
+                                        <i class="fa fa-volume-up icon_color"></i>
+                                    </div>
                                     <h5 class="mb-1">
                                         <a href="{{ route('frontend.audios.show', $audio->slug) }}"
                                            class="text-dark text-decoration-none">
