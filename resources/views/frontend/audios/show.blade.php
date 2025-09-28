@@ -190,89 +190,96 @@
                 </div>
             </div>
 
-<!-- Sidebar -->
-<div class="col-lg-4">
-    <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
-        <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
+                    <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
 
-        @php
-            if (!isset($recentAudios) || empty($recentAudios)) {
-                $recentAudios = \App\Models\Audio::with('category')
-                    ->where('status', 1)
-                    ->where(function ($q) {
-                        $q->whereNull('published_on')->orWhere('published_on', '<=', now());
-                    })
-                    ->where('id', '!=', $audio->id ?? 0)
-                    ->orderByDesc('published_on')
-                    ->take(4)
-                    ->get();
-            }
-
-            $recentList = collect($recentAudios)->slice(0, 4);
-        @endphp
-
-        @if ($recentList->isNotEmpty())
-            <ul class="list-unstyled recent-list mb-0">
-                @foreach ($recentList as $rd)
                     @php
-                        $rd_date = $rd->published_on
-                            ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
-                            : '';
+
+                        if (!isset($recentAudios) || empty($recentAudios)) {
+                            $recentAudios = \App\Models\Audio::with('category')
+                                ->where('status', 1)
+                                ->where(function ($q) {
+                                    $q->whereNull('published_on')->orWhere('published_on', '<=', now());
+                                })
+                                ->where('id', '!=', $audio->id)
+                                ->orderByDesc('published_on')
+                                ->take(4)
+                                ->get()
+                                ->map(function ($a) {
+                                    $a->img =
+                                        \App\Http\Controllers\Frontend\AudioFrontendController::resolveImage(
+                                            $a->img ?? null,
+                                        ) ?? null;
+                                    return $a;
+                                });
+                        }
+
+                        $recentList = collect($recentAudios)->slice(0, 4);
                     @endphp
 
-                    <li class="mb-3">
-                        <div class="recent-post d-flex align-items-start gap-2">
+                    @if ($recentList->isNotEmpty())
+                        <ul class="list-unstyled recent-list mb-0">
+                            @foreach ($recentList as $rd)
+                                @php
 
-                              <div style="flex:0 0 120px;">
-                                <a href="{{ route('frontend.audios.show', $audio->slug) }}" aria-label="تشغيل {{ e($audio->title) }}">
-                                    <div class="audio-thumb" role="img" aria-hidden="true">
-                                        <i class="fa fa-volume-up ms-2 icon_color" aria-hidden="true"></i>
+                                    $rd_img =
+                                        $rd->img ?:
+                                        (file_exists(public_path('assets/audios/images/' . ($rd->img ?? '')))
+                                            ? asset('assets/audios/images/' . $rd->img)
+                                            : asset('frontand/assets/img/normal/counter-image.jpg'));
+                                    $rd_date = $rd->published_on
+                                        ? \Carbon\Carbon::parse($rd->published_on)->format('d M, Y')
+                                        : '';
+                                @endphp
+
+                                <li class="mb-3">
+                                    <div class="recent-post">
+                                        <div class="media-img me-2" style="flex:0 0 auto;">
+                                            <a href="{{ route('frontend.audios.show', $rd->slug) }}">
+                                                <img src="{{ $rd_img }}" alt="{{ e($rd->title) }}"
+                                                    class="recent-thumb">
+                                            </a>
+                                        </div>
+
+                                        <div class="flex-grow-1" style="min-width:0;">
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
+                                                <div class="text-muted small d-flex align-items-center" style="gap:8px;">
+                                                    <span class="d-flex align-items-center"><i
+                                                            class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}</span>
+
+                                                </div>
+                                            </div>
+                                            @if (!empty($rd->category))
+                                                <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
+                                                    class="audio-badge bg-light text-dark text-decoration-none">
+                                                    <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
+                                                    <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
+                                                </a>
+                                            @endif
+                                            <h4 class="post-title1 mb-0 post-title-small">
+                                                <a class="text-inherit d-block"
+                                                    href="{{ route('frontend.audios.show', $rd->slug) }}">
+                                                    {{ \Illuminate\Support\Str::limit($rd->title, 70) }}
+                                                </a>
+                                            </h4>
+                                        </div>
                                     </div>
-                                </a>
-                            </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="text-muted mb-0">{{ __('panel.no_recent_audios') }}</p>
+                    @endif
 
-                            <div class="flex-grow-1" style="min-width:0;">
-                                <div class="d-flex align-items-center justify-content-between mb-1">
-                                    <div class="recent-post-meta1 text-muted small">{{ $rd_date }}</div>
-                                    <div class="text-muted small d-flex align-items-center" style="gap:8px;">
-                                        <span class="d-flex align-items-center">
-                                            <i class="fa-solid fa-eye me-1"></i> {{ $rd->views ?? 0 }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                @if (!empty($rd->category))
-                                    <a href="{{ route('frontend.audios.category', $rd->category->slug ?? '#') }}"
-                                        class="audio-badge bg-light text-dark text-decoration-none">
-                                        <i class="fa-solid fa-folder-open" style="font-size:0.72rem"></i>
-                                        <span>{{ \Illuminate\Support\Str::limit($rd->category->title, 18) }}</span>
-                                    </a>
-                                @endif
-
-                                <h4 class="post-title1 mb-0 post-title-small">
-                                    <a class="text-inherit d-block"
-                                       href="{{ route('frontend.audios.show', $rd->slug) }}">
-                                        {{ \Illuminate\Support\Str::limit($rd->title, 70) }}
-                                    </a>
-                                </h4>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-muted mb-0">{{ __('panel.no_recent_audios') }}</p>
-        @endif
-
-        <div class="mt-3 text-start">
-            <a href="{{ route('frontend.audios.index') }}" class="th-btn new_pad">
-                {{ __('panel.view_more') }}
-                <i class="fa-solid fa-arrow-left ms-1"></i>
-            </a>
-        </div>
-    </div>
-</div>
-
+                    <div class="mt-3 text-start">
+                        <a href="{{ route('frontend.audios.index') }}" class="th-btn new_pad">{{ __('panel.view_more') }}
+                            <i class="fa-solid fa-arrow-left ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
