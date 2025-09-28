@@ -28,10 +28,10 @@
                                     $img =
                                         $d->img && file_exists(public_path('assets/durar_diniya/images/' . $d->img))
                                             ? asset('assets/durar_diniya/images/' . $d->img)
-                                            : asset('frontand/assets/img/normal/counter-image.jpg');
+                                            : asset('frontand/assets/img/No-Image.png');
                                 @endphp
                                 <a href="{{ route('frontend.durars.show', $d->slug) }}">
-                                    <img src="{{ $img }}" alt="{{ e($d->title) }}" class="durar-img">
+                                    <img src="{{ $img }}" alt="{{ e($d->title) }}" class="durar-img img-fluid">
                                 </a>
                             </div>
 
