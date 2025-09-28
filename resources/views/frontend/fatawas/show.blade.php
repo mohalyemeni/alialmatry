@@ -184,9 +184,10 @@
                         @endif
                     </div>
 
-                    {{-- <div class="sermon-text mb-3">
-                        {!! $fatawa->description ?? '' !!}
-                    </div> --}}
+                  <div class="sermon-text mb-3">
+    {!! preg_replace('/<(\w+)[^>]*>\s*<\/\1>/', '', $fatawa->description ?? '') !!}
+</div>
+
                 </div>
             </div>
 
