@@ -77,12 +77,12 @@
 
                         <div class="list-group-item d-flex justify-content-between align-items-start py-3 flex-wrap">
                             <!-- الأيقونة -->
-                            <div class="audio-thumb me-3">
-                                <i class="fa fa-volume-up icon_color"></i>
-                            </div>
 
                             <!-- العنوان + الأزرار -->
                             <div class="flex-grow-1">
+                                <div class="audio-thumb me-3">
+                                    <i class="fa fa-volume-up icon_color"></i>
+                                </div>
                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                     <h5 class="mb-1">
                                         <a href="{{ route('frontend.audios.show', $audio->slug) }}"
