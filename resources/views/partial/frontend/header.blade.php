@@ -111,7 +111,7 @@
                                     <i class="far fa-bars"></i>
                                 </button>
                             </div>
-                            <div class="col-2 d-none d-xxl-block d-xl-block">
+                            <div class="col-2  d-xxl-block d-xl-block">
                                 <div class="header-button">
                                     <button type="button" class="icon-style2 searchBoxToggler">
                                         <i class="far fa-search"></i>
