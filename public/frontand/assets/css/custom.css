@@ -42,7 +42,6 @@
     border-color: #198754 #198754 white;
 }
 
-
 .blog-img.position-relative {
     position: relative;
 }
@@ -1434,7 +1433,6 @@ body[dir="rtl"] .recent-thumb-link {
     text-decoration: none;
 }
 
-
 .recent-post-meta1 a {
     color: #6c757d;
     font-size: 0.82rem;
@@ -1940,24 +1938,31 @@ div.tagsinput input {
 }
 
 .pagination-nav {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-
 .pagination-nav .prev-btn {
-  position: absolute;
-  right: 1rem;
+    position: absolute;
+    right: 1rem;
 }
 
 .pagination-nav .next-btn {
-  position: absolute;
-  left: 1rem;
+    position: absolute;
+    left: 1rem;
 }
-.h5, h5 {
-  font-size: 20px;
-
+.h5,
+h5 {
+    font-size: 20px;
+}
+.widget_nav_menu a,
+.widget_meta a,
+.widget_pages a,
+.widget_archive a,
+.widget_categories a,
+.wp-block-categories a {
+    padding: 0px 33px 14px 34px;
 }
