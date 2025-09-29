@@ -118,7 +118,7 @@
         }
 
          .audio-player-row .audio-download-btn.th-btn {
-            width: 100%;
+            width: 25%;
             justify-content: center;
             padding: 10px 14px;
         }
@@ -135,7 +135,7 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="card p-3 sermon-card">
-                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e($audio->title) }}</h3>
+                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e(\Illuminate\Support\Str::limit($audio->title, 70)) }}</h3>
 
                 <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
                     @php
@@ -146,10 +146,8 @@
                     @endphp
 
                     @if ($hasAudioFile)
-                        {{-- استخدم class audio-player-row ليتحكم CSS بترتيب العناصر على الجوال --}}
-                        <div class="audio-player-row flex-grow-1 d-flex align-items-center">
-                            {{-- زر التحميل (سيتم عرضه تحت المشغل على الشاشات الصغيرة بسبب CSS أعلاه) --}}
-                            <a href="{{ route('frontend.audios.download', $audio->id) }}"
+                         <div class="audio-player-row flex-grow-1 d-flex align-items-center">
+                             <a href="{{ route('frontend.audios.download', $audio->id) }}"
                                 class="th-btn style2 th-btn1 audio-download-btn me-2"
                                 aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
                                 <span class="btn-text" data-back="{{ __('panel.download') }}"
