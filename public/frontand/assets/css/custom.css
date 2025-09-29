@@ -1676,7 +1676,7 @@ body[dir="rtl"] .recent-thumb-link {
     color: #fff;
 }
 .text-primary {
-    color: var(--theme-color2) !important;
+    color: #6c757d !important;
 }
 .hero-6 .th-hero-bg {
     max-width: 100%;
