@@ -340,7 +340,6 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // فتح وإغلاق صندوق البحث
             const searchIcon = document.querySelector('.search-icon');
             const searchBox = document.querySelector('.popup-search-box');
             const searchClose = document.querySelector('.searchClose');
@@ -358,7 +357,6 @@
                 });
             }
 
-            // إغلاق صندوق البحث عند الضغط على ESC
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && searchBox && !searchBox.classList.contains('d-none')) {
                     searchBox.classList.add('d-none');
@@ -370,10 +368,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             var popup = document.querySelector('.popup-search-box');
             if (popup && popup.parentElement !== document.body) {
-                document.body.appendChild(popup); // ينقله ليكون مباشرةً ابن <body>
+                document.body.appendChild(popup);
             }
 
-            // نرفع قيمة z-index ونثبّت position
             popup.style.position = 'fixed';
             popup.style.zIndex = '2147483647';
         });
@@ -382,26 +379,21 @@
         document.addEventListener('DOMContentLoaded', function() {
             var popup = document.querySelector('.popup-search-box');
             if (popup && popup.parentElement !== document.body) {
-                document.body.appendChild(popup); // ينقله ليكون مباشرةً ابن <body>
+                document.body.appendChild(popup);
             }
 
-            // خصائص العرض
             popup.style.position = 'fixed';
             popup.style.zIndex = '2147483647';
 
-            // البحث عن الأزرار
-            var togglers = document.querySelectorAll('.searchBoxToggler'); // أيقونة البحث
-            var closer = popup.querySelector('.searchClose'); // زر الإغلاق
-
-            // عند الضغط على أيقونة البحث
+            var togglers = document.querySelectorAll('.searchBoxToggler');
+            var closer = popup.querySelector('.searchClose');
             togglers.forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    popup.classList.add('active'); // أو show حسب الكود عندك
+                    popup.classList.add('active');
                 });
             });
 
-            // عند الضغط على زر الإغلاق
             if (closer) {
                 closer.addEventListener('click', function() {
                     popup.classList.remove('active');
@@ -409,34 +401,6 @@
             }
         });
     </script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var popup = document.querySelector('.popup-search-box');
-    var togglers = document.querySelectorAll('.searchBoxToggler');
-    var closer = popup.querySelector('.searchClose');
-
-    // فتح البحث
-    togglers.forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-    e.preventDefault();
-    popup.classList.add('active'); // أو open حسب كودك
-    });
-    });
-
-    // إغلاق بالزر (X)
-    if (closer) {
-    closer.addEventListener('click', function (e) {
-    e.preventDefault();
-    popup.classList.remove('active'); // فقط إزالة الكلاس
-    });
-    }
-
-    // إغلاق عند الضغط خارج المربع
-    popup.addEventListener('click', function (e) {
-    if (e.target === popup) {
-    popup.classList.remove('active');
-    }
-    });
-    });
 
 
 </body>
