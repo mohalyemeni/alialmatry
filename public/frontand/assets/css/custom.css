@@ -1910,7 +1910,13 @@ div.tagsinput input {
     transform: scale(1.1);
 }
 .icon_color {
-    color: #6c757d !important;
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa !important;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    padding: 4px;
 }
 
 .list-group-item {
