@@ -592,22 +592,31 @@
             e.preventDefault();
             $($searchBox).addClass($toggleCls);
         });
-        $($searchBox).on("click", function (e) {
-            e.stopPropagation();
+
+        // إغلاق فقط بزر الإغلاق
+        $($searchCls).on("click", function (e) {
+            e.preventDefault();
             $($searchBox).removeClass($toggleCls);
         });
+
+        // لو ضغطت خارج الصندوق يغلق
+        $(document).on("click", function (e) {
+            if (
+                !$(e.target).closest($searchBox).length &&
+                !$(e.target).is($searchOpen)
+            ) {
+                $($searchBox).removeClass($toggleCls);
+            }
+        });
+
+        // منع الإغلاق عند الضغط داخل الفورم
         $($searchBox)
             .find("form")
             .on("click", function (e) {
                 e.stopPropagation();
-                $($searchBox).addClass($toggleCls);
             });
-        $($searchCls).on("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $($searchBox).removeClass($toggleCls);
-        });
     }
+
     popupSarchBox(
         ".popup-search-box",
         ".searchBoxToggler",
