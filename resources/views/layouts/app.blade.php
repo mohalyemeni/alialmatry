@@ -409,6 +409,35 @@
             }
         });
     </script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var popup = document.querySelector('.popup-search-box');
+    var togglers = document.querySelectorAll('.searchBoxToggler');
+    var closer = popup.querySelector('.searchClose');
+
+    // فتح البحث
+    togglers.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+    e.preventDefault();
+    popup.classList.add('active'); // أو open حسب كودك
+    });
+    });
+
+    // إغلاق بالزر (X)
+    if (closer) {
+    closer.addEventListener('click', function (e) {
+    e.preventDefault();
+    popup.classList.remove('active'); // فقط إزالة الكلاس
+    });
+    }
+
+    // إغلاق عند الضغط خارج المربع
+    popup.addEventListener('click', function (e) {
+    if (e.target === popup) {
+    popup.classList.remove('active');
+    }
+    });
+    });
+
 
 </body>
 
