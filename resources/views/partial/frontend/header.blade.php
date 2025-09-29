@@ -32,6 +32,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-auto">
                     <div class="header-links">
                         <ul>
@@ -78,6 +79,7 @@
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
                 <div class="row align-items-center justify-content-between back_spec_c">
+                    <!-- شعار الموقع -->
                     <div class="col-8 col-md-10 col-lg-3 new_colore">
                         <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">
@@ -91,9 +93,11 @@
                         </div>
                     </div>
 
+                    <!-- القائمة و عناصر التحكم -->
                     <div class="col-4 col-md-2 col-lg-9">
                         <div class="d-flex align-items-center justify-content-between w-100" style="gap:12px;">
-                            <nav class="main-menu d-none d-lg-inline-block me-3">
+                            <!-- أضفنا class nav-breakpoint كي نستهدفه بالـ CSS -->
+                            <nav class="main-menu nav-breakpoint d-none d-lg-inline-block me-3">
                                 <ul>
                                     <li><a href="{{ route('frontend.sheikh-intro') }}"> نبذة الشيخ</a></li>
                                     <li><a href="{{ route('frontend.videos.index') }}" class="ajax-link">المرئيات</a>
@@ -131,35 +135,94 @@
         </div>
     </div>
 
+    <!-- ======== CSS الحل الثاني: إبقاء القائمة مرئية، منع التفافها، واقتصاص النص بالنقاط ======== -->
     <style>
-        .back_spec_c .col-3,
-        .back_spec_c .col-9,
+        /* السماح للعناصر بالانكماش داخل الأعمدة */
+        .back_spec_c .col-4,
+        .back_spec_c .col-8,
         .back_spec_c .col-md-2,
-        .back_spec_c .col-md-10 {
+        .back_spec_c .col-md-10,
+        .back_spec_c .col-lg-9,
+        .back_spec_c .col-lg-3 {
             min-width: 0;
         }
 
+        /* NAV (حل: إبقاء القائمة في سطر واحد، ومنع wrap، وإظهار ellipsis) */
+        .main-menu.nav-breakpoint ul {
+            display: flex;
+            gap: 16px;
+            flex-wrap: nowrap;
+            /* لا نسمح بالالتفاف */
+            overflow: hidden;
+            /* إخفاء ما يتجاوز المساحة */
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .main-menu.nav-breakpoint ul li {
+            flex: 0 0 auto;
+        }
+
+        /* جعل الروابط تُقص بالنقاط عند الحاجة */
+        .main-menu.nav-breakpoint ul li a {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 10rem;
+            /* يمكن تعديل القيمة */
+            padding: 6px 4px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* عند أحجام أصغر: نجعل max-width أصغر لتجنب overflow */
+        @media (max-width: 1122px) {
+            .main-menu.nav-breakpoint ul {
+                gap: 10px;
+            }
+
+            .main-menu.nav-breakpoint ul li a {
+                max-width: 7.5rem;
+                /* اضبط بحسب النص العربي لديك */
+            }
+
+            /* تقليل الفجوات في مجموعة الأزرار */
+            .header-controls-group {
+                gap: 8px;
+            }
+
+            /* تأكد من إمكانية الانكماش وعدم التفاف row الأهم */
+            .back_spec_c>.row {
+                flex-wrap: nowrap;
+            }
+        }
+
+        /* للموبايل جداً: نبقي القائمة مرئية لكن روابط أقصر */
+        @media (max-width: 768px) {
+            .main-menu.nav-breakpoint ul li a {
+                max-width: 6rem;
+                font-size: 14px;
+            }
+        }
+
+        /* تحسين مظهر عناصر التحكم */
         .header-controls-group {
             white-space: nowrap;
         }
 
         @media (max-width: 575.98px) {
             .header-controls-group .icon-style2 {
-                padding: 2px 8px;
+                padding: 6px 8px;
                 font-size: 16px;
             }
-
-            .header-controls-group {
-                gap: 8px;
-            }
         }
 
-        .back_spec_c>.row {
-            flex-wrap: nowrap;
-        }
-
-        .main-menu ul li a {
-            white-space: nowrap;
+        /* منع كسر نص رابط القائمة داخل عنصر الـ li */
+        .main-menu.nav-breakpoint ul li a {
+            direction: rtl;
         }
     </style>
 </header>
