@@ -118,7 +118,7 @@
                                         </div>
 
                                         <div class="box-content">
-                                            <div class="box-wrapp11">
+                                            <div class="box-wrapp11 box-wrapp">
                                                 <div class="box-icon">
                                                     <img src="{{ asset('frontand/assets/img/icon/service_2_2.svg') }}"
                                                         alt="Icon">
