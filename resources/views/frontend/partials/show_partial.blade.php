@@ -98,7 +98,7 @@
                         <h3 class="blog-title mb-2">{{ e($video->title) }}</h3>
 
                         @if ($video->description)
-                            <p class="blog-text">{!! nl2br(e($video->description)) !!}</p>
+                            <p class="blog-text">{{ nl2br(e(strip_tags($video->description))) }}</p>
                         @endif
                     </div>
                 </div>
