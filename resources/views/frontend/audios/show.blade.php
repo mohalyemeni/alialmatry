@@ -50,7 +50,6 @@
         height: 64px;
         border-radius: 6px;
         font-size: 20px;
-
     }
     .recent-audio-thumb i {
         font-size: 20px;
@@ -61,6 +60,69 @@
         box-shadow: 0 8px 20px rgba(2,6,23,0.08);
         transition: transform .16s ease, box-shadow .18s ease;
         cursor: pointer;
+    }
+
+    /* === ترتيب زر التحميل والمشغل على الشاشات الصغيرة === */
+    .audio-player-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .audio-player-row audio {
+        flex: 1 1 auto;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .audio-player-row .audio-download-btn {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* تغييرات خاصة بالموبايل: زر التحميل تحت المشغل */
+    @media (max-width: 576px) {
+        .audio-player-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+        }
+
+        /* المشغل يظهر أولاً */
+        .audio-player-row audio {
+            order: 1;
+            width: 100%;
+        }
+
+        /* زر التحميل تحت المشغل */
+        .audio-player-row .audio-download-btn {
+            order: 2;
+            align-self: center; /* center by default; change to flex-start to align left */
+            width: auto;
+        }
+
+        /* إزالة المسافات الجانبية التي قد تكسر المحاذاة على المحمول */
+        .audio-player-row .me-2 {
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        /* إن أردت أن يكون الزر بعرض كامل على المحمول، فكّك التعليق التالي */
+        .audio-player-row .audio-download-btn.th-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 10px 14px;
+        }
+    }
+
+    /* تحسين مظهر الزر عبر جميع الشاشات */
+    .audio-download-btn.th-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
     }
 </style>
 
@@ -79,7 +141,9 @@
                     @endphp
 
                     @if ($hasAudioFile)
+                        {{-- استخدم class audio-player-row ليتحكم CSS بترتيب العناصر على الجوال --}}
                         <div class="audio-player-row flex-grow-1 d-flex align-items-center">
+                            {{-- زر التحميل (سيتم عرضه تحت المشغل على الشاشات الصغيرة بسبب CSS أعلاه) --}}
                             <a href="{{ route('frontend.audios.download', $audio->id) }}"
                                 class="th-btn style2 th-btn1 audio-download-btn me-2"
                                 aria-label="{{ __('panel.download') }} {{ e($audio->title) }}">
@@ -88,6 +152,7 @@
                                 <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
                             </a>
 
+                            {{-- مشغّل الصوت --}}
                             <audio controls preload="metadata" aria-label="{{ e($audio->title) }}" class="flex-grow-1">
                                 <source src="{{ $audioFileUrl }}" type="audio/mpeg">
                                 {{ __('panel.audio_not_supported') }}

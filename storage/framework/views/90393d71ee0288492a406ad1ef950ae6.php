@@ -1,0 +1,76 @@
+
+<div class="preloader">
+    <button class="th-btn style1 preloaderCls">إلغاء شاشة التحميل</button>
+    <div class="preloader-inner">
+        <img src="<?php echo e(asset('frontand/assets/img/shape/shape.svg')); ?>" alt="رسم">
+        <div class="loading-text">
+            <span class="letter">ج</span>
+            <span class="letter">ا</span>
+            <span class="letter">رٍ</span>
+            <span class="letter">ي</span>
+            <span class="letter">ا</span>
+            <span class="letter">ل</span>
+            <span class="letter">ت</span>
+            <span class="letter">ح</span>
+            <span class="letter">م</span>
+            <span class="letter">ي</span>
+            <span class="letter">ل</span>
+            <span class="letter">.</span>
+            <span class="letter">.</span>
+            <span class="letter">.</span>
+        </div>
+    </div>
+</div>
+
+<div class="sidemenu-wrapper d-none d-lg-block">
+    <div class="sidemenu-content">
+        <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+        <div class="widget footer-widget">
+            <h3 class="widget_title mb-2">معلومات</h3>
+            <div class="th-widget-about">
+                <p class="about-text">
+                    <?php if(isset($siteSettings['site_description']->value) && $siteSettings['site_description']->value): ?>
+                        <?php echo e($siteSettings['site_description']->value); ?>
+
+                    <?php else: ?>
+                        التاريخ الإسلامي دليل على الصمود والمرونة والتأثير العميق للحضارة الإسلامية.
+                        إنها قصة إيمان وابتكار ومساهمات خالدة للبشرية.
+                    <?php endif; ?>
+                </p>
+                <div class="th-widget-about">
+                    <?php if(isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value): ?>
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-phone"></i>
+                            <span>
+                                <a class="text-inherit" href="tel:<?php echo e($siteSettings['site_mobile']->value); ?>">
+                                    <?php echo e($siteSettings['site_mobile']->value); ?>
+
+                                </a>
+                            </span>
+                        </p>
+                    <?php endif; ?>
+                    <?php if(isset($siteSettings['site_email']->value) && $siteSettings['site_email']->value): ?>
+                        <p class="footer-info">
+                            <i class="fa-sharp fa-solid fa-envelope"></i>
+                            <span>
+                                <a class="text-inherit" href="mailto:<?php echo e($siteSettings['site_email']->value); ?>">
+                                    <?php echo e($siteSettings['site_email']->value); ?>
+
+                                </a>
+                            </span>
+                        </p>
+                    <?php endif; ?>
+
+                    <?php if(isset($siteSettings['site_address']->value) && $siteSettings['site_address']->value): ?>
+                        <p class="footer-info">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <?php echo e($siteSettings['site_address']->value); ?>
+
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/partial/frontend/side_menu_and_preloader.blade.php ENDPATH**/ ?>
