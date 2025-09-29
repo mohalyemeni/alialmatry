@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row gx-4 gy-4">
                 <!-- MAIN -->
-                <main class="col-12 col-lg-8 order-2 order-lg-1">
+                <main class="col-12 col-lg-8 order-1 order-lg-1">
                     <div class="sermon-card product-about p-4">
                         <div class="d-flex align-items-start gap-3 flex-column flex-md-row">
                             <div class="book-cover-wrap">
@@ -85,7 +85,7 @@
                 </main>
 
                 <!-- SIDEBAR -->
-                <aside class="col-12 col-lg-4 order-1 order-lg-2">
+                <aside class="col-12 col-lg-4 order-2 order-lg-2">
                     <div class="sermon-card   p-3">
                         <h3 class="mb-3 widget_title title-header-noline fadeInRight wow">أحدث الكتب</h3>
 
