@@ -27,7 +27,7 @@
 
                     <div class="list-group">
                         @foreach ($latestBlogs as $blog)
-                            <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                            <div class="list-group-item list-group-item1 d-flex justify-content-between align-items-start py-3">
                                 <div class="me-3" style="flex:1;">
                                     <h5 class="mb-1">
                                         <i class="fa fa-newspaper me-2 text-primary"></i>
