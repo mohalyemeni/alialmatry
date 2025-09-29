@@ -145,7 +145,7 @@
 
     @include('partial.frontend.footer')
 
-    <div class="popup-search-box d-none d-lg-block">
+    <div class="popup-search-box  d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
         <form action="{{ route('frontend.search') }}" method="GET">
             <input type="text" name="query" placeholder="إبحث هنا..." required>
