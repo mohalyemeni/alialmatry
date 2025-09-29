@@ -87,9 +87,15 @@
             align-items: stretch;
             gap: 8px;
         }
+            .audio-player-row .audio-download-btn.th-btn {
+        width: 25%;
+
+    }
+
 
         .audio-player-row {
     height: 100px;
+            width: 100%;
 }
 
         .audio-player-row audio {
