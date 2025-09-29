@@ -135,7 +135,7 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="card p-3 sermon-card">
-                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow">{{ e(\Illuminate\Support\Str::limit($audio->title, 70)) }}</h3>
+                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap">{{ e(\Illuminate\Support\Str::limit($audio->title, 70)) }}</h3>
 
                 <div class="audio-play-wrapp mb-3 d-flex flex-wrap align-items-center gap-2">
                     @php
