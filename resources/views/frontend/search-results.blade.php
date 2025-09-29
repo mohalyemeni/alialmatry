@@ -25,7 +25,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $blogs->withQueryString()->links() }}
+                    {{ $blogs->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
@@ -50,7 +50,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $videos->withQueryString()->links() }}
+                    {{ $videos->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
@@ -74,7 +74,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $audios->withQueryString()->links() }}
+                    {{ $audios->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
@@ -98,7 +98,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $fatawas->withQueryString()->links() }}
+                    {{ $fatawas->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
@@ -129,7 +129,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $books->withQueryString()->links() }}
+                    {{ $books->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
@@ -153,7 +153,7 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $durars->withQueryString()->links() }}
+                    {{ $durars->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
         @endif
