@@ -76,16 +76,7 @@
 
                                 </div>
 
-                                @if (!empty($book->meta_keywords) || !empty($book->meta_description))
-                                    <div class="book-meta-info mt-3 small text-muted">
-                                        @if (!empty($book->meta_keywords))
-                                            <div><strong>كلمات مفتاحية:</strong> {{ e($book->meta_keywords) }}</div>
-                                        @endif
-                                        @if (!empty($book->meta_description))
-                                            <div><strong>وصف الميتا:</strong> {{ e($book->meta_description) }}</div>
-                                        @endif
-                                    </div>
-                                @endif
+
                             </div>
                         </div>
 
