@@ -80,7 +80,7 @@
 
                             <!-- العنوان + الأزرار -->
                             <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div class="d-flex  align-items-center flex-wrap gap-2">
                                     <div class="audio-thumb me-3">
                                         <i class="fa fa-volume-up icon_color"></i>
                                     </div>
@@ -91,7 +91,7 @@
                                         </a>
                                     </h5>
 
-                                    <div class="meta-buttons">
+                                    <div class="meta-buttons me-auto">
                                         <a href="{{ route('frontend.audios.show', $audio->slug) }}"
                                            class="th-btn style1 th-btn1" aria-label="تشغيل {{ e($audio->title) }}">
                                             <span class="btn-text" data-back="{{ __('panel.play') }}"
