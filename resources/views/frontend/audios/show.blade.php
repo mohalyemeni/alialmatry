@@ -192,7 +192,7 @@
         <!-- Sidebar -->
         <div class="col-lg-4">
             <div class="card p-3 audio-sidebar sticky-top" style="top:100px;">
-                <h5 class="mb-3">{{ __('panel.recent_audios') }}</h5>
+                <h3 class="mb-4 widget_title title-header-noline fadeInRight wow text-wrap">{{ __('panel.recent_audios') }}</h3>
 
                 @php
                     if (!isset($recentAudios) || empty($recentAudios)) {
