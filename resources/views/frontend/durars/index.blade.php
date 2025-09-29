@@ -64,7 +64,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 mb-4">
                 {{ $durars->links('pagination::simple-tailwind') }}
             </div>
         @else
