@@ -8,15 +8,15 @@
         @if ($paginator->onFirstPage())
             <span class="th-btn style1 th-btn1 prev-btn disabled relative inline-flex items-center px-4 py-2 text-sm font-medium cursor-default leading-5 rounded-md"
                   aria-disabled="true" style="pointer-events:none; opacity:0.6;">
+                  <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i>
                 <span class="btn-text" data-back=" السابق" data-front=" السابق"> </span>
-                <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i>
             </span>
         @else
             <a href="{{ $paginator->previousPageUrl() }}" rel="prev"
                class="th-btn style1 th-btn1 prev-btn relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md focus:outline-none"
                aria-label="{{ __('pagination.previous') }}">
+               <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i>
                 <span class="btn-text" data-back=" السابق" data-front=" السابق"> </span>
-                <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i>
             </a>
         @endif
 
