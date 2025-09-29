@@ -38,7 +38,7 @@
 </div>
 
 <style>
-    /* نفس تنسيقات الأيقونات من صفحة التصنيف */
+
     .audio-thumb,
     .recent-audio-thumb {
         display: flex;
@@ -62,7 +62,7 @@
         cursor: pointer;
     }
 
-    /* === ترتيب زر التحميل والمشغل على الشاشات الصغيرة === */
+
     .audio-player-row {
         display: flex;
         align-items: center;
@@ -72,7 +72,6 @@
 
     .audio-player-row audio {
         flex: 1 1 auto;
-        width: 100%;
         min-width: 0;
     }
 
@@ -83,7 +82,6 @@
         justify-content: center;
     }
 
-    /* تغييرات خاصة بالموبايل: زر التحميل تحت المشغل */
     @media (max-width: 576px) {
         .audio-player-row {
             flex-direction: column;
@@ -97,29 +95,25 @@
             width: 100%;
         }
 
-        /* زر التحميل تحت المشغل */
         .audio-player-row .audio-download-btn {
             order: 2;
-            align-self: center; /* center by default; change to flex-start to align left */
+            align-self: center;
             width: auto;
         }
 
-        /* إزالة المسافات الجانبية التي قد تكسر المحاذاة على المحمول */
-        .audio-player-row .me-2 {
+         .audio-player-row .me-2 {
             margin-right: 0 !important;
             margin-left: 0 !important;
         }
 
-        /* إن أردت أن يكون الزر بعرض كامل على المحمول، فكّك التعليق التالي */
-        .audio-player-row .audio-download-btn.th-btn {
+         .audio-player-row .audio-download-btn.th-btn {
             width: 100%;
             justify-content: center;
             padding: 10px 14px;
         }
     }
 
-    /* تحسين مظهر الزر عبر جميع الشاشات */
-    .audio-download-btn.th-btn {
+     .audio-download-btn.th-btn {
         display: inline-flex;
         align-items: center;
         gap: .5rem;
