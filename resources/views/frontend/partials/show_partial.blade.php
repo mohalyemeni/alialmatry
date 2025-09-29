@@ -152,11 +152,11 @@
                                             <small class="text-muted d-block mb-1">{{ $rv->published_on ?? '' }}</small>
 
                                             <div class="d-flex align-items-center text-muted small">
-                                                <i class="fa-solid fa-eye me-1"></i> {{ $rv->views ?? 0 }}
+                                                <i class="fa-solid fa-eye ms-1"></i> {{ $rv->views ?? 0 }}
 
                                                 @if (!empty($rv->category) && !empty($rv->category->title))
                                                     <a href="{{ $rv->category->slug ? route('frontend.videos.category', $rv->category->slug) : '#' }}"
-                                                        class="recent-video-badge ms-2"
+                                                        class="recent-video-badge me-2"
                                                         title="{{ e($rv->category->title) }}">
                                                         <i class="fa-solid fa-tag me-1" aria-hidden="true"></i>
                                                         <span
