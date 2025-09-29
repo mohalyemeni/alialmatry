@@ -67,7 +67,6 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        width: 100%;
     }
 
     .audio-player-row audio {
@@ -89,11 +88,17 @@
             gap: 8px;
         }
 
-        /* المشغل يظهر أولاً */
+        .audio-player-row {
+    height: 100px;
+}
+
         .audio-player-row audio {
             order: 1;
             width: 100%;
         }
+        .audio-player-row {
+  height: 100px;
+}
 
         .audio-player-row .audio-download-btn {
             order: 2;
