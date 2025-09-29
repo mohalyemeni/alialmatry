@@ -366,6 +366,18 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popup = document.querySelector('.popup-search-box');
+            if (popup && popup.parentElement !== document.body) {
+                document.body.appendChild(popup); // ينقله ليكون مباشرةً ابن <body>
+            }
+
+            // نرفع قيمة z-index ونثبّت position
+            popup.style.position = 'fixed';
+            popup.style.zIndex = '2147483647';
+        });
+    </script>
 </body>
 
 </html>
