@@ -378,6 +378,38 @@
             popup.style.zIndex = '2147483647';
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popup = document.querySelector('.popup-search-box');
+            if (popup && popup.parentElement !== document.body) {
+                document.body.appendChild(popup); // ينقله ليكون مباشرةً ابن <body>
+            }
+
+            // خصائص العرض
+            popup.style.position = 'fixed';
+            popup.style.zIndex = '2147483647';
+
+            // البحث عن الأزرار
+            var togglers = document.querySelectorAll('.searchBoxToggler'); // أيقونة البحث
+            var closer = popup.querySelector('.searchClose'); // زر الإغلاق
+
+            // عند الضغط على أيقونة البحث
+            togglers.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    popup.classList.add('active'); // أو show حسب الكود عندك
+                });
+            });
+
+            // عند الضغط على زر الإغلاق
+            if (closer) {
+                closer.addEventListener('click', function() {
+                    popup.classList.remove('active');
+                });
+            }
+        });
+    </script>
+
 </body>
 
 </html>
