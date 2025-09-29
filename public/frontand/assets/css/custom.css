@@ -678,7 +678,7 @@ h3.widget_title.title-header-noline::after {
 .styled-list li {
     position: relative;
     padding: 10px 0;
-    border-bottom: 1px solid var(--theme-color2);
+    border-bottom: 1px solid #93844738;
     transition: all 0.3s ease;
 }
 
@@ -1965,4 +1965,7 @@ h5 {
 .widget_categories a,
 .wp-block-categories a {
     padding: 0px 33px 14px 34px;
+}
+.service-box2 .box-content .box-wrapp11 {
+    padding-bottom: 66.5%;
 }
