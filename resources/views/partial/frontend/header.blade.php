@@ -78,8 +78,7 @@
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
                 <div class="row align-items-center justify-content-between back_spec_c">
-                    <!-- شعار الموقع -->
-                    <div class="col-9 col-md-10 col-lg-3 new_colore">
+                    <div class="col-8 col-md-10 col-lg-3 new_colore">
                         <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">
                                 @if (isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value)
@@ -92,11 +91,8 @@
                         </div>
                     </div>
 
-                    <!-- المنطقة الخاصة بالقائمة وزر البحث وأيقونة الشبكة -->
-                    <!-- تم تبسيط الشجرة الداخلية واستعمال d-flex للحفاظ على ترتيب العناصر على كل الشاشات -->
-                    <div class="col-3 col-md-2 col-lg-9">
+                    <div class="col-4 col-md-2 col-lg-9">
                         <div class="d-flex align-items-center justify-content-between w-100" style="gap:12px;">
-                            <!-- القائمة (تظهر على lg وما فوق) -->
                             <nav class="main-menu d-none d-lg-inline-block me-3">
                                 <ul>
                                     <li><a href="{{ route('frontend.sheikh-intro') }}"> نبذة الشيخ</a></li>
@@ -111,20 +107,16 @@
                                 </ul>
                             </nav>
 
-                            <!-- مجموعة الأزرار: هامبرغر + بحث + أيقونة الشبكة -->
                             <div class="d-flex align-items-center gap-2 header-controls-group">
-                                <!-- زر الهامبرغر يظهر على الموبايل -->
                                 <button type="button" class="th-menu-toggle d-inline-block d-lg-none"
                                     aria-label="قائمة">
                                     <i class="far fa-bars"></i>
                                 </button>
 
-                                <!-- زر البحث (الآن يظهر على جميع الشاشات) -->
                                 <button type="button" class="icon-style2 searchBoxToggler" aria-label="بحث">
                                     <i class="far fa-search"></i>
                                 </button>
 
-                                <!-- أيقونة الشبكة تظهر على شاشات lg وأكبر -->
                                 <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block"
                                     aria-label="قائمة جانبية">
                                     <img src="{{ asset('frontand/assets/img/icon/grid.svg') }}" alt="">
@@ -139,9 +131,7 @@
         </div>
     </div>
 
-    <!-- قواعد CSS صغيرة خاصة بالهيدر لتفادي التفاف العناصر غير المرغوب -->
     <style>
-        /* السماح للعناصر بالانكماش بشكل صحيح داخل الأعمدة */
         .back_spec_c .col-3,
         .back_spec_c .col-9,
         .back_spec_c .col-md-2,
@@ -149,31 +139,25 @@
             min-width: 0;
         }
 
-        /* مجموعة عناصر التحكم (الهامبرغر، بحث، أيقونة الشبكة) صف واحد */
         .header-controls-group {
             white-space: nowrap;
-            /* إذا أردت تقليل المسافة بين العناصر على الشاشات الصغيرة غيّر gap */
         }
 
-        /* تحسين شكل زر البحث على الشاشات الصغيرة */
         @media (max-width: 575.98px) {
             .header-controls-group .icon-style2 {
                 padding: 6px 8px;
                 font-size: 16px;
             }
 
-            /* لو ظهرت سطرة أفقية غير مرغوبة يمكنك تقليل gap هنا */
             .header-controls-group {
                 gap: 8px;
             }
         }
 
-        /* (اختياري) منع التفاف row الداخلية فقط — حافظ على سلوك bootstrap الافتراضي عامة */
         .back_spec_c>.row {
             flex-wrap: nowrap;
         }
 
-        /* التأكد من عدم كسر النص داخل روابط القائمة */
         .main-menu ul li a {
             white-space: nowrap;
         }
