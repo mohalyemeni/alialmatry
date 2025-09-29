@@ -145,7 +145,7 @@
 
         @media (max-width: 575.98px) {
             .header-controls-group .icon-style2 {
-                padding: 6px 8px;
+                padding: 2px 8px;
                 font-size: 16px;
             }
 
