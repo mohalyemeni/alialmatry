@@ -176,10 +176,10 @@
             </path>
         </svg>
     </div>
-
     <div id="wa-float-root" class="wa-float" role="link" aria-label="افتح واتساب" title="مراسلتنا عبر واتساب">
-        <a id="wa-float-link" class="wa-float__link" href="https://wa.me/PHONE_NUMBER?text=مرحباً" target="_blank"
+        <a id="wa-float-link" class="wa-float__link" href="https://wa.me/+967779531500?text=مرحباً" target="_blank"
             rel="noopener noreferrer">
+
             <svg class="wa-progress-svg" width="100%" height="100%" viewBox="-1 -1 102 102" aria-hidden="true"
                 focusable="false">
                 <path id="wa-progress-path" class="wa-progress-path" d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98">
@@ -188,6 +188,7 @@
             <i class="fab fa-whatsapp wa-icon" aria-hidden="true"></i>
         </a>
     </div>
+
 
     <script src="{{ asset('frontand/assets/js/main.js') }}"></script>
 
