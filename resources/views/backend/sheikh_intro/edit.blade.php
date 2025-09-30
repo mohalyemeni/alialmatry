@@ -138,8 +138,7 @@
                                 <div class="card p-2">
 
                                     <input name="meta_keywords" id="tags"
-                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
-                                        class="form-control" />
+                                        value="{{ old('meta_keywords', $intro->meta_keywords) }}" class="form-control" />
                                     @error('meta_keywords')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
