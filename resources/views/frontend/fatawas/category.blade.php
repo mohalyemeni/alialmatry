@@ -45,7 +45,7 @@
                     @endforeach
                 </div>
 
-                <div class="mt-4 mb-4">
+                <div class="mt-5 mb-5">
                     {{ $fatawas->links('pagination::simple-tailwind') }}
                 </div>
             </div>

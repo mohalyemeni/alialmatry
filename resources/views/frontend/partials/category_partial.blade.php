@@ -25,7 +25,8 @@
                             </div>
 
                             <div class="card-body text-center vc-body">
-                                <h5 class="card-title vc-title">{{ \Illuminate\Support\Str::limit($video->title, 70) }}</h5>
+                                <h5 class="card-title vc-title">{{ \Illuminate\Support\Str::limit($video->title, 70) }}
+                                </h5>
                             </div>
                         </a>
                     </div>
@@ -33,8 +34,8 @@
             @endforeach
         </div>
 
-        @endif
-    </div>
-    <div class="d-flex justify-content-center mt-4 mb-5">
-        {{ $videos->links('pagination::simple-tailwind') }}
-    </div>
+    @endif
+</div>
+<div class="d-flex justify-content-center mt-5 mb-5">
+    {{ $videos->links('pagination::simple-tailwind') }}
+</div>

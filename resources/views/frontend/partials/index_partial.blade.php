@@ -30,34 +30,37 @@
                         <div class="col-md-6 col-lg-4 col-xl-3">
                             <div class="blog-box style2 wow fadeInUp" data-wow-delay="{{ $delay }}s">
                                 <div class="blog-img blog-img11 global-img" style="height:220px; overflow:hidden;">
-                                    <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}" class="d-block">
+                                    <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}"
+                                        class="d-block">
                                         @if ($img)
                                             <img src="{{ $img }}" alt="{{ e($title) }}"
-                                                 style="width:100%; height:100%; object-fit:cover;">
+                                                style="width:100%; height:100%; object-fit:cover;">
                                         @else
                                             <img src="{{ asset('frontand/assets/img/No-Image.png') }}"
-                                                 style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
+                                                style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
                                         @endif
                                     </a>
                                 </div>
 
                                 <div class="blog-wrapper p-3">
                                     <span class="date">
-                                        <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                        <a
+                                            href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                             {{ $videosCount }} <span>فيديو</span>
                                         </a>
                                     </span>
 
                                     <div class="blog-content mt-2">
                                         <h3 class="box-title mb-2" style="font-size:1rem;">
-                                            <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
+                                            <a
+                                                href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}">
                                                 {{ e(\Illuminate\Support\Str::limit($title, 70)) }}
                                             </a>
                                         </h3>
 
                                         <a href="{{ route('frontend.videos.category', $category->slug ?? $category->id) }}"
-                                           class="th-btn border-btn">
-                                           تصفح <i class="fa-solid fa-arrow-left ms-1"></i>
+                                            class="th-btn border-btn">
+                                            تصفح <i class="fa-solid fa-arrow-left ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -71,6 +74,6 @@
 </section>
 
 
-<div class="mt-4 d-flex justify-content-center mb-5">
-  {{ $categories->links('pagination::simple-tailwind') }}
+<div class="mt-5 d-flex justify-content-center mb-5">
+    {{ $categories->links('pagination::simple-tailwind') }}
 </div>

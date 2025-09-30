@@ -24,7 +24,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4">
+                <div class="mt-5 d-flex justify-content-center mb-5">
                     {{ $blogs->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
@@ -49,7 +49,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4">
+                <div class="mt-5 d-flex justify-content-center mb-5">
                     {{ $videos->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
@@ -73,7 +73,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4">
+                <div class="mt-5 d-flex justify-content-center mb5">
                     {{ $audios->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
@@ -97,7 +97,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4">
+                <div class="mt-5 d-flex justify-content-center mb-5">
                     {{ $fatawas->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
@@ -128,7 +128,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4">
+                <div class="mt-5 d-flex justify-content-center mb-5">
                     {{ $books->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>
@@ -152,7 +152,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-3 d-flex justify-content-center mb-4 ">
+                <div class="mt-5 d-flex justify-content-center mb-5 ">
                     {{ $durars->withQueryString()->links('pagination::simple-tailwind') }}
                 </div>
             </section>

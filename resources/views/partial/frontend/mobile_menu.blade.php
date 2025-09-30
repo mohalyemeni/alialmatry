@@ -1,12 +1,11 @@
 <!--==============================
-    قائمة الجوال (نسخة خفيفة: زر البحث فقط داخل القائمة)
+    قائمة الجوال
 ============================== -->
 <div class="th-menu-wrapper">
     <div class="th-menu-area text-center">
-        <!-- زر إغلاق القائمة -->
+
         <button class="th-menu-toggle" aria-label="إغلاق القائمة"><i class="fal fa-times"></i></button>
 
-        <!-- شعار الموبايل -->
         <div class="mobile-logo">
             <a href="{{ route('frontend.index') }}">
                 <img src="{{ asset('frontand/assets/img/top-logo.png') }}" alt="Logo">
@@ -15,7 +14,6 @@
 
         <div class="th-mobile-menu">
             <ul>
-                <!-- زر البحث: سيستخدم نفس الـ JS لأن لديه الصنف searchBoxToggler -->
                 <li class="mobile-search-item">
                     <button type="button" class="mobile-search-btn searchBoxToggler" aria-label="بحث">
                         <i class="far fa-search"></i>
@@ -23,7 +21,6 @@
                     </button>
                 </li>
 
-                <!-- بقية الروابط -->
                 <li class="menu-item-has-children">
                     <a href="{{ route('frontend.sheikh-intro') }}">نبذة الشيخ</a>
                 </li>
@@ -44,9 +41,7 @@
     </div>
 </div>
 
-<!-- CSS صغير لتنسيق زر البحث داخل قائمة الموبايل -->
 <style>
-    /* اجعل زر البحث داخل القائمة يبدو كعنصر من عناصر القائمة */
     .th-mobile-menu ul {
         padding: 0 12px;
     }
@@ -56,7 +51,7 @@
         margin: 10px 0;
         display: flex;
         justify-content: center;
-        /* اجعل الزر في منتصف القائمة */
+
     }
 
     .mobile-search-btn {
@@ -79,7 +74,6 @@
         font-size: 18px;
     }
 
-    /* إذا أردت أن يظهر نص بجانب الأيقونة على شاشات أكبر داخل القائمة */
     @media (min-width: 480px) {
         .mobile-search-btn span {
             display: inline-block;
@@ -87,7 +81,6 @@
         }
     }
 
-    /* وللحفاظ على إمكانية الوصول اجعل النص مخفي بصرياً لكن متاح للقراء */
     .visually-hidden {
         position: absolute !important;
         height: 1px;
