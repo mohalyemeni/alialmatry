@@ -194,8 +194,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="card p-2">
 
                                     <input name="meta_keywords" id="tags"
-                                        value="<?php echo e(old('meta_keywords', $category->meta_keywords)); ?>"
-                                        class="form-control" />
+                                        value="<?php echo e(old('meta_keywords', $intro->meta_keywords)); ?>" class="form-control" />
                                     <?php $__errorArgs = ['meta_keywords'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
