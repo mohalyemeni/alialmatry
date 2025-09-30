@@ -4,11 +4,11 @@
 
     @include('frontend.sections.description')
 
-    @include('frontend.sections.lectuers')
-
     @include('frontend.sections.vedios')
 
-    @include('frontend.sections.blog')
+    @include('frontend.sections.lectuers')
 
     @include('frontend.sections.alfatawa')
+
+    @include('frontend.sections.blog')
 @endsection
