@@ -18,8 +18,8 @@
         </div>
 
         <!--==============================
-                            Contact Info Area
-                        ==============================-->
+                                Contact Info Area
+                            ==============================-->
         <div class="space">
             <div class="container">
                 <div class="row gy-4">
@@ -80,8 +80,8 @@
         </div>
 
         <!--==============================
-                            Contact Area
-                        ==============================-->
+                                Contact Area
+                            ==============================-->
         <div class="space-bottom">
             <div class="container">
                 <div class="row gx-0 gy-4">
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="form-btn col-12">
                                     <button type="submit" class="th-btn">
-                                        <span class="btn-text" data-back="Send Messages" data-front="ارسل الرسالة"></span>
+                                        <span class="btn-text" data-back="ارسل الرسالة" data-front="ارسل الرسالة"></span>
                                     </button>
                                 </div>
                             </div>
