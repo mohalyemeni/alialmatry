@@ -61,7 +61,7 @@
                 <div class="col-md-6 col-xxl-4 col-xl-4">
                     <div class="widget footer-widget">
                         <div class="th-widget-about">
-                            <h3 class="widget_title text-center"> وسائل التواصل</h3>
+                            <h3 class="widget_title widget_title12 text-center"> وسائل التواصل</h3>
                             <div class="th-social text-center">
                                 <?php
                                     $socials = [

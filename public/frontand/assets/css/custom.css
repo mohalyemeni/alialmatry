@@ -2008,3 +2008,9 @@ h4 {
 .box-title {
     font-size: 20px;
 }
+.bac_img {
+    background-image: url("../img/bg/pattern.png");
+}
+.contact-image {
+    height: 658px;
+}

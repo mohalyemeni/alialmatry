@@ -105,7 +105,7 @@
                                         <li><a href="<?php echo e(route('frontend.blogs.index')); ?>"
                                                 class="ajax-link">المقالات</a></li>
                                         <li><a href="<?php echo e(route('frontend.books.index')); ?>"> الكتب والؤلفات</a></li>
-                                        <li><a href="contact.html"> اتصل بنا</a></li>
+                                        <li><a href="<?php echo e(route('frontend.contact.form')); ?>">اتصل بنا</a></li>
                                     </ul>
                                 </nav>
                                 <button type="button" class="th-menu-toggle d-inline-block d-lg-none">

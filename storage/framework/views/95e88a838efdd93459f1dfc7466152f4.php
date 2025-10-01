@@ -28,7 +28,8 @@
 
                     <div class="list-group">
                         <?php $__currentLoopData = $latestBlogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                            <div
+                                class="list-group-item list-group-item1 d-flex justify-content-between align-items-start py-4">
                                 <div class="me-3" style="flex:1;">
                                     <h5 class="mb-1">
                                         <i class="fa fa-newspaper me-2 text-primary"></i>
@@ -46,7 +47,7 @@
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="button-wrapp d-flex align-items-center">
+                                <div class="button-wrapp d-flex align-items-center pm">
                                     <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>"
                                         class="th-btn style1 th-btn1">
                                         <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
@@ -123,7 +124,7 @@
                                         </div>
 
                                         <div class="box-content">
-                                            <div class="box-wrapp">
+                                            <div class="box-wrapp11 box-wrapp">
                                                 <div class="box-icon">
                                                     <img src="<?php echo e(asset('frontand/assets/img/icon/service_2_2.svg')); ?>"
                                                         alt="Icon">

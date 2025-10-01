@@ -18,10 +18,14 @@ use App\Http\Controllers\Backend\SheikhPageController;
 use App\Http\Controllers\Backend\SupervisorController;
 use App\Http\Controllers\Backend\UsefulLinkController;
 use App\Http\Controllers\Backend\DurarDiniyaController;
-use App\Http\Controllers\Backend\SheikhIntroController;
+
+use App\Http\Controllers\Backend\SheikhIntroController;use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\AudioCategoryController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 use App\Http\Controllers\Backend\VideoCategoryController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\Frontend\BlogFrontendController;
 use App\Http\Controllers\Backend\FatawaCategoryController;
 use App\Http\Controllers\Frontend\AudioFrontendController;
@@ -76,6 +80,15 @@ Route::prefix('durar')->group(function () {
 Route::get('/books', [FrontBookController::class, 'index'])->name('frontend.books.index');
 Route::get('/books/{slug}', [FrontBookController::class, 'show'])->name('frontend.books.show');
 Route::get('/books/{slug}/download', [FrontBookController::class, 'download'])->name('frontend.books.download');
+
+
+
+
+Route::get('/contact', [ContactController::class, 'showForm'])->name('frontend.contact.form');
+Route::post('/contact', [ContactController::class, 'sendMessage'])->name('frontend.contact.send');
+// Route::get('send-email', [EmailController::class, 'welcomeEmail']);
+
+
 
 Route::middleware(['auth', 'roles'])->group(function () {
 

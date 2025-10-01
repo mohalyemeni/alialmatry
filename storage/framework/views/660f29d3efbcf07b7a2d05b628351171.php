@@ -4,7 +4,7 @@
 
             <section class="tabs-section col-lg-7 col-12">
                 <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
-                <ul class="nav nav-tabs    " id="audioTabs" role="tablist">
+                <ul class="nav nav-tabs" id="audioTabs" role="tablist">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link <?php echo e($i === 0 ? 'active' : ''); ?> btn_font_size"
@@ -12,7 +12,6 @@
                                 data-bs-target="#audio-<?php echo e($cat->id); ?>" type="button" role="tab"
                                 aria-controls="audio-<?php echo e($cat->id); ?>"
                                 aria-selected="<?php echo e($i === 0 ? 'true' : 'false'); ?>">
-
                                 <?php echo e(e(\Illuminate\Support\Str::limit($cat->title, 10))); ?>
 
                             </button>
@@ -20,7 +19,7 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
 
-                <div class="tab-content    " id="audioTabsContent">
+                <div class="tab-content" id="audioTabsContent">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="tab-pane fade <?php echo e($i === 0 ? 'show active' : ''); ?>" id="audio-<?php echo e($cat->id); ?>"
                             role="tabpanel" aria-labelledby="audio-tab-<?php echo e($cat->id); ?>">
@@ -32,20 +31,23 @@
                                 <?php $__empty_1 = true; $__currentLoopData = $audios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $audio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <?php
                                         $rawFile = $audio->audio_file ?? null;
+                                        $isExternal = false;
                                         $downloadUrl = null;
+
                                         if (!empty($rawFile)) {
                                             if (
                                                 \Illuminate\Support\Str::startsWith($rawFile, ['http://', 'https://'])
                                             ) {
+                                                $isExternal = true;
                                                 $downloadUrl = $rawFile;
                                             } else {
-                                                $downloadUrl = asset($rawFile);
+                                                $downloadUrl = route('frontend.audios.download', $audio->id);
                                             }
                                         }
                                     ?>
 
                                     <div
-                                        class="audio-play-wrapp d-flex justify-content-between align-items-center   mb-2">
+                                        class="audio-play-wrapp d-flex justify-content-between align-items-center mb-2">
                                         <div class="flex-1">
                                             <h5 class="card-title mb-0 a_font_size">
                                                 <a
@@ -59,7 +61,7 @@
                                             <?php endif; ?>
                                         </div>
 
-                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2  ">
+                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2">
                                             <a href="<?php echo e(route('frontend.audios.show', $audio->slug ?? $audio->id)); ?>"
                                                 class="th-btn style1 th-btn1"
                                                 aria-label="تشغيل <?php echo e(e($audio->title)); ?>">
@@ -68,12 +70,22 @@
                                             </a>
 
                                             <?php if($downloadUrl): ?>
-                                                <a href="<?php echo e($downloadUrl); ?>" download class="th-btn style2 th-btn1"
-                                                    aria-label="تحميل <?php echo e(e($audio->title)); ?>">
-                                                    <span class="btn-text" data-back=" تحميل"
-                                                        data-front=" تحميل"></span>
-                                                    <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
-                                                </a>
+                                                <?php if($isExternal): ?>
+                                                    <a href="<?php echo e($downloadUrl); ?>" target="_blank"
+                                                        rel="noopener noreferrer" class="th-btn style2 th-btn1"
+                                                        aria-label="فتح/تحميل <?php echo e(e($audio->title)); ?>">
+                                                        <span class="btn-text" data-back=" تحميل"
+                                                            data-front=" تحميل"></span>
+                                                        <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="<?php echo e($downloadUrl); ?>" class="th-btn style2 th-btn1"
+                                                        download aria-label="تحميل <?php echo e(e($audio->title)); ?>">
+                                                        <span class="btn-text" data-back=" تحميل"
+                                                            data-front=" تحميل"></span>
+                                                        <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                                    </a>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -90,7 +102,7 @@
 
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
-                    <h3 class="widget_title widget_title_new  mb-5 title-header-noline fadeInRight wow "
+                    <h3 class="widget_title widget_title_new mb-5 title-header-noline fadeInRight wow"
                         data-wow-delay=".3s">الدرر السنية
                     </h3>
 
@@ -123,6 +135,7 @@
         </div>
     </section>
 <?php endif; ?>
+
 <style>
     @media (max-width: 991px) {
         .sidebar-area {

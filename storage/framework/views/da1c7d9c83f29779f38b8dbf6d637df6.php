@@ -146,7 +146,7 @@
 
     <?php echo $__env->make('partial.frontend.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    <div class="popup-search-box d-none d-lg-block">
+    <div class="popup-search-box  d-lg-block">
         <button class="searchClose"><i class="fal fa-times"></i></button>
         <form action="<?php echo e(route('frontend.search')); ?>" method="GET">
             <input type="text" name="query" placeholder="إبحث هنا..." required>
@@ -177,10 +177,10 @@
             </path>
         </svg>
     </div>
-
     <div id="wa-float-root" class="wa-float" role="link" aria-label="افتح واتساب" title="مراسلتنا عبر واتساب">
-        <a id="wa-float-link" class="wa-float__link" href="https://wa.me/PHONE_NUMBER?text=مرحباً" target="_blank"
+        <a id="wa-float-link" class="wa-float__link" href="https://wa.me/+967779531500?text=مرحباً" target="_blank"
             rel="noopener noreferrer">
+
             <svg class="wa-progress-svg" width="100%" height="100%" viewBox="-1 -1 102 102" aria-hidden="true"
                 focusable="false">
                 <path id="wa-progress-path" class="wa-progress-path" d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98">
@@ -189,6 +189,7 @@
             <i class="fab fa-whatsapp wa-icon" aria-hidden="true"></i>
         </a>
     </div>
+
 
     <script src="<?php echo e(asset('frontand/assets/js/main.js')); ?>"></script>
 
@@ -340,7 +341,6 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // فتح وإغلاق صندوق البحث
             const searchIcon = document.querySelector('.search-icon');
             const searchBox = document.querySelector('.popup-search-box');
             const searchClose = document.querySelector('.searchClose');
@@ -358,7 +358,6 @@
                 });
             }
 
-            // إغلاق صندوق البحث عند الضغط على ESC
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && searchBox && !searchBox.classList.contains('d-none')) {
                     searchBox.classList.add('d-none');
@@ -366,6 +365,45 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popup = document.querySelector('.popup-search-box');
+            if (popup && popup.parentElement !== document.body) {
+                document.body.appendChild(popup);
+            }
+
+            popup.style.position = 'fixed';
+            popup.style.zIndex = '2147483647';
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popup = document.querySelector('.popup-search-box');
+            if (popup && popup.parentElement !== document.body) {
+                document.body.appendChild(popup);
+            }
+
+            popup.style.position = 'fixed';
+            popup.style.zIndex = '2147483647';
+
+            var togglers = document.querySelectorAll('.searchBoxToggler');
+            var closer = popup.querySelector('.searchClose');
+            togglers.forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    popup.classList.add('active');
+                });
+            });
+
+            if (closer) {
+                closer.addEventListener('click', function() {
+                    popup.classList.remove('active');
+                });
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

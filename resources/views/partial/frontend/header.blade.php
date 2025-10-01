@@ -104,7 +104,7 @@
                                         <li><a href="{{ route('frontend.blogs.index') }}"
                                                 class="ajax-link">المقالات</a></li>
                                         <li><a href="{{ route('frontend.books.index') }}"> الكتب والؤلفات</a></li>
-                                        <li><a href="contact.html"> اتصل بنا</a></li>
+                                        <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
                                     </ul>
                                 </nav>
                                 <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
