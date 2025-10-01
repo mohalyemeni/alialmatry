@@ -47,16 +47,9 @@
                             </td>
 
                             <td>
-                                @if ($video->thumbnail)
-                                    @php
-                                        // Check if it's a full URL or a local path
-$isExternal = Illuminate\Support\Str::startsWith($video->thumbnail, [
-    'http://',
-    'https://',
-                                        ]);
-                                        $imageUrl = $isExternal ? $video->thumbnail : asset($video->thumbnail);
-                                    @endphp
-                                    <img src="{{ $imageUrl }}" alt="{{ $video->title }}" class="img-thumbnail"
+                                @if ($video->thumbnail_url)
+                                    {{-- استخدام thumbnail_url الجاهز من الكنترولر --}}
+                                    <img src="{{ $video->thumbnail_url }}" alt="{{ $video->title }}" class="img-thumbnail"
                                         style="width: 81px; height: 70px; object-fit: cover; border-radius: 100%;">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center"
@@ -65,7 +58,6 @@ $isExternal = Illuminate\Support\Str::startsWith($video->thumbnail, [
                                     </div>
                                 @endif
                             </td>
-
                             <td>{{ $video->title }}</td>
 
                             <td class="d-none d-sm-table-cell">{{ $video->published_on?->diffForHumans() ?? '-' }}</td>
