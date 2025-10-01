@@ -139,7 +139,7 @@
         padding: 15px;
     }
     .footer-widget .widget_title {
-        margin-right: 0;
+        margin-right: 0 !important;
     }
 }
 .tabs-section .nav-link.active {
