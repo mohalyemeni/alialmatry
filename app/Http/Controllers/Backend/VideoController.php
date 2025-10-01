@@ -15,7 +15,7 @@ class VideoController extends Controller
 {
     public function index(Request $request)
     {
-        if (! auth()->user()->ability('admin', 'manage_videos,show_videos')) {
+        if (! auth()->user()->ability('admin', 'maلا  nage_videos,show_videos')) {
             return redirect('admin/index');
         }
         $query = Video::with(['category', 'creator']);
