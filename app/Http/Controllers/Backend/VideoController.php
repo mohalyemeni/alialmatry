@@ -63,24 +63,46 @@ public function index(Request $request)
     }
 private function resolveThumbnail(?string $path): string
 {
-    if (!$path) {
+    if (empty($path)) {
         return asset('frontand/assets/img/No-Image.png');
     }
 
-    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+    $path = trim($path);
+
+    // لو كان رابط خارجي
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
         return $path;
     }
 
-    if (str_starts_with($path, 'assets/upload/')) {
-        return asset($path);
+    // احتمالات مسارات التخزين
+    $candidates = [
+        $path,
+        'assets/upload/' . $path,
+        'assets/upload/' . basename($path),
+        'upload/' . $path,
+        'upload/' . basename($path),
+        'assets/videos/thumbnails/' . $path,
+        'assets/videos/thumbnails/' . basename($path),
+        'assets/video_categories/' . $path,
+        'assets/video_categories/' . basename($path),
+        'videos/thumbnails/' . $path,
+        'storage/' . $path,
+    ];
+
+    foreach ($candidates as $candidate) {
+        if (file_exists(public_path($candidate))) {
+            return asset($candidate);
+        }
     }
 
-    if (file_exists(public_path($path))) {
-        return asset($path);
+    // التخزين باستخدام disk public
+    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($path);
     }
 
     return asset('frontand/assets/img/No-Image.png');
 }
+
 
     public function store(VideoRequest $request)
     {
