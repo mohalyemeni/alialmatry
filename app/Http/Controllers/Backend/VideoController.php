@@ -13,29 +13,43 @@ use Illuminate\Support\Facades\Log;
 
 class VideoController extends Controller
 {
-    public function index(Request $request)
-    {
-        if (! auth()->user()->ability('admin', 'maلا  nage_videos,show_videos')) {
-            return redirect('admin/index');
-        }
-        $query = Video::with(['category', 'creator']);
-        if ($request->filled('keyword')) {
-            $query->search($request->keyword);
-        }
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-        if ($request->has('status') && $request->status !== '') {
-            $query->where('status', $request->status);
-        }
-        $videos = $query
-            ->orderBy($request->sort_by ?? 'id', $request->order_by ?? 'desc')
-            ->paginate($request->limit_by ?? 10);
-        $categories = Category::where('section', Category::SECTION_VIDEO)
-            ->orderBy('id', 'desc')
-            ->get();
-        return view('backend.videos.index', compact('videos', 'categories'));
+public function index(Request $request)
+{
+    if (! auth()->user()->ability('admin', 'manage_videos,show_videos')) {
+        return redirect('admin/index');
     }
+
+    $query = Video::with(['category', 'creator']);
+
+    if ($request->filled('keyword')) {
+        $query->search($request->keyword);
+    }
+
+    if ($request->filled('category_id')) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    if ($request->has('status') && $request->status !== '') {
+        $query->where('status', $request->status);
+    }
+
+    $videos = $query
+        ->orderBy($request->sort_by ?? 'id', $request->order_by ?? 'desc')
+        ->paginate($request->limit_by ?? 10);
+
+    // ✅ تجهيز الصور بالمسار الصحيح
+    $videos->getCollection()->transform(function ($video) {
+        $video->thumbnail_url = $this->resolveThumbnail($video->thumbnail);
+        return $video;
+    });
+
+    $categories = Category::where('section', Category::SECTION_VIDEO)
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('backend.videos.index', compact('videos', 'categories'));
+}
+
 
     public function create()
     {
@@ -47,6 +61,26 @@ class VideoController extends Controller
             ->get();
         return view('backend.videos.create', compact('categories'));
     }
+private function resolveThumbnail(?string $path): string
+{
+    if (!$path) {
+        return asset('frontand/assets/img/No-Image.png');
+    }
+
+    if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+        return $path;
+    }
+
+    if (str_starts_with($path, 'storage/')) {
+        return asset($path);
+    }
+
+    if (file_exists(public_path($path))) {
+        return asset($path);
+    }
+
+    return asset('images/default-thumbnail.jpg');
+}
 
     public function store(VideoRequest $request)
     {
