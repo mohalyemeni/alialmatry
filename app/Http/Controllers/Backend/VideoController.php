@@ -71,7 +71,7 @@ private function resolveThumbnail(?string $path): string
         return $path;
     }
 
-    if (str_starts_with($path, 'storage/')) {
+    if (str_starts_with($path, 'assets/upload/')) {
         return asset($path);
     }
 
@@ -79,7 +79,7 @@ private function resolveThumbnail(?string $path): string
         return asset($path);
     }
 
-    return asset('images/default-thumbnail.jpg');
+    return asset('frontand/assets/img/No-Image.png');
 }
 
     public function store(VideoRequest $request)
