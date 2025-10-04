@@ -11,8 +11,7 @@
 <body
     style="background:#f7f9fb;font-family:Tahoma, Arial, sans-serif;direction:rtl;text-align:right;margin:0;padding:0;word-wrap:break-word;overflow-wrap:break-word;">
     <!-- wrapper table -->
-    <table cellpadding="0" cellspacing="0" border="0" width="100%"
-        style="background:#f7f9fb;margin:0;padding:15px;">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0;">
         <tr>
             <td align="center" style="padding:0;">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%"
