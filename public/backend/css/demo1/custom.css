@@ -92,6 +92,7 @@
 .page-content .card .card-body .btn {
     border: none;
     float: inline-start;
+    margin-left: 3px;
 }
 
 .page-content .card .card-body .btn_2 {
