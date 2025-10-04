@@ -24,11 +24,11 @@
                       <div class="dropdown-menu p-0" aria-labelledby="notificationDropdown">
                           <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
                               <p>الاشعارات</p>
-                              <a href="javascript:;" class="text-muted">Clear all</a>
+                              <a href="javascript:;" class="text-muted">مسح</a>
                           </div>
 
                           <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
-                              <a href="javascript:;">View all</a>
+                              <a href="javascript:;">عرض الكل</a>
                           </div>
                       </div>
                   </li>
