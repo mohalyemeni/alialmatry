@@ -14,9 +14,7 @@ class ContactMessage extends Mailable
 
     public $data;
 
-    /**
-     * استلام البيانات من الفورم
-     */
+
     public function __construct($data = [])
     {
         $this->data = $data;
