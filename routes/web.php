@@ -116,7 +116,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     });
 
     // الراوتات المحمية لصلاحيات admin|Supervisor
-    Route::group(['middleware' => ['roles' , 'role:admin|Supervisor'|'admin']], function(){
+    Route::group(['middleware' => ['roles' , 'role:admin|Supervisor|وليد']], function(){
 
         // الراوتات الاساسية
         Route::get('/',[BackendController::class,'index'])->name('index_route');
