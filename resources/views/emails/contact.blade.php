@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong style="display:inline-block;width:90px;color:#000;">الهاتف:</strong>
+                                        <strong style="display:inline-block;color:#000;">الهاتف:</strong>
                                         <span style="color:#333;">{{ $data['number'] ?? '---' }}</span>
                                     </td>
                                 </tr>
@@ -51,7 +51,7 @@
 
                             <p style="font-weight:700;color:#000;">الرسالة:</p>
                             <p
-                                style="color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;text-align:right;direction:rtl;">
+                                style="color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;text-align:right;direction:rtl;float: right;">
                                 {{ $data['message'] }}
                             </p>
                         </td>
