@@ -51,7 +51,7 @@
 
                             <p style="font-weight:700;color:#000;">الرسالة:</p>
                             <p
-                                style="color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;text-align:right;direction:rtl;float: right;">
+                                style="color:#444white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;text-align:right;direction:rtl;float: right;">
                                 {{ $data['message'] }}
                             </p>
                         </td>
