@@ -19,7 +19,7 @@
                     style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08);direction:rtl;">
                     <tr>
                         <td style="border-bottom:2px solid #5e625f;text-align:right;direction:rtl;padding:15px;">
-                            <h5 style="color:#28a745;font-weight:700;margin:0;">📩 رسالة جديدة من صفحة تواصل معنا</h5>
+                            <h3 style="color:#28a745;font-weight:700;margin:0;">📩 رسالة جديدة من صفحة تواصل معنا</h5>
                         </td>
                     </tr>
 
