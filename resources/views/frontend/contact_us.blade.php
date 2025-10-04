@@ -18,8 +18,8 @@
         </div>
 
         <!--==============================
-                                Contact Info Area
-                            ==============================-->
+                                        Contact Info Area
+                                    ==============================-->
         <div class="space">
             <div class="container">
                 <div class="row gy-4">
@@ -80,8 +80,8 @@
         </div>
 
         <!--==============================
-                                Contact Area
-                            ==============================-->
+                                        Contact Area
+                                    ==============================-->
         <div class="space-bottom">
             <div class="container">
                 <div class="row gx-0 gy-4">
@@ -93,7 +93,9 @@
 
                             {{-- رسائل النجاح --}}
                             @if (session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
+                                <div class="alert alert-success" id="successMessage">
+                                    {{ session('success') }}
+                                </div>
                             @endif
 
                             {{-- رسائل الأخطاء --}}
@@ -140,4 +142,18 @@
             </div>
         </div>
     </div>
+
+    {{-- سكريبت لإخفاء رسالة النجاح بعد 4 ثوانٍ --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const msg = document.getElementById("successMessage");
+            if (msg) {
+                setTimeout(() => {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.remove(), 500);
+                }, 4000);
+            }
+        });
+    </script>
 @endsection
