@@ -35,7 +35,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong style="display:inline-block;width:90px;color:#000;">الإيميل:</strong>
+                                        <strong style="display:inline-block;color:#000;">الإيميل:</strong>
                                         <span style="color:#333;word-break:break-word;">{{ $data['email'] }}</span>
                                     </td>
                                 </tr>
@@ -51,7 +51,7 @@
 
                             <p style="font-weight:700;color:#000;">الرسالة:</p>
                             <p
-                                style="color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;">
+                                style="color:#444;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word;text-align:right;direction:rtl;">
                                 {{ $data['message'] }}
                             </p>
                         </td>
