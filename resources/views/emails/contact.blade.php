@@ -16,11 +16,11 @@
                 <table width="600" cellpadding="0" cellspacing="0" border="0"
                     style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08);direction:rtl;">
                     <tr>
-                        <td style="padding:20px 25px;border-bottom:4px solid #28a745;text-align:right;direction:rtl;">
+                        <td style="padding:20px 25px;border-bottom:2px solid #5e625f;text-align:right;direction:rtl;">
                             <!-- Optional: logo -->
                             {{-- <img src="{{ asset('path/to/logo.png') }}" alt="Logo" style="max-height:40px;display:block;margin-bottom:10px;"> --}}
-                            <h2 style="margin:0;color:#28a745;font-size:20px;font-weight:700;">📩 رسالة جديدة من صفحة
-                                تواصل معنا</h2>
+                            <h5 style="margin:0;color:#28a745;font-size:20px;font-weight:700;">📩 رسالة جديدة من صفحة
+                                تواصل معنا</h5>
                         </td>
                     </tr>
 
@@ -58,7 +58,7 @@
 
                     <tr>
                         <td
-                            style="padding:12px 25px;background:#fafafa;border-top:1px solid #eee;text-align:center;direction:rtl;">
+                            style="padding:12px 25px;background:#fafafa;border-top:1px solid #eee;text-align:right;direction:rtl;">
                             <p style="margin:0;font-size:12px;color:#888;">تم إرسال هذه الرسالة من موقعك الرسمي.</p>
                         </td>
                     </tr>
