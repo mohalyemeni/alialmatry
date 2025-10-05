@@ -1,18 +1,23 @@
 <?php $__env->startSection('content'); ?>
     <div class="row w-100 mx-0 auth-page">
+        <div class="col-12">
+            <div class="text-center mt-3 me-4">
+                <a href="<?php echo e(url('/')); ?>" class="btn btn-primary mb-3">
+                    العودة إلى الصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+
         <div class="col-md-8 col-xl-6 mx-auto">
             <div class="card text_rig">
                 <div class="row">
-                    <div class="col-md-5 pe-md-0">
-                        <div class="auth-side-wrapper">
 
-                        </div>
-                    </div>
+
                     <div class="col-md-7 ps-md-0">
                         <div class="auth-form-wrapper px-4 py-5">
                             <a href="#" class="noble-ui-logo d-block mb-2">Era<span>Tecnology</span></a>
                             <h5 class="text-muted fw-normal mb-4">مرحبا بعودتك! سجل دخولك.</h5>
-                            
+
                             <form action="<?php echo e(route('login')); ?>" method="post">
                                 <?php echo csrf_field(); ?>
 
@@ -27,7 +32,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                                         id="username" name="username" value="<?php echo e(old('username')); ?>"
-                                        placeholder="ُEnter Your User Name">
+                                        placeholder="أدخل اسم المستخدم">
                                     <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -51,7 +56,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                                         id="password" name="password" autocomplete="current-password"
-                                        placeholder="Enter Your Password">
+                                        placeholder="أدخل كلمة المرور">
                                     <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -82,6 +87,9 @@ unset($__errorArgs, $__bag); ?>
                             </form>
 
                         </div>
+                    </div>
+                    <div class="col-md-5 pe-md-0">
+                        <div class="auth-side-wrapper"></div>
                     </div>
                 </div>
             </div>

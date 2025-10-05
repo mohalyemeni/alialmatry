@@ -80,6 +80,8 @@ class LoginController extends Controller
         Cache::forget('admin_side_menu');
         Cache::forget('role_routes');
         Cache::forget('user_routes');
+
+        return redirect()->route('admin.login');
     }
 
 
