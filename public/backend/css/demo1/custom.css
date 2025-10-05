@@ -557,3 +557,11 @@ div.tagsinput input {
 div.tagsinput div {
     float: right !important;
 }
+.tahdeed {
+    background: #3a46d0c2;
+    color: #fff;
+}
+.tahdeed:hover {
+    background: #545663c2;
+    color: #fff;
+}

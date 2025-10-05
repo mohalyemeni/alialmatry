@@ -13,8 +13,9 @@
                 </h3>
                 <ul class="breadcrumb pt-3">
                     <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.home')); ?></a> /</li>
-                    <li class="ms-1"><a
-                            href="<?php echo e(route('admin.supervisors.index')); ?>"><?php echo e(__('panel.manage_supervisors')); ?></a></li>
+                    <li class="ms-1">
+                        <a href="<?php echo e(route('admin.supervisors.index')); ?>"><?php echo e(__('panel.manage_supervisors')); ?></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -153,8 +154,15 @@ unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="row mt-3">
+                    
                     <div class="col-sm-12 col-md-12 pt-3">
-                        <label for="permissions"><?php echo e(__('panel.permissions')); ?></label>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="permissions"><?php echo e(__('panel.permissions')); ?></label>
+                            <button type="button" id="select-all-btn" class="btn btn-outline-primary btn-sm tahdeed">
+                                تحديد الكل
+                            </button>
+                        </div>
+
                         <select name="permissions[]" id="permissions" class="form-control select2" multiple>
                             <?php $__currentLoopData = $permissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($permission->id); ?>"
@@ -164,6 +172,7 @@ unset($__errorArgs, $__bag); ?>
                                 </option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
+
                         <?php $__errorArgs = ['permissions'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -176,6 +185,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
+                    
                     <div class="col-sm-12 col-md-12 pt-3">
                         <label for="supervisor-image"><?php echo e(__('panel.profile_image')); ?></label>
                         <input type="file" name="user_image" id="supervisor-image" class="file-input-overview">
@@ -215,6 +225,7 @@ unset($__errorArgs, $__bag); ?>
     <script src="<?php echo e(asset('backend/vendors/select2/select2.min.js')); ?>"></script>
     <script>
         $(function() {
+            // تهيئة Select2
             $('.select2').select2({
                 minimumResultsForSearch: Infinity,
                 tags: true,
@@ -223,6 +234,7 @@ unset($__errorArgs, $__bag); ?>
                 closeOnSelect: false
             });
 
+            // تهيئة رفع الصورة
             $('#supervisor-image').fileinput({
                 theme: 'fa',
                 maxFileCount: 1,
@@ -240,6 +252,24 @@ unset($__errorArgs, $__bag); ?>
                     dragIcon: '<i class="fas fa-arrows-alt"></i>',
                     rotateIcon: '<i class="fas fa-sync-alt"></i>'
                 }
+            });
+
+            // زر تحديد الكل / إلغاء التحديد
+            let allSelected = false;
+
+            $("#select-all-btn").on("click", function() {
+                if (!allSelected) {
+                    $("#permissions > option").prop("selected", true);
+                    $("#permissions").trigger("change");
+                    $(this).text("إلغاء التحديد");
+                    $(this).removeClass("btn-outline-primary").addClass("btn-outline-danger");
+                } else {
+                    $("#permissions > option").prop("selected", false);
+                    $("#permissions").trigger("change");
+                    $(this).text("تحديد الكل");
+                    $(this).removeClass("btn-outline-danger").addClass("btn-outline-primary");
+                }
+                allSelected = !allSelected;
             });
         });
     </script>
