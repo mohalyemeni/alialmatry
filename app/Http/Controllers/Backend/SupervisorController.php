@@ -27,7 +27,7 @@ class SupervisorController extends Controller
             abort(403);
         }
 
-        $supervisors = User::whereHas('roles', fn($q) => $q->where('name', 'supervisor'))
+        $supervisors = User::whereHas('roles', fn($q) => $q->where('name', 'Supervisor'))
             ->when(request('keyword'), fn($q) => $q->search(request('keyword')))
             ->when(request('status'),  fn($q) => $q->whereStatus(request('status')))
             ->orderBy(request('sort_by', 'id'), request('order_by', 'desc'))

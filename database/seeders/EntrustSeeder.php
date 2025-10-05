@@ -789,5 +789,6 @@ $updateCommunityLinks = Permission::create([
     'sidebar_link' => 0,
     'appear' => 0
 ]);
+
 }
 }

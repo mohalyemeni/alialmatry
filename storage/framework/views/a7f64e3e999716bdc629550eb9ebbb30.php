@@ -46,16 +46,9 @@
                             </td>
 
                             <td>
-                                <?php if($video->thumbnail): ?>
-                                    <?php
-                                        // Check if it's a full URL or a local path
-$isExternal = Illuminate\Support\Str::startsWith($video->thumbnail, [
-    'http://',
-    'https://',
-                                        ]);
-                                        $imageUrl = $isExternal ? $video->thumbnail : asset($video->thumbnail);
-                                    ?>
-                                    <img src="<?php echo e($imageUrl); ?>" alt="<?php echo e($video->title); ?>" class="img-thumbnail"
+                                <?php if($video->thumbnail_url): ?>
+                                    
+                                    <img src="<?php echo e($video->thumbnail_url); ?>" alt="<?php echo e($video->title); ?>" class="img-thumbnail"
                                         style="width: 81px; height: 70px; object-fit: cover; border-radius: 100%;">
                                 <?php else: ?>
                                     <div class="d-flex align-items-center justify-content-center"
@@ -64,7 +57,6 @@ $isExternal = Illuminate\Support\Str::startsWith($video->thumbnail, [
                                     </div>
                                 <?php endif; ?>
                             </td>
-
                             <td><?php echo e($video->title); ?></td>
 
                             <td class="d-none d-sm-table-cell"><?php echo e($video->published_on?->diffForHumans() ?? '-'); ?></td>

@@ -24,7 +24,7 @@ class FatawaCategoryController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->ability('admin', 'manage_fatawa_categories,show_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['manage_fatawa_categories', 'show_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
@@ -47,7 +47,7 @@ class FatawaCategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
@@ -56,7 +56,7 @@ class FatawaCategoryController extends Controller
 
     public function store(FatawaRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
@@ -74,9 +74,10 @@ class FatawaCategoryController extends Controller
 
         $input['section'] = $this->section;
         $input['created_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : now();
+        $input['published_on'] = isset($input['published_on'])
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : now();
 
-        // حفظ حقل المميز
         $input['featured'] = $request->boolean('featured');
 
         Category::create($input);
@@ -89,22 +90,27 @@ class FatawaCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
-        $category = Category::where('id', $id)->where('section', $this->section)->firstOrFail();
+        $category = Category::where('id', $id)
+            ->where('section', $this->section)
+            ->firstOrFail();
 
         return view('backend.fatawa_categories.edit', compact('category'));
     }
 
     public function update(FatawaRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
-        $category = Category::where('id', $id)->where('section', $this->section)->firstOrFail();
+        $category = Category::where('id', $id)
+            ->where('section', $this->section)
+            ->firstOrFail();
+
         $input = $request->validated();
 
         if ($request->hasFile('img')) {
@@ -125,9 +131,10 @@ class FatawaCategoryController extends Controller
 
         $input['section'] = $this->section;
         $input['updated_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : $category->published_on;
+        $input['published_on'] = isset($input['published_on'])
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : $category->published_on;
 
-        // تحديث حقل المميز
         $input['featured'] = $request->boolean('featured');
 
         $category->update($input);
@@ -140,11 +147,13 @@ class FatawaCategoryController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_fatawa_categories'])) {
             return redirect('admin/index');
         }
 
-        $category = Category::where('id', $id)->where('section', $this->section)->firstOrFail();
+        $category = Category::where('id', $id)
+            ->where('section', $this->section)
+            ->firstOrFail();
 
         if ($category->img && File::exists(public_path('assets/fatawa_categories/' . $category->img))) {
             File::delete(public_path('assets/fatawa_categories/' . $category->img));
@@ -175,13 +184,9 @@ class FatawaCategoryController extends Controller
         }
     }
 
-    /**
-     * Toggle featured via AJAX
-     */
     public function toggleFeatured(Request $request)
     {
-        // صلاحية: نفس منطق باقي الكنترولرز
-        if (! auth()->user() || ! auth()->user()->ability('admin', 'update_fatawa_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_fatawa_categories'])) {
             return response()->json(['error' => 'غير مصرح'], 403);
         }
 
@@ -202,7 +207,7 @@ class FatawaCategoryController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'التصنيف غير موجود أو ليس ضمن هذا القسم'], 404);
         } catch (\Throwable $e) {
-            \Log::error('FatawaCategory toggleFeatured error: '.$e->getMessage());
+            \Log::error('FatawaCategory toggleFeatured error: ' . $e->getMessage());
             return response()->json(['error' => 'خطأ في الخادم'], 500);
         }
     }
@@ -211,13 +216,13 @@ class FatawaCategoryController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user->ability(['admin'], ['delete_fatawa_categories'], ['validate_all' => false])) {
+        if (! $user->ability(['admin', 'Supervisor'], ['delete_fatawa_categories'], ['validate_all' => false])) {
             abort(403);
         }
 
         $category = Category::find($request->key);
 
-        if (!$category) {
+        if (! $category) {
             return response()->json(['error' => 'Not found'], 404);
         }
 

@@ -20,7 +20,7 @@ class SheikhPageController extends Controller
     }
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_sheikh_pages,show_sheikh_pages')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'manage_sheikh_pages,show_sheikh_pages')) {
             return redirect('admin/index');
         }
         $pages = SheikhPage::when($request->keyword, fn($q) => $q->where('title', 'like', '%'.$request->keyword.'%'))
@@ -31,14 +31,14 @@ class SheikhPageController extends Controller
     }
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_sheikh_page')) {
             return redirect('admin/index');
         }
         return view('backend.sheikh_pages.create');
     }
     public function store(SheikhPageRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_sheikh_page')) {
             return redirect('admin/index');
         }
         $page = new SheikhPage();
@@ -68,7 +68,7 @@ class SheikhPageController extends Controller
     }
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_sheikh_page')) {
             return redirect('admin/index');
         }
         $sheikhPage = SheikhPage::findOrFail($id);
@@ -76,7 +76,7 @@ class SheikhPageController extends Controller
     }
     public function update(SheikhPageRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_sheikh_page')) {
             return redirect('admin/index');
         }
         $page = SheikhPage::findOrFail($id);
@@ -110,7 +110,7 @@ class SheikhPageController extends Controller
     }
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'delete_sheikh_page')) {
             return redirect('admin/index');
         }
         $page = SheikhPage::findOrFail($id);
@@ -125,7 +125,7 @@ class SheikhPageController extends Controller
     }
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_sheikh_page')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'delete_sheikh_page')) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
         $page = SheikhPage::findOrFail($request->id);

@@ -7,7 +7,6 @@
         <a href="<?php echo e(route('admin.index')); ?>" class="sidebar-brand">
             <?php echo e(__('panel.dashboard')); ?>
 
-
         </a>
         <div class="sidebar-toggler not-active">
             <span></span>
@@ -18,7 +17,8 @@
     <div class="sidebar-body">
         <h3 class="h3_mine"><?php echo e(__('panel.web_detail')); ?></h3>
         <ul class="nav">
-            <?php if (\Entrust::hasRole(['admin'])) : ?>
+            
+            <?php if (\Entrust::hasRole('admin')) : ?>
                 <?php $__currentLoopData = $admin_side_menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php if(count($menu->appearedChildren) == 0): ?>
                         <li class="nav-item nav-category <?php echo e($menu->id == getParentShowOf($current_page) ? 'active' : ''); ?>">
@@ -26,7 +26,6 @@
                                 <i class="link-icon <?php echo e($menu->icon != '' ? $menu->icon : 'fas fa-home'); ?>"></i>
                                 <span class="link-title"><?php echo e(__('panel.' . $menu->name)); ?> </span>
                             </a>
-                            
                         </li>
                     <?php else: ?>
                         <li
@@ -56,14 +55,13 @@
                                     </ul>
                                 </div>
                             <?php endif; ?>
-                            
-
                         </li>
                     <?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <?php endif; // Entrust::hasRole ?>
 
-            <?php if (\Entrust::hasRole(['supervisor'])) : ?>
+            
+            <?php if (\Entrust::hasRole('Supervisor')) : ?>
                 <?php $__currentLoopData = $admin_side_menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php if (\Entrust::can($menu->name)) : ?>
                         <?php if(count($menu->appearedChildren) == 0): ?>
@@ -73,7 +71,6 @@
                                     <i class="link-icon <?php echo e($menu->icon != '' ? $menu->icon : 'fas fa-home'); ?>"></i>
                                     <span class="link-title"><?php echo e($menu->display_name); ?></span>
                                 </a>
-                                
                             </li>
                         <?php else: ?>
                             <li
@@ -112,7 +109,6 @@
             <?php endif; // Entrust::hasRole ?>
 
         </ul>
-
     </div>
 </nav>
 <?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/partial/backend/sidbar.blade.php ENDPATH**/ ?>

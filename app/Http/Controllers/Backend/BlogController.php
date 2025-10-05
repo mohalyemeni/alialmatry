@@ -23,7 +23,7 @@ class BlogController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_blogs,show_blogs')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['manage_blogs', 'show_blogs'])) {
             return redirect('admin/index');
         }
 
@@ -43,7 +43,7 @@ class BlogController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_blog'])) {
             return redirect('admin/index');
         }
 
@@ -56,7 +56,7 @@ class BlogController extends Controller
 
     public function store(BlogRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_blog'])) {
             return redirect('admin/index');
         }
 
@@ -92,7 +92,7 @@ class BlogController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_blog'])) {
             return redirect('admin/index');
         }
 
@@ -107,7 +107,7 @@ class BlogController extends Controller
 
     public function update(BlogRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_blog'])) {
             return redirect('admin/index');
         }
 
@@ -149,7 +149,7 @@ class BlogController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_blog'])) {
             return redirect('admin/index');
         }
 
@@ -169,7 +169,7 @@ class BlogController extends Controller
 
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_blog')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_blog'])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 

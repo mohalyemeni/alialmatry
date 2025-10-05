@@ -4,20 +4,16 @@
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
                     <i class="fa fa-plus-square"></i>
-                    <?php echo e(__('panel.add_video_category')); ?>
+                    <?php echo e(__('panel.add_durar_diniya')); ?>
 
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li>
-                        <a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.home')); ?></a> /
-                    </li>
-                    <li class="ms-1">
-                        <a href="<?php echo e(route('admin.video_categories.index')); ?>"><?php echo e(__('panel.manage_video_categories')); ?></a>
-                    </li>
+                    <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.main')); ?></a> /</li>
+                    <li class="ms-1"><a
+                            href="<?php echo e(route('admin.durar_diniya.index')); ?>"><?php echo e(__('panel.manage_durar_diniya')); ?></a></li>
                 </ul>
             </div>
         </div>
-
         <div class="card-body">
             <?php if($errors->any()): ?>
                 <div class="alert alert-danger pt-0 pb-0 mb-0">
@@ -29,34 +25,38 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?php echo e(route('admin.video_categories.store')); ?>" method="post" enctype="multipart/form-data">
+            <form action="<?php echo e(route('admin.durar_diniya.store')); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="content-tab" data-bs-toggle="tab" data-bs-target="#content"
                             type="button" role="tab" aria-controls="content"
-                            aria-selected="true"><?php echo e(__('panel.content')); ?>
-
-                        </button>
+                            aria-selected="true"><?php echo e(__('panel.content')); ?></button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="SEO-tab" data-bs-toggle="tab" data-bs-target="#SEO" type="button"
-                            role="tab" aria-controls="SEO" aria-selected="false"><?php echo e(__('panel.seo')); ?>
-
-                        </button>
+                            role="tab" aria-controls="SEO" aria-selected="false"><?php echo e(__('panel.seo')); ?></button>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
-                        
+
+
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
                                 <label for="title"><?php echo e(__('panel.title')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <input type="text" name="title" id="title" value="<?php echo e(old('title')); ?>"
-                                    class="form-control">
+                                    class="form-control <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                                 <?php $__errorArgs = ['title'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -70,13 +70,20 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="description"><?php echo e(__('panel.content')); ?></label>
+                                <label for="description"><?php echo e(__('panel.description')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
-                                <textarea name="description" id="description" rows="10" class="form-control summernote"><?php echo old('description', ''); ?></textarea>
+                                <textarea name="description" id="description" rows="10"
+                                    class="form-control summernote <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"><?php echo old('description'); ?></textarea>
                                 <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -90,19 +97,15 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="img">
-                                    <?php echo e(__('panel.image')); ?>
-
-                                    <br>
-                                    <small><?php echo e(__('panel.best_size')); ?></small>
-                                </label>
+                                <label
+                                    for="img"><?php echo e(__('panel.image')); ?><br><small><?php echo e(__('panel.best_size')); ?></small></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="file-loading">
-                                    <input type="file" name="img" id="img" class="file-input-overview">
+                                    <input type="file" name="img" id="img" class="file-input-overview"
+                                        accept="image/*">
                                 </div>
                                 <?php $__errorArgs = ['img'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -117,19 +120,14 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        
                         <div class="row">
-                            <div class="col-sm-12 col-md-2 pt-3">
-                                <?php echo e(__('panel.publish_date')); ?>
-
-                            </div>
+                            <div class="col-sm-12 col-md-2 pt-3"><?php echo e(__('panel.publish_date')); ?></div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="input-group flatpickr" id="flatpickr-datetime">
                                     <input type="text" name="published_on" value="<?php echo e(old('published_on')); ?>"
                                         class="form-control" placeholder="<?php echo e(__('panel.publish_date')); ?>" data-input>
-                                    <span class="input-group-text input-group-addon" data-toggle>
-                                        <i data-feather="calendar"></i>
-                                    </span>
+                                    <span class="input-group-text input-group-addon" data-toggle><i
+                                            data-feather="calendar"></i></span>
                                 </div>
                                 <?php $__errorArgs = ['published_on'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -144,12 +142,11 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        
-                        <div class="row mb-3">
+                        <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
                                 <label for="status" class="control-label"><?php echo e(__('panel.status')); ?></label>
                             </div>
-                            <div class="col-sm-12 col-md-10 pt-3 d-flex align-items-center gap-3">
+                            <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" name="status" id="status_active"
                                         value="1" <?php echo e(old('status', '1') == '1' ? 'checked' : ''); ?>>
@@ -166,36 +163,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-danger d-block mt-2"><?php echo e($message); ?></span>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                        </div>
-
-                        
-                        <div class="row mb-3">
-                            <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="featured" class="control-label"><?php echo e(__('panel.featured')); ?></label>
-                            </div>
-                            <div class="col-sm-12 col-md-10 pt-3 d-flex align-items-center gap-3">
-                                
-                                <input type="hidden" name="featured" id="featured_input"
-                                    value="<?php echo e(old('featured') ? 1 : 0); ?>">
-                                <button type="button" id="featured_btn" class="btn btn-light p-2"
-                                    aria-pressed="<?php echo e(old('featured') ? 'true' : 'false'); ?>"
-                                    title="<?php echo e(__('panel.toggle_featured') ?? 'تبديل المميز'); ?>">
-                                    <i id="featured_icon"
-                                        class="<?php echo e(old('featured') ? 'fas fa-star text-warning' : 'far fa-star text-muted'); ?>"
-                                        style="font-size:1.6em;"></i>
-                                </button>
-                                <?php $__errorArgs = ['featured'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-danger d-block mt-2"><?php echo e($message); ?></span>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -205,12 +173,10 @@ unset($__errorArgs, $__bag); ?>
 
                     </div>
 
-                    
                     <div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
                         <div class="row">
-                            <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_slug"><?php echo e(__('panel.seo_slug')); ?></label>
-                            </div>
+                            <div class="col-sm-12 col-md-3 pt-3"><label
+                                    for="meta_slug"><?php echo e(__('panel.seo_slug')); ?></label></div>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="meta_slug" id="meta_slug" value="<?php echo e(old('meta_slug')); ?>"
                                     class="form-control">
@@ -228,9 +194,8 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_description"><?php echo e(__('panel.seo_description')); ?></label>
-                            </div>
+                            <div class="col-sm-12 col-md-3 pt-3"><label
+                                    for="meta_description"><?php echo e(__('panel.seo_description')); ?></label></div>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="meta_description" id="meta_description"
                                     value="<?php echo e(old('meta_description')); ?>" class="form-control">
@@ -248,44 +213,38 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card p-2">
+                            <div class="col-sm-12 col-md-3 pt-3"><label
+                                    for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label></div>
+                            <div class="col-sm-12 col-md-9 pt-3">
 
-                                    <input name="meta_keywords" id="tags" value="<?php echo e($meta_keywords->value ?? ''); ?>"
-                                        class="form-control" />
-                                    <?php $__errorArgs = ['meta_keywords'];
+                                <input name="meta_keywords" id="tags1" value="<?php echo e(old('meta_keywords')); ?>"
+                                    class="form-control" />
+                                <?php $__errorArgs = ['meta_keywords'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                        <span class="text-danger"><?php echo e($message); ?></span>
-                                    <?php unset($message);
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    
-                    <div class="row mt-4">
-                        <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
-                        <div class="col-sm-12 col-md-10 pt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="icon-lg me-2" data-feather="corner-down-left"></i>
-                                <?php echo e(__('panel.save')); ?>
+                <div class="row mt-4">
+                    <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
+                    <div class="col-sm-12 col-md-10 pt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-lg me-2" data-feather="corner-down-left"></i> <?php echo e(__('panel.save')); ?>
 
-                            </button>
-                            <a href="<?php echo e(route('admin.video_categories.index')); ?>" class="btn btn-outline-danger">
-                                <i class="icon-lg me-2" data-feather="x"></i>
-                                <?php echo e(__('panel.cancel')); ?>
+                        </button>
+                        <a href="<?php echo e(route('admin.durar_diniya.index')); ?>" class="btn btn-outline-danger">
+                            <i class="icon-lg me-2" data-feather="x"></i> <?php echo e(__('panel.cancel')); ?>
 
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </form>
@@ -306,6 +265,21 @@ unset($__errorArgs, $__bag); ?>
                 showUpload: false,
                 overwriteInitial: false,
                 maxFileCount: 1
+            });
+
+
+            $('.summernote').summernote({
+                tabSize: 2,
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
             });
         });
     </script>
@@ -328,63 +302,50 @@ unset($__errorArgs, $__bag); ?>
             }
         });
     </script>
-
     <script>
-        $(function() {
-            $('.summernote').summernote({
-                tabSize: 2,
-                height: 200,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-        });
-    </script>
+        // تأكد أن jQuery و jquery.tagsinput محملين قبل هذا السكربت
+        (function($) {
+            $(document).ready(function() {
 
-    
-    <script>
-        $(function() {
-            $('#featured_btn').on('click', function() {
-                var $input = $('#featured_input');
-                var $icon = $('#featured_icon');
-                // treat '1', 1, true as set
-                var val = $input.val();
-                var is = (val === '1' || val === 1 || val === 'true');
-                if (is) {
-                    $input.val('0');
-                    $icon.removeClass('fas text-warning').addClass('far text-muted');
-                    $(this).attr('aria-pressed', 'false');
-                } else {
-                    $input.val('1');
-                    $icon.removeClass('far text-muted').addClass('fas text-warning');
-                    $(this).attr('aria-pressed', 'true');
+                // تهيئة حقل site keywords (id="tags")
+                if ($('#tags').length) {
+                    $('#tags').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',', // الفاصل بين الكلمات
+                    });
                 }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
 
-            $('#tags').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
-            });
+                // تهيئة حقل مماثل (id="tags_meta") إذا وجد
+                if ($('#tags_meta').length) {
+                    $('#tags_meta').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                    });
+                }
 
+                // تهيئة حقل meta_keywords (id="tags1") في نموذج الـ SEO
+                if ($('#tags1').length) {
+                    $('#tags1').tagsInput({
+                        'defaultText': 'أضف كلمة مفتاحية',
+                        'height': 'auto',
+                        'width': '100%',
+                        'interactive': true,
+                        'removeWithBackspace': true,
+                        'delimiter': ',',
+                    });
+                }
 
-            $('#tags_meta').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
             });
-        });
+        })(jQuery);
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/backend/video_categories/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/backend/durar_diniya/create.blade.php ENDPATH**/ ?>

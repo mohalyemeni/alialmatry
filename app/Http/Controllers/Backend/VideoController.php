@@ -15,7 +15,7 @@ class VideoController extends Controller
 {
 public function index(Request $request)
 {
-    if (! auth()->user()->ability('admin', 'manage_videos,show_videos')) {
+    if (! auth()->user()->ability(['admin', 'Supervisor'], 'manage_videos,show_videos')) {
         return redirect('admin/index');
     }
 
@@ -37,7 +37,6 @@ public function index(Request $request)
         ->orderBy($request->sort_by ?? 'id', $request->order_by ?? 'desc')
         ->paginate($request->limit_by ?? 10);
 
-    // ✅ تجهيز الصور بالمسار الصحيح
     $videos->getCollection()->transform(function ($video) {
         $video->thumbnail_url = $this->resolveThumbnail($video->thumbnail);
         return $video;
@@ -53,7 +52,7 @@ public function index(Request $request)
 
     public function create()
     {
-        if (! auth()->user()->ability('admin', 'create_videos')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'create_videos')) {
             return redirect('admin/index');
         }
         $categories = Category::where('status', 1)
@@ -61,6 +60,7 @@ public function index(Request $request)
             ->get();
         return view('backend.videos.create', compact('categories'));
     }
+
 private function resolveThumbnail(?string $path): string
 {
     if (empty($path)) {
@@ -69,12 +69,10 @@ private function resolveThumbnail(?string $path): string
 
     $path = trim($path);
 
-    // لو كان رابط خارجي
     if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://') || str_starts_with($path, 'data:')) {
         return $path;
     }
 
-    // احتمالات مسارات التخزين
     $candidates = [
         $path,
         'assets/upload/' . $path,
@@ -95,7 +93,6 @@ private function resolveThumbnail(?string $path): string
         }
     }
 
-    // التخزين باستخدام disk public
     if (\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
         return \Illuminate\Support\Facades\Storage::disk('public')->url($path);
     }
@@ -106,7 +103,7 @@ private function resolveThumbnail(?string $path): string
 
     public function store(VideoRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_videos')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_videos')) {
             return redirect('admin/index');
         }
 
@@ -162,7 +159,7 @@ private function resolveThumbnail(?string $path): string
 
     public function edit($id)
     {
-        if (! auth()->user()->ability('admin', 'update_videos')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'update_videos')) {
             return redirect('admin/index');
         }
         $video = Video::findOrFail($id);
@@ -174,7 +171,7 @@ private function resolveThumbnail(?string $path): string
 
     public function update(VideoRequest $request, $id)
     {
-        if (! auth()->user()->ability('admin', 'update_videos')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'update_videos')) {
             return redirect('admin/index');
         }
 
@@ -220,8 +217,7 @@ private function resolveThumbnail(?string $path): string
                 if ($localThumb) {
                     $this->maybeDeleteOldThumb($video, $localThumb);
                     $video->thumbnail = $localThumb;
-                } else {
-                 }
+                }
 
             } else {
 
@@ -280,7 +276,7 @@ private function resolveThumbnail(?string $path): string
 
     public function destroy($id)
     {
-        if (! auth()->user()->ability('admin', 'delete_videos')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'delete_videos')) {
             return redirect('admin/index');
         }
         $video = Video::findOrFail($id);

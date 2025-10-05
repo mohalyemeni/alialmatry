@@ -22,7 +22,7 @@ class BookController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_books,show_books')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['manage_books', 'show_books'])) {
             return redirect('admin/index');
         }
 
@@ -36,15 +36,16 @@ class BookController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_book'])) {
             return redirect('admin/index');
         }
+
         return view('backend.books.create');
     }
 
     public function store(BookRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_book'])) {
             return redirect('admin/index');
         }
 
@@ -53,12 +54,9 @@ class BookController extends Controller
         $book->slug = Str::slug($request->title);
         $book->description = $request->description;
         $book->status = $request->status;
-
-        // ====== SEO fields ======
         $book->meta_keywords = $request->meta_keywords ?? null;
         $book->meta_description = $request->meta_description ?? null;
         $book->meta_slug = $request->meta_slug ?? null;
-        // published_on (optional)
         $book->published_on = $request->published_on ?? null;
 
         if ($request->hasFile('img')) {
@@ -86,7 +84,7 @@ class BookController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_book'])) {
             return redirect('admin/index');
         }
 
@@ -96,7 +94,7 @@ class BookController extends Controller
 
     public function update(BookRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_book'])) {
             return redirect('admin/index');
         }
 
@@ -105,17 +103,15 @@ class BookController extends Controller
         $book->slug = Str::slug($request->title);
         $book->description = $request->description;
         $book->status = $request->status;
-
-        // ====== SEO fields ======
         $book->meta_keywords = $request->meta_keywords ?? null;
         $book->meta_description = $request->meta_description ?? null;
         $book->meta_slug = $request->meta_slug ?? null;
-        // published_on (optional)
         $book->published_on = $request->published_on ?? null;
 
         if ($request->hasFile('img')) {
             $oldImagePath = public_path('assets/books/images/' . $book->img);
             if (File::exists($oldImagePath)) File::delete($oldImagePath);
+
             $image = $request->file('img');
             $imageName = 'book_' . time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('assets/books/images/' . $imageName);
@@ -126,6 +122,7 @@ class BookController extends Controller
         if ($request->hasFile('file')) {
             $oldFilePath = public_path('assets/books/files/' . $book->file);
             if (File::exists($oldFilePath)) File::delete($oldFilePath);
+
             $file = $request->file('file');
             $fileName = 'file_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('assets/books/files'), $fileName);
@@ -142,7 +139,7 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_book'])) {
             return redirect('admin/index');
         }
 
@@ -163,7 +160,7 @@ class BookController extends Controller
 
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_book'])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 
@@ -180,7 +177,7 @@ class BookController extends Controller
 
     public function remove_file(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_book')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_book'])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 

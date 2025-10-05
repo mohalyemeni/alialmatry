@@ -23,7 +23,7 @@ class FatawaController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_fatawa,show_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['manage_fatawa', 'show_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -43,7 +43,7 @@ class FatawaController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -56,7 +56,7 @@ class FatawaController extends Controller
 
     public function store(FatwaContentRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['create_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -95,7 +95,7 @@ class FatawaController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -110,7 +110,7 @@ class FatawaController extends Controller
 
     public function update(FatwaContentRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -160,7 +160,7 @@ class FatawaController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_fatawa'])) {
             return redirect('admin/index');
         }
 
@@ -187,7 +187,7 @@ class FatawaController extends Controller
 
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_fatawa'])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 
@@ -205,7 +205,7 @@ class FatawaController extends Controller
 
     public function remove_audio(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_fatawa')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['delete_fatawa'])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 

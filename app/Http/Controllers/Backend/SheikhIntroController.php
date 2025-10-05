@@ -21,7 +21,7 @@ class SheikhIntroController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_sheikh_intro,show_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'manage_sheikh_intro,show_sheikh_intro')) {
             return redirect('admin/index');
         }
 
@@ -35,7 +35,7 @@ class SheikhIntroController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_sheikh_intro')) {
             return redirect('admin/index');
         }
         return view('backend.sheikh_intro.create');
@@ -43,7 +43,7 @@ class SheikhIntroController extends Controller
 
     public function store(SheikhIntroRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_sheikh_intro')) {
             return redirect('admin/index');
         }
 
@@ -78,7 +78,7 @@ class SheikhIntroController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_sheikh_intro')) {
             return redirect('admin/index');
         }
 
@@ -88,7 +88,7 @@ class SheikhIntroController extends Controller
 
     public function update(SheikhIntroRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_sheikh_intro')) {
             return redirect('admin/index');
         }
 
@@ -127,7 +127,7 @@ class SheikhIntroController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'delete_sheikh_intro')) {
             return redirect('admin/index');
         }
 
@@ -145,7 +145,7 @@ class SheikhIntroController extends Controller
 
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_sheikh_intro')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'delete_sheikh_intro')) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
         }
 

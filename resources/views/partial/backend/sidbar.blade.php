@@ -6,7 +6,6 @@
     <div class="sidebar-header">
         <a href="{{ route('admin.index') }}" class="sidebar-brand">
             {{ __('panel.dashboard') }}
-
         </a>
         <div class="sidebar-toggler not-active">
             <span></span>
@@ -17,7 +16,8 @@
     <div class="sidebar-body">
         <h3 class="h3_mine">{{ __('panel.web_detail') }}</h3>
         <ul class="nav">
-            @role(['admin'])
+            {{-- ====== admin: يعرض كل شيء (admin فقط) ====== --}}
+            @role('admin')
                 @foreach ($admin_side_menu as $menu)
                     @if (count($menu->appearedChildren) == 0)
                         <li class="nav-item nav-category {{ $menu->id == getParentShowOf($current_page) ? 'active' : '' }}">
@@ -25,7 +25,6 @@
                                 <i class="link-icon {{ $menu->icon != '' ? $menu->icon : 'fas fa-home' }}"></i>
                                 <span class="link-title">{{ __('panel.' . $menu->name) }} </span>
                             </a>
-                            {{-- <hr class="sidebar-divider-custom"> --}}
                         </li>
                     @else
                         <li
@@ -54,14 +53,13 @@
                                     </ul>
                                 </div>
                             @endif
-                            {{-- <hr class="sidebar-divider-custom"> --}}
-
                         </li>
                     @endif
                 @endforeach
             @endrole
 
-            @role(['supervisor'])
+            {{-- ====== Supervisor: يعرض العناصر التي لديه صلاحيات لها ====== --}}
+            @role('Supervisor')
                 @foreach ($admin_side_menu as $menu)
                     @permission($menu->name)
                         @if (count($menu->appearedChildren) == 0)
@@ -71,7 +69,6 @@
                                     <i class="link-icon {{ $menu->icon != '' ? $menu->icon : 'fas fa-home' }}"></i>
                                     <span class="link-title">{{ $menu->display_name }}</span>
                                 </a>
-                                {{-- <hr class="sidebar-divider-custom"> --}}
                             </li>
                         @else
                             <li
@@ -109,6 +106,5 @@
             @endrole
 
         </ul>
-
     </div>
 </nav>

@@ -25,22 +25,18 @@ class AudioCategoryController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->ability('admin', 'manage_categories, show_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['manage_categories','show_categories'])) {
             return redirect('admin/index');
         }
 
         $page_categories = Category::with('creator')
             ->where('section', $this->section)
-            ->when(request()->keyword, function ($query) {
-                $keyword = request()->keyword;
-                $query->where('title', 'like', "%{$keyword}%");
-            })
-            ->when(request()->status !== null, function ($query) {
-                $query->where('status', request()->status);
-            })
-            ->when(request()->featured !== null, function ($query) {
-                $query->where('featured', request()->featured);
-            })
+            ->when(request()->keyword, fn($query) =>
+                $query->where('title', 'like', "%".request()->keyword."%"))
+            ->when(request()->status !== null, fn($query) =>
+                $query->where('status', request()->status))
+            ->when(request()->featured !== null, fn($query) =>
+                $query->where('featured', request()->featured))
             ->orderBy(request()->sort_by ?? 'created_at', request()->order_by ?? 'desc')
             ->paginate(request()->limit_by ?? 5);
 
@@ -49,7 +45,7 @@ class AudioCategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['create_categories'])) {
             return redirect('admin/index');
         }
 
@@ -58,7 +54,7 @@ class AudioCategoryController extends Controller
 
     public function store(AudioCategoryRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['create_categories'])) {
             return redirect('admin/index');
         }
 
@@ -69,16 +65,13 @@ class AudioCategoryController extends Controller
             $fileName = 'audio_category_' . time() . '.' . $uploaded->getClientOriginalExtension();
             $path = public_path('assets/audio_categories/' . $fileName);
             $image = $this->imageManager->read($uploaded->getRealPath());
-            $image->scale(width: 800);
-            $image->save($path, quality: 90);
+            $image->scale(width: 800)->save($path, quality: 90);
             $input['img'] = $fileName;
         }
 
         $input['section'] = $this->section;
         $input['created_by'] = auth()->id();
         $input['published_on'] = Carbon::parse($input['published_on'])->format('Y-m-d H:i:s');
-
-
         $input['featured'] = $request->boolean('featured');
 
         Category::create($input);
@@ -91,7 +84,7 @@ class AudioCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_categories'])) {
             return redirect('admin/index');
         }
 
@@ -104,7 +97,7 @@ class AudioCategoryController extends Controller
 
     public function update(AudioCategoryRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_categories'])) {
             return redirect('admin/index');
         }
 
@@ -122,8 +115,7 @@ class AudioCategoryController extends Controller
             $fileName = 'audio_category_' . time() . '.' . $uploaded->getClientOriginalExtension();
             $path = public_path('assets/audio_categories/' . $fileName);
             $image = $this->imageManager->read($uploaded->getRealPath());
-            $image->scale(width: 800);
-            $image->save($path, quality: 90);
+            $image->scale(width: 800)->save($path, quality: 90);
             $input['img'] = $fileName;
         } else {
             unset($input['img']);
@@ -132,7 +124,6 @@ class AudioCategoryController extends Controller
         $input['section'] = $this->section;
         $input['updated_by'] = auth()->id();
         $input['published_on'] = Carbon::parse($input['published_on'])->format('Y-m-d H:i:s');
-
         $input['featured'] = $request->boolean('featured');
 
         $category->update($input);
@@ -145,7 +136,7 @@ class AudioCategoryController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['delete_categories'])) {
             return redirect('admin/index');
         }
 
@@ -182,43 +173,37 @@ class AudioCategoryController extends Controller
         }
     }
 
+    public function toggleFeatured(Request $request): JsonResponse
+    {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_categories'])) {
+            return response()->json(['error' => 'غير مسموح لك بتغيير الميزة'], 403);
+        }
 
-   public function toggleFeatured(Request $request): JsonResponse
-{
-    // تحقق من الصلاحية (لو تستخدم ability/permission)
-    if (! auth()->user() || ! auth()->user()->ability('admin', 'update_categories')) {
-        return response()->json(['error' => 'غير مسموح لك بتغيير الميزة'], 403);
+        $request->validate(['category_id' => 'required|integer|exists:categories,id']);
+
+        try {
+            $category = Category::where('id', $request->category_id)
+                ->where('section', $this->section)
+                ->firstOrFail();
+
+            $category->featured = !$category->featured;
+            $category->save();
+
+            return response()->json([
+                'featured' => (int) $category->featured,
+                'category_id' => $category->id,
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'التصنيف غير موجود'], 404);
+        } catch (\Throwable $e) {
+            \Log::error('toggleFeatured error: '.$e->getMessage());
+            return response()->json(['error' => 'حدث خطأ في الخادم'], 500);
+        }
     }
-
-    // تحقق من المدخلات
-    $request->validate([
-        'category_id' => 'required|integer|exists:categories,id',
-    ]);
-
-    try {
-        $category = Category::where('id', $request->category_id)
-            ->where('section', $this->section)
-            ->firstOrFail();
-
-        $category->featured = !$category->featured;
-        $category->save();
-
-        return response()->json([
-            'featured' => (int) $category->featured,
-            'category_id' => $category->id,
-        ], 200);
-    } catch (ModelNotFoundException $e) {
-        return response()->json(['error' => 'التصنيف غير موجود أو ليس ضمن هذا القسم'], 404);
-    } catch (\Throwable $e) {
-        \Log::error('toggleFeatured error: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
-        return response()->json(['error' => 'حدث خطأ في الخادم'], 500);
-    }
-}
 
     public function remove_image(Request $request)
     {
-        $user = auth()->user();
-        if (!$user->ability(['admin'], ['delete_audio_categories'], ['validate_all' => false])) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['delete_audio_categories'])) {
             abort(403);
         }
 

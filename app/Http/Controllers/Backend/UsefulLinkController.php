@@ -10,15 +10,14 @@ use Carbon\Carbon;
 
 class UsefulLinkController extends Controller
 {
-
     public function index(Request $request)
     {
-        if (! auth()->user()->ability('admin', 'manage_useful_links,show_useful_links')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['manage_useful_links', 'show_useful_links'])) {
             return redirect('admin/index');
         }
 
         $links = UsefulLink::with('creator')
-            ->when($request->keyword, fn($q) => $q->where('title', 'like', '%'.$request->keyword.'%'))
+            ->when($request->keyword, fn($q) => $q->where('title', 'like', "%{$request->keyword}%"))
             ->when($request->status !== null, fn($q) => $q->where('status', $request->status))
             ->orderBy($request->sort_by ?? 'created_at', $request->order_by ?? 'desc')
             ->paginate($request->limit_by ?? 10);
@@ -28,7 +27,7 @@ class UsefulLinkController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->ability('admin', 'create_useful_link')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'create_useful_link')) {
             return redirect('admin/index');
         }
 
@@ -37,15 +36,15 @@ class UsefulLinkController extends Controller
 
     public function store(UsefulLinkRequest $request)
     {
-        if (! auth()->user()->ability('admin', 'create_useful_link')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'create_useful_link')) {
             return redirect('admin/index');
         }
 
         $input = $request->validated();
         $input['created_by'] = auth()->id();
-
-
-        $input['published_on'] = $input['published_on'] ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : null;
+        $input['published_on'] = $input['published_on']
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : null;
 
         UsefulLink::create($input);
 
@@ -55,10 +54,9 @@ class UsefulLinkController extends Controller
         ]);
     }
 
-
     public function edit($id)
     {
-        if (! auth()->user()->ability('admin', 'update_useful_link')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'update_useful_link')) {
             return redirect('admin/index');
         }
 
@@ -69,15 +67,16 @@ class UsefulLinkController extends Controller
 
     public function update(UsefulLinkRequest $request, $id)
     {
-        if (! auth()->user()->ability('admin', 'update_useful_link')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'update_useful_link')) {
             return redirect('admin/index');
         }
 
         $link = UsefulLink::findOrFail($id);
         $input = $request->validated();
-
         $input['updated_by'] = auth()->id();
-        $input['published_on'] = $input['published_on'] ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : null;
+        $input['published_on'] = $input['published_on']
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : null;
 
         $link->update($input);
 
@@ -89,7 +88,7 @@ class UsefulLinkController extends Controller
 
     public function destroy($id)
     {
-        if (! auth()->user()->ability('admin', 'delete_useful_link')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'delete_useful_link')) {
             return redirect('admin/index');
         }
 

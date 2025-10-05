@@ -22,8 +22,13 @@ class DurarDiniyaController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'manage_durar_diniya,show_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['manage_durar_diniya', 'show_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $durars = DurarDiniya::query()
@@ -37,8 +42,13 @@ class DurarDiniyaController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['create_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         return view('backend.durar_diniya.create');
@@ -46,8 +56,13 @@ class DurarDiniyaController extends Controller
 
     public function store(DurarDiniyaRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['create_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $item = new DurarDiniya();
@@ -81,8 +96,13 @@ class DurarDiniyaController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['update_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $item = DurarDiniya::findOrFail($id);
@@ -92,8 +112,13 @@ class DurarDiniyaController extends Controller
 
     public function update(DurarDiniyaRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['update_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $item = DurarDiniya::findOrFail($id);
@@ -133,8 +158,13 @@ class DurarDiniyaController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_durar_diniya')) {
-            return redirect('admin/index');
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['delete_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $item = DurarDiniya::findOrFail($id);
@@ -148,13 +178,21 @@ class DurarDiniyaController extends Controller
 
         $item->delete();
 
-        return redirect()->route('admin.durar_diniya.index')->with('success', 'تم حذف الدرة بنجاح');
+        return redirect()->route('admin.durar_diniya.index')->with([
+            'message' => 'تم حذف الدرة بنجاح',
+            'alert-type' => 'success'
+        ]);
     }
 
     public function remove_image(Request $request)
     {
-        if (!auth()->user()->ability('admin', 'delete_durar_diniya')) {
-            return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية']);
+        $user = auth()->user();
+        if (! $user->ability(
+            ['admin', 'Supervisor'],
+            ['delete_durar_diniya'],
+            ['validate_all' => false]
+        )) {
+            abort(403);
         }
 
         $item = DurarDiniya::findOrFail($request->id);

@@ -17,7 +17,7 @@ class MainSliderController extends Controller
 
     public function index()
     {
-        if (! auth()->user()->ability('admin', 'manage_main_sliders,show_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['manage_main_sliders', 'show_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -36,7 +36,7 @@ class MainSliderController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->ability('admin', 'create_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['create_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -45,7 +45,7 @@ class MainSliderController extends Controller
 
     public function store(MainSliderRequest $request)
     {
-        if (! auth()->user()->ability('admin', 'create_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['create_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -65,7 +65,7 @@ class MainSliderController extends Controller
 
     public function show($id)
     {
-        if (! auth()->user()->ability('admin', 'display_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['display_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -75,7 +75,7 @@ class MainSliderController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->ability('admin', 'update_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['update_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -85,7 +85,7 @@ class MainSliderController extends Controller
 
     public function update(MainSliderRequest $request, $id)
     {
-        if (! auth()->user()->ability('admin', 'update_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['update_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -105,7 +105,7 @@ class MainSliderController extends Controller
 
     public function destroy($id)
     {
-        if (! auth()->user()->ability('admin', 'delete_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['delete_main_sliders'], ['validate_all' => false])) {
             return redirect('admin/index');
         }
 
@@ -125,7 +125,7 @@ class MainSliderController extends Controller
 
     public function remove_image(Request $request)
     {
-        if (! auth()->user()->ability('admin', 'delete_main_sliders')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], ['delete_main_sliders'], ['validate_all' => false])) {
             return response()->json(['status' => false, 'message' => 'ليس لديك صلاحية'], 403);
         }
 
@@ -188,38 +188,17 @@ class MainSliderController extends Controller
 
         $published_on_raw = $request->input('published_on', null);
         if ($published_on_raw) {
-            $published = null;
-
             try {
-                $published = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $published_on_raw);
+                $published = Carbon::parse(str_replace(['ص', 'م'], ['AM', 'PM'], $published_on_raw));
+                $input['published_on'] = $published->format('Y-m-d H:i:s');
             } catch (\Exception $e) {
-                try {
-                    $normalized = str_replace(['ص', 'م'], ['AM', 'PM'], $published_on_raw);
-                    $published = \Carbon\Carbon::createFromFormat('Y/m/d h:i A', $normalized);
-                } catch (\Exception $e2) {
-                    try {
-                        $published = \Carbon\Carbon::parse($published_on_raw);
-                    } catch (\Exception $e3) {
-                        $published = null;
-                    }
-                }
+                $input['published_on'] = null;
             }
-
-            $input['published_on'] = $published ? $published->format('Y-m-d H:i:s') : null;
         } else {
             $input['published_on'] = null;
         }
 
         return $input;
-    }
-
-    public function trans(string $field, string $locale = 'ar')
-    {
-        $val = $this->{$field} ?? null;
-        if (is_array($val)) {
-            return $val[$locale] ?? reset($val) ?? null;
-        }
-        return $val;
     }
 
     protected function handleImageUpload(Request $request, Slider $slider): void
@@ -228,33 +207,15 @@ class MainSliderController extends Controller
             return;
         }
 
-        $imageFile = null;
-        if ($request->hasFile('img')) {
-            $imageFile = $request->file('img');
-        } elseif ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-        } else {
-            $images = $request->file('images');
-            if (is_array($images) && count($images) > 0) {
-                $imageFile = $images[0];
-            }
-        }
-
-        if (! $imageFile) {
-            return;
-        }
+        $imageFile = $request->file('img') ?? $request->file('image') ?? ($request->file('images')[0] ?? null);
+        if (! $imageFile) return;
 
         $manager = new ImageManager(new Driver());
-
-        $base = $slider->slug ?? uniqid('slider_');
-        $file_name = $base . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
+        $file_name = ($slider->slug ?? uniqid('slider_')) . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
 
         $img = $manager->read($imageFile);
-
         $destination = public_path($this->imagePath);
-        if (! File::exists($destination)) {
-            File::makeDirectory($destination, 0755, true);
-        }
+        if (! File::exists($destination)) File::makeDirectory($destination, 0755, true);
         $img->save($destination . $file_name);
 
         $slider->img = $file_name;
@@ -270,29 +231,15 @@ class MainSliderController extends Controller
             File::delete(public_path($this->imagePath . $slider->img));
         }
 
-        $imageFile = null;
-        if ($request->hasFile('img')) {
-            $imageFile = $request->file('img');
-        } elseif ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-        } else {
-            $images = $request->file('images');
-            if (is_array($images) && count($images) > 0) {
-                $imageFile = $images[0];
-            }
-        }
-
-        if (! $imageFile) {
-            return;
-        }
+        $imageFile = $request->file('img') ?? $request->file('image') ?? ($request->file('images')[0] ?? null);
+        if (! $imageFile) return;
 
         $manager = new ImageManager(new Driver());
         $file_name = ($slider->slug ?? 'slider') . '_' . time() . '.' . $imageFile->getClientOriginalExtension();
+
         $img = $manager->read($imageFile);
         $destination = public_path($this->imagePath);
-        if (! File::exists($destination)) {
-            File::makeDirectory($destination, 0755, true);
-        }
+        if (! File::exists($destination)) File::makeDirectory($destination, 0755, true);
         $img->save($destination . $file_name);
 
         $input['img'] = $file_name;

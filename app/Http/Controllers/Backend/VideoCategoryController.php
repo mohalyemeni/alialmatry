@@ -24,22 +24,15 @@ class VideoCategoryController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->ability('admin', 'manage_categories, show_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['manage_categories', 'show_categories'])) {
             return redirect('admin/index');
         }
 
         $page_categories = Category::with('creator')
             ->where('section', $this->section)
-            ->when(request()->keyword, function ($query) {
-                $keyword = request()->keyword;
-                $query->where('title', 'like', "%{$keyword}%");
-            })
-            ->when(request()->status !== null, function ($query) {
-                $query->where('status', request()->status);
-            })
-             ->when(request()->featured !== null, function ($query) {
-                $query->where('featured', request()->featured);
-            })
+            ->when(request()->keyword, fn($q) => $q->where('title', 'like', "%".request()->keyword."%"))
+            ->when(request()->status !== null, fn($q) => $q->where('status', request()->status))
+            ->when(request()->featured !== null, fn($q) => $q->where('featured', request()->featured))
             ->orderBy(request()->sort_by ?? 'created_at', request()->order_by ?? 'desc')
             ->paginate(request()->limit_by ?? 5);
 
@@ -48,15 +41,16 @@ class VideoCategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_categories')) {
             return redirect('admin/index');
         }
+
         return view('backend.video_categories.create');
     }
 
     public function store(CategoryRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'create_categories')) {
             return redirect('admin/index');
         }
 
@@ -74,8 +68,9 @@ class VideoCategoryController extends Controller
 
         $input['section'] = $this->section;
         $input['created_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : now();
-        // ✅ حفظ قيمة الميزة (featured)
+        $input['published_on'] = isset($input['published_on'])
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : now();
         $input['featured'] = $request->boolean('featured');
 
         Category::create($input);
@@ -88,7 +83,7 @@ class VideoCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_categories')) {
             return redirect('admin/index');
         }
 
@@ -101,7 +96,7 @@ class VideoCategoryController extends Controller
 
     public function update(CategoryRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'update_categories')) {
             return redirect('admin/index');
         }
 
@@ -128,8 +123,9 @@ class VideoCategoryController extends Controller
 
         $input['section'] = $this->section;
         $input['updated_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : $category->published_on;
-        // ✅ تحديث قيمة الميزة
+        $input['published_on'] = isset($input['published_on'])
+            ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s')
+            : $category->published_on;
         $input['featured'] = $request->boolean('featured');
 
         $category->update($input);
@@ -142,7 +138,7 @@ class VideoCategoryController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_categories')) {
+        if (!auth()->user()->ability(['admin', 'Supervisor'], 'delete_categories')) {
             return redirect('admin/index');
         }
 
@@ -168,8 +164,10 @@ class VideoCategoryController extends Controller
             $category = Category::where('id', $request->category_id)
                 ->where('section', $this->section)
                 ->firstOrFail();
+
             $category->status = !$category->status;
             $category->save();
+
             return response()->json([
                 'status' => $category->status,
                 'category_id' => $category->id,
@@ -177,9 +175,9 @@ class VideoCategoryController extends Controller
         }
     }
 
-     public function toggleFeatured(Request $request)
+    public function toggleFeatured(Request $request)
     {
-         if (! auth()->user() || ! auth()->user()->ability('admin', 'update_categories')) {
+        if (! auth()->user()->ability(['admin', 'Supervisor'], 'update_categories')) {
             return response()->json(['error' => 'غير مصرح'], 403);
         }
 
@@ -208,18 +206,22 @@ class VideoCategoryController extends Controller
     public function remove_image(Request $request)
     {
         $user = auth()->user();
-        if (! $user->ability(['admin'], ['delete_video_categories'], ['validate_all' => false])) {
+
+        if (! $user->ability(['admin', 'Supervisor'], ['delete_video_categories'], ['validate_all' => false])) {
             abort(403);
         }
+
         $category = Category::find($request->key);
         if (!$category) {
             return response()->json(['error' => 'Not found'], 404);
         }
+
         if ($category->img && File::exists(public_path('assets/video_categories/' . $category->img))) {
             File::delete(public_path('assets/video_categories/' . $category->img));
             $category->img = null;
             $category->save();
         }
+
         return response()->json(['success' => true]);
     }
 }

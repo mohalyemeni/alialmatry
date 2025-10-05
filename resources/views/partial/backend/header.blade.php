@@ -61,11 +61,17 @@
                                       <span>الملف الشخصي</span>
                                   </a>
                               </li>
-                              <li class="dropdown-item py-2">
-                                  <a class="text-body ms-0" href="{{ route('admin.supervisors.index') }}">
-                                      <i class="me-2 icon-md" data-feather="shield"></i>
-                                      <span>المشرفين</span></a>
-                              </li>
+                              @if (auth()->check() &&
+                                      auth()->user()->hasRole('admin') &&
+                                      auth()->user()->ability('admin', 'manage_supervisors,show_supervisors'))
+                                  <li class="dropdown-item py-2">
+                                      <a class="text-body ms-0" href="{{ route('admin.supervisors.index') }}">
+                                          <i class="me-2 icon-md" data-feather="shield"></i>
+                                          <span>المشرفين</span>
+                                      </a>
+                                  </li>
+                              @endif
+
 
                               <li class="dropdown-item py-2">
                                   <a class="text-body ms-0" href="javascript:void(0);"

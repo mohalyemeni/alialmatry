@@ -3,13 +3,13 @@
             <a href="#" class="settings-sidebar-toggler">
                 <i data-feather="settings"></i>
             </a>
-            <h6 class="text-muted mb-2">Sidebar:</h6>
+            <h6 class="text-muted mb-2">تغيير لون القائمة الجانية</h6>
             <div class="mb-3 pb-3 border-bottom">
                 <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" name="sidebarThemeSettings" id="sidebarLight"
                         value="sidebar-light">
                     <label class="form-check-label" for="sidebarLight">
-                        Light
+                        فاتح
                     </label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -17,7 +17,7 @@
                         value="sidebar-dark" checked>
                     <label class="form-check-label" for="sidebarDark">
 
-                        Dark
+                        غامق
                     </label>
                 </div>
             </div>

@@ -18,8 +18,8 @@
         </div>
 
         <!--==============================
-                                        Contact Info Area
-                                    ==============================-->
+                                            Contact Info Area
+                                        ==============================-->
         <div class="space">
             <div class="container">
                 <div class="row gy-4">
@@ -80,8 +80,8 @@
         </div>
 
         <!--==============================
-                                        Contact Area
-                                    ==============================-->
+                                            Contact Area
+                                        ==============================-->
         <div class="space-bottom">
             <div class="container">
                 <div class="row gx-0 gy-4">

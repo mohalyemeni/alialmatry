@@ -84,6 +84,39 @@
     
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const radios = document.querySelectorAll('input[name="sidebarThemeSettings"]');
+            const storageKey = 'sidebarTheme';
+            const defaultTheme = 'sidebar-dark'; // افتراضي عند عدم وجود قيمة محفوظة
+            const body = document.body; // أو العنصر اللي تضيف له الكلاس في تطبيقك
+
+            // 1. قراءة القيمة المحفوظة وتطبيقها
+            const saved = localStorage.getItem(storageKey) || defaultTheme;
+            applyTheme(saved);
+
+            // 2. ضبط حالة الراديو عند التحميل
+            const sel = document.querySelector(`input[name="sidebarThemeSettings"][value="${saved}"]`);
+            if (sel) sel.checked = true;
+
+            // 3. حدث تغيير على كل راديو ليحفظ القيمة ويطبقها فوراً
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (!this.checked) return;
+                    localStorage.setItem(storageKey, this.value);
+                    applyTheme(this.value);
+                });
+            });
+
+            // دالة تطبيق الثيم — تأكد أن أسماء الكلاسات تطابق مشروعك
+            function applyTheme(theme) {
+                // احذف كلاسات الثيم القديمة ثم أضف الجديد
+                body.classList.remove('sidebar-light', 'sidebar-dark');
+                body.classList.add(theme);
+                // إذا كان الثيم يطبق على عنصر آخر غيّر body إلى selector المناسب
+            }
+        });
+    </script>
 
     <?php echo $__env->yieldContent('script'); ?>
 </body>

@@ -11,6 +11,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 class BlogCategoryController extends Controller
 {
@@ -24,22 +25,18 @@ class BlogCategoryController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->ability('admin', 'manage_blog_categories, show_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['manage_blog_categories','show_blog_categories'])) {
             return redirect('admin/index');
         }
 
         $page_categories = Category::with('creator')
             ->where('section', $this->section)
-            ->when(request()->keyword, function ($query) {
-                $keyword = request()->keyword;
-                $query->where('title', 'like', "%{$keyword}%");
-            })
-            ->when(request()->status !== null, function ($query) {
-                $query->where('status', request()->status);
-            })
-            ->when(request()->featured !== null, function ($query) {
-                $query->where('featured', request()->featured);
-            })
+            ->when(request()->keyword, fn($query) =>
+                $query->where('title', 'like', "%".request()->keyword."%"))
+            ->when(request()->status !== null, fn($query) =>
+                $query->where('status', request()->status))
+            ->when(request()->featured !== null, fn($query) =>
+                $query->where('featured', request()->featured))
             ->orderBy(request()->sort_by ?? 'created_at', request()->order_by ?? 'desc')
             ->paginate(request()->limit_by ?? 5);
 
@@ -48,15 +45,16 @@ class BlogCategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->ability('admin', 'create_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['create_blog_categories'])) {
             return redirect('admin/index');
         }
+
         return view('backend.blog_categories.create');
     }
 
     public function store(BlogCategoryRequest $request)
     {
-        if (!auth()->user()->ability('admin', 'create_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['create_blog_categories'])) {
             return redirect('admin/index');
         }
 
@@ -67,16 +65,13 @@ class BlogCategoryController extends Controller
             $fileName = 'blog_category_' . time() . '.' . $uploaded->getClientOriginalExtension();
             $path = public_path('assets/blog_categories/' . $fileName);
             $image = $this->imageManager->read($uploaded->getRealPath());
-            $image->scale(width: 800);
-            $image->save($path, quality: 90);
+            $image->scale(width: 800)->save($path, quality: 90);
             $input['img'] = $fileName;
         }
 
         $input['section'] = $this->section;
         $input['created_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : now();
-
-        // حفظ حقل المميز
+        $input['published_on'] = Carbon::parse($input['published_on'] ?? now())->format('Y-m-d H:i:s');
         $input['featured'] = $request->boolean('featured');
 
         Category::create($input);
@@ -89,7 +84,7 @@ class BlogCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->ability('admin', 'update_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_blog_categories'])) {
             return redirect('admin/index');
         }
 
@@ -102,7 +97,7 @@ class BlogCategoryController extends Controller
 
     public function update(BlogCategoryRequest $request, $id)
     {
-        if (!auth()->user()->ability('admin', 'update_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_blog_categories'])) {
             return redirect('admin/index');
         }
 
@@ -120,8 +115,7 @@ class BlogCategoryController extends Controller
             $fileName = 'blog_category_' . time() . '.' . $uploaded->getClientOriginalExtension();
             $path = public_path('assets/blog_categories/' . $fileName);
             $image = $this->imageManager->read($uploaded->getRealPath());
-            $image->scale(width: 800);
-            $image->save($path, quality: 90);
+            $image->scale(width: 800)->save($path, quality: 90);
             $input['img'] = $fileName;
         } else {
             unset($input['img']);
@@ -129,9 +123,7 @@ class BlogCategoryController extends Controller
 
         $input['section'] = $this->section;
         $input['updated_by'] = auth()->id();
-        $input['published_on'] = isset($input['published_on']) ? Carbon::parse($input['published_on'])->format('Y-m-d H:i:s') : $category->published_on;
-
-        // تحديث قيمة المميز
+        $input['published_on'] = Carbon::parse($input['published_on'] ?? $category->published_on)->format('Y-m-d H:i:s');
         $input['featured'] = $request->boolean('featured');
 
         $category->update($input);
@@ -144,7 +136,7 @@ class BlogCategoryController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->ability('admin', 'delete_blog_categories')) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['delete_blog_categories'])) {
             return redirect('admin/index');
         }
 
@@ -164,7 +156,7 @@ class BlogCategoryController extends Controller
         ]);
     }
 
-    public function toggleStatus(Request $request)
+    public function toggleStatus(Request $request): JsonResponse
     {
         if ($request->ajax()) {
             $category = Category::where('id', $request->category_id)
@@ -181,11 +173,10 @@ class BlogCategoryController extends Controller
         }
     }
 
-    // توجل للمميز
-    public function toggleFeatured(Request $request)
+    public function toggleFeatured(Request $request): JsonResponse
     {
-        if (! auth()->user() || ! auth()->user()->ability('admin', 'update_blog_categories')) {
-            return response()->json(['error' => 'غير مصرح'], 403);
+        if (!auth()->user()->ability(['admin','Supervisor'], ['update_blog_categories'])) {
+            return response()->json(['error' => 'غير مسموح لك بتغيير الميزة'], 403);
         }
 
         $request->validate(['category_id' => 'required|integer|exists:categories,id']);
@@ -203,17 +194,16 @@ class BlogCategoryController extends Controller
                 'category_id' => $category->id,
             ], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'التصنيف غير موجود أو ليس ضمن هذا القسم'], 404);
+            return response()->json(['error' => 'التصنيف غير موجود'], 404);
         } catch (\Throwable $e) {
-            \Log::error('BlogCategory toggleFeatured error: '.$e->getMessage());
-            return response()->json(['error' => 'خطأ في الخادم'], 500);
+            \Log::error('toggleFeatured error: '.$e->getMessage());
+            return response()->json(['error' => 'حدث خطأ في الخادم'], 500);
         }
     }
 
-    public function remove_image(Request $request)
+    public function remove_image(Request $request): JsonResponse
     {
-        $user = auth()->user();
-        if (!$user->ability(['admin'], ['delete_blog_categories'], ['validate_all' => false])) {
+        if (!auth()->user()->ability(['admin','Supervisor'], ['delete_blog_categories'])) {
             abort(403);
         }
 
