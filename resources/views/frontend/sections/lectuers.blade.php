@@ -2,8 +2,18 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
+            <!-- LEFT: Tabs / Audio list (مثل مرئيات لكن هنا tabs) -->
             <section class="tabs-section col-lg-7 col-12">
-                <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
+                <div class="section-head d-flex align-items-center justify-content-between mb-4 title-header-noline">
+                    <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
+
+                    <div class="btn-group">
+                        <a href="{{ route('frontend.audios.index') }}" class="th-btn style1">
+                            <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                        </a>
+                    </div>
+                </div>
+
                 <ul class="nav nav-tabs" id="audioTabs" role="tablist">
                     @foreach ($audioCategories as $i => $cat)
                         <li class="nav-item" role="presentation">
@@ -98,11 +108,21 @@
                 </div>
             </section>
 
+            <!-- RIGHT: Sidebar / Durars -->
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
-                    <h3 class="widget_title widget_title_new mb-5 title-header-noline fadeInRight wow"
-                        data-wow-delay=".3s">الدرر السنية
-                    </h3>
+                    <div class="section-head d-flex align-items-center justify-content-between mb-4">
+                        <h3 class="widget_title widget_title_new mb-0 title-header-noline fadeInRight wow"
+                            data-wow-delay=".3s">الدرر السنية
+                        </h3>
+
+                        <!-- نقل زر "قراءة المزيد" إلى جانب العنوان مثل المرئيات -->
+                        <div class="btn-group">
+                            <a href="{{ route('frontend.durars.index') }}" class="th-btn new_pad">
+                                قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
                         <ul class="styled-list">
@@ -121,12 +141,7 @@
                         </ul>
                     </div>
 
-                    <div class="d-flex justify-content-end align-items-center mt-4 px-1 fadeInLeft wow"
-                        data-wow-delay=".7s">
-                        <a href="{{ route('frontend.durars.index') }}" class="th-btn new_pad">
-                            قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
-                        </a>
-                    </div>
+                    <!-- حذفت تكرار زر "قراءة المزيد" أسفل لأنّه الآن بجانب العنوان -->
                 </aside>
             </div>
         </div>
@@ -142,5 +157,11 @@
         .widget_title_new {
             margin-top: 30px;
         }
+    }
+
+    /* small tweak to make the new section-heads visually similar to الفيديوهات */
+    .section-head .btn-group .th-btn {
+        padding-left: 14px;
+        padding-right: 14px;
     }
 </style>
