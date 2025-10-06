@@ -117,7 +117,8 @@
                                                     <div class="text-muted small d-flex align-items-center"
                                                         style="gap:8px;">
                                                         <span class="d-flex align-items-center">
-                                                            <i class="fa-solid fa-eye me-2 ms-2" aria-hidden="true"></i>
+                                                            <i class="fa-solid fa-eye me-2 ms-2 mb-1"
+                                                                aria-hidden="true"></i>
                                                             {{ $rd->views ?? 0 }}
                                                         </span>
                                                     </div>
