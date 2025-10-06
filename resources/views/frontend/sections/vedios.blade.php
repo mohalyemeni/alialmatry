@@ -67,7 +67,7 @@
                                     <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                         class="video-link d-block position-relative" aria-label="{{ e($v->title) }}">
                                         <!-- added st-vc-img -->
-                                        <div class="box-img global-img tow_height st-vc-img"
+                                        <div class="box-img global-img tow_height st-vc-img mb-0"
                                             style="position:relative; overflow:hidden;">
                                             <img src="{{ $v->thumbnail }}" alt="{{ e($v->title) }}" class="tow_height"
                                                 style="width:100%; height:100%; object-fit:cover;">
@@ -120,7 +120,7 @@
                             </a>
 
                             <div class="card-body st-card-body">
-                                <h5 class="card-title st-title">
+                                <h5 class="card-title st-title text-end">
                                     <a href="{{ route('frontend.videos.show', $main->slug) }}"
                                         class="text-dark ellipsis-title" title="{{ e($main->title) }}">
                                         {{ e($smartLimit($main->title, 23)) }}

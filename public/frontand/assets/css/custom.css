@@ -117,7 +117,6 @@
 
 .tabs-section .tab-content {
     margin-top: 30px;
-    background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
     font-size: 17px;
@@ -136,7 +135,7 @@
     }
 
     .tabs-section .tab-content {
-        padding: 15px;
+        padding: 0;
     }
     .footer-widget .widget_title {
         margin-right: 0 !important;
@@ -264,7 +263,7 @@
     background-color: transparent;
 }
 .audio-play-wrapp {
-    padding: 5px 32px;
+    padding: 5px 10px;
 }
 
 .flex_mine {
@@ -2105,7 +2104,7 @@ h4 {
 .st-card-body {
     padding: 12px 14px 16px;
     text-align: center;
-    background: transparent;
+    background: #3748681f;
 }
 
 .st-title {
@@ -2136,7 +2135,7 @@ h4 {
         font-size: 16px;
     }
     .st-title {
-        font-size: 0.92rem;
+        font-size: 18px;
         -webkit-line-clamp: 2;
     }
 }
