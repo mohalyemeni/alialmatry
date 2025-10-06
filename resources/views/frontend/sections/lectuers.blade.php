@@ -111,19 +111,15 @@
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
                     <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                        <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الدرر السنية</h3>
 
-                        <div
-                            class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
-                            <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الدرر السنية
-                            </h3>
-
-                            <div class="btn-group">
-                                <a href="{{ route('frontend.durars.index') }}" class="th-btn style1">
-                                    <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
-                                </a>
-                            </div>
+                        <div class="btn-group">
+                            <a href="{{ route('frontend.durars.index') }}" class="th-btn style1">
+                                <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                            </a>
                         </div>
                     </div>
+
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
                         <ul class="styled-list">
