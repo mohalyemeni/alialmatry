@@ -83,7 +83,17 @@
                 <!-- قسم تصنيفات الفتاوى -->
                 <div class="col-xxl-4 col-lg-4">
                     <aside class="sidebar-area">
-                        <h3 class="widget_title title-header-noline mb-5 fadeInRight wow">تصنيفات الفتاوى</h3>
+                        <!-- عنوان تصنيفات الفتاوى + زر تصفح المزيد -->
+                        <div
+                            class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                            <h3 class="widget_title mb-0 fadeInRight wow">تصنيفات الفتاوى</h3>
+
+                            <div class="btn-group">
+                                <a href="{{ route('frontend.fatawas.index') }}" class="th-btn style1">
+                                    <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                                </a>
+                            </div>
+                        </div>
 
                         <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
                             <ul class="styled-list">
@@ -113,13 +123,7 @@
                                 @endif
                             </ul>
                         </div>
-
-                        <!-- يظل هذا كما هو -->
-                        <div class="d-flex justify-content-end align-items-center mt-4 px-1 fadeInLeft wow">
-                            <a href="{{ route('frontend.fatawas.index') }}" class="th-btn new_pad">
-                                قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
-                            </a>
-                        </div>
+                        <!-- الزر السفلي تمت إزالته -->
                     </aside>
                 </div>
 
