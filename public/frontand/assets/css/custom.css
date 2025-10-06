@@ -2146,3 +2146,8 @@ h4 {
         min-width: 29px;
     }
 }
+@media (max-width: 991px) {
+    #faq-sec .row.flex-row-reverse {
+        flex-direction: column-reverse !important;
+    }
+}
