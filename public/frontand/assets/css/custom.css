@@ -2166,7 +2166,7 @@ h4 {
     .tabs-section .audio-play-wrapp {
         display: flex !important; /* تأكيد أنه flex */
         justify-content: space-between !important; /* العناصر عند الطرفين */
-        align-items: baseline !important;
+        align-items: self-start !important;
         gap: 10px;
     }
 
