@@ -6,12 +6,26 @@
         <div class="container">
             <div class="row flex-row-reverse">
 
+                <!-- قسم الفتاوى -->
                 <div class="col-xxl-8 col-lg-8">
                     <div class="accordion-area style2 load-more-active accordion" id="faqAccordion">
-                        <h3 class="widget_title title-header-noline mb-5 fadeInRight wow">الفتاوى</h3>
+                        <!-- عنوان الفتاوى + زر تصفح المزيد -->
+                        <div
+                            class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                            <h3 class="widget_title mb-0 fadeInRight wow">الفتاوى</h3>
+
+                            <div class="btn-group">
+                                <a href="{{ route('frontend.fatawas.index') }}" class="th-btn style1">
+                                    <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                                </a>
+                            </div>
+                        </div>
 
                         @php
-                            $displayFatawas = ($fatawas instanceof \Illuminate\Support\Collection) ? $fatawas->take(5) : collect($fatawas)->take(5);
+                            $displayFatawas =
+                                $fatawas instanceof \Illuminate\Support\Collection
+                                    ? $fatawas->take(5)
+                                    : collect($fatawas)->take(5);
                         @endphp
 
                         @if ($displayFatawas->isNotEmpty())
@@ -48,18 +62,25 @@
                             <p class="text-muted">لا توجد فتاوى حالياً.</p>
                         @endif
 
-                        <div class="d-flex justify-content-between align-items-center mt-3 px-1">
+                        <!-- عدد الفتاوى فقط (بدون الزر الآن) -->
+                        <div class="d-flex justify-content-start align-items-center mt-3 px-1">
                             <div class="fw-bold flex_mine fadeInUp wow">
-                                <p class="tags text-muted">عدد الفتاوى</p>
-                                <span class="num_fata count_span">{{ isset($fatawasCount) ? $fatawasCount : (is_array($fatawas) ? count($fatawas) : ( $fatawas instanceof \Illuminate\Support\Collection ? $fatawas->count() : 0 )) }}</span>
+                                <p class="tags text-muted mb-0">عدد الفتاوى</p>
+                                <span class="num_fata count_span">
+                                    {{ isset($fatawasCount)
+                                        ? $fatawasCount
+                                        : (is_array($fatawas)
+                                            ? count($fatawas)
+                                            : ($fatawas instanceof \Illuminate\Support\Collection
+                                                ? $fatawas->count()
+                                                : 0)) }}
+                                </span>
                             </div>
-                            <a href="{{ route('frontend.fatawas.index') }}" class="th-btn new_pad fadeInRight wow">
-                                قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
-                            </a>
                         </div>
                     </div>
                 </div>
 
+                <!-- قسم تصنيفات الفتاوى -->
                 <div class="col-xxl-4 col-lg-4">
                     <aside class="sidebar-area">
                         <h3 class="widget_title title-header-noline mb-5 fadeInRight wow">تصنيفات الفتاوى</h3>
@@ -93,6 +114,7 @@
                             </ul>
                         </div>
 
+                        <!-- يظل هذا كما هو -->
                         <div class="d-flex justify-content-end align-items-center mt-4 px-1 fadeInLeft wow">
                             <a href="{{ route('frontend.fatawas.index') }}" class="th-btn new_pad">
                                 قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
@@ -104,37 +126,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('livewire:load', function() {
-            Livewire.hook('message.processed', (message, component) => {
-                if (typeof WOW !== 'undefined') {
-                    new WOW().init();
-                }
-            });
-
-            window.addEventListener('fatawa-debug', function(e) {
-                console.log("FATAWA DEBUG:", e.detail);
-                if (Array.isArray(e.detail.messages)) {
-                    const debugOutput = document.getElementById('debug-output');
-                    if (debugOutput) {
-                        let html = '';
-                        e.detail.messages.forEach(m => {
-                            html += '<div style="border-bottom: 1px solid #333; padding: 5px 0;">' +
-                                m + '</div>';
-                        });
-                        debugOutput.innerHTML = html;
-                        debugOutput.scrollTop = debugOutput.scrollHeight;
-                    }
-
-                    e.detail.messages.forEach(m => console.log(m));
-                }
-            });
-        });
-
-        Livewire.on('fatawasLoaded', () => {
-            console.log('fatawas updated via Livewire');
-        });
-    </script>
-
 </div>
