@@ -53,11 +53,12 @@
                             alt="{{ e($durar->title ?? 'صورة') }}" class="blog-single-img" loading="lazy">
                     </div>
 
-                    <p class="text-muted mb-3">
-                        تاريخ النشر:
-                        {{ optional($durar->published_on) ? \Carbon\Carbon::parse($durar->published_on)->format('Y-m-d') : '' }}
+                    <p class="text-muted mb-3 d-flex align-items-center flex-wrap">
+                        <span>تاريخ النشر:
+                            {{ optional($durar->published_on) ? \Carbon\Carbon::parse($durar->published_on)->format('Y-m-d') : '' }}
+                        </span>
 
-                        <span class="ms-3 d-inline-flex align-items-center">
+                        <span class="ms-3 d-flex align-items-center">
                             <i class="fa-solid fa-eye me-2 ms-2" aria-hidden="true"></i>
                             {{ $durar->views ?? 0 }}
                         </span>
