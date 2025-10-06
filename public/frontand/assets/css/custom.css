@@ -2149,5 +2149,6 @@ h4 {
 @media (max-width: 991px) {
     #faq-sec .row.flex-row-reverse {
         flex-direction: column-reverse !important;
+        gap: 40px;
     }
 }
