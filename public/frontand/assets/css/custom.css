@@ -2202,3 +2202,6 @@ h4 {
     overflow: hidden;
     border-radius: 0;
 }
+.pt-60 {
+    padding-top: 60px !important;
+}
