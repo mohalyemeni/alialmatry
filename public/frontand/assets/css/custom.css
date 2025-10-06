@@ -2166,13 +2166,13 @@ h4 {
     .tabs-section .audio-play-wrapp {
         display: flex !important; /* تأكيد أنه flex */
         justify-content: space-between !important; /* العناصر عند الطرفين */
-        align-items: center !important;
+        align-items: start !important;
         gap: 10px;
     }
 
     /* ضع زرّات (button-wrapp) أولاً */
     .tabs-section .audio-play-wrapp > .button-wrapp {
-        order: 1 !important; /* يظهر على اليسار (بما أننا لا نغيّر اتجاه row) */
+        order: 2 !important; /* يظهر على اليسار (بما أننا لا نغيّر اتجاه row) */
         flex: 0 0 auto;
         direction: ltr; /* حافظ على ترتيب الأزرار داخلها (play ثم download) */
         text-align: left;
@@ -2181,7 +2181,7 @@ h4 {
 
     /* ضع النص (flex-1) ثانياً ولونه في اليمين */
     .tabs-section .audio-play-wrapp > .flex-1 {
-        order: 2 !important;
+        order: 1 !important;
         flex: 1 1 auto;
         text-align: right !important; /* يضمن وصول العنوان للمحاذاة اليمنى */
     }
