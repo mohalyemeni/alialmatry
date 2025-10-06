@@ -18,6 +18,7 @@
 @section('twitter_image', $durar->img && file_exists(public_path('assets/durar_diniya/images/' . $durar->img)) ?
     asset('assets/durar_diniya/images/' . $durar->img) : asset('frontand/assets/img/No-Image.png'))
 @section('twitter_keywords', "درر, {$durar->title}, إسلام, حديث")
+
 @section('content')
     <div class="breadcumb-wrapper"
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
@@ -43,8 +44,9 @@
             <!-- main -->
             <main class="col-12 col-lg-8">
                 <article class="durar-article">
-                    <h3 class=" widget_title title-header-noline fadeInRight wow mb-4  text-wrap">
-                        {{ e($durar->title ?? '') }}</h3>
+                    <h3 class="widget_title title-header-noline fadeInRight wow mb-4 text-wrap">
+                        {{ e($durar->title ?? '') }}
+                    </h3>
 
                     <div class="mb-4 blog-single-img-wrapper blog-img">
                         <img src="{{ $img ?? asset('frontand/assets/img/No-Image.png') }}"
@@ -71,7 +73,7 @@
                 </article>
             </main>
 
-
+            <!-- sidebar -->
             <aside class="col-12 col-lg-4">
                 <div class="sticky-sidebar">
                     <div class="card mb-4 shadow-sm">
@@ -114,13 +116,9 @@
                                                         {{ $rd->published_on ?? '' }}
                                                     </small>
 
-                                                    <div class="text-muted small d-flex align-items-center"
-                                                        style="gap:8px;">
-                                                        <span class="d-flex align-items-center">
-                                                            <i class="fa-solid fa-eye me-2 ms-2 mb-1"
-                                                                aria-hidden="true"></i>
-                                                            {{ $rd->views ?? 0 }}
-                                                        </span>
+                                                    <div class="text-muted small d-flex align-items-center">
+                                                        <i class="fa-solid fa-eye me-2 ms-2" aria-hidden="true"></i>
+                                                        {{ $rd->views ?? 0 }}
                                                     </div>
                                                 </div>
 
@@ -137,8 +135,6 @@
 
                         </div>
                     </div>
-
-
                 </div>
             </aside>
         </div>
