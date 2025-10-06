@@ -2016,9 +2016,6 @@ h4 {
 .contact-media .icon-btn {
     color: #fff;
 }
-/* --------------------------------------------------------------------------------------- */
-/* =================== Starlight (scoped) video card styles =================== */
-/* استخدم بادئة st- حتى لا تتصادم مع أي كلاس آخر */
 
 .st-video-card {
     background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
@@ -2045,7 +2042,6 @@ h4 {
     box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
 }
 
-/* صورة الحاوية (مقيدة فقط لعناصر تحمل st-*) */
 .st-vc-img {
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
@@ -2067,7 +2063,6 @@ h4 {
     transform: scale(1.06);
 }
 
-/* زر التشغيل (محدود فقط لعناصر .st-play-btn ضمن .st-video-card) */
 .st-play-btn {
     width: 60px;
     height: 60px;
@@ -2093,7 +2088,6 @@ h4 {
     background: rgba(0, 0, 0, 0.64);
 }
 
-/* التركيز لأغراض الوصول (مقيد) */
 .st-video-card a:focus-visible,
 .st-video-card button:focus-visible {
     outline: 3px solid rgba(147, 132, 71, 0.18);
@@ -2124,7 +2118,6 @@ h4 {
     box-shadow: 0 26px 64px rgba(15, 23, 42, 0.14);
 }
 
-/* responsive tweaks */
 @media (max-width: 576px) {
     .st-video-card {
         border-radius: 10px;
@@ -2160,54 +2153,52 @@ h4 {
 .preloader-inner {
     line-height: 2;
 }
-/* ======== Audio mobile: put buttons left and text right ======== */
+
 @media (max-width: 991px) {
-    /* scope to tabs-section لتجنب تأثير على أماكن أخرى */
     .tabs-section .audio-play-wrapp {
-        display: flex !important; /* تأكيد أنه flex */
-        justify-content: space-between !important; /* العناصر عند الطرفين */
+        display: flex !important;
+        justify-content: space-between !important;
         align-items: self-start !important;
         gap: 10px;
     }
 
-    /* ضع زرّات (button-wrapp) أولاً */
     .tabs-section .audio-play-wrapp > .button-wrapp {
-        order: 2 !important; /* يظهر على اليسار (بما أننا لا نغيّر اتجاه row) */
+        order: 2 !important;
         flex: 0 0 auto;
-        direction: ltr; /* حافظ على ترتيب الأزرار داخلها (play ثم download) */
+        direction: ltr;
         text-align: left;
         margin: 0;
     }
 
-    /* ضع النص (flex-1) ثانياً ولونه في اليمين */
     .tabs-section .audio-play-wrapp > .flex-1 {
         order: 1 !important;
         flex: 1 1 auto;
-        text-align: right !important; /* يضمن وصول العنوان للمحاذاة اليمنى */
+        text-align: right !important;
     }
 
-    /* تأكد من أن رابط العنوان يحجز السطر كله ويظهر باليمين */
     .tabs-section .audio-play-wrapp .card-title a {
         display: block;
     }
 }
 @media (max-width: 991px) {
     .list-group-item1 {
-        flex-direction: column !important; /* يجعل النص والزر في عمود */
-        align-items: flex-start !important; /* يجعل المحاذاة من اليمين */
+        flex-direction: column !important;
+        align-items: flex-start !important;
     }
 
     .list-group-item1 .button-wrapp {
-        margin-top: 10px; /* مسافة بسيطة فوق الزر */
-        width: 100%; /* يجعل الزر يأخذ عرض العمود */
+        margin-top: 10px;
+        width: 100%;
         display: flex;
-        justify-content: flex-start; /* الزر بمحاذاة اليمين */
+        justify-content: flex-start;
     }
-
-    /* في حال أردت الزر يتوسّط في المنتصف على الموبايل */
-    /*
-  .list-group-item1 .button-wrapp {
-    justify-content: center;
-  }
-  */
+}
+@media (max-width: 991px) {
+    .global-img {
+        margin-bottom: 0;
+    }
+}
+.mini-counter-image .box-img {
+    overflow: hidden;
+    border-radius: 0;
 }
