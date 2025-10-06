@@ -90,7 +90,7 @@
 
                             <div class="btn-group">
                                 <a href="{{ route('frontend.fatawas.index') }}" class="th-btn style1">
-                                    <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                                    <span class="btn-text" data-back=المزيد" data-front=المزيد"></span>
                                 </a>
                             </div>
                         </div>
