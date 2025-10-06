@@ -2,7 +2,7 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
-            <!-- LEFT: Tabs / Audio list (header like المرئيات) -->
+            <!-- LEFT: Tabs / Audio list -->
             <section class="tabs-section col-lg-7 col-12">
                 <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                     <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
@@ -55,17 +55,19 @@
                                         }
                                     @endphp
 
+                                    <!-- هنا أضفنا الكلاس الجديد audio-item-rtl -->
                                     <div
-                                        class="audio-play-wrapp d-flex justify-content-between align-items-center mb-2">
+                                        class="audio-play-wrapp d-flex justify-content-between align-items-center mb-2 audio-item-rtl">
                                         <div class="flex-1">
-                                            <h5 class="card-title mb-0 a_font_size">
+                                            <h5 class="card-title mb-0 a_font_size text-end">
                                                 <a
                                                     href="{{ route('frontend.audios.show', $audio->slug ?? $audio->id) }}">
                                                     {{ e(\Illuminate\Support\Str::limit($audio->title, 80)) }}
                                                 </a>
                                             </h5>
                                             @if (!empty($audio->author))
-                                                <small class="d-block text-muted">{{ e($audio->author) }}</small>
+                                                <small
+                                                    class="d-block text-muted text-end">{{ e($audio->author) }}</small>
                                             @endif
                                         </div>
 
@@ -108,8 +110,9 @@
                 </div>
             </section>
 
+            <!-- RIGHT: Durar section -->
             <div class="col-xxl-5 col-lg-5">
-                <aside class="sidebar-area ">
+                <aside class="sidebar-area">
                     <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                         <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الدرر السنية</h3>
 
@@ -119,7 +122,6 @@
                             </a>
                         </div>
                     </div>
-
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
                         <ul class="styled-list">
@@ -137,8 +139,6 @@
                             @endif
                         </ul>
                     </div>
-
-                    <!-- لقد نقلنا زر "تصفح المزيد" إلى جانب العنوان لذلك حذفت التكرار الأسفل -->
                 </aside>
             </div>
         </div>
@@ -146,6 +146,27 @@
 @endif
 
 <style>
+    /* الصوتيات - ترتيب العنوان والأزرار باتجاه RTL */
+    .audio-item-rtl {
+        direction: rtl;
+    }
+
+    .audio-item-rtl .button-wrapp {
+        direction: ltr;
+        /* حتى تبقى الأزرار بنفس ترتيبها */
+        text-align: left;
+    }
+
+    .audio-item-rtl .card-title,
+    .audio-item-rtl small {
+        text-align: right;
+    }
+
+    .audio-item-rtl .button-wrapp {
+        gap: 8px;
+    }
+
+    /* المسافات للموبايل */
     @media (max-width: 991px) {
         .sidebar-area {
             padding-top: 80px;
