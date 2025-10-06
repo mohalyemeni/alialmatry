@@ -2142,7 +2142,7 @@ h4 {
 }
 
 @media (max-width: 575.98px) {
-    .title-header-line {
+    .section-head.title-header-line::after {
         display: none !important;
     }
 }
