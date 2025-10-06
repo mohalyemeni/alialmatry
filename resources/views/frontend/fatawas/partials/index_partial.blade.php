@@ -3,7 +3,7 @@
     @if ($categories->isEmpty())
         <p class="text-muted">لا توجد تصنيفات حالياً.</p>
     @else
-        <div class="row gy-4">
+        <div class="row gy-4 pb-30">
             @foreach ($categories as $index => $category)
                 @php
                     $delay = 0.3 + $index * 0.04;
