@@ -83,7 +83,7 @@
                                     </a>
                                     <!-- added st-card-body and st-title -->
                                     <div class="card-body st-card-body">
-                                        <h5 class="card-title st-title">
+                                        <h5 class="card-title st-title text-end">
                                             <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                                 class="text-dark ellipsis-title" title="{{ e($v->title) }}">
                                                 {{ e($smartLimit($v->title, 23)) }}
