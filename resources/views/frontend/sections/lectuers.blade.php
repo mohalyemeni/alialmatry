@@ -2,9 +2,9 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
-            <!-- LEFT: Tabs / Audio list (مثل مرئيات لكن هنا tabs) -->
+            <!-- LEFT: Tabs / Audio list (header like المرئيات) -->
             <section class="tabs-section col-lg-7 col-12">
-                <div class="section-head d-flex align-items-center justify-content-between mb-4 title-header-noline">
+                <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                     <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
 
                     <div class="btn-group">
@@ -108,18 +108,17 @@
                 </div>
             </section>
 
-            <!-- RIGHT: Sidebar / Durars -->
+            <!-- RIGHT: Sidebar / Durars (header like المرئيات with "تصفح المزيد") -->
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
-                    <div class="section-head d-flex align-items-center justify-content-between mb-4">
+                    <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                         <h3 class="widget_title widget_title_new mb-0 title-header-noline fadeInRight wow"
                             data-wow-delay=".3s">الدرر السنية
                         </h3>
 
-                        <!-- نقل زر "قراءة المزيد" إلى جانب العنوان مثل المرئيات -->
                         <div class="btn-group">
-                            <a href="{{ route('frontend.durars.index') }}" class="th-btn new_pad">
-                                قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
+                            <a href="{{ route('frontend.durars.index') }}" class="th-btn style1">
+                                <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
                             </a>
                         </div>
                     </div>
@@ -141,7 +140,7 @@
                         </ul>
                     </div>
 
-                    <!-- حذفت تكرار زر "قراءة المزيد" أسفل لأنّه الآن بجانب العنوان -->
+                    <!-- لقد نقلنا زر "تصفح المزيد" إلى جانب العنوان لذلك حذفت التكرار الأسفل -->
                 </aside>
             </div>
         </div>
@@ -157,11 +156,5 @@
         .widget_title_new {
             margin-top: 30px;
         }
-    }
-
-    /* small tweak to make the new section-heads visually similar to الفيديوهات */
-    .section-head .btn-group .th-btn {
-        padding-left: 14px;
-        padding-right: 14px;
     }
 </style>
