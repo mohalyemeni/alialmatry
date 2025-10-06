@@ -46,7 +46,7 @@
         <div class="container">
             <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                 <h3 class="widget_title mb-0">
-                    الفيديوهات
+                    المرئيات
                 </h3>
 
                 <div class="btn-group">
