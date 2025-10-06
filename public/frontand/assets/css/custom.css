@@ -2140,9 +2140,3 @@ h4 {
         -webkit-line-clamp: 2;
     }
 }
-
-@media (max-width: 575.98px) {
-    .section-head.title-header-line::after {
-        display: none !important;
-    }
-}
