@@ -47,7 +47,6 @@
             <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                 <h3 class="widget_title mb-0">
                     الفيديوهات
-
                 </h3>
 
                 <div class="btn-group">
@@ -63,26 +62,29 @@
                     <div class="row gy-4">
                         @forelse ($smallItems as $v)
                             <div class="col-md-6">
-                                <div class="mini-counter-image wow fadeInUp" data-wow-delay=".3s">
+                                <!-- added scoped class st-video-card -->
+                                <div class="mini-counter-image wow fadeInUp st-video-card" data-wow-delay=".3s">
                                     <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                         class="video-link d-block position-relative" aria-label="{{ e($v->title) }}">
-                                        <div class="box-img global-img tow_height"
+                                        <!-- added st-vc-img -->
+                                        <div class="box-img global-img tow_height st-vc-img"
                                             style="position:relative; overflow:hidden;">
                                             <img src="{{ $v->thumbnail }}" alt="{{ e($v->title) }}" class="tow_height"
                                                 style="width:100%; height:100%; object-fit:cover;">
-                                            <button class="play-btn custom-center-play-btn btn-play-video"
+                                            <!-- replaced classes with st-play-btn (keeps btn-play-video for JS) -->
+                                            <button class="st-play-btn btn-play-video"
                                                 data-youtube-id="{{ e($v->youtube_id) }}"
                                                 data-title="{{ e($v->title) }}"
                                                 aria-label="تشغيل {{ e(\Illuminate\Support\Str::limit($v->title, 60)) }}"
-                                                type="button"
-                                                style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); border:none; background:transparent; font-size:28px; color:#fff;">
+                                                type="button">
                                                 <i class="fa-solid fa-play fa-flip-horizontal"></i>
                                             </button>
                                         </div>
                                     </a>
 
-                                    <div class="card-body">
-                                        <h5 class="card-title">
+                                    <!-- added st-card-body and st-title -->
+                                    <div class="card-body st-card-body">
+                                        <h5 class="card-title st-title">
                                             <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                                 class="text-dark ellipsis-title" title="{{ e($v->title) }}">
                                                 {{ e($smartLimit($v->title, 15)) }}
@@ -98,26 +100,28 @@
 
                 <div class="col-xl-6">
                     @if ($main)
-                        <div class="mini-counter-image wow fadeInUp global-img box-img" data-wow-delay=".3s">
+                        <!-- added st-video-card and st-featured for main -->
+                        <div class="mini-counter-image wow fadeInUp global-img box-img st-video-card st-featured"
+                            data-wow-delay=".3s">
                             <a href="{{ route('frontend.videos.show', $main->slug) }}"
                                 class="video-link d-block position-relative" aria-label="{{ e($main->title) }}">
-                                <div class="counter-image global-img box-img vedio_heigh"
+                                <!-- added st-vc-img -->
+                                <div class="counter-image global-img box-img vedio_heigh st-vc-img"
                                     style="position:relative; overflow:hidden;">
                                     <img src="{{ $main->thumbnail }}" alt="{{ e($main->title) }}"
                                         style="width:100%; height:100%; object-fit:cover;">
-                                    <button class="play-btn custom-center-play-btn btn-play-video"
+                                    <button class="st-play-btn btn-play-video"
                                         data-youtube-id="{{ e($main->youtube_id) }}"
                                         data-title="{{ e($main->title) }}"
                                         aria-label="تشغيل {{ e(\Illuminate\Support\Str::limit($main->title, 30)) }}"
-                                        type="button"
-                                        style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); border:none; background:transparent; font-size:40px; color:#fff;">
+                                        type="button">
                                         <i class="fa-solid fa-play fa-flip-horizontal"></i>
                                     </button>
                                 </div>
                             </a>
 
-                            <div class="card-body">
-                                <h5 class="card-title">
+                            <div class="card-body st-card-body">
+                                <h5 class="card-title st-title">
                                     <a href="{{ route('frontend.videos.show', $main->slug) }}"
                                         class="text-dark ellipsis-title" title="{{ e($main->title) }}">
                                         {{ e($smartLimit($main->title, 15)) }}

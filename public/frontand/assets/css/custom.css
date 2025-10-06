@@ -2017,3 +2017,129 @@ h4 {
 .contact-media .icon-btn {
     color: #fff;
 }
+/* --------------------------------------------------------------------------------------- */
+/* =================== Starlight (scoped) video card styles =================== */
+/* استخدم بادئة st- حتى لا تتصادم مع أي كلاس آخر */
+
+.st-video-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.22s;
+    will-change: transform;
+}
+
+.st-video-card::after {
+    content: "";
+    position: absolute;
+    inset: 1.6px;
+    border-radius: 12px;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.st-video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+}
+
+/* صورة الحاوية (مقيدة فقط لعناصر تحمل st-*) */
+.st-vc-img {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    overflow: hidden;
+    min-height: 140px;
+    position: relative;
+    background: #f4f6f8;
+}
+
+.st-vc-img img {
+    transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.st-video-card:hover .st-vc-img img {
+    transform: scale(1.06);
+}
+
+/* زر التشغيل (محدود فقط لعناصر .st-play-btn ضمن .st-video-card) */
+.st-play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    border: none;
+    box-shadow: 0 10px 20px rgba(2, 6, 23, 0.45);
+    transition: transform 0.18s ease, background 0.18s ease;
+    backdrop-filter: blur(4px);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.st-play-btn:hover {
+    transform: translate(-50%, -50%) translateY(-3px) scale(1.04);
+    background: rgba(0, 0, 0, 0.64);
+}
+
+/* التركيز لأغراض الوصول (مقيد) */
+.st-video-card a:focus-visible,
+.st-video-card button:focus-visible {
+    outline: 3px solid rgba(147, 132, 71, 0.18);
+    outline-offset: 2px;
+    border-radius: 10px;
+}
+
+.st-card-body {
+    padding: 12px 14px 16px;
+    text-align: center;
+    background: transparent;
+}
+
+.st-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.97rem;
+    line-height: 1.4;
+}
+
+.st-video-card.st-featured {
+    border-radius: 12px;
+    box-shadow: 0 26px 64px rgba(15, 23, 42, 0.14);
+}
+.st-video-card.st-featured .st-vc-img {
+    min-height: 360px;
+}
+
+/* responsive tweaks */
+@media (max-width: 576px) {
+    .st-video-card {
+        border-radius: 10px;
+    }
+    .st-play-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+    }
+    .st-title {
+        font-size: 0.92rem;
+        -webkit-line-clamp: 2;
+    }
+}
