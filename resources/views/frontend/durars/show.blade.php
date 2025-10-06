@@ -56,7 +56,7 @@
                         {{ optional($durar->published_on) ? \Carbon\Carbon::parse($durar->published_on)->format('Y-m-d') : '' }}
 
                         <span class="ms-3 d-inline-flex align-items-center">
-                            <i class="fa-solid fa-eye me-2 ms-2" aria-hidden="true"></i>
+                            <i class="fa-solid fa-eye me-2 ms-2 mb-1" aria-hidden="true"></i>
                             {{ $durar->views ?? 0 }}
                         </span>
                     </p>
