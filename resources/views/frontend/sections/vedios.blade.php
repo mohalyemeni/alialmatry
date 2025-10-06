@@ -81,13 +81,12 @@
                                             </button>
                                         </div>
                                     </a>
-
                                     <!-- added st-card-body and st-title -->
                                     <div class="card-body st-card-body">
                                         <h5 class="card-title st-title">
                                             <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                                 class="text-dark ellipsis-title" title="{{ e($v->title) }}">
-                                                {{ e($smartLimit($v->title, 15)) }}
+                                                {{ e($smartLimit($v->title, 23)) }}
                                             </a>
                                         </h5>
                                     </div>
