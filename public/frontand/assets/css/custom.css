@@ -2160,3 +2160,34 @@ h4 {
 .preloader-inner {
     line-height: 2;
 }
+/* ======== Audio mobile: put buttons left and text right ======== */
+@media (max-width: 991px) {
+    /* scope to tabs-section لتجنب تأثير على أماكن أخرى */
+    .tabs-section .audio-play-wrapp {
+        display: flex !important; /* تأكيد أنه flex */
+        justify-content: space-between !important; /* العناصر عند الطرفين */
+        align-items: center !important;
+        gap: 10px;
+    }
+
+    /* ضع زرّات (button-wrapp) أولاً */
+    .tabs-section .audio-play-wrapp > .button-wrapp {
+        order: 1 !important; /* يظهر على اليسار (بما أننا لا نغيّر اتجاه row) */
+        flex: 0 0 auto;
+        direction: ltr; /* حافظ على ترتيب الأزرار داخلها (play ثم download) */
+        text-align: left;
+        margin: 0;
+    }
+
+    /* ضع النص (flex-1) ثانياً ولونه في اليمين */
+    .tabs-section .audio-play-wrapp > .flex-1 {
+        order: 2 !important;
+        flex: 1 1 auto;
+        text-align: right !important; /* يضمن وصول العنوان للمحاذاة اليمنى */
+    }
+
+    /* تأكد من أن رابط العنوان يحجز السطر كله ويظهر باليمين */
+    .tabs-section .audio-play-wrapp .card-title a {
+        display: block;
+    }
+}
