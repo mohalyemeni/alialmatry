@@ -108,18 +108,20 @@
                 </div>
             </section>
 
-            <!-- RIGHT: Sidebar / Durars (header like المرئيات with "تصفح المزيد") -->
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
                     <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
-                        <h3 class="widget_title widget_title_new mb-0 title-header-noline fadeInRight wow"
-                            data-wow-delay=".3s">الدرر السنية
-                        </h3>
 
-                        <div class="btn-group">
-                            <a href="{{ route('frontend.durars.index') }}" class="th-btn style1">
-                                <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
-                            </a>
+                        <div
+                            class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                            <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الدرر السنية
+                            </h3>
+
+                            <div class="btn-group">
+                                <a href="{{ route('frontend.durars.index') }}" class="th-btn style1">
+                                    <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
