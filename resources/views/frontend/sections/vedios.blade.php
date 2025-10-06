@@ -124,7 +124,7 @@
                                 <h5 class="card-title st-title">
                                     <a href="{{ route('frontend.videos.show', $main->slug) }}"
                                         class="text-dark ellipsis-title" title="{{ e($main->title) }}">
-                                        {{ e($smartLimit($main->title, 15)) }}
+                                        {{ e($smartLimit($main->title, 23)) }}
                                     </a>
                                 </h5>
                             </div>
