@@ -2191,3 +2191,23 @@ h4 {
         display: block;
     }
 }
+@media (max-width: 991px) {
+    .list-group-item1 {
+        flex-direction: column !important; /* يجعل النص والزر في عمود */
+        align-items: flex-start !important; /* يجعل المحاذاة من اليمين */
+    }
+
+    .list-group-item1 .button-wrapp {
+        margin-top: 10px; /* مسافة بسيطة فوق الزر */
+        width: 100%; /* يجعل الزر يأخذ عرض العمود */
+        display: flex;
+        justify-content: flex-start; /* الزر بمحاذاة اليمين */
+    }
+
+    /* في حال أردت الزر يتوسّط في المنتصف على الموبايل */
+    /*
+  .list-group-item1 .button-wrapp {
+    justify-content: center;
+  }
+  */
+}
