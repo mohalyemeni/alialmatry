@@ -127,6 +127,7 @@
 @media (max-width: 576px) {
     .tabs-section .nav-tabs {
         gap: 10px;
+        padding-left: 2rem;
     }
 
     .tabs-section .nav-link {
