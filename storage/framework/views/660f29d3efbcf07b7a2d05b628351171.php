@@ -2,8 +2,18 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
+
             <section class="tabs-section col-lg-7 col-12">
-                <h3 class="widget_title title-header-noline mb-5 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
+                <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                    <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
+
+                    <div class="btn-group">
+                        <a href="<?php echo e(route('frontend.audios.index')); ?>" class="th-btn style1">
+                            <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                        </a>
+                    </div>
+                </div>
+
                 <ul class="nav nav-tabs" id="audioTabs" role="tablist">
                     <?php $__currentLoopData = $audioCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="nav-item" role="presentation">
@@ -12,7 +22,7 @@
                                 data-bs-target="#audio-<?php echo e($cat->id); ?>" type="button" role="tab"
                                 aria-controls="audio-<?php echo e($cat->id); ?>"
                                 aria-selected="<?php echo e($i === 0 ? 'true' : 'false'); ?>">
-                                <?php echo e(e(\Illuminate\Support\Str::limit($cat->title, 10))); ?>
+                                <?php echo e(e(\Illuminate\Support\Str::limit($cat->title, 15))); ?>
 
                             </button>
                         </li>
@@ -102,9 +112,16 @@
 
             <div class="col-xxl-5 col-lg-5">
                 <aside class="sidebar-area ">
-                    <h3 class="widget_title widget_title_new mb-5 title-header-noline fadeInRight wow"
-                        data-wow-delay=".3s">الدرر السنية
-                    </h3>
+                    <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
+                        <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الدرر السنية</h3>
+
+                        <div class="btn-group">
+                            <a href="<?php echo e(route('frontend.durars.index')); ?>" class="th-btn style1">
+                                <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                            </a>
+                        </div>
+                    </div>
+
 
                     <div class="widget widget_categories fadeInUp wow mb-0 new_efect" data-wow-delay=".4s">
                         <ul class="styled-list">
@@ -124,12 +141,6 @@
                         </ul>
                     </div>
 
-                    <div class="d-flex justify-content-end align-items-center mt-4 px-1 fadeInLeft wow"
-                        data-wow-delay=".7s">
-                        <a href="<?php echo e(route('frontend.durars.index')); ?>" class="th-btn new_pad">
-                            قراءة المزيد <i class="fa-solid fa-arrow-left ms-1"></i>
-                        </a>
-                    </div>
                 </aside>
             </div>
         </div>

@@ -13,29 +13,22 @@
             return $sub . '...';
         };
 
-        // Determine main (featured) and small items.
-        // Prefer variables passed explicitly from controller ($videosMain, $videosSmall).
         $main = $videosMain ?? null;
         $smallItems = collect();
 
         if (isset($videosSmall) && $videosSmall instanceof \Illuminate\Support\Collection && $videosSmall->count()) {
             $smallItems = $videosSmall;
-            // If main isn't set, try to set it from videos (first item)
             if (!$main && isset($videos) && $videos instanceof \Illuminate\Support\Collection && $videos->count()) {
                 $main = $videos->first();
-                // remove main from smallItems if it exists there
                 $smallItems = $smallItems->reject(fn($v) => isset($v->id) && $main && $v->id == $main->id)->values();
             }
         } elseif (isset($videos) && $videos instanceof \Illuminate\Support\Collection) {
-            // videos collection exists but videosSmall not provided — derive
             if ($main) {
-                // main already provided, take next 4 excluding main
                 $smallItems = $videos
                     ->reject(fn($v) => isset($v->id) && $main && $v->id == $main->id)
                     ->take(4)
                     ->values();
             } else {
-                // no main provided — use first as main and next 4 as small
                 $main = $videos->first();
                 $smallItems = $videos->slice(1, 4)->values();
             }
@@ -46,8 +39,7 @@
         <div class="container">
             <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                 <h3 class="widget_title mb-0">
-                    الفيديوهات
-
+                    المرئيات
                 </h3>
 
                 <div class="btn-group">
@@ -63,29 +55,27 @@
                     <div class="row gy-4">
                         <?php $__empty_1 = true; $__currentLoopData = $smallItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <div class="col-md-6">
-                                <div class="mini-counter-image wow fadeInUp" data-wow-delay=".3s">
+                                <div class="mini-counter-image wow fadeInUp st-video-card" data-wow-delay=".3s">
                                     <a href="<?php echo e(route('frontend.videos.show', $v->slug)); ?>"
                                         class="video-link d-block position-relative" aria-label="<?php echo e(e($v->title)); ?>">
-                                        <div class="box-img global-img tow_height"
+                                        <div class="box-img global-img tow_height st-vc-img mb-0"
                                             style="position:relative; overflow:hidden;">
                                             <img src="<?php echo e($v->thumbnail); ?>" alt="<?php echo e(e($v->title)); ?>" class="tow_height"
                                                 style="width:100%; height:100%; object-fit:cover;">
-                                            <button class="play-btn custom-center-play-btn btn-play-video"
+                                            <button class="st-play-btn btn-play-video"
                                                 data-youtube-id="<?php echo e(e($v->youtube_id)); ?>"
                                                 data-title="<?php echo e(e($v->title)); ?>"
                                                 aria-label="تشغيل <?php echo e(e(\Illuminate\Support\Str::limit($v->title, 60))); ?>"
-                                                type="button"
-                                                style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); border:none; background:transparent; font-size:28px; color:#fff;">
+                                                type="button">
                                                 <i class="fa-solid fa-play fa-flip-horizontal"></i>
                                             </button>
                                         </div>
                                     </a>
-
-                                    <div class="card-body">
-                                        <h5 class="card-title">
+                                    <div class="card-body st-card-body">
+                                        <h5 class="card-title st-title text-end">
                                             <a href="<?php echo e(route('frontend.videos.show', $v->slug)); ?>"
-                                                class="text-dark ellipsis-title" title="<?php echo e(e($v->title)); ?>">
-                                                <?php echo e(e($smartLimit($v->title, 15))); ?>
+                                                class="text-dark ellipsis-title a_style" title="<?php echo e(e($v->title)); ?>">
+                                                <?php echo e(e($smartLimit($v->title, 23))); ?>
 
                                             </a>
                                         </h5>
@@ -99,29 +89,29 @@
 
                 <div class="col-xl-6">
                     <?php if($main): ?>
-                        <div class="mini-counter-image wow fadeInUp global-img box-img" data-wow-delay=".3s">
+                        <div class="mini-counter-image wow fadeInUp global-img box-img st-video-card st-featured"
+                            data-wow-delay=".3s">
                             <a href="<?php echo e(route('frontend.videos.show', $main->slug)); ?>"
                                 class="video-link d-block position-relative" aria-label="<?php echo e(e($main->title)); ?>">
-                                <div class="counter-image global-img box-img vedio_heigh"
+                                <div class="counter-image global-img box-img vedio_heigh st-vc-img"
                                     style="position:relative; overflow:hidden;">
                                     <img src="<?php echo e($main->thumbnail); ?>" alt="<?php echo e(e($main->title)); ?>"
                                         style="width:100%; height:100%; object-fit:cover;">
-                                    <button class="play-btn custom-center-play-btn btn-play-video"
+                                    <button class="st-play-btn btn-play-video"
                                         data-youtube-id="<?php echo e(e($main->youtube_id)); ?>"
                                         data-title="<?php echo e(e($main->title)); ?>"
                                         aria-label="تشغيل <?php echo e(e(\Illuminate\Support\Str::limit($main->title, 30))); ?>"
-                                        type="button"
-                                        style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); border:none; background:transparent; font-size:40px; color:#fff;">
+                                        type="button">
                                         <i class="fa-solid fa-play fa-flip-horizontal"></i>
                                     </button>
                                 </div>
                             </a>
 
-                            <div class="card-body">
-                                <h5 class="card-title">
+                            <div class="card-body st-card-body">
+                                <h5 class="card-title st-title text-end">
                                     <a href="<?php echo e(route('frontend.videos.show', $main->slug)); ?>"
-                                        class="text-dark ellipsis-title" title="<?php echo e(e($main->title)); ?>">
-                                        <?php echo e(e($smartLimit($main->title, 15))); ?>
+                                        class="text-dark ellipsis-title a_style" title="<?php echo e(e($main->title)); ?>">
+                                        <?php echo e(e($smartLimit($main->title, 23))); ?>
 
                                     </a>
                                 </h5>

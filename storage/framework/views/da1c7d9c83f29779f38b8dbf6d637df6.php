@@ -126,9 +126,9 @@
             }
 
             .wa-icon {
-                font-size: 18px;
-                width: 32px;
-                height: 32px;
+                font-size: 24px;
+                width: 45px;
+                height: 45px;
             }
         }
     </style>
