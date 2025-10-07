@@ -21,7 +21,6 @@
                 @endphp
 
                 <div class="col-md-6 col-lg-4 col-xl-3">
-                    <!-- نفس تصميم البطاقات في قسم المرئيات -->
                     <div class="mini-counter-image wow fadeInUp st-video-card" data-wow-delay="{{ $delay }}s">
                         <a href="{{ route('frontend.videos.show', $video->slug) }}"
                             class="video-link d-block position-relative" aria-label="{{ e($video->title) }}">

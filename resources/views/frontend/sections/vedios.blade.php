@@ -13,29 +13,22 @@
             return $sub . '...';
         };
 
-        // Determine main (featured) and small items.
-        // Prefer variables passed explicitly from controller ($videosMain, $videosSmall).
         $main = $videosMain ?? null;
         $smallItems = collect();
 
         if (isset($videosSmall) && $videosSmall instanceof \Illuminate\Support\Collection && $videosSmall->count()) {
             $smallItems = $videosSmall;
-            // If main isn't set, try to set it from videos (first item)
             if (!$main && isset($videos) && $videos instanceof \Illuminate\Support\Collection && $videos->count()) {
                 $main = $videos->first();
-                // remove main from smallItems if it exists there
                 $smallItems = $smallItems->reject(fn($v) => isset($v->id) && $main && $v->id == $main->id)->values();
             }
         } elseif (isset($videos) && $videos instanceof \Illuminate\Support\Collection) {
-            // videos collection exists but videosSmall not provided — derive
             if ($main) {
-                // main already provided, take next 4 excluding main
                 $smallItems = $videos
                     ->reject(fn($v) => isset($v->id) && $main && $v->id == $main->id)
                     ->take(4)
                     ->values();
             } else {
-                // no main provided — use first as main and next 4 as small
                 $main = $videos->first();
                 $smallItems = $videos->slice(1, 4)->values();
             }
@@ -62,16 +55,13 @@
                     <div class="row gy-4">
                         @forelse ($smallItems as $v)
                             <div class="col-md-6">
-                                <!-- added scoped class st-video-card -->
                                 <div class="mini-counter-image wow fadeInUp st-video-card" data-wow-delay=".3s">
                                     <a href="{{ route('frontend.videos.show', $v->slug) }}"
                                         class="video-link d-block position-relative" aria-label="{{ e($v->title) }}">
-                                        <!-- added st-vc-img -->
                                         <div class="box-img global-img tow_height st-vc-img mb-0"
                                             style="position:relative; overflow:hidden;">
                                             <img src="{{ $v->thumbnail }}" alt="{{ e($v->title) }}" class="tow_height"
                                                 style="width:100%; height:100%; object-fit:cover;">
-                                            <!-- replaced classes with st-play-btn (keeps btn-play-video for JS) -->
                                             <button class="st-play-btn btn-play-video"
                                                 data-youtube-id="{{ e($v->youtube_id) }}"
                                                 data-title="{{ e($v->title) }}"
@@ -81,7 +71,6 @@
                                             </button>
                                         </div>
                                     </a>
-                                    <!-- added st-card-body and st-title -->
                                     <div class="card-body st-card-body">
                                         <h5 class="card-title st-title text-end">
                                             <a href="{{ route('frontend.videos.show', $v->slug) }}"
@@ -99,12 +88,10 @@
 
                 <div class="col-xl-6">
                     @if ($main)
-                        <!-- added st-video-card and st-featured for main -->
                         <div class="mini-counter-image wow fadeInUp global-img box-img st-video-card st-featured"
                             data-wow-delay=".3s">
                             <a href="{{ route('frontend.videos.show', $main->slug) }}"
                                 class="video-link d-block position-relative" aria-label="{{ e($main->title) }}">
-                                <!-- added st-vc-img -->
                                 <div class="counter-image global-img box-img vedio_heigh st-vc-img"
                                     style="position:relative; overflow:hidden;">
                                     <img src="{{ $main->thumbnail }}" alt="{{ e($main->title) }}"

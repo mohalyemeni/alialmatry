@@ -49,7 +49,9 @@
                 <div class="list-group mt-3">
 
                     @forelse ($blogs as $blog)
-                        <div class="list-group-item d-flex justify-content-between align-items-start py-3">
+                        <!-- added class list-item-responsive -->
+                        <div
+                            class="list-group-item list-item-responsive d-flex justify-content-between align-items-start py-3">
                             <div class="me-3" style="flex:1;">
                                 <h5 class="mb-1">
                                     <i class="fa fa-newspaper me-2 text-primary"></i>
@@ -128,4 +130,37 @@
             </aside>
         </div>
     </div>
+
+    <!-- Scoped CSS: move the "مشاهدة" button below the description on mobile -->
+    <style>
+        @media (max-width: 991px) {
+
+            /* make the item vertical on small screens */
+            .list-item-responsive {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px;
+            }
+
+            /* make the button row full-width and spaced below the text */
+            .list-item-responsive .button-wrapp {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                /* adjust: flex-start keeps it on the start side */
+                margin-top: 6px;
+            }
+
+            /* ensure the description paragraph doesn't get squeezed */
+            .list-item-responsive .me-3 {
+                width: 100%;
+            }
+
+            /* if you want the button centered instead, uncomment:
+                    .list-item-responsive .button-wrapp {
+                        justify-content: center;
+                    }
+                    */
+        }
+    </style>
 @endsection

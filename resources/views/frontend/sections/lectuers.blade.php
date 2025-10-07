@@ -2,7 +2,7 @@
     <section>
         <div class="pb_80 row spical m-0 padding_top" dir="rtl">
 
-            <!-- LEFT: Tabs / Audio list (header like المرئيات) -->
+
             <section class="tabs-section col-lg-7 col-12">
                 <div class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                     <h3 class="widget_title mb-0 wow fadeInRight" data-wow-delay=".3s">الصوتيات</h3>
@@ -138,7 +138,6 @@
                         </ul>
                     </div>
 
-                    <!-- لقد نقلنا زر "تصفح المزيد" إلى جانب العنوان لذلك حذفت التكرار الأسفل -->
                 </aside>
             </div>
         </div>

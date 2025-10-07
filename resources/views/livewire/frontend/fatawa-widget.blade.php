@@ -6,10 +6,8 @@
         <div class="container">
             <div class="row flex-row-reverse">
 
-                <!-- قسم الفتاوى -->
                 <div class="col-xxl-8 col-lg-8">
                     <div class="accordion-area style2 load-more-active accordion" id="faqAccordion">
-                        <!-- عنوان الفتاوى + زر تصفح المزيد -->
                         <div
                             class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                             <h3 class="widget_title mb-0 fadeInRight wow">الفتاوى</h3>
@@ -62,7 +60,6 @@
                             <p class="text-muted">لا توجد فتاوى حالياً.</p>
                         @endif
 
-                        <!-- عدد الفتاوى فقط (بدون الزر الآن) -->
                         <div class="d-flex justify-content-start align-items-center mt-3 px-1">
                             <div class="fw-bold flex_mine fadeInUp wow">
                                 <p class="tags text-muted mb-0">عدد الفتاوى</p>
@@ -80,10 +77,10 @@
                     </div>
                 </div>
 
-                <!-- قسم تصنيفات الفتاوى -->
+
                 <div class="col-xxl-4 col-lg-4">
                     <aside class="sidebar-area">
-                        <!-- عنوان تصنيفات الفتاوى + زر تصفح المزيد -->
+
                         <div
                             class="section-head d-flex align-items-center justify-content-between mb-5 title-header-line">
                             <h3 class="widget_title mb-0 fadeInRight wow">تصنيفات الفتاوى</h3>
@@ -123,7 +120,7 @@
                                 @endif
                             </ul>
                         </div>
-                        <!-- الزر السفلي تمت إزالته -->
+
                     </aside>
                 </div>
 
