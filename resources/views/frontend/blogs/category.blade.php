@@ -49,10 +49,9 @@
                 <div class="list-group mt-3">
 
                     @forelse ($blogs as $blog)
-                        <!-- added class list-item-responsive -->
-                        <div
-                            class="list-group-item list-item-responsive d-flex justify-content-between align-items-start py-3">
-                            <div class="me-3" style="flex:1;">
+                        <!-- استخدمنا list-item-vertical ليصبح التصميم عمودي دائماً -->
+                        <div class="list-group-item list-item-vertical py-3">
+                            <div class="content-wrap" style="flex: 1 1 auto;">
                                 <h5 class="mb-1">
                                     <i class="fa fa-newspaper me-2 text-primary"></i>
                                     <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
@@ -67,7 +66,7 @@
                                 @endif
                             </div>
 
-                            <div class="button-wrapp d-flex align-items-center">
+                            <div class="button-wrapp d-flex align-items-center mt-2">
                                 <a href="{{ route('frontend.blogs.show', $blog->slug) }}" class="th-btn style1 th-btn1">
                                     <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
                                     <i class="fa-solid fa-eye me-1"></i>
@@ -97,8 +96,8 @@
                         @if (!empty($recentBlogs) && $recentBlogs->count())
                             <ul class="list-group list-unstyled mb-0">
                                 @foreach ($recentBlogs as $item)
-                                    <div class="list-group-item d-flex justify-content-between align-items-start py-3">
-                                        <div class="me-3" style="flex:1;">
+                                    <li class="list-group-item list-item-vertical py-3">
+                                        <div class="content-wrap" style="flex:1 1 auto;">
                                             <h6 class="mb-1">
                                                 <a href="{{ route('frontend.blogs.show', $item->slug) }}">
                                                     {{ e(\Illuminate\Support\Str::limit($item->title, 50)) }}
@@ -112,14 +111,14 @@
                                             @endif
                                         </div>
 
-                                        <div class="button-wrapp d-flex align-items-center">
+                                        <div class="button-wrapp d-flex align-items-center mt-2">
                                             <a href="{{ route('frontend.blogs.show', $item->slug) }}"
                                                 class="th-btn style1 th-btn1">
                                                 <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
                                                 <i class="fa-solid fa-eye me-1"></i>
                                             </a>
                                         </div>
-                                    </div>
+                                    </li>
                                 @endforeach
                             </ul>
                         @else
@@ -131,36 +130,44 @@
         </div>
     </div>
 
-    <!-- Scoped CSS: move the "مشاهدة" button below the description on mobile -->
     <style>
-        @media (max-width: 991px) {
+        .list-item-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            border: none;
 
-            /* make the item vertical on small screens */
-            .list-item-responsive {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 8px;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
+
+        .list-item-vertical .content-wrap {
+            width: 100%;
+        }
+
+
+        .list-item-vertical .button-wrapp {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+
+            gap: 8px;
+        }
+
+
+
+
+        .card .list-item-vertical {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+
+        @media (min-width: 1200px) {
+            .list-item-vertical {
+                gap: 10px;
             }
-
-            /* make the button row full-width and spaced below the text */
-            .list-item-responsive .button-wrapp {
-                width: 100%;
-                display: flex;
-                justify-content: flex-start;
-                /* adjust: flex-start keeps it on the start side */
-                margin-top: 6px;
-            }
-
-            /* ensure the description paragraph doesn't get squeezed */
-            .list-item-responsive .me-3 {
-                width: 100%;
-            }
-
-            /* if you want the button centered instead, uncomment:
-                    .list-item-responsive .button-wrapp {
-                        justify-content: center;
-                    }
-                    */
         }
     </style>
 @endsection
