@@ -22,7 +22,7 @@
                                 data-bs-target="#audio-{{ $cat->id }}" type="button" role="tab"
                                 aria-controls="audio-{{ $cat->id }}"
                                 aria-selected="{{ $i === 0 ? 'true' : 'false' }}">
-                                {{ e(\Illuminate\Support\Str::limit($cat->title, 10)) }}
+                                {{ e(\Illuminate\Support\Str::limit($cat->title, 15)) }}
                             </button>
                         </li>
                     @endforeach
