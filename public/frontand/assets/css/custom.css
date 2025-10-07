@@ -146,7 +146,6 @@
     background-color: var(--theme-color2) !important;
     color: var(--my-color);
     border-color: var(--theme-color2);
-    position: relative;
     z-index: 1;
 }
 
