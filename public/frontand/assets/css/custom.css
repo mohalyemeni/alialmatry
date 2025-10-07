@@ -2205,3 +2205,6 @@ h4 {
 .pt-60 {
     padding-top: 60px !important;
 }
+.counter-image img {
+    border-radius: 0;
+}
