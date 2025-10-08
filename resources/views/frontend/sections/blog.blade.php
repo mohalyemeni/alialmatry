@@ -31,7 +31,7 @@
                                 class="list-group-item list-group-item1 d-flex justify-content-between align-items-start py-4">
                                 <div class="me-3" style="flex:1;">
                                     <h5 class="mb-1">
-                                        <i class="fa fa-newspaper me-2 text-primary"></i>
+                                        <i class="fa fa-newspaper  text-primary"></i>
                                         <a href="{{ route('frontend.blogs.show', $blog->slug) }}">
                                             {{ e($blog->title) }}
                                         </a>
