@@ -701,6 +701,7 @@ h3.widget_title.title-header-noline::after {
 .styled-list li i {
     font-size: 0.9rem;
     color: var(--theme-color2);
+    margin-left: -30px;
 }
 /* ايقونة المسجد */
 .widget_nav_menu a:hover::before,

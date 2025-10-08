@@ -46,7 +46,7 @@
 
                                 <div class="button-wrapp d-flex align-items-center pm">
                                     <a href="{{ route('frontend.blogs.show', $blog->slug) }}"
-                                        class="th-btn style1 th-btn1">
+                                        class="th-btn style1 th-btn1 me-3">
                                         <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
                                         <i class="fa-solid fa-eye me-1"></i>
                                     </a>
