@@ -5,10 +5,10 @@
         style="background-image: url('{{ asset('frontand/assets/img/hero/hero_5_3.jpg') }}'); background-size: cover; background-position: center; padding: 80px 0;">
         <div class="container">
             <div class="breadcumb-content text-center text-white">
-                <h1 class="breadcumb-title">المرئيات</h1>
+                <h1 class="breadcumb-title">الدرر السنية</h1>
                 <ul class="breadcumb-menu list-inline justify-content-center mt-3">
                     <li class="list-inline-item"><a href="{{ route('frontend.index') }}" class="text-white">الرئيسية</a></li>
-                    <li class="list-inline-item">المرئيات</li>
+                    <li class="list-inline-item">الدرر السنية</li>
                 </ul>
             </div>
         </div>
@@ -21,7 +21,7 @@
         @if ($durars->count())
             <div class="row gy-4">
                 @foreach ($durars as $d)
-                    <div class="col-md-6 col-lg-6">
+                    <div class="c  col-lg-6">
                         <div class="event-card event-card1 wow fadeInUp" data-wow-delay=".3s">
                             <div class="box-img global-img box-img1">
                                 @php
