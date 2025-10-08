@@ -2221,3 +2221,8 @@ h4 {
 .counter-image img {
     border-radius: 0;
 }
+@media (max-width: 991px) and (min-width: 768px) {
+    .footer_max {
+        max-width: 70%;
+    }
+}
