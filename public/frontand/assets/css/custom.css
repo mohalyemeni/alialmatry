@@ -126,11 +126,13 @@
 
 @media (max-width: 576px) {
     .tabs-section .nav-tabs {
-        gap: 10px;
+        gap: 0px;
+        margin: 0;
+        padding: 0;
     }
 
     .tabs-section .nav-link {
-        padding: 8px 15px;
+        padding: 8px 11px;
         font-size: 14px;
     }
 
@@ -2098,7 +2100,7 @@ h4 {
 .st-card-body {
     padding: 12px 14px 16px;
     text-align: center;
-    background: #938447bd;
+    background: #9384478c;
 }
 
 .st-title {
