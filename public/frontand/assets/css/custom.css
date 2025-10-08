@@ -2218,3 +2218,6 @@ h4 {
         padding: 12px 3px 12px 41px;
     }
 }
+.counter-image img {
+    border-radius: 0;
+}
