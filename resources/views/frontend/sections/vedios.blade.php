@@ -109,7 +109,7 @@
                             <div class="card-body st-card-body">
                                 <h5 class="card-title st-title text-end">
                                     <a href="{{ route('frontend.videos.show', $main->slug) }}"
-                                        class="text-dark ellipsis-title a_style" title="{{ e($main->title) }}">
+                                        class="text_wihte ellipsis-title a_style" title="{{ e($main->title) }}">
                                         {{ e($smartLimit($main->title, 23)) }}
                                     </a>
                                 </h5>
