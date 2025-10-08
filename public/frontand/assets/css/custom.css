@@ -303,7 +303,6 @@
 }
 .tow_height {
     height: 230px !important;
-    border-radius: 15px;
 }
 .pbuttom {
     padding-bottom: 70px !important;
@@ -2148,7 +2147,7 @@ h4 {
     }
 }
 .a_style {
-    border-right: 2px solid #fff;
+    border-right: 2px solid #000;
     padding-right: 7px;
     margin-top: 5px !important;
     padding-top: 5px;
@@ -2209,5 +2208,13 @@ h4 {
     padding-top: 60px !important;
 }
 .text_wihte {
-    color: #fff;
+    color: #000;
+}
+@media (max-width: 576px) {
+    .accordion-card .accordion-button:after {
+        left: 8px;
+    }
+    .accordion-card .accordion-button {
+        padding: 12px 3px 12px 41px;
+    }
 }
