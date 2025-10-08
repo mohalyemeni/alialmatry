@@ -2098,7 +2098,7 @@ h4 {
 .st-card-body {
     padding: 12px 14px 16px;
     text-align: center;
-    background: #3748681f;
+    background: #938447d9;
 }
 
 .st-title {
@@ -2204,4 +2204,7 @@ h4 {
 }
 .pt-60 {
     padding-top: 60px !important;
+}
+.text_wihte {
+    color: #fff;
 }
