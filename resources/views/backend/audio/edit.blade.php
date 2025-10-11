@@ -11,9 +11,7 @@
                     <li><a href="{{ route('admin.index_route') }}">{{ __('panel.home') }}</a> /</li>
                     <li class="ms-1"><a href="{{ route('admin.audios.index') }}">{{ __('panel.manage_audios') }}</a> /</li>
                     <li class="ms-1"> <a href=""> {{ $audio->title }} </a></li>
-
                 </ul>
-
             </div>
         </div>
         <div class="card-body">
@@ -26,10 +24,12 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.audios.update', $audio->id) }}" method="POST" enctype="multipart/form-data"
-                novalidate>
+
+            <form id="editAudioForm" action="{{ route('admin.audios.update', $audio->id) }}" method="POST"
+                enctype="multipart/form-data" novalidate>
                 @csrf
                 @method('PUT')
+
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="content-tab" data-bs-toggle="tab" data-bs-target="#content"
@@ -44,6 +44,7 @@
                         </button>
                     </li>
                 </ul>
+
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
                         <div class="row mt-3">
@@ -64,6 +65,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label for="title" class="col-sm-12 col-md-2 pt-3">{{ __('panel.title') }}</label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -75,6 +77,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label for="description" class="col-sm-12 col-md-2 pt-3">{{ __('panel.description') }}</label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -98,6 +101,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label class="col-sm-12 col-md-2 pt-3">{{ __('panel.current_audio_file') }}</label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -112,6 +116,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label for="audio_file"
                                 class="col-sm-12 col-md-2 pt-3">{{ __('panel.change_audio_file') }}</label>
@@ -124,6 +129,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label class="col-sm-12 col-md-2 pt-3">{{ __('panel.publish_date') }}</label>
                             <div class="col-sm-12 col-md-10 pt-3">
@@ -141,6 +147,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row mt-3">
                             <label for="status"
                                 class="col-sm-12 col-md-2 pt-3 control-label">{{ __('panel.status') }}</label>
@@ -163,7 +170,9 @@
                                 @enderror
                             </div>
                         </div>
+
                     </div>
+
                     <div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
                         <div class="row mt-3">
                             <label for="meta_slug" class="col-sm-12 col-md-3 pt-3">{{ __('panel.seo_slug') }}</label>
@@ -176,15 +185,14 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col-sm-12 col-md-3 pt-3">
                                 <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
                             </div>
                             <div class="col-md-9">
                                 <div class="card p-2">
-
                                     <input name="meta_keywords" id="tags"
-                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
+                                        value="{{ old('meta_keywords', $audio->meta_keywords ?? '') }}"
                                         class="form-control" />
                                     @error('meta_keywords')
                                         <span class="text-danger">{{ $message }}</span>
@@ -198,21 +206,133 @@
                 <div class="row mt-4">
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="save"></i> {{ __('panel.update') }}
+                        <button type="submit" class="btn btn-primary" id="updateBtn">
+                            <i class="icon-lg me-2" data-feather="save"></i>
+                            <span id="updateBtnText">{{ __('panel.update') }}</span>
                         </button>
                         <a href="{{ route('admin.audios.index') }}" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
                         </a>
+
+                        <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
                     </div>
                 </div>
 
+                <!-- global progress (shared for image + audio) -->
+                <div class="progress mt-4" id="globalProgressWrapper" style="height: 20px; display:none;">
+                    <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                        role="progressbar" style="width: 0%">0%</div>
+                </div>
             </form>
         </div>
     </div>
 @endsection
+
 @section('script')
     <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            // elements
+            const $form = $('#editAudioForm');
+            const $btn = $('#updateBtn');
+            const $btnText = $('#updateBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $status = $('#uploadStatus');
+
+            // reset UI helper
+            function resetUploadUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%').text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("{{ __('panel.update') }}");
+            }
+
+            resetUploadUI();
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                // show progress UI
+                $progressWrapper.show();
+                $progress.css('width', '0%').text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', true);
+                $btnText.html(
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري التحديث...'
+                    );
+
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                let percent = Math.round((evt.loaded / evt.total) *
+                                100);
+                                $progress.stop().animate({
+                                    width: percent + '%'
+                                }, 200).text(percent + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST', // keep POST so Laravel receives _method = PUT from the form
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-success');
+                        $status.html('<i class="fa fa-check-circle me-1"></i> تم التحديث بنجاح')
+                            .removeClass('text-danger').addClass('text-success');
+
+                        setTimeout(function() {
+                            window.location.href = "{{ route('admin.audios.index') }}";
+                        }, 1200);
+                    },
+                    error: function(err) {
+                        // show server validation errors if available
+                        if (err.responseJSON && err.responseJSON.errors) {
+                            let messages = [];
+                            Object.values(err.responseJSON.errors).forEach(arr => {
+                                if (Array.isArray(arr)) messages = messages.concat(arr);
+                            });
+                            // display first few messages
+                            let html = '<ul class="mb-0">';
+                            messages.slice(0, 5).forEach(msg => html += '<li>' + msg + '</li>');
+                            html += '</ul>';
+                            $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء التحديث:<br>' +
+                                html).removeClass('text-success').addClass('text-danger');
+                        } else {
+                            $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء التحديث. يرجى المحاولة مجددًا'
+                                ).removeClass('text-success').addClass('text-danger');
+                        }
+
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-danger');
+
+                        setTimeout(function() {
+                            $btn.prop('disabled', false);
+                            $btnText.text("{{ __('panel.update') }}");
+                            $progress.removeClass('bg-danger').addClass(
+                                'progress-bar-animated bg-primary');
+                        }, 1500);
+                    }
+                });
+            });
+        });
+    </script>
+
     <script>
         tinymce.init({
             selector: '#tinymceExample',
@@ -221,6 +341,7 @@
             height: 300,
         });
     </script>
+
     <script>
         $(function() {
             $("#img").fileinput({
@@ -258,6 +379,7 @@
                     removeIcon: '<i class="fas fa-trash"></i>',
                 }
             });
+
             $("#audio_file").fileinput({
                 theme: "fa5",
                 allowedFileTypes: ['audio'],
@@ -267,8 +389,8 @@
                 overwriteInitial: false,
                 maxFileCount: 1,
                 initialPreview: [
-                    @if ($audio->img)
-                        "{{ asset('assets/audios/files/' . $audio->img) }}"
+                    @if ($audio->audio_file)
+                        "{{ asset('assets/audios/files/' . $audio->audio_file) }}"
                     @endif
                 ],
                 initialPreviewAsData: true,
@@ -298,6 +420,7 @@
                     },
                 }
             });
+
             $('.summernote').summernote({
                 tabSize: 2,
                 height: 200,
@@ -311,6 +434,7 @@
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ]
             });
+
             const locale = "ar";
             if ($('#flatpickr-datetime').length) {
                 const defaultDate = "{{ old('published_on', $audio->published_on?->format('Y-m-d H:i')) }}" ||
@@ -327,6 +451,7 @@
             }
         });
     </script>
+
     <script>
         $(document).ready(function() {
 
@@ -335,7 +460,6 @@
                 'height': 'auto',
                 'width': '100%'
             });
-
 
             $('#tags_meta').tagsInput({
                 'defaultText': 'أضف كلمة مفتاحية',
