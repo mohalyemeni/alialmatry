@@ -1,41 +1,40 @@
-@extends('layouts.admin')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between">
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
-                    <i class="fa fa-plus-square"></i> {{ __('panel.add_audio') }}
+                    <i class="fa fa-plus-square"></i> <?php echo e(__('panel.add_audio')); ?>
+
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li><a href="{{ route('admin.index') }}">{{ __('panel.home') }}</a> /</li>
-                    <li class="ms-1"><a href="{{ route('admin.audios.index') }}">{{ __('panel.manage_audios') }}</a></li>
+                    <li><a href="<?php echo e(route('admin.index')); ?>"><?php echo e(__('panel.home')); ?></a> /</li>
+                    <li class="ms-1"><a href="<?php echo e(route('admin.audios.index')); ?>"><?php echo e(__('panel.manage_audios')); ?></a></li>
                 </ul>
             </div>
         </div>
         <div class="card-body">
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 <div class="alert alert-danger pt-0 pb-0 mb-0">
                     <ul class="px-2 py-3 m-0" style="list-style-type: circle">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            <form id="audioForm" action="{{ route('admin.audios.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form id="audioForm" action="<?php echo e(route('admin.audios.store')); ?>" method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="content-tab" data-bs-toggle="tab" data-bs-target="#content"
                             type="button" role="tab" aria-controls="content"
-                            aria-selected="true">{{ __('panel.content') }}</button>
+                            aria-selected="true"><?php echo e(__('panel.content')); ?></button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="SEO-tab" data-bs-toggle="tab" data-bs-target="#SEO" type="button"
-                            role="tab" aria-controls="SEO" aria-selected="false">{{ __('panel.seo') }}</button>
+                            role="tab" aria-controls="SEO" aria-selected="false"><?php echo e(__('panel.seo')); ?></button>
                     </li>
                 </ul>
 
@@ -43,111 +42,184 @@
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="category_id">{{ __('panel.category') }}</label>
+                                <label for="category_id"><?php echo e(__('panel.category')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <select name="category_id" id="category_id"
-                                    class="form-select @error('category_id') is-invalid @enderror">
-                                    <option value="">{{ __('panel.select_category') }}</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->title }}
+                                    class="form-select <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                                    <option value=""><?php echo e(__('panel.select_category')); ?></option>
+                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($category->id); ?>"
+                                            <?php echo e(old('category_id') == $category->id ? 'selected' : ''); ?>>
+                                            <?php echo e($category->title); ?>
+
                                         </option>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-                                @error('category_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="title">{{ __('panel.title') }}</label>
+                                <label for="title"><?php echo e(__('panel.title')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
-                                <input type="text" name="title" id="title" value="{{ old('title') }}"
-                                    class="form-control @error('title') is-invalid @enderror">
-                                @error('title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <input type="text" name="title" id="title" value="<?php echo e(old('title')); ?>"
+                                    class="form-control <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                                <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="description">{{ __('panel.description') }}</label>
+                                <label for="description"><?php echo e(__('panel.description')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <textarea name="description" id="description" rows="10"
-                                    class="form-control summernote @error('description') is-invalid @enderror">{!! old('description') !!}</textarea>
-                                @error('description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    class="form-control summernote <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"><?php echo old('description'); ?></textarea>
+                                <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="img">{{ __('panel.image') }}
-                                    <br><small>{{ __('panel.best_size') }}</small></label>
+                                <label for="img"><?php echo e(__('panel.image')); ?>
+
+                                    <br><small><?php echo e(__('panel.best_size')); ?></small></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="file-loading">
                                     <input type="file" name="img" id="img" class="file-input-overview"
                                         accept="image/*">
                                 </div>
-                                @error('img')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['img'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="audio_file">{{ __('panel.audio_file') }}</label>
+                                <label for="audio_file"><?php echo e(__('panel.audio_file')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <input type="file" name="audio_file" id="audio_file" class="form-control"
                                     accept="audio/*">
-                                @error('audio_file')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['audio_file'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                {{ __('panel.publish_date') }}
+                                <?php echo e(__('panel.publish_date')); ?>
+
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="input-group flatpickr" id="flatpickr-datetime">
-                                    <input type="text" name="published_on" value="{{ old('published_on') }}"
-                                        class="form-control" placeholder="{{ __('panel.publish_date') }}" data-input>
+                                    <input type="text" name="published_on" value="<?php echo e(old('published_on')); ?>"
+                                        class="form-control" placeholder="<?php echo e(__('panel.publish_date')); ?>" data-input>
                                     <span class="input-group-text input-group-addon" data-toggle>
                                         <i data-feather="calendar"></i>
                                     </span>
                                 </div>
-                                @error('published_on')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['published_on'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-2 pt-3">
-                                <label for="status" class="control-label">{{ __('panel.status') }}</label>
+                                <label for="status" class="control-label"><?php echo e(__('panel.status')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-10 pt-3">
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" name="status" id="status_active"
-                                        value="1" {{ old('status', '1') == '1' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="status_active">{{ __('panel.active') }}</label>
+                                        value="1" <?php echo e(old('status', '1') == '1' ? 'checked' : ''); ?>>
+                                    <label class="form-check-label" for="status_active"><?php echo e(__('panel.active')); ?></label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" name="status" id="status_inactive"
-                                        value="0" {{ old('status') == '0' ? 'checked' : '' }}>
+                                        value="0" <?php echo e(old('status') == '0' ? 'checked' : ''); ?>>
                                     <label class="form-check-label"
-                                        for="status_inactive">{{ __('panel.inactive') }}</label>
+                                        for="status_inactive"><?php echo e(__('panel.inactive')); ?></label>
                                 </div>
-                                @error('status')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -155,41 +227,62 @@
                     <div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
                         <div class="row">
                             <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="metadata_title">{{ __('panel.seo_title') }}</label>
+                                <label for="metadata_title"><?php echo e(__('panel.seo_title')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="metadata_title" id="metadata_title"
-                                    value="{{ old('metadata_title') }}" class="form-control">
-                                @error('metadata_title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    value="<?php echo e(old('metadata_title')); ?>" class="form-control">
+                                <?php $__errorArgs = ['metadata_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="metadata_description">{{ __('panel.seo_description') }}</label>
+                                <label for="metadata_description"><?php echo e(__('panel.seo_description')); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="metadata_description" id="metadata_description"
-                                    value="{{ old('metadata_description') }}" class="form-control">
-                                @error('metadata_description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    value="<?php echo e(old('metadata_description')); ?>" class="form-control">
+                                <?php $__errorArgs = ['metadata_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-danger"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-12 col-md-3 pt-3">
-                                <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
+                                <label for="meta_keywords"><?php echo e(__('panel.seo_keywords')); ?></label>
                             </div>
                             <div class="col-md-9">
                                 <div class="card p-2">
-                                    <input name="meta_keywords" id="tags" value="{{ $meta_keywords->value ?? '' }}"
+                                    <input name="meta_keywords" id="tags" value="<?php echo e($meta_keywords->value ?? ''); ?>"
                                         class="form-control" />
-                                    @error('meta_keywords')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <?php $__errorArgs = ['meta_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="text-danger"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -201,10 +294,11 @@
                     <div class="col-sm-12 col-md-10 pt-3">
                         <button type="submit" class="btn btn-primary" id="uploadBtn">
                             <i class="icon-lg me-2" data-feather="corner-down-left"></i>
-                            <span id="uploadBtnText">{{ __('panel.save') }}</span>
+                            <span id="uploadBtnText"><?php echo e(__('panel.save')); ?></span>
                         </button>
-                        <a href="{{ route('admin.audios.index') }}" class="btn btn-outline-danger">
-                            <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
+                        <a href="<?php echo e(route('admin.audios.index')); ?>" class="btn btn-outline-danger">
+                            <i class="icon-lg me-2" data-feather="x"></i> <?php echo e(__('panel.cancel')); ?>
+
                         </a>
 
 
@@ -218,10 +312,10 @@
             </form>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
-    <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(asset('backend/vendors/select2/select2.min.js')); ?>"></script>
 
     <script>
         $(document).ready(function() {
@@ -239,7 +333,7 @@
                 $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
                 $status.html('');
                 $btn.prop('disabled', false);
-                $btnText.text("{{ __('panel.save') }}");
+                $btnText.text("<?php echo e(__('panel.save')); ?>");
             }
 
             resetUploadUI();
@@ -286,7 +380,7 @@
                             .removeClass('text-danger').addClass('text-success');
 
                         setTimeout(function() {
-                            window.location.href = "{{ route('admin.audios.index') }}";
+                            window.location.href = "<?php echo e(route('admin.audios.index')); ?>";
                         }, 1500);
                     },
                     error: function(err) {
@@ -298,7 +392,7 @@
 
                         setTimeout(function() {
                             $btn.prop('disabled', false);
-                            $btnText.text("{{ __('panel.save') }}");
+                            $btnText.text("<?php echo e(__('panel.save')); ?>");
                             $progress.removeClass('bg-danger').addClass(
                                 'progress-bar-animated bg-primary');
                         }, 1500);
@@ -349,7 +443,7 @@
             'use strict';
             const locale = "ar";
             if ($('#flatpickr-datetime').length) {
-                const defaultDate = "{{ old('published_on') }}" ? "{{ old('published_on') }}" : new Date();
+                const defaultDate = "<?php echo e(old('published_on')); ?>" ? "<?php echo e(old('published_on')); ?>" : new Date();
                 flatpickr("#flatpickr-datetime", {
                     enableTime: true,
                     wrap: true,
@@ -378,4 +472,6 @@
             });
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/backend/audio/create.blade.php ENDPATH**/ ?>
