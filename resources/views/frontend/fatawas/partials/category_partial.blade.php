@@ -12,7 +12,7 @@
         @endif
     </div>
 
-    <div class="button-wrapp d-flex align-items-center">
+    <div class="button-wrapp d-flex align-items-center me-4">
         <a href="{{ route('frontend.fatawas.show', $fatawa->slug) }}" class="th-btn style1 th-btn1">
             <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
             <i class="fa-solid fa-eye me-1"></i>
