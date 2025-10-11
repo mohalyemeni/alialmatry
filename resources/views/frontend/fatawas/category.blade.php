@@ -38,7 +38,7 @@
 
     <div class="container py-4">
         <div class="row">
-            <div class="col-md-8">
+            <div class=" col-xxl-8 col-lg-8">
                 <div class="list-group">
                     @foreach ($fatawas as $fatawa)
                         @include('frontend.fatawas.partials.category_partial', ['fatawa' => $fatawa])
