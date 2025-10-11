@@ -2234,3 +2234,20 @@ h4 {
         max-width: 70%;
     }
 }
+@media (max-width: 768px) {
+    .list-group-item.d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .button-wrapp {
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: right;
+    }
+
+    .button-wrapp .th-btn {
+        width: auto;
+    }
+}
