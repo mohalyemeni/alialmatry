@@ -79,8 +79,10 @@
     <script src="{{ asset('backend/vendors/bootstrap-fileinput/themes/fa6/theme.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('backend/vendors/flatpickr/flatpickr-rtl.min.js') }}"></script>
-    <script src="{{ asset('backend/js/flatpickr.js') }}"></script>
+    <script src="{{ asset('backend/js/sweetalert2@11.js') }}"></script>
     {{-- <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script> --}}
+    <script src="{{ asset('backend/') }}"></script>
+
     @livewireScripts
     <script>
         document.addEventListener('DOMContentLoaded', function() {
