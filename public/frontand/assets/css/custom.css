@@ -95,7 +95,7 @@
 .tabs-section .nav-tabs {
     border-bottom: 2px solid var(--theme-color2);
     justify-content: center;
-    gap: 5rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 .tabs-section .nav-link:hover {
