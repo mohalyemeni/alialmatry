@@ -33,7 +33,6 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0"><?php echo e(__('panel.title')); ?></th>
-                        
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.author')); ?></th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.status')); ?></th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell"><?php echo e(__('panel.published_on')); ?></th>
@@ -136,27 +135,56 @@
                         if (response.status) {
                             el.html(
                                 '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         } else {
                             el.html(
                                 '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ!',
+                            text: 'حدث خطأ أثناء تغيير الحالة',
+                            confirmButtonText: 'حسناً'
+                        });
                     }
                 });
             });
         });
 
-        function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
+        function confirmDelete(formId, message, confirmText = 'نعم، احذف', cancelText = 'إلغاء') {
+            Swal.fire({
+                title: 'تأكيد الحذف',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText,
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-4 shadow-lg'
                 }
-            }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        form.submit();
+
+                        // رسالة بعد التنفيذ
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحذف',
+                            text: 'تم حذف التسجيل بنجاح',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                }
+            });
         }
     </script>
 <?php $__env->stopSection(); ?>

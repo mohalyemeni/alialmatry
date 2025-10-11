@@ -80,8 +80,10 @@
     <script src="<?php echo e(asset('backend/vendors/bootstrap-fileinput/themes/fa6/theme.min.js')); ?>"></script>
     <script src="<?php echo e(asset('backend/vendors/summernote/summernote-bs4.min.js')); ?>"></script>
     <script src="<?php echo e(asset('backend/vendors/flatpickr/flatpickr-rtl.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('backend/js/flatpickr.js')); ?>"></script>
+    <script src="<?php echo e(asset('backend/js/sweetalert2@11.js')); ?>"></script>
     
+    <script src="<?php echo e(asset('backend/')); ?>"></script>
+
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
     <script>
