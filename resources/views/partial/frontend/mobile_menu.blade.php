@@ -35,7 +35,7 @@
                 <li class="menu-item-has-children">
                     <a href="{{ route('frontend.books.index') }}">الكتب والمؤلفات</a>
                 </li>
-                <li><a href="contact.html">اتصل بنا</a></li>
+                <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
             </ul>
         </div>
     </div>
