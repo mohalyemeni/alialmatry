@@ -272,9 +272,7 @@
                                     100);
                                 if (percent > maxPercent) {
                                     maxPercent = percent;
-                                    $progress.stop().animate({
-                                        width: percent + '%'
-                                    }, 200);
+                                    $progress.css('width', percent + '%');
                                     $progressLabel.text(percent + '%');
                                 }
                             }
