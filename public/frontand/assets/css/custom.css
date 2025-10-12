@@ -104,47 +104,6 @@
 
 .tabs-section .nav-link {
     background-color: #f8f9fa;
-/* ====== Custom Modern Progress Bar ====== */
-.modern-progress-wrapper {
-    width: 100%;
-    background: #f1f3f6;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    height: 28px;
-    position: relative;
-    margin: 18px 0;
-    overflow: hidden;
-}
-.modern-progress-bar {
-    height: 100%;
-    border-radius: 16px;
-    background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
-    box-shadow: 0 1px 6px rgba(78,84,200,0.12);
-    transition: width 0.4s cubic-bezier(.4,1.4,.6,1), background 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
-}
-.modern-progress-label {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: #fff;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.13);
-    pointer-events: none;
-}
-.modern-progress-bar.bg-success {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-}
-.modern-progress-bar.bg-danger {
-    background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
-}
-/* ====== End Custom Modern Progress Bar ====== */
     color: #444;
     padding: 10px 20px;
     transition: all 0.3s ease;

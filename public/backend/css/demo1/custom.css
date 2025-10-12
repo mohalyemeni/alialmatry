@@ -579,7 +579,6 @@ div.tagsinput div {
 }
 .modern-progress-bar {
     height: 100%;
-    border-radius: 16px;
     background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
     box-shadow: 0 1px 6px rgba(78, 84, 200, 0.12);
     transition: width 0.4s cubic-bezier(0.4, 1.4, 0.6, 1), background 0.3s;
