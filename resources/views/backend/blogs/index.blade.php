@@ -5,7 +5,7 @@
         <div class="card-header py-3 d-flex justify-content-between">
             <div class="card-naving">
                 <h3 class="font-weight-bold text-primary">
-                    <i class="fa fa-book"></i>  
+                    <i class="fa fa-book"></i>
                     {{ __('panel.manage_blogs') }}
                 </h3>
                 <ul class="breadcrumb pt-3">
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        @include('backend.blogs.filter.filter') 
+        @include('backend.blogs.filter.filter')
 
         <div class="card-body">
             <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
@@ -146,12 +146,50 @@
         });
 
         function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
+            Swal.fire({
+                title: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn btn-danger mx-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        // إرسال الحذف عبر AJAX
+                        $.ajax({
+                            url: form.action,
+                            type: 'POST',
+                            data: $(form).serialize(),
+                            success: function() {
+                                Swal.fire({
+                                    title: 'تم الحذف!',
+                                    text: 'تم حذف العنصر بنجاح.',
+                                    icon: 'success',
+                                    timer: 1200,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1250);
+                            },
+                            error: function() {
+                                Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
+                            }
+                        });
+                    } else {
+                        console.error('Form not found: ' + formId);
+                    }
                 }
-            }
+            });
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection
