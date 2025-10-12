@@ -87,6 +87,12 @@
                                 <div class="file-loading">
                                     <input type="file" name="img" id="img" class="file-input-overview">
                                 </div>
+                                <div class="modern-progress-wrapper" id="imgProgressWrapper"
+                                    style="height: 28px; display:none;">
+                                    <div id="imgUploadProgress" class="modern-progress-bar" style="width: 0%;">
+                                        <span class="modern-progress-label" id="imgUploadProgressLabel">0%</span>
+                                    </div>
+                                </div>
                                 @error('img')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -244,6 +250,37 @@
                 showUpload: false,
                 overwriteInitial: false,
                 maxFileCount: 1
+            });
+
+            // Progress bar logic
+            const $imgInput = $('#img');
+            const $progressWrapper = $('#imgProgressWrapper');
+            const $progress = $('#imgUploadProgress');
+            const $progressLabel = $('#imgUploadProgressLabel');
+
+            $imgInput.on('change', function(e) {
+                const file = this.files[0];
+                if (!file) return;
+
+                // Reset progress bar
+                $progressWrapper.show();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+
+                // Simulate upload progress (replace with real AJAX if needed)
+                let percent = 0;
+                const interval = setInterval(function() {
+                    if (percent >= 100) {
+                        clearInterval(interval);
+                        $progress.removeClass('bg-danger').addClass('bg-success');
+                        $progressLabel.text('100%');
+                        return;
+                    }
+                    percent += Math.floor(Math.random() * 15) + 5;
+                    if (percent > 100) percent = 100;
+                    $progress.css('width', percent + '%');
+                    $progressLabel.text(percent + '%');
+                }, 120);
             });
         });
     </script> {{-- Flatpickr --}}

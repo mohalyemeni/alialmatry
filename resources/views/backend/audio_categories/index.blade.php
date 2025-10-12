@@ -199,14 +199,29 @@
         });
 
         function confirmDelete(formId, message, yesText, cancelText) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                } else {
-                    console.error('Form not found: ' + formId);
+            Swal.fire({
+                title: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: yesText || 'نعم، احذف',
+                cancelButtonText: cancelText || 'إلغاء',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn btn-danger mx-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        form.submit();
+                    } else {
+                        console.error('Form not found: ' + formId);
+                    }
                 }
-            }
+            });
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
