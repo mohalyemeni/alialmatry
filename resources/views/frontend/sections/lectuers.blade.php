@@ -133,7 +133,7 @@
                                     </li>
                                 @endforeach
                             @else
-                                <li class="text-muted">لا توجد درر لعرضها حالياً.</li>
+                                <li class="text-muted">لا توجدش درر لعرضها حالياً.</li>
                             @endif
                         </ul>
                     </div>

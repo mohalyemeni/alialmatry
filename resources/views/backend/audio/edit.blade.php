@@ -219,9 +219,10 @@
                 </div>
 
                 <!-- global progress (shared for image + audio) -->
-                <div class="progress mt-4" id="globalProgressWrapper" style="height: 20px; display:none;">
-                    <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                        role="progressbar" style="width: 0%">0%</div>
+                <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height: 28px; display:none;">
+                    <div id="uploadProgress" class="modern-progress-bar" style="width: 0%;">
+                        <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
+                    </div>
                 </div>
             </form>
         </div>
@@ -240,12 +241,14 @@
             const $btnText = $('#updateBtnText');
             const $progressWrapper = $('#globalProgressWrapper');
             const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
             const $status = $('#uploadStatus');
 
             // reset UI helper
             function resetUploadUI() {
                 $progressWrapper.hide();
-                $progress.css('width', '0%').text('0%');
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
                 $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
                 $status.html('');
                 $btn.prop('disabled', false);
@@ -261,13 +264,14 @@
 
                 // show progress UI
                 $progressWrapper.show();
-                $progress.css('width', '0%').text('0%');
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
                 $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
                 $status.html('');
                 $btn.prop('disabled', true);
                 $btnText.html(
                     '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري التحديث...'
-                    );
+                );
 
                 $.ajax({
                     xhr: function() {
@@ -275,10 +279,11 @@
                         xhr.upload.addEventListener("progress", function(evt) {
                             if (evt.lengthComputable) {
                                 let percent = Math.round((evt.loaded / evt.total) *
-                                100);
+                                    100);
                                 $progress.stop().animate({
                                     width: percent + '%'
-                                }, 200).text(percent + '%');
+                                }, 200);
+                                $progressLabel.text(percent + '%');
                             }
                         }, false);
                         return xhr;
@@ -315,7 +320,7 @@
                         } else {
                             $status.html(
                                 '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء التحديث. يرجى المحاولة مجددًا'
-                                ).removeClass('text-success').addClass('text-danger');
+                            ).removeClass('text-success').addClass('text-danger');
                         }
 
                         $progress.removeClass('progress-bar-animated bg-primary').addClass(

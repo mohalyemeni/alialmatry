@@ -171,7 +171,6 @@
                     if (form) {
                         form.submit();
 
-                        // رسالة بعد التنفيذ
                         Swal.fire({
                             icon: 'success',
                             title: 'تم الحذف',
