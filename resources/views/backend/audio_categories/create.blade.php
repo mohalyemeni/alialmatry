@@ -220,14 +220,20 @@
                     <div class="row mt-4">
                         <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                         <div class="col-sm-12 col-md-10 pt-3">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="uploadBtn">
                                 <i class="icon-lg me-2" data-feather="corner-down-left"></i>
-                                {{ __('panel.save') }}
+                                <span id="uploadBtnText">{{ __('panel.save') }}</span>
                             </button>
                             <a href="{{ route('admin.audio_categories.index') }}" class="btn btn-outline-danger">
                                 <i class="icon-lg me-2" data-feather="x"></i>
                                 {{ __('panel.cancel') }}
                             </a>
+                            <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height: 28px; display:none; margin-top: 18px;">
+                                <div id="uploadProgress" class="modern-progress-bar" style="width: 0%;">
+                                    <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
+                                </div>
+                            </div>
+                            <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
                         </div>
                     </div>
 
@@ -252,35 +258,78 @@
                 maxFileCount: 1
             });
 
-            // Progress bar logic
-            const $imgInput = $('#img');
-            const $progressWrapper = $('#imgProgressWrapper');
-            const $progress = $('#imgUploadProgress');
-            const $progressLabel = $('#imgUploadProgressLabel');
+            // Progress bar عند رفع النموذج بالكامل
+            const $form = $('form');
+            const $btn = $('#uploadBtn');
+            const $btnText = $('#uploadBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
+            const $status = $('#uploadStatus');
 
-            $imgInput.on('change', function(e) {
-                const file = this.files[0];
-                if (!file) return;
+            function resetUploadUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("{{ __('panel.save') }}");
+            }
 
-                // Reset progress bar
+            resetUploadUI();
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
                 $progressWrapper.show();
                 $progress.css('width', '0%');
                 $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', true);
+                $btnText.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري الرفع...');
 
-                // Simulate upload progress (replace with real AJAX if needed)
-                let percent = 0;
-                const interval = setInterval(function() {
-                    if (percent >= 100) {
-                        clearInterval(interval);
-                        $progress.removeClass('bg-danger').addClass('bg-success');
-                        $progressLabel.text('100%');
-                        return;
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        let maxPercent = 0;
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                let percent = Math.round((evt.loaded / evt.total) * 100);
+                                if (percent > maxPercent) {
+                                    maxPercent = percent;
+                                    $progress.css('width', percent + '%');
+                                    $progressLabel.text(percent + '%');
+                                }
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass('bg-success');
+                        $status.html('<i class="fa fa-check-circle me-1"></i> تم رفع البيانات بنجاح').removeClass('text-danger').addClass('text-success');
+                        setTimeout(function() {
+                            window.location.href = "{{ route('admin.audio_categories.index') }}";
+                        }, 1500);
+                    },
+                    error: function(err) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass('bg-danger');
+                        $status.html('<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء الرفع. يرجى المحاولة مجددًا').removeClass('text-success').addClass('text-danger');
+                        setTimeout(function() {
+                            $btn.prop('disabled', false);
+                            $btnText.text("{{ __('panel.save') }}");
+                            $progress.removeClass('bg-danger').addClass('progress-bar-animated bg-primary');
+                        }, 1500);
                     }
-                    percent += Math.floor(Math.random() * 15) + 5;
-                    if (percent > 100) percent = 100;
-                    $progress.css('width', percent + '%');
-                    $progressLabel.text(percent + '%');
-                }, 120);
+                });
             });
         });
     </script> {{-- Flatpickr --}}
