@@ -265,15 +265,18 @@
                 $.ajax({
                     xhr: function() {
                         const xhr = new window.XMLHttpRequest();
+                        let maxPercent = 0;
                         xhr.upload.addEventListener("progress", function(evt) {
                             if (evt.lengthComputable) {
                                 let percent = Math.round((evt.loaded / evt.total) *
                                     100);
-                                // animate width smoothly
-                                $progress.stop().animate({
-                                    width: percent + '%'
-                                }, 200);
-                                $progressLabel.text(percent + '%');
+                                if (percent > maxPercent) {
+                                    maxPercent = percent;
+                                    $progress.stop().animate({
+                                        width: percent + '%'
+                                    }, 200);
+                                    $progressLabel.text(percent + '%');
+                                }
                             }
                         }, false);
                         return xhr;

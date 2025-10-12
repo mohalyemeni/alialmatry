@@ -581,11 +581,16 @@ div.tagsinput div {
     height: 100%;
     background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
     box-shadow: 0 1px 6px rgba(78, 84, 200, 0.12);
-    transition: width 0.4s cubic-bezier(0.4, 1.4, 0.6, 1), background 0.3s;
+    /* حركة ناعمة بدون رجوع للخلف */
+    transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s;
+    will-change: width;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     position: relative;
+    /* منع أي فلاش أو تقطع عند التغيير */
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 .modern-progress-label {
     position: absolute;
