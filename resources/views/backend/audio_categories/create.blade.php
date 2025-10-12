@@ -20,15 +20,6 @@
         </div>
 
         <div class="card-body">
-
-            {{-- ✅ Progress Bar --}}
-            <div id="globalProgressWrapper" class="progress mb-4" style="height: 22px; display:none;">
-                <div id="globalProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                    role="progressbar" style="width: 0%">0%
-                </div>
-            </div>
-            <div id="uploadStatus" class="text-center fw-bold mb-3"></div>
-
             @if ($errors->any())
                 <div class="alert alert-danger pt-0 pb-0 mb-0">
                     <ul class="px-2 py-3 m-0" style="list-style-type: circle">
@@ -162,6 +153,10 @@
                                 @enderror
                             </div>
                         </div>
+
+
+
+
                     </div>
 
                     {{-- SEO Tab --}}
@@ -196,12 +191,14 @@
 
                         <hr>
 
+
                         <div class="row">
                             <div class="col-sm-12 col-md-3 pt-3">
                                 <label for="meta_keywords">{{ __('panel.seo_keywords') }}</label>
                             </div>
                             <div class="col-md-9">
                                 <div class="card p-2">
+
                                     <input name="meta_keywords" id="tags" value="{{ $meta_keywords->value ?? '' }}"
                                         class="form-control" />
                                     @error('meta_keywords')
@@ -210,6 +207,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     {{-- Submit buttons --}}
@@ -226,6 +224,7 @@
                             </a>
                         </div>
                     </div>
+
                 </div>
             </form>
         </div>
@@ -233,9 +232,8 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
-
-    {{-- File input --}}
+    {{-- Select2 (if used elsewhere) --}}
+    <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script> {{-- File input --}}
     <script>
         $(function() {
             $("#img").fileinput({
@@ -248,9 +246,7 @@
                 maxFileCount: 1
             });
         });
-    </script>
-
-    {{-- Flatpickr --}}
+    </script> {{-- Flatpickr --}}
     <script>
         $(function() {
             'use strict';
@@ -268,9 +264,7 @@
                 });
             }
         });
-    </script>
-
-    {{-- Summernote --}}
+    </script> {{-- Summernote --}}
     <script>
         $(function() {
             $('.summernote').summernote({
@@ -289,7 +283,6 @@
         });
     </script>
 
-    {{-- Featured toggle --}}
     <script>
         $(function() {
             $('#featured_btn').on('click', function() {
@@ -308,75 +301,20 @@
             });
         });
     </script>
-
-    {{-- Tags --}}
     <script>
         $(document).ready(function() {
+
             $('#tags').tagsInput({
                 'defaultText': 'أضف كلمة مفتاحية',
                 'height': 'auto',
                 'width': '100%'
             });
 
+
             $('#tags_meta').tagsInput({
                 'defaultText': 'أضف كلمة مفتاحية',
                 'height': 'auto',
                 'width': '100%'
-            });
-        });
-    </script>
-
-    {{-- ✅ Progress Bar --}}
-    <script>
-        $(function() {
-            const form = $('form');
-            const progressWrapper = $('#globalProgressWrapper');
-            const progressBar = $('#globalProgressBar');
-            const uploadStatus = $('#uploadStatus');
-
-            form.on('submit', function(e) {
-                e.preventDefault();
-                uploadStatus.html('');
-                progressWrapper.show();
-                progressBar.css('width', '0%').text('0%');
-
-                let formData = new FormData(this);
-                $.ajax({
-                    xhr: function() {
-                        let xhr = new window.XMLHttpRequest();
-                        xhr.upload.addEventListener('progress', function(evt) {
-                            if (evt.lengthComputable) {
-                                let percent = Math.round((evt.loaded / evt.total) *
-                                100);
-                                progressBar.css('width', percent + '%').text(percent +
-                                    '%');
-                            }
-                        }, false);
-                        return xhr;
-                    },
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function() {
-                        progressBar.removeClass('bg-danger').addClass('bg-success').text(
-                            'تم الرفع بنجاح!');
-                        uploadStatus.html(
-                            '<div class="text-success mt-2">تم الحفظ بنجاح ✅</div>');
-                        setTimeout(() => {
-                            window.location.href =
-                                "{{ route('admin.audio_categories.index') }}";
-                        }, 1500);
-                    },
-                    error: function(xhr) {
-                        progressBar.removeClass('bg-success').addClass('bg-danger').text(
-                            'فشل الرفع');
-                        uploadStatus.html(
-                            '<div class="text-danger mt-2">حدث خطأ أثناء الرفع ❌</div>');
-                        console.error(xhr.responseText);
-                    }
-                });
             });
         });
     </script>
