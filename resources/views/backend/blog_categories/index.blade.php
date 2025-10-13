@@ -143,9 +143,11 @@
 
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
-            // تغيير الحالة (status)
+            // ✅ تغيير الحالة (status)
             $(document).on('click', '.updateBlogCategoryStatus', function() {
                 var el = $(this);
                 var category_id = el.attr('blog_category_id');
@@ -160,26 +162,35 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل التصنيف بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل',
+                                text: 'تم تعطيل التصنيف بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error('toggle status error:', xhr.status, error, xhr
                             .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير الحالة';
-                        if (xhr.status === 403) msg += ' — ليس لديك صلاحية.';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة (CSRF).';
-                        alert(msg);
+                        Swal.fire('خطأ', 'حدث خطأ أثناء تغيير الحالة.', 'error');
                     }
                 });
             });
 
-            // تغيير الميّز (featured)
+            // ⭐ تغيير الميّز (featured)
             $(document).on('click', '.toggleBlogCategoryFeatured', function() {
                 var el = $(this);
                 var category_id = el.attr('blog_category_id');
@@ -194,28 +205,36 @@
                     success: function(response) {
                         if (response.featured) {
                             el.html(
-                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التمييز',
+                                text: 'تم جعل التصنيف مميزًا.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم الإلغاء',
+                                text: 'تم إلغاء تمييز التصنيف.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error('toggle featured error:', xhr.status, error, xhr
                             .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير حالة المميز';
-                        if (xhr.status === 403) msg += ' — ليس لديك صلاحية.';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة (CSRF).';
-                        alert(msg);
+                        Swal.fire('خطأ', 'حدث خطأ أثناء تغيير حالة المميز.', 'error');
                     }
                 });
             });
         });
-    </script>
 
-    <script>
+        // 🗑️ تأكيد الحذف
         function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
                 title: message,
@@ -233,7 +252,6 @@
                 if (result.isConfirmed) {
                     const form = document.getElementById(formId);
                     if (form) {
-                        // إرسال الحذف عبر AJAX
                         $.ajax({
                             url: form.action,
                             type: 'POST',
@@ -254,13 +272,9 @@
                                 Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
                             }
                         });
-                    } else {
-                        console.error('Form not found: ' + formId);
                     }
                 }
             });
         }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection
