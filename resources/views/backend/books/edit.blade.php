@@ -25,8 +25,8 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.books.update', $book->id) }}" method="POST" enctype="multipart/form-data"
-                novalidate>
+            <form id="bookForm" action="{{ route('admin.books.update', $book->id) }}" method="POST"
+                enctype="multipart/form-data" novalidate>
                 @csrf
                 @method('PUT')
 
@@ -104,7 +104,6 @@
                                 @endif
                             </div>
                         </div>
-
 
                         <!-- Change Book File -->
                         <div class="row mt-3">
@@ -203,12 +202,22 @@
                 <div class="row mt-4">
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="save"></i> {{ __('panel.update') }}
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <i class="icon-lg me-2" data-feather="save"></i>
+                            <span id="uploadBtnText">{{ __('panel.update') }}</span>
                         </button>
                         <a href="{{ route('admin.books.index') }}" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
                         </a>
+
+                        {{-- status + progress partial --}}
+                        <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height:28px; display:none;">
+                    <div id="uploadProgress" class="modern-progress-bar" style="width:0%;">
+                        <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
                     </div>
                 </div>
             </form>
@@ -333,6 +342,136 @@
                     showRemove: true,
                     removeIcon: '<i class="fas fa-trash"></i>',
                 }
+            });
+        });
+    </script>
+
+    {{-- Upload (AJAX + progress) for update --}}
+    <script>
+        $(document).ready(function() {
+            const $form = $('#bookForm');
+            const $btn = $('#uploadBtn');
+            const $btnText = $('#uploadBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
+            const $status = $('#uploadStatus');
+
+            function clearAjaxFieldErrors() {
+                $('.ajax-error').remove();
+                $('.is-invalid.ajax-field').removeClass('is-invalid ajax-field');
+            }
+
+            function resetUploadUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("{{ __('panel.update') }}");
+                clearAjaxFieldErrors();
+            }
+
+            resetUploadUI();
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+
+                clearAjaxFieldErrors();
+
+                let formData = new FormData(this);
+                // ensure method override for PUT
+                formData.set('_method', 'PUT');
+
+                $progressWrapper.show();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', true);
+                $btnText.html(
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري الحفظ...'
+                    );
+
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        let maxPercent = 0;
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                let percent = Math.round((evt.loaded / evt.total) *
+                                100);
+                                if (percent > maxPercent) {
+                                    maxPercent = percent;
+                                    $progress.css('width', percent + '%');
+                                    $progressLabel.text(percent + '%');
+                                }
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST', // using POST with _method=PUT
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-success');
+                        $status.html(
+                                '<i class="fa fa-check-circle me-1"></i> تم تحديث الكتاب بنجاح')
+                            .removeClass('text-danger').addClass('text-success');
+
+                        // redirect if backend returns redirect URL or fallback to index
+                        const redirectUrl = res.redirect || "{{ route('admin.books.index') }}";
+                        setTimeout(function() {
+                            window.location.href = redirectUrl;
+                        }, 1200);
+                    },
+                    error: function(xhr) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-danger');
+
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            let messages = [];
+                            for (const field in errors) {
+                                if (!errors.hasOwnProperty(field)) continue;
+                                const msgArr = errors[field];
+                                const msg = msgArr.join('<br>');
+                                messages.push(msg);
+
+                                // try to show under the input(s)
+                                // handle array like name[] by selecting by starts-with
+                                let $input = $form.find('[name="' + field + '"]');
+                                if (!$input.length) {
+                                    // try to find inputs with name starting with field (e.g., meta_keywords[])
+                                    $input = $form.find('[name^="' + field + '"]');
+                                }
+                                if ($input.length) {
+                                    $input.addClass('is-invalid ajax-field');
+                                    $input.last().after(
+                                        '<span class="text-danger ajax-error d-block small mt-1">' +
+                                        msg + '</span>');
+                                }
+                            }
+                            $status.html('<div class="alert alert-danger p-2 m-0">' + messages
+                                .join('<br>') + '</div>');
+                        } else {
+                            $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء الحفظ. يرجى المحاولة مجددًا'
+                                ).removeClass('text-success').addClass('text-danger');
+                        }
+
+                        setTimeout(function() {
+                            $btn.prop('disabled', false);
+                            $btnText.text("{{ __('panel.update') }}");
+                            $progress.removeClass('bg-danger').addClass(
+                                'progress-bar-animated bg-primary');
+                        }, 1500);
+                    }
+                });
             });
         });
     </script>
