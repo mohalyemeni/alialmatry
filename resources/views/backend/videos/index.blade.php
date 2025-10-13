@@ -28,7 +28,8 @@
         @include('backend.videos.filter.filter')
 
         <div class="card-body">
-            <table class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+            <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
+                style="width: 100%;">
                 <thead>
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
@@ -48,19 +49,19 @@
 
                             <td>
                                 @if ($video->thumbnail_url)
-                                    {{-- استخدام thumbnail_url الجاهز من الكنترولر --}}
                                     <img src="{{ $video->thumbnail_url }}" alt="{{ $video->title }}" class="img-thumbnail"
-                                        style="width: 81px; height: 70px; object-fit: cover; border-radius: 100%;">
+                                        style="width:81px; height:70px; object-fit:cover; border-radius:100%;">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center"
-                                        style="width:81px; height:70px; background:#f5f5f5; border-radius: 100%;">
+                                        style="width:81px; height:70px; background:#f5f5f5; border-radius:100%;">
                                         <small class="text-muted">{{ __('panel.no_image') }}</small>
                                     </div>
                                 @endif
                             </td>
-                            <td>{{ $video->title }}</td>
 
+                            <td>{{ $video->title }}</td>
                             <td class="d-none d-sm-table-cell">{{ $video->published_on?->diffForHumans() ?? '-' }}</td>
+
                             <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updateVideoStatus" id="video-{{ $video->id }}"
                                     video_id="{{ $video->id }}">
@@ -71,6 +72,7 @@
                                     @endif
                                 </a>
                             </td>
+
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm">
                                     <div class="dropdown mb-2">
@@ -92,11 +94,13 @@
                                                 <i data-feather="edit-2" class="icon-sm me-2"></i>
                                                 {{ __('panel.operation_edit') }}
                                             </a>
+
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-video-{{ $video->id }}')">
+                                                onclick="confirmDelete('delete-video-{{ $video->id }}', '{{ __('panel.confirm_delete_message') }}', '{{ __('panel.yes_delete') }}', '{{ __('panel.cancel') }}')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 {{ __('panel.operation_delete') }}
                                             </a>
+
                                             <form id="delete-video-{{ $video->id }}"
                                                 action="{{ route('admin.videos.destroy', $video->id) }}" method="POST"
                                                 class="d-none">
@@ -123,12 +127,15 @@
     </div>
 @endsection
 
+
 @section('script')
-    {{-- SweetAlert2 for better confirmation dialogs --}}
+    {{-- SweetAlert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
+
+            // ✅ تبديل الحالة
             $(document).on('click', '.updateVideoStatus', function() {
                 var el = $(this);
                 var video_id = el.attr('video_id');
@@ -144,13 +151,19 @@
                         if (response.status === 'success') {
                             if (response.new_status) {
                                 el.html(
-                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                                );
+                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
                             } else {
                                 el.html(
-                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                                );
+                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
                             }
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: '{{ __('panel.operation_success') }}',
+                                text: '{{ __('panel.status_changed_successfully') }}',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -171,16 +184,17 @@
             });
         });
 
-        function confirmDelete(formId) {
+        // ✅ تأكيد الحذف
+        function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
-                title: '{{ __('panel.confirm_delete_message') }}',
-                text: "{{ __('panel.cant_revert_this', ['_lang' => 'ar']) }}",
+                title: message,
+                text: "{{ __('panel.cant_revert_this') }}",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: '{{ __('panel.yes_delete') }}',
-                cancelButtonText: '{{ __('panel.cancel') }}'
+                confirmButtonText: yesText,
+                cancelButtonText: cancelText
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById(formId).submit();

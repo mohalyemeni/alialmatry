@@ -24,7 +24,6 @@
             </div>
         </div>
 
-
         <?php echo $__env->make('backend.sheikh_pages.filter.filter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <div class="card-body">
@@ -77,7 +76,7 @@
                                                 <span><?php echo e(__('panel.operation_edit')); ?></span>
                                             </a>
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-page-<?php echo e($page->id); ?>', '<?php echo e(__('panel.confirm_delete_message')); ?>')">
+                                                onclick="confirmDelete('delete-page-<?php echo e($page->id); ?>')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 <span><?php echo e(__('panel.operation_delete')); ?></span>
                                             </a>
@@ -110,6 +109,7 @@
 <?php $__env->startSection('script'); ?>
     <script>
         $(document).ready(function() {
+            // تحديث حالة الصفحة (تفعيل/تعطيل)
             $(document).on('click', '.updatePageStatus', function() {
                 var el = $(this);
                 var page_id = el.attr('page_id');
@@ -124,27 +124,56 @@
                         if (response.status) {
                             el.html(
                                 '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         } else {
                             el.html(
                                 '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'حدث خطأ أثناء تغيير الحالة!',
+                            confirmButtonText: 'حسنًا'
+                        });
                     }
                 });
             });
         });
 
-        function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
+        // تأكيد الحذف باستخدام SweetAlert
+        function confirmDelete(formId) {
+            Swal.fire({
+                title: 'هل أنت متأكد من الحذف؟',
+                text: "لن تتمكن من التراجع بعد ذلك!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'نعم، احذف!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف!',
+                        text: 'تم حذف العنصر بنجاح.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'تم الإلغاء',
+                        text: 'لم يتم حذف أي شيء.',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
                 }
-            }
+            });
         }
     </script>
 <?php $__env->stopSection(); ?>

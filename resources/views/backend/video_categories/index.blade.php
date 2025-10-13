@@ -57,7 +57,7 @@
                                 {{ $page_category->creator?->first_name ?? __('panel.unknown') }}
                             </td>
 
-                            <td class="d-none d-sm-table-cell">
+                            <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updatePageCategoryStatus"
                                     id="page-category-{{ $page_category->id }}"
                                     page_category_id="{{ $page_category->id }}">
@@ -109,7 +109,7 @@
                                             </a>
 
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-video-category-{{ $page_category->id }}', '{{ __('panel.confirm_delete_message') }}', '{{ __('panel.yes_delete') }}', '{{ __('panel.cancel') }}')">
+                                                onclick="confirmDelete('delete-video-category-{{ $page_category->id }}')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 <span>{{ __('panel.operation_delete') }}</span>
                                             </a>
@@ -145,6 +145,8 @@
 @section('script')
     <script>
         $(document).ready(function() {
+
+            // Toggle status
             $(document).on('click', '.updatePageCategoryStatus', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
@@ -159,23 +161,35 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل بنجاح',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل بنجاح',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('toggle status error:', xhr.status, error, xhr
-                            .responseText);
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'حدث خطأ أثناء تغيير الحالة',
+                            confirmButtonText: 'حسناً'
+                        });
                     }
                 });
             });
 
-            // toggle featured
+            // Toggle featured
             $(document).on('click', '.toggleVideoCategoryFeatured', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
@@ -190,40 +204,51 @@
                     success: function(response) {
                         if (response.featured) {
                             el.html(
-                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم تمييز التصنيف',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم إزالة التمييز',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('toggle featured error:', xhr.status, error, xhr
-                            .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير حالة المميز';
-                        if (xhr.status === 403) msg += ' — ليس لديك صلاحية.';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة (CSRF).';
-                        alert(msg);
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'حدث خطأ أثناء تغيير حالة المميز',
+                            confirmButtonText: 'حسناً'
+                        });
                     }
                 });
             });
         });
-    </script>
 
-    <script>
-        function confirmDelete(formId, message, yesText, cancelText) {
-            if (confirm(message)) {
-                console.log('Submitting form: ' + formId);
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                } else {
-                    console.error('Form not found: ' + formId);
+        // SweetAlert delete confirm
+        function confirmDelete(formId) {
+            Swal.fire({
+                title: 'هل أنت متأكد من الحذف؟',
+                text: 'لن تتمكن من التراجع بعد الحذف!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، احذفها!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
                 }
-            } else {
-                console.log('User cancelled deletion');
-            }
+            });
         }
     </script>
 @endsection

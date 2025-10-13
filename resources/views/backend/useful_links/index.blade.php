@@ -34,7 +34,6 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0">{{ __('panel.title') }}</th>
-
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.author') }}</th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.status') }}</th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.published_on') }}</th>
@@ -48,7 +47,6 @@
                                 <input type="checkbox" name="checkfilter" value="{{ $link->id }}">
                             </td>
                             <td>{{ $link->title }}</td>
-
                             <td class="d-none d-sm-table-cell">
                                 {{ $link->creator?->first_name ?? __('panel.unknown') }}
                             </td>
@@ -73,12 +71,6 @@
                                             aria-haspopup="true" aria-expanded="false" style="cursor:pointer;">
                                             <i data-feather="more-vertical" class="icon-sm text-muted"></i>
                                             {{ __('panel.operation_options') }}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
-                                                viewBox="0 0 25 15" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-chevron-down link-arrow ms-1">
-                                                <polyline points="6 9 12 15 18 9"></polyline>
-                                            </svg>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $link->id }}">
                                             <a class="dropdown-item d-flex align-items-center"
@@ -87,7 +79,7 @@
                                                 <span>{{ __('panel.operation_edit') }}</span>
                                             </a>
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-useful-link-{{ $link->id }}', '{{ __('panel.confirm_delete_message') }}', '{{ __('panel.yes_delete') }}', '{{ __('panel.cancel') }}')">
+                                                onclick="confirmDelete('delete-useful-link-{{ $link->id }}')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 <span>{{ __('panel.operation_delete') }}</span>
                                             </a>
@@ -119,6 +111,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            // تحديث حالة الرابط المفيد
             $(document).on('click', '.updateUsefulLinkStatus', function() {
                 var el = $(this);
                 var useful_link_id = el.attr('useful_link_id');
@@ -132,28 +125,55 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ!',
+                            text: 'حدث خطأ أثناء تغيير الحالة.',
+                            confirmButtonText: 'حسنًا'
+                        });
                     }
                 });
             });
         });
 
-        function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
+        // تأكيد الحذف باستخدام SweetAlert
+        function confirmDelete(formId) {
+            Swal.fire({
+                title: 'هل أنت متأكد من الحذف؟',
+                text: "لن تتمكن من التراجع بعد ذلك!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'نعم، احذف!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف!',
+                        text: 'تم حذف العنصر بنجاح.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'تم الإلغاء',
+                        text: 'لم يتم حذف أي شيء.',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
                 }
-            }
+            });
         }
     </script>
 @endsection
