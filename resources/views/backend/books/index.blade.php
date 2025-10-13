@@ -9,7 +9,7 @@
                     {{ __('panel.manage_books') }}
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li><a href="{{ route('admin.main') }}">{{ __('panel.main') }}</a> \</li>
+                    <li><a href="{{ route('admin.index') }}">{{ __('panel.main') }}</a> \</li>
                     <li class="ms-1">{{ __('panel.show_books') }}</li>
                 </ul>
             </div>
@@ -160,7 +160,8 @@
 
                         if (isActive) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
+                            );
                             Swal.fire({
                                 toast: true,
                                 position: 'top-end',
@@ -171,7 +172,8 @@
                             });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
+                            );
                             Swal.fire({
                                 toast: true,
                                 position: 'top-end',
