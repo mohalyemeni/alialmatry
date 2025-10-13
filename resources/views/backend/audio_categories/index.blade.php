@@ -129,12 +129,16 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
-            // تغيير الحالة مع SweetAlert
+
+            // ✅ تغيير الحالة
             $(document).on('click', '.updateAudioCategoryStatus', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.audio_categories.toggleStatus') }}',
@@ -145,8 +149,7 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                                );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'تم التفعيل',
@@ -156,8 +159,7 @@
                             });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                                );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
                             Swal.fire({
                                 icon: 'info',
                                 title: 'تم التعطيل',
@@ -173,7 +175,7 @@
                 });
             });
 
-            // تغيير حالة المميز (بدون SweetAlert)
+            // ⭐ تغيير حالة المميز مع SweetAlert
             $(document).on('click', '.toggleAudioCategoryFeatured', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
@@ -188,12 +190,24 @@
                     success: function(response) {
                         if (response.featured) {
                             el.html(
-                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
-                                );
+                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التمييز',
+                                text: 'تم جعل التصنيف مميزًا بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>'
-                                );
+                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم الإلغاء',
+                                text: 'تم إلغاء تمييز التصنيف.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function() {
@@ -203,7 +217,7 @@
             });
         });
 
-        // تأكيد الحذف
+        // 🗑️ تأكيد الحذف
         function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
                 title: message,
