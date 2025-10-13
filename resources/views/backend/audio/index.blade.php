@@ -47,11 +47,10 @@
                                 <input type="checkbox" name="checkfilter" value="{{ $audio->id }}">
                             </td>
                             <td>{{ $audio->title }}</td>
-
                             <td class="d-none d-sm-table-cell">
                                 {{ $audio->creator?->first_name ?? __('panel.unknown') }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updateAudioStatus" id="audio-{{ $audio->id }}"
                                     audio_id="{{ $audio->id }}">
                                     @if ($audio->status)
@@ -118,9 +117,11 @@
 @section('script')
     <script>
         $(document).ready(function() {
+
             $(document).on('click', '.updateAudioStatus', function() {
                 var el = $(this);
                 var audio_id = el.attr('audio_id');
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.audios.toggleStatus') }}',
@@ -133,10 +134,24 @@
                             el.html(
                                 '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
                             );
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل التسجيل بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
                                 '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
                             );
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل',
+                                text: 'تم تعطيل التسجيل بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function() {
@@ -150,6 +165,7 @@
                 });
             });
         });
+
 
         function confirmDelete(formId, message, confirmText = 'نعم، احذف', cancelText = 'إلغاء') {
             Swal.fire({
