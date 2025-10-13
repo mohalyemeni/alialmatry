@@ -215,17 +215,43 @@
         });
 
         function confirmDelete(formId, message, yesText, cancelText) {
-            if (confirm(message)) {
-                console.log('Submitting form: ' + formId);
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                } else {
-                    console.error('Form not found: ' + formId);
+            Swal.fire({
+                title: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: yesText,
+                cancelButtonText: cancelText,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        // إرسال الطلب عبر AJAX
+                        $.ajax({
+                            url: form.action,
+                            type: 'POST',
+                            data: $(form).serialize(),
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'تم الحذف!',
+                                    text: 'تم حذف العنصر بنجاح.',
+                                    icon: 'success',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1500);
+                            },
+                            error: function(xhr) {
+                                Swal.fire('خطأ!', 'حدث خطأ أثناء الحذف.', 'error');
+                            }
+                        });
+                    } else {
+                        Swal.fire('خطأ!', 'لم يتم العثور على النموذج.', 'error');
+                    }
                 }
-            } else {
-                console.log('User cancelled deletion');
-            }
+            });
         }
     </script>
 @endsection

@@ -35,7 +35,7 @@
                 <li class="menu-item-has-children">
                     <a href="<?php echo e(route('frontend.books.index')); ?>">الكتب والمؤلفات</a>
                 </li>
-                <li><a href="contact.html">اتصل بنا</a></li>
+                <li><a href="<?php echo e(route('frontend.contact.form')); ?>">اتصل بنا</a></li>
             </ul>
         </div>
     </div>

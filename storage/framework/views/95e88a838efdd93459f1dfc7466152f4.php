@@ -32,7 +32,7 @@
                                 class="list-group-item list-group-item1 d-flex justify-content-between align-items-start py-4">
                                 <div class="me-3" style="flex:1;">
                                     <h5 class="mb-1">
-                                        <i class="fa fa-newspaper me-2 text-primary"></i>
+                                        <i class="fa fa-newspaper  text-primary"></i>
                                         <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>">
                                             <?php echo e(e($blog->title)); ?>
 
@@ -49,7 +49,7 @@
 
                                 <div class="button-wrapp d-flex align-items-center pm">
                                     <a href="<?php echo e(route('frontend.blogs.show', $blog->slug)); ?>"
-                                        class="th-btn style1 th-btn1">
+                                        class="th-btn style1 th-btn1 me-3">
                                         <span class="btn-text" data-back=" مشاهدة" data-front=" مشاهدة"></span>
                                         <i class="fa-solid fa-eye me-1"></i>
                                     </a>
@@ -75,7 +75,7 @@
                     <div class="btn-group">
                         <a href="<?php echo e(route('frontend.books.index') ?? '#'); ?>" class="th-btn style1 fadeInRight wow"
                             data-wow-delay=".3s">
-                            <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                            <span class="btn-text" data-back=" المزيد" data-front=" المزيد"></span>
                         </a>
                     </div>
                 </div>

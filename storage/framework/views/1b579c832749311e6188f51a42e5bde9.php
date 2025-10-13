@@ -74,7 +74,7 @@
                                     <div class="card-body st-card-body">
                                         <h5 class="card-title st-title text-end">
                                             <a href="<?php echo e(route('frontend.videos.show', $v->slug)); ?>"
-                                                class="text-dark ellipsis-title a_style" title="<?php echo e(e($v->title)); ?>">
+                                                class="text_wihte ellipsis-title a_style" title="<?php echo e(e($v->title)); ?>">
                                                 <?php echo e(e($smartLimit($v->title, 23))); ?>
 
                                             </a>
@@ -110,7 +110,7 @@
                             <div class="card-body st-card-body">
                                 <h5 class="card-title st-title text-end">
                                     <a href="<?php echo e(route('frontend.videos.show', $main->slug)); ?>"
-                                        class="text-dark ellipsis-title a_style" title="<?php echo e(e($main->title)); ?>">
+                                        class="text_wihte ellipsis-title a_style" title="<?php echo e(e($main->title)); ?>">
                                         <?php echo e(e($smartLimit($main->title, 23))); ?>
 
                                     </a>

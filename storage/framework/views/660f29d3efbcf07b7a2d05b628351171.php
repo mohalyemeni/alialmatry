@@ -9,7 +9,7 @@
 
                     <div class="btn-group">
                         <a href="<?php echo e(route('frontend.audios.index')); ?>" class="th-btn style1">
-                            <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                            <span class="btn-text" data-back=" المزيد" data-front=" المزيد"></span>
                         </a>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
 
                         <div class="btn-group">
                             <a href="<?php echo e(route('frontend.durars.index')); ?>" class="th-btn style1">
-                                <span class="btn-text" data-back="تصفح المزيد" data-front="تصفح المزيد"></span>
+                                <span class="btn-text" data-back=" المزيد" data-front=" المزيد"></span>
                             </a>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                                     </li>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php else: ?>
-                                <li class="text-muted">لا توجد درر لعرضها حالياً.</li>
+                                <li class="text-muted">لا توجدش درر لعرضها حالياً.</li>
                             <?php endif; ?>
                         </ul>
                     </div>

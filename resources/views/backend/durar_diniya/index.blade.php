@@ -119,11 +119,11 @@
                         if (response.status) {
                             el.html(
                                 '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                                );
+                            );
                         } else {
                             el.html(
                                 '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                                );
+                            );
                         }
                     },
                     error: function() {
@@ -134,10 +134,50 @@
         });
 
         function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) form.submit();
-            }
+            Swal.fire({
+                title: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn btn-danger mx-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        // إرسال الحذف عبر AJAX
+                        $.ajax({
+                            url: form.action,
+                            type: 'POST',
+                            data: $(form).serialize(),
+                            success: function() {
+                                Swal.fire({
+                                    title: 'تم الحذف!',
+                                    text: 'تم حذف العنصر بنجاح.',
+                                    icon: 'success',
+                                    timer: 1200,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1250);
+                            },
+                            error: function() {
+                                Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
+                            }
+                        });
+                    } else {
+                        console.error('Form not found: ' + formId);
+                    }
+                }
+            });
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection
