@@ -194,21 +194,31 @@ class BookController extends Controller
 
     public function toggleStatus(Request $request)
     {
-        if ($request->ajax()) {
-            $request->validate([
-                'book_id' => 'required|integer|exists:books,id',
-            ]);
 
+        if (!auth()->user()->ability(['admin', 'Supervisor'], ['update_books'])) {
+            return response()->json([
+                'success' => false,
+                'message' => __('panel.permission_denied')
+            ], 403);
+        }
+
+        try {
             $book = Book::findOrFail($request->book_id);
+
             $book->status = !$book->status;
             $book->save();
 
-            return response()->json([
-                'status' => $book->status,
-                'book_id' => $book->id,
-            ]);
-        }
 
-        return response()->json(['error' => 'Invalid request'], 400);
+            $message = $book->status ? __('panel.status_changed_successfully') : __('panel.status_changed_successfully'); // يمكنك تخصيص الرسائل
+
+
+            return response()->json([
+                'success' => true,
+                'status' => $book->status,
+                'message' => $message
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => __('panel.something_was_wrong'), 'error' => $e->getMessage()], 500);
+        }
     }
 }

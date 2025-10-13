@@ -134,10 +134,12 @@
                         if (response.success) {
                             if (response.status) {
                                 el.html(
-                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
+                                );
                             } else {
                                 el.html(
-                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
+                                );
                             }
 
                             Swal.fire({
