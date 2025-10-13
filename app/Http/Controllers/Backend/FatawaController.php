@@ -223,21 +223,27 @@ class FatawaController extends Controller
 
     public function toggleStatus(Request $request)
     {
-        if ($request->ajax()) {
-            $request->validate([
-                'fatwa_id' => 'required|integer|exists:fatawa,id',
-            ]);
-
+        try {
             $fatwa = Fatwa::findOrFail($request->fatwa_id);
+
+            // تغيير الحالة
             $fatwa->status = !$fatwa->status;
             $fatwa->save();
 
+            // إرجاع رد JSON يحتوي على الحالة الجديدة
             return response()->json([
+                'success' => true,
                 'status' => $fatwa->status,
-                'fatwa_id' => $fatwa->id,
+                'message' => $fatwa->status ? 'تم تفعيل الفتوى بنجاح' : 'تم إلغاء تفعيل الفتوى'
             ]);
+        } catch (\Exception $e) {
+            // في حالة حدوث أي خطأ
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء تغيير الحالة',
+                'error'   => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json(['error' => 'Invalid request'], 400);
     }
+
 }

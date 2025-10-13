@@ -34,7 +34,6 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0">{{ __('panel.title') }}</th>
-
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.author') }}</th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.status') }}</th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.published_on') }}</th>
@@ -48,13 +47,11 @@
                                 <input type="checkbox" name="checkfilter" value="{{ $fatwa->id }}">
                             </td>
                             <td>{{ $fatwa->title }}</td>
-
                             <td class="d-none d-sm-table-cell">
                                 {{ $fatwa->creator?->first_name ?? __('panel.unknown') }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
-                                <a href="javascript:void(0);" class="updateFatwaStatus" id="fatwa-{{ $fatwa->id }}"
-                                    fatwa_id="{{ $fatwa->id }}">
+                            <td class="d-none d-sm-table-cell text-center">
+                                <a href="javascript:void(0);" class="updateFatwaStatus" fatwa_id="{{ $fatwa->id }}">
                                     @if ($fatwa->status)
                                         <i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>
                                     @else
@@ -117,36 +114,54 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function() {
-            $(document).on('click', '.updateFatwaStatus', function() {
-                var el = $(this);
-                var fatwa_id = el.attr('fatwa_id');
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('admin.fatawa.toggleStatus') }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        fatwa_id: fatwa_id
-                    },
-                    success: function(response) {
-                        if (response.status) {
-                            el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
-                        } else {
-                            el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
-                        }
-                    },
-                    error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+        // ✅ تغيير الحالة باستخدام AJAX + SweetAlert
+        $(document).on('click', '.updateFatwaStatus', function() {
+            var el = $(this);
+            var fatwa_id = el.attr('fatwa_id');
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('admin.fatawa.toggleStatus') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    fatwa_id: fatwa_id
+                },
+                success: function(response) {
+                    if (response.status) {
+                        el.html(
+                            '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
+                        );
+                        Swal.fire({
+                            toast: true,
+                            position: 'center',
+                            icon: 'success',
+                            title: 'تم تفعيل الفتوى بنجاح',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        el.html(
+                            '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
+                        );
+                        Swal.fire({
+                            toast: true,
+                            position: 'center',
+                            icon: 'info',
+                            title: 'تم إلغاء تفعيل الفتوى',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     }
-                });
+                },
+                error: function() {
+                    Swal.fire('خطأ', 'حدث خطأ أثناء تغيير الحالة', 'error');
+                }
             });
         });
 
+        // ✅ تأكيد الحذف باستخدام SweetAlert
         function confirmDelete(formId, message) {
             Swal.fire({
                 title: message,
@@ -164,7 +179,6 @@
                 if (result.isConfirmed) {
                     const form = document.getElementById(formId);
                     if (form) {
-                        // إرسال الحذف عبر AJAX
                         $.ajax({
                             url: form.action,
                             type: 'POST',
@@ -177,21 +191,15 @@
                                     timer: 1200,
                                     showConfirmButton: false
                                 });
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 1250);
+                                setTimeout(() => window.location.reload(), 1250);
                             },
                             error: function() {
                                 Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
                             }
                         });
-                    } else {
-                        console.error('Form not found: ' + formId);
                     }
                 }
             });
         }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection
