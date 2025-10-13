@@ -1656,6 +1656,15 @@ return [
     'confirm_delete_message' => 'هل أنت متأكد من الحذف؟',
     'yes_delete' => 'نعم، احذف',
     'cancel' => 'إلغاء',
+        'confirm_delete_message'         => 'هل أنت متأكد أنك تريد الحذف؟',
+    'yes_delete'                     => 'نعم، احذف',
+    'cancel'                         => 'إلغاء',
+    'cant_revert_this'               => 'هذا الإجراء لا يمكن التراجع عنه',
+    'operation_success'              => 'تمت العملية',
+    'status_changed_successfully'    => 'تم تغيير الحالة بنجاح',
+    'something_was_wrong'            => 'حدث خطأ',
+    'unknown_error'                  => 'حدث خطأ غير معروف، حاول مرة أخرى',
+    'error_while_changing_status'    => 'حدث خطأ أثناء تغيير الحالة',
     // ========================== frontend header side panel translate ===============================================//
     // user login guest
     'f_close'                                           =>  'إغلاق',

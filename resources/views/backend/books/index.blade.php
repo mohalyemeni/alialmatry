@@ -164,7 +164,7 @@
                             );
                             Swal.fire({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'center',
                                 icon: 'success',
                                 title: '{{ __('panel.status_changed_successfully') }}',
                                 showConfirmButton: false,
@@ -176,7 +176,7 @@
                             );
                             Swal.fire({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'center',
                                 icon: 'info',
                                 title: '{{ __('panel.status_changed_successfully') }}',
                                 showConfirmButton: false,
