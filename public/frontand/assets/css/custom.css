@@ -2256,3 +2256,8 @@ h4 {
         width: 60%;
     }
 }
+@media (max-width: 768px) {
+    .blog-grid.style2 .blog-img {
+        width: 100%;
+    }
+}

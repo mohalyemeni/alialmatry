@@ -151,10 +151,12 @@
                         if (response.status === 'success') {
                             if (response.new_status) {
                                 el.html(
-                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                                    '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
+                                    );
                             } else {
                                 el.html(
-                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                                    '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
+                                    );
                             }
 
                             Swal.fire({
@@ -184,7 +186,7 @@
             });
         });
 
-        // ✅ تأكيد الحذف
+
         function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
                 title: message,
