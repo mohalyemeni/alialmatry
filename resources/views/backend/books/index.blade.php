@@ -9,7 +9,7 @@
                     {{ __('panel.manage_books') }}
                 </h3>
                 <ul class="breadcrumb pt-3">
-                    <li><a href="{{ route('admin.index') }}">{{ __('panel.main') }}</a> \</li>
+                    <li><a href="{{ route('admin.main') }}">{{ __('panel.main') }}</a> \</li>
                     <li class="ms-1">{{ __('panel.show_books') }}</li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
                             <td class="d-none d-sm-table-cell">
                                 {{ $book->creator?->first_name ?? __('panel.unknown') }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updateBookStatus" id="book-{{ $book->id }}"
                                     book_id="{{ $book->id }}">
                                     @if ($book->status)
@@ -115,11 +115,19 @@
 @endsection
 
 @section('script')
+    {{-- SweetAlert2 --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
             $(document).on('click', '.updateBookStatus', function() {
                 var el = $(this);
                 var book_id = el.attr('book_id');
+
+                // optional: show small loading indicator while request in-flight
+                const originalHtml = el.html();
+                el.html('<i class="fas fa-spinner fa-pulse"></i>');
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.books.toggleStatus') }}',
@@ -128,30 +136,76 @@
                         book_id: book_id
                     },
                     success: function(response) {
-                        if (response.status) {
+                        // Determine new state robustly
+                        let isActive = null;
+
+                        if (typeof response.new_status !== 'undefined') {
+                            isActive = !!response.new_status;
+                        } else if (typeof response.status === 'boolean') {
+                            // some endpoints return the new status as boolean
+                            isActive = response.status;
+                        } else if (response.status == 1 || response.status === '1') {
+                            // sometimes status=1 means active
+                            isActive = true;
+                        } else if (response.status == 0 || response.status === '0') {
+                            isActive = false;
+                        }
+
+                        // Fallback: toggle based on current icon if server response unclear
+                        if (isActive === null) {
+                            const icon = el.find('i');
+                            const currentlyActive = icon.hasClass('text-success');
+                            isActive = !currentlyActive;
+                        }
+
+                        if (isActive) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: '{{ __('panel.status_changed_successfully') }}',
+                                showConfirmButton: false,
+                                timer: 1400
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'info',
+                                title: '{{ __('panel.status_changed_successfully') }}',
+                                showConfirmButton: false,
+                                timer: 1400
+                            });
                         }
                     },
-                    error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                    error: function(xhr) {
+                        console.error('toggle status error:', xhr.status, xhr.responseText);
+                        // restore original UI
+                        el.html(originalHtml);
+
+                        // show friendly Swal error
+                        Swal.fire({
+                            icon: 'error',
+                            title: '{{ __('panel.something_was_wrong') }}',
+                            text: '{{ __('panel.error_while_changing_status') }}',
+                            confirmButtonText: 'حسناً'
+                        });
                     }
                 });
             });
         });
 
-        function confirmDelete(formId, message) {
+        function confirmDelete(formId, message, yesText = 'نعم، احذف', cancelText = 'إلغاء') {
             Swal.fire({
                 title: message,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'نعم، احذف',
-                cancelButtonText: 'إلغاء',
+                confirmButtonText: yesText,
+                cancelButtonText: cancelText,
                 reverseButtons: true,
                 customClass: {
                     confirmButton: 'btn btn-danger mx-2',
@@ -169,8 +223,8 @@
                             data: $(form).serialize(),
                             success: function() {
                                 Swal.fire({
-                                    title: 'تم الحذف!',
-                                    text: 'تم حذف العنصر بنجاح.',
+                                    title: '{{ __('panel.operation_success') }}',
+                                    text: '{{ __('panel.item_deleted_successfully') ?? 'تم حذف العنصر بنجاح.' }}',
                                     icon: 'success',
                                     timer: 1200,
                                     showConfirmButton: false
@@ -180,7 +234,9 @@
                                 }, 1250);
                             },
                             error: function() {
-                                Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
+                                Swal.fire('{{ __('panel.something_was_wrong') }}',
+                                    '{{ __('panel.error_on_delete') ?? 'حدث خطأ أثناء الحذف، حاول مجددًا.' }}',
+                                    'error');
                             }
                         });
                     } else {
@@ -189,7 +245,5 @@
                 }
             });
         }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection

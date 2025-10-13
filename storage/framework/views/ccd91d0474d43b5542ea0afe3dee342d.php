@@ -23,7 +23,8 @@
                     </ul>
                 </div>
             <?php endif; ?>
-            <form action="<?php echo e(route('admin.books.store')); ?>" method="POST" enctype="multipart/form-data">
+
+            <form id="bookForm" action="<?php echo e(route('admin.books.store')); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -249,17 +250,27 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>
+
                 <div class="row mt-4">
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="corner-down-left"></i> <?php echo e(__('panel.save')); ?>
-
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <i class="icon-lg me-2" data-feather="corner-down-left"></i>
+                            <span id="uploadBtnText"><?php echo e(__('panel.save')); ?></span>
                         </button>
                         <a href="<?php echo e(route('admin.books.index')); ?>" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> <?php echo e(__('panel.cancel')); ?>
 
                         </a>
+
+                        
+                        <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height:28px; display:none;">
+                    <div id="uploadProgress" class="modern-progress-bar" style="width:0%;">
+                        <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
                     </div>
                 </div>
             </form>
@@ -269,6 +280,7 @@ unset($__errorArgs, $__bag); ?>
 
 <?php $__env->startSection('script'); ?>
     <script src="<?php echo e(asset('backend/vendors/select2/select2.min.js')); ?>"></script>
+
     <script>
         tinymce.init({
             selector: '#tinymceExample',
@@ -277,6 +289,7 @@ unset($__errorArgs, $__bag); ?>
             height: 300,
         });
     </script>
+
     <script>
         $(function() {
             $("#img").fileinput({
@@ -315,6 +328,7 @@ unset($__errorArgs, $__bag); ?>
             }
         });
     </script>
+
     <script>
         $(function() {
             'use strict';
@@ -331,6 +345,136 @@ unset($__errorArgs, $__bag); ?>
                     defaultDate: defaultDate,
                 });
             }
+        });
+    </script>
+
+    
+    <script>
+        $(document).ready(function() {
+
+            const $form = $('#bookForm');
+            const $btn = $('#uploadBtn');
+            const $btnText = $('#uploadBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
+            const $status = $('#uploadStatus');
+
+            function clearAjaxFieldErrors() {
+                $('.ajax-error').remove();
+                $('.is-invalid.ajax-field').removeClass('ajax-field');
+            }
+
+            function resetUploadUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("<?php echo e(__('panel.save')); ?>");
+                clearAjaxFieldErrors();
+            }
+
+            resetUploadUI();
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+
+                // clear previous ajax errors
+                clearAjaxFieldErrors();
+
+                let formData = new FormData(this);
+
+                $progressWrapper.show();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', true);
+                $btnText.html(
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري الحفظ...'
+                );
+
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        let maxPercent = 0;
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                let percent = Math.round((evt.loaded / evt.total) *
+                                100);
+                                if (percent > maxPercent) {
+                                    maxPercent = percent;
+                                    $progress.css('width', percent + '%');
+                                    $progressLabel.text(percent + '%');
+                                }
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        // success UI
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-success');
+                        $status.html(
+                                '<i class="fa fa-check-circle me-1"></i> تم حفظ الكتاب بنجاح')
+                            .removeClass('text-danger').addClass('text-success');
+
+                        // redirect to index if available or provided by backend
+                        const redirectUrl = res.redirect || "<?php echo e(route('admin.books.index')); ?>";
+                        setTimeout(function() {
+                            window.location.href = redirectUrl;
+                        }, 1300);
+                    },
+                    error: function(xhr) {
+                        // show validation errors (422) or generic error
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-danger');
+
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            let messages = [];
+                            for (const field in errors) {
+                                if (!errors.hasOwnProperty(field)) continue;
+                                const msgArr = errors[field];
+                                const msg = msgArr.join('<br>');
+                                messages.push(msg);
+
+                                // try to show under the input
+                                const $input = $form.find('[name="' + field + '"]');
+                                if ($input.length) {
+                                    // mark input and append error text
+                                    $input.addClass('is-invalid ajax-field');
+                                    $input.after(
+                                        '<span class="text-danger ajax-error d-block small mt-1">' +
+                                        msg + '</span>');
+                                } else {
+                                    // sometimes fields like tags (meta_keywords) may not match; skip
+                                }
+                            }
+                            $status.html('<div class="alert alert-danger p-2 m-0">' + messages
+                                .join('<br>') + '</div>');
+                        } else {
+                            $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء الحفظ. يرجى المحاولة مجددًا'
+                                ).removeClass('text-success').addClass('text-danger');
+                        }
+
+                        setTimeout(function() {
+                            $btn.prop('disabled', false);
+                            $btnText.text("<?php echo e(__('panel.save')); ?>");
+                            $progress.removeClass('bg-danger').addClass(
+                                'progress-bar-animated bg-primary');
+                        }, 1500);
+                    }
+                });
+            });
         });
     </script>
 <?php $__env->stopSection(); ?>
