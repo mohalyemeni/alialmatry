@@ -1646,6 +1646,16 @@ return [
     'f_posts_related_to_this_topic'                      =>  'المنشورات ذات الصلة',
     'f_what_do_you_want_to_search_for'                   =>  'ما الذي تريد البحث عنه؟',
 
+    // =========================🔹 الحالة وتبديلها=====================================================================
+    'status_changed_successfully' => 'تم تغيير الحالة بنجاح.',
+    'error_while_changing_status' => 'حدث خطأ أثناء تغيير الحالة.',
+    'something_was_wrong' => 'حدث خطأ ما!',
+    'unknown_error' => 'خطأ غير معروف.',
+    'operation_success' => 'تمت العملية بنجاح',
+    'cant_revert_this' => 'لا يمكنك التراجع عن هذا الإجراء!',
+    'confirm_delete_message' => 'هل أنت متأكد من الحذف؟',
+    'yes_delete' => 'نعم، احذف',
+    'cancel' => 'إلغاء',
     // ========================== frontend header side panel translate ===============================================//
     // user login guest
     'f_close'                                           =>  'إغلاق',
