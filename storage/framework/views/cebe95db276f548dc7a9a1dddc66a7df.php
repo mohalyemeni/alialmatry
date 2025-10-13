@@ -76,7 +76,7 @@
                                                 <span><?php echo e(__('panel.operation_edit')); ?></span>
                                             </a>
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                                onclick="confirmDelete('delete-intro-<?php echo e($intro->id); ?>', '<?php echo e(__('panel.confirm_delete_message')); ?>')">
+                                                onclick="confirmDelete('delete-intro-<?php echo e($intro->id); ?>', '<?php echo e(__('panel.confirm_delete_message')); ?>', 'نعم', 'إلغاء')">
                                                 <i data-feather="trash" class="icon-sm me-2"></i>
                                                 <span><?php echo e(__('panel.operation_delete')); ?></span>
                                             </a>
@@ -109,6 +109,7 @@
 <?php $__env->startSection('script'); ?>
     <script>
         $(document).ready(function() {
+            // تحديث الحالة عبر AJAX
             $(document).on('click', '.updateIntroStatus', function() {
                 var el = $(this);
                 var intro_id = el.attr('intro_id');
@@ -137,13 +138,44 @@
             });
         });
 
-        function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
+        // دالة الحذف مثل صفحة السلايدر
+        function confirmDelete(formId, message, yesText = 'نعم', cancelText = 'إلغاء') {
+            Swal.fire({
+                title: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: yesText,
+                cancelButtonText: cancelText,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        $.ajax({
+                            url: form.action,
+                            type: 'POST',
+                            data: $(form).serialize(),
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'تم الحذف!',
+                                    text: 'تم حذف العنصر بنجاح.',
+                                    icon: 'success',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1500);
+                            },
+                            error: function() {
+                                Swal.fire('خطأ!', 'حدث خطأ أثناء الحذف.', 'error');
+                            }
+                        });
+                    } else {
+                        Swal.fire('خطأ!', 'لم يتم العثور على النموذج.', 'error');
+                    }
                 }
-            }
+            });
         }
     </script>
 <?php $__env->stopSection(); ?>
