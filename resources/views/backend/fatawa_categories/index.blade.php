@@ -146,7 +146,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            // تغيير الحالة
+            // ✅ تغيير الحالة
             $(document).on('click', '.updateFatawaCategoryStatus', function() {
                 var el = $(this);
                 var category_id = el.attr('fatawa_category_id');
@@ -161,22 +161,41 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل الفتوى بنجاح',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                position: 'center'
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم الإلغاء',
+                                text: 'تم إلغاء تفعيل الفتوى',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                position: 'center'
+                            });
                         }
                     },
                     error: function(xhr) {
-                        console.error(xhr);
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'حدث خطأ أثناء تغيير الحالة',
+                            confirmButtonText: 'حسنًا',
+                            position: 'center'
+                        });
                     }
                 });
             });
 
-            // تغيير المميز (featured)
+            // ⭐ تغيير المميز
             $(document).on('click', '.toggleFatawaCategoryFeatured', function() {
                 var el = $(this);
                 var category_id = el.attr('fatawa_category_id');
@@ -189,31 +208,44 @@
                         category_id: category_id
                     },
                     success: function(response) {
-                        // تقبل قيمة 1/0 أو true/false
                         if (response.featured == 1 || response.featured === true) {
                             el.html(
-                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التمييز',
+                                text: 'تم جعل الفتوى مميزة بنجاح',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                position: 'center'
+                            });
                         } else {
                             el.html(
-                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم الإلغاء',
+                                text: 'تم إلغاء تمييز الفتوى',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                position: 'center'
+                            });
                         }
                     },
                     error: function(xhr) {
-                        console.error(xhr);
-                        if (xhr.status === 403) {
-                            alert('غير مصرح لك بتغيير هذه الخاصية');
-                        } else if (xhr.status === 404) {
-                            alert('التصنيف غير موجود أو ليس ضمن قسم الفتاوى');
-                        } else {
-                            alert('حدث خطأ أثناء تغيير حالة المميز');
-                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: 'حدث خطأ أثناء تغيير حالة المميز',
+                            confirmButtonText: 'حسنًا',
+                            position: 'center'
+                        });
                     }
                 });
             });
         });
 
+        // 🗑️ تأكيد الحذف
         function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
                 title: message,
@@ -226,24 +258,24 @@
                 if (result.isConfirmed) {
                     const form = document.getElementById(formId);
                     if (form) {
-                        // إرسال الطلب عبر AJAX
                         $.ajax({
                             url: form.action,
                             type: 'POST',
                             data: $(form).serialize(),
-                            success: function(response) {
+                            success: function() {
                                 Swal.fire({
+                                    icon: 'success',
                                     title: 'تم الحذف!',
                                     text: 'تم حذف العنصر بنجاح.',
-                                    icon: 'success',
+                                    showConfirmButton: false,
                                     timer: 1500,
-                                    showConfirmButton: false
+                                    position: 'center'
                                 });
                                 setTimeout(function() {
                                     location.reload();
                                 }, 1500);
                             },
-                            error: function(xhr) {
+                            error: function() {
                                 Swal.fire('خطأ!', 'حدث خطأ أثناء الحذف.', 'error');
                             }
                         });
