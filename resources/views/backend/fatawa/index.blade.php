@@ -34,7 +34,6 @@
                     <tr>
                         <th class="wd-5p border-bottom-0">#</th>
                         <th class="wd-35p border-bottom-0">{{ __('panel.title') }}</th>
-
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.author') }}</th>
                         <th class="wd-10p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.status') }}</th>
                         <th class="wd-15p border-bottom-0 d-none d-sm-table-cell">{{ __('panel.published_on') }}</th>
@@ -48,11 +47,10 @@
                                 <input type="checkbox" name="checkfilter" value="{{ $fatwa->id }}">
                             </td>
                             <td>{{ $fatwa->title }}</td>
-
                             <td class="d-none d-sm-table-cell">
                                 {{ $fatwa->creator?->first_name ?? __('panel.unknown') }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updateFatwaStatus" id="fatwa-{{ $fatwa->id }}"
                                     fatwa_id="{{ $fatwa->id }}">
                                     @if ($fatwa->status)
@@ -117,11 +115,15 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
+
+            // ✅ تغيير حالة الفتوى
             $(document).on('click', '.updateFatwaStatus', function() {
                 var el = $(this);
                 var fatwa_id = el.attr('fatwa_id');
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.fatawa.toggleStatus') }}',
@@ -132,28 +134,80 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل الفتوى بنجاح',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل',
+                                text: 'تم تعطيل الفتوى بنجاح',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ!',
+                            text: 'حدث خطأ أثناء تغيير الحالة، حاول مجددًا.',
+                            confirmButtonText: 'موافق'
+                        });
                     }
                 });
             });
-        });
 
-        function confirmDelete(formId, message) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                }
+            // ✅ تأكيد الحذف بـ SweetAlert
+            window.confirmDelete = function(formId, message) {
+                Swal.fire({
+                    title: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم، احذف',
+                    cancelButtonText: 'إلغاء',
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'btn btn-danger mx-2',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById(formId);
+                        if (form) {
+                            $.ajax({
+                                url: form.action,
+                                type: 'POST',
+                                data: $(form).serialize(),
+                                success: function() {
+                                    Swal.fire({
+                                        title: 'تم الحذف!',
+                                        text: 'تم حذف الفتوى بنجاح.',
+                                        icon: 'success',
+                                        timer: 1200,
+                                        showConfirmButton: false
+                                    });
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 1300);
+                                },
+                                error: function() {
+                                    Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.',
+                                        'error');
+                                }
+                            });
+                        }
+                    }
+                });
             }
-        }
+        });
     </script>
 @endsection
