@@ -24,8 +24,8 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.fatawa.update', $fatwa->id) }}" method="POST" enctype="multipart/form-data"
-                novalidate>
+            <form id="editFatwaForm" action="{{ route('admin.fatawa.update', $fatwa->id) }}" method="POST"
+                enctype="multipart/form-data" novalidate>
                 @csrf
                 @method('PUT')
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -42,9 +42,9 @@
                         </button>
                     </li>
                 </ul>
+
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
-
 
                         <div class="row mt-3">
                             <label for="category_id" class="col-sm-12 col-md-2 pt-3">{{ __('panel.category') }}</label>
@@ -168,9 +168,6 @@
                                     <label class="form-check-label"
                                         for="status_inactive">{{ __('panel.inactive') }}</label>
                                 </div>
-                                @error('status')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>
@@ -182,9 +179,6 @@
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <input type="text" name="meta_slug" id="meta_slug"
                                     value="{{ old('meta_slug', $fatwa->meta_slug) }}" class="form-control">
-                                @error('meta_slug')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                         <div class="row">
@@ -193,13 +187,9 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="card p-2">
-
                                     <input name="meta_keywords" id="tags"
-                                        value="{{ old('meta_keywords', $category->meta_keywords) }}"
+                                        value="{{ old('meta_keywords', $fatwa->meta_keywords ?? '') }}"
                                         class="form-control" />
-                                    @error('meta_keywords')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -208,161 +198,98 @@
                                 class="col-sm-12 col-md-3 pt-3">{{ __('panel.seo_description') }}</label>
                             <div class="col-sm-12 col-md-9 pt-3">
                                 <textarea name="meta_description" id="meta_description" rows="3" class="form-control">{{ old('meta_description', $fatwa->meta_description) }}</textarea>
-                                @error('meta_description')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- أزرار -->
                 <div class="row mt-4">
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="save"></i> {{ __('panel.update') }}
+                        <button type="submit" class="btn btn-primary" id="updateBtn">
+                            <i class="icon-lg me-2" data-feather="save"></i> <span
+                                id="updateBtnText">{{ __('panel.update') }}</span>
                         </button>
                         <a href="{{ route('admin.fatawa.index') }}" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
                         </a>
+                        <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
                     </div>
                 </div>
 
+                <!-- البروجريس بار -->
+                <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height: 28px; display:none;">
+                    <div id="uploadProgress" class="modern-progress-bar" style="width: 0%;">
+                        <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 @endsection
 
 @section('script')
-    <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
-    <script>
-        tinymce.init({
-            selector: '#tinymceExample',
-            plugins: 'advlist autolink lists link image charmap preview anchor',
-            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-            height: 300,
-        });
-    </script>
-    <script>
-        $(function() {
-            $("#img").fileinput({
-                theme: "fa5",
-                allowedFileTypes: ['image'],
-                showCancel: true,
-                showRemove: false,
-                showUpload: false,
-                overwriteInitial: false,
-                maxFileCount: 1,
-                initialPreview: [
-                    @if ($fatwa->img)
-                        "{{ asset('assets/fatawa/images/' . $fatwa->img) }}"
-                    @endif
-                ],
-                initialPreviewAsData: true,
-                initialPreviewFileType: 'image',
-                initialPreviewConfig: [
-                    @if ($fatwa->img)
-                        {
-                            caption: "{{ basename($fatwa->img) }}",
-                            url: "{{ route('admin.fatawa.remove_image') }}",
-                            key: "{{ $fatwa->id }}",
-                            extra: {
-                                _token: "{{ csrf_token() }}",
-                                id: "{{ $fatwa->id }}"
-                            }
-                        }
-                    @endif
-                ],
-                fileActionSettings: {
-                    showZoom: true,
-                    showRemove: true,
-                    zoomIcon: '<i class="fas fa-search-plus"></i>',
-                    removeIcon: '<i class="fas fa-trash"></i>',
-                }
-            });
-            $("#audio_file").fileinput({
-                theme: "fa5",
-                allowedFileTypes: ['audio'],
-                showCancel: true,
-                showRemove: true,
-                showUpload: false,
-                overwriteInitial: false,
-                maxFileCount: 1,
-                initialPreview: [
-                    @if ($fatwa->img)
-                        "{{ asset('assets/fatawa/files/' . $fatwa->audio_file) }}"
-                    @endif
-                ],
-                initialPreviewAsData: true,
-                initialPreviewFileType: 'audio',
-                initialPreviewConfig: [
-                    @if ($fatwa->audio_file)
-                        {
-                            caption: "{{ basename($fatwa->audio_file) }}",
-                            url: "{{ route('admin.fatawa.remove_audio') }}",
-                            key: "{{ $fatwa->id }}",
-                            extra: {
-                                _token: "{{ csrf_token() }}",
-                                id: "{{ $fatwa->id }}"
-                            }
-                        }
-                    @endif
-                ],
-                fileActionSettings: {
-                    showZoom: false,
-                    showRemove: true,
-                    removeIcon: '<i class="fas fa-trash"></i>',
-                },
-                previewSettings: {
-                    audio: {
-                        width: "50px",
-                        height: "60px"
-                    },
-                }
-            });
-            $('.summernote').summernote({
-                tabSize: 2,
-                height: 200,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-            const locale = "ar";
-            if ($('#flatpickr-datetime').length) {
-                const defaultDate = "{{ old('published_on', $fatwa->published_on?->format('Y-m-d H:i')) }}" ||
-                    new Date();
-                flatpickr("#flatpickr-datetime", {
-                    enableTime: true,
-                    wrap: true,
-                    dateFormat: "Y-m-d H:i",
-                    altInput: true,
-                    altFormat: "Y/m/d h:i K",
-                    locale: locale,
-                    defaultDate: defaultDate,
-                });
-            }
-        });
-    </script>
     <script>
         $(document).ready(function() {
+            const $form = $('#editFatwaForm');
+            const $btn = $('#updateBtn');
+            const $btnText = $('#updateBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
+            const $status = $('#uploadStatus');
 
-            $('#tags').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
-            });
+            function resetUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%').removeClass('bg-success bg-danger').addClass(
+                    'progress-bar-animated bg-primary');
+                $progressLabel.text('0%');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("{{ __('panel.update') }}");
+            }
+            resetUI();
 
-
-            $('#tags_meta').tagsInput({
-                'defaultText': 'أضف كلمة مفتاحية',
-                'height': 'auto',
-                'width': '100%'
+            $form.on('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                $btn.prop('disabled', true);
+                $btnText.html(
+                '<span class="spinner-border spinner-border-sm me-2"></span> جاري التحديث...');
+                $progressWrapper.show();
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(e) {
+                            if (e.lengthComputable) {
+                                let percent = Math.round((e.loaded / e.total) * 100);
+                                $progress.css('width', percent + '%');
+                                $progressLabel.text(percent + '%');
+                            }
+                        });
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: $form.attr('action'),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function() {
+                        $progress.removeClass('bg-primary').addClass('bg-success');
+                        $status.html('<i class="fa fa-check-circle me-1"></i> تم التحديث بنجاح')
+                            .addClass('text-success');
+                        setTimeout(() => window.location.href =
+                            "{{ route('admin.fatawa.index') }}", 1200);
+                    },
+                    error: function(err) {
+                        $progress.removeClass('bg-primary').addClass('bg-danger');
+                        $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء التحديث')
+                            .addClass('text-danger');
+                        setTimeout(resetUI, 2000);
+                    }
+                });
             });
         });
     </script>

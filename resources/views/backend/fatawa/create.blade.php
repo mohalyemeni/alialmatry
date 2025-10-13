@@ -23,7 +23,9 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.fatawa.store') }}" method="POST" enctype="multipart/form-data">
+
+            <!-- NOTE: added id="fatawaForm" for AJAX upload -->
+            <form id="fatawaForm" action="{{ route('admin.fatawa.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -200,15 +202,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Buttons -->
                 <div class="row mt-4">
                     <div class="col-sm-12 col-md-2 pt-3 d-none d-md-block"></div>
                     <div class="col-sm-12 col-md-10 pt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-lg me-2" data-feather="corner-down-left"></i> {{ __('panel.save') }}
+                        <!-- modified submit button to include ids used by JS -->
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <i class="icon-lg me-2" data-feather="corner-down-left"></i>
+                            <span id="uploadBtnText">{{ __('panel.save') }}</span>
                         </button>
                         <a href="{{ route('admin.fatawa.index') }}" class="btn btn-outline-danger">
                             <i class="icon-lg me-2" data-feather="x"></i> {{ __('panel.cancel') }}
                         </a>
+
+                        <!-- upload status + progress -->
+                        <div id="uploadStatus" class="mt-2" aria-live="polite"></div>
+                    </div>
+                </div>
+
+
+                <div class="modern-progress-wrapper" id="globalProgressWrapper" style="height:28px; display:none;">
+                    <div id="uploadProgress" class="modern-progress-bar" style="width:0%;">
+                        <span class="modern-progress-label" id="uploadProgressLabel">0%</span>
                     </div>
                 </div>
             </form>
@@ -218,6 +234,7 @@
 
 @section('script')
     <script src="{{ asset('backend/vendors/select2/select2.min.js') }}"></script>
+
     <script>
         tinymce.init({
             selector: '#tinymceExample',
@@ -226,6 +243,7 @@
             height: 300,
         });
     </script>
+
     <script>
         $(function() {
             $("#img").fileinput({
@@ -252,6 +270,7 @@
             });
         });
     </script>
+
     <script>
         $(function() {
             'use strict';
@@ -270,6 +289,7 @@
             }
         });
     </script>
+
     <script>
         $(document).ready(function() {
 
@@ -279,11 +299,99 @@
                 'width': '100%'
             });
 
-
             $('#tags_meta').tagsInput({
                 'defaultText': 'أضف كلمة مفتاحية',
                 'height': 'auto',
                 'width': '100%'
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            const $form = $('#fatawaForm');
+            const $btn = $('#uploadBtn');
+            const $btnText = $('#uploadBtnText');
+            const $progressWrapper = $('#globalProgressWrapper');
+            const $progress = $('#uploadProgress');
+            const $progressLabel = $('#uploadProgressLabel');
+            const $status = $('#uploadStatus');
+
+            function resetUploadUI() {
+                $progressWrapper.hide();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', false);
+                $btnText.text("{{ __('panel.save') }}");
+            }
+
+            resetUploadUI();
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $progressWrapper.show();
+                $progress.css('width', '0%');
+                $progressLabel.text('0%');
+                $progress.removeClass('bg-success bg-danger').addClass('progress-bar-animated bg-primary');
+                $status.html('');
+                $btn.prop('disabled', true);
+                $btnText.html(
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> جاري الحفظ...'
+                );
+
+                $.ajax({
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        let maxPercent = 0;
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                let percent = Math.round((evt.loaded / evt.total) *
+                                    100);
+                                if (percent > maxPercent) {
+                                    maxPercent = percent;
+                                    $progress.css('width', percent + '%');
+                                    $progressLabel.text(percent + '%');
+                                }
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: $form.attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-success');
+                        $status.html('<i class="fa fa-check-circle me-1"></i> تم الحفظ بنجاح')
+                            .removeClass('text-danger').addClass('text-success');
+
+                        setTimeout(function() {
+                            window.location.href = "{{ route('admin.fatawa.index') }}";
+                        }, 1200);
+                    },
+                    error: function(err) {
+                        $progress.removeClass('progress-bar-animated bg-primary').addClass(
+                            'bg-danger');
+                        $status.html(
+                                '<i class="fa fa-times-circle me-1"></i> حدث خطأ أثناء الحفظ. يرجى المحاولة مجددًا'
+                            )
+                            .removeClass('text-success').addClass('text-danger');
+
+                        setTimeout(function() {
+                            $btn.prop('disabled', false);
+                            $btnText.text("{{ __('panel.save') }}");
+                            $progress.removeClass('bg-danger').addClass(
+                                'progress-bar-animated bg-primary');
+                        }, 1500);
+                    }
+                });
             });
         });
     </script>
