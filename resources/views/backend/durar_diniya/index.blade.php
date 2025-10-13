@@ -15,7 +15,9 @@
             <div class="ml-auto">
                 @ability('admin', 'create_durar_diniya')
                     <a href="{{ route('admin.durar_diniya.create') }}" class="btn btn-primary">
-                        <span class="icon text-white-50 d-none d-sm-inline-block"><i class="fa fa-plus-square"></i></span>
+                        <span class="icon text-white-50 d-none d-sm-inline-block">
+                            <i class="fa fa-plus-square"></i>
+                        </span>
                         <span class="text">{{ __('panel.add_new_content') }}</span>
                     </a>
                 @endability
@@ -45,7 +47,7 @@
                             <td>{{ $durar->title }}</td>
                             <td class="d-none d-sm-table-cell">{{ $durar->creator?->first_name ?? __('panel.unknown') }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="d-none d-sm-table-cell text-center">
                                 <a href="javascript:void(0);" class="updateDurarStatus" id="durar-{{ $durar->id }}"
                                     durar_id="{{ $durar->id }}">
                                     @if ($durar->status)
@@ -74,17 +76,20 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $durar->id }}">
                                             <a class="dropdown-item d-flex align-items-center"
                                                 href="{{ route('admin.durar_diniya.edit', $durar->id) }}">
-                                                <i data-feather="edit-2"
-                                                    class="icon-sm me-2"></i><span>{{ __('panel.operation_edit') }}</span>
+                                                <i data-feather="edit-2" class="icon-sm me-2"></i>
+                                                <span>{{ __('panel.operation_edit') }}</span>
                                             </a>
                                             <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
                                                 onclick="confirmDelete('delete-durar-{{ $durar->id }}','{{ __('panel.confirm_delete_message') }}')">
-                                                <i data-feather="trash"
-                                                    class="icon-sm me-2"></i><span>{{ __('panel.operation_delete') }}</span>
+                                                <i data-feather="trash" class="icon-sm me-2"></i>
+                                                <span>{{ __('panel.operation_delete') }}</span>
                                             </a>
                                             <form id="delete-durar-{{ $durar->id }}"
                                                 action="{{ route('admin.durar_diniya.destroy', $durar->id) }}"
-                                                method="POST" class="d-none">@csrf @method('DELETE')</form>
+                                                method="POST" class="d-none">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -103,11 +108,14 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
+            // ✅ تغيير الحالة باستخدام SweetAlert
             $(document).on('click', '.updateDurarStatus', function() {
-                var el = $(this),
-                    durar_id = el.attr('durar_id');
+                var el = $(this);
+                var durar_id = el.attr('durar_id');
+
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('admin.durar_diniya.toggleStatus') }}',
@@ -118,21 +126,39 @@
                     success: function(response) {
                         if (response.status) {
                             el.html(
-                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل الدرس بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
-                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>');
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل',
+                                text: 'تم تعطيل الدرس بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ!',
+                            text: 'حدث خطأ أثناء تغيير الحالة',
+                            confirmButtonText: 'حسناً'
+                        });
                     }
                 });
             });
         });
 
+        // 🗑️ تأكيد الحذف باستخدام SweetAlert
         function confirmDelete(formId, message) {
             Swal.fire({
                 title: message,
@@ -150,7 +176,6 @@
                 if (result.isConfirmed) {
                     const form = document.getElementById(formId);
                     if (form) {
-                        // إرسال الحذف عبر AJAX
                         $.ajax({
                             url: form.action,
                             type: 'POST',
@@ -171,13 +196,9 @@
                                 Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
                             }
                         });
-                    } else {
-                        console.error('Form not found: ' + formId);
                     }
                 }
             });
         }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
 @endsection
