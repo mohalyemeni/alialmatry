@@ -143,7 +143,7 @@
                             }
 
                             Swal.fire({
-                                title: 'تم!',
+                                title: 'تم تغيير الحالة!',
                                 text: response.message,
                                 icon: 'success',
                                 timer: 1000,
