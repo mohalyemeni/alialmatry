@@ -131,7 +131,7 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            // تغيير الحالة
+            // تغيير الحالة مع SweetAlert
             $(document).on('click', '.updateAudioCategoryStatus', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
@@ -146,20 +146,34 @@
                         if (response.status) {
                             el.html(
                                 '<i class="fas fa-toggle-on fa-lg text-success" style="font-size:1.6em;"></i>'
-                            );
+                                );
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التفعيل',
+                                text: 'تم تفعيل التصنيف بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         } else {
                             el.html(
                                 '<i class="fas fa-toggle-off fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                );
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'تم التعطيل',
+                                text: 'تم تعطيل التصنيف بنجاح.',
+                                timer: 1200,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function() {
-                        alert('حدث خطأ أثناء تغيير الحالة');
+                        Swal.fire('خطأ', 'حدث خطأ أثناء تغيير الحالة.', 'error');
                     }
                 });
             });
 
-
+            // تغيير حالة المميز (بدون SweetAlert)
             $(document).on('click', '.toggleAudioCategoryFeatured', function() {
                 var el = $(this);
                 var category_id = el.attr('page_category_id');
@@ -175,40 +189,21 @@
                         if (response.featured) {
                             el.html(
                                 '<i class="fas fa-star fa-lg text-warning" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         } else {
                             el.html(
                                 '<i class="far fa-star fa-lg text-muted" style="font-size:1.6em;"></i>'
-                            );
+                                );
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('toggleFeatured error:', xhr.status, error, xhr
-                            .responseText);
-                        var msg = 'حدث خطأ أثناء تغيير حالة المميز';
-                        if (xhr.status === 419) msg += ' — فشل التحقق من الجلسة/CSRF.';
-                        if (xhr.status === 403) msg += ' — لا تملك صلاحية تنفيذ هذه العملية.';
-                        if (xhr.responseJSON && xhr.responseJSON.error) msg += ': ' + xhr
-                            .responseJSON.error;
-                        alert(msg);
+                    error: function() {
+                        Swal.fire('خطأ', 'حدث خطأ أثناء تغيير حالة المميز.', 'error');
                     }
                 });
             });
-
-
         });
 
-        function confirmDelete(formId, message, yesText, cancelText) {
-            if (confirm(message)) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                } else {
-                    console.error('Form not found: ' + formId);
-                }
-            }
-        }
-
+        // تأكيد الحذف
         function confirmDelete(formId, message, yesText, cancelText) {
             Swal.fire({
                 title: message,
@@ -226,7 +221,6 @@
                 if (result.isConfirmed) {
                     const form = document.getElementById(formId);
                     if (form) {
-                        // إرسال الحذف عبر AJAX
                         $.ajax({
                             url: form.action,
                             type: 'POST',
@@ -247,8 +241,6 @@
                                 Swal.fire('خطأ', 'حدث خطأ أثناء الحذف، حاول مجددًا.', 'error');
                             }
                         });
-                    } else {
-                        console.error('Form not found: ' + formId);
                     }
                 }
             });
