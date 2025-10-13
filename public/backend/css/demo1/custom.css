@@ -611,3 +611,37 @@ div.tagsinput div {
     background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
 }
 /* ====== End Custom Modern Progress Bar ====== */
+
+.swal2-popup.swal2-centered-popup {
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 560px;
+    width: 90%;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+}
+
+.swal2-icon.swal2-icon-custom {
+    width: auto;
+    height: auto;
+    margin: 0 auto 0.5rem auto !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.swal2-icon.swal2-icon-custom i {
+    font-size: 3.2rem; /* حجم الأيقونة */
+    display: block;
+    line-height: 1;
+}
+
+.swal2-title {
+    margin-top: 0.25rem;
+}
+
+.swal-custom-text {
+    margin-top: 0.6rem;
+    font-size: 1rem;
+    color: #6b7280;
+}
