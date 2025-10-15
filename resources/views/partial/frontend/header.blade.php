@@ -1,3 +1,9 @@
+{{-- partial/frontend/header.blade.php --}}
+@php
+    // تأكد أن $siteSettings متاحة في الـ view
+    // مثال: ['site_logo_light' => (object)['value'=>'...'], ...]
+@endphp
+
 <!--==============================
 منطقة الرأس (الهيدر)
 ==============================-->
@@ -11,8 +17,9 @@
                             @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
                                 <li>
                                     <i class="far fa-phone"></i>
-                                    <a class="css_for_phone"
-                                        href="tel:{{ $siteSettings['site_mobile']->value }}">{{ $siteSettings['site_mobile']->value }}</a>
+                                    <a class="css_for_phone" href="tel:{{ $siteSettings['site_mobile']->value }}">
+                                        {{ $siteSettings['site_mobile']->value }}
+                                    </a>
                                 </li>
                             @endif
 
@@ -32,6 +39,7 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-auto">
                     <div class="header-links">
                         <ul>
@@ -39,7 +47,6 @@
                             <li>
                                 <div class="header-social">
                                     <span class="social-title">تابعنا:</span>
-
                                     @php
                                         $socials = [
                                             'site_facebook' => 'fab fa-facebook-f',
@@ -54,12 +61,10 @@
 
                                     @foreach ($socials as $key => $icon)
                                         @php
-
                                             $url = isset($siteSettings[$key])
                                                 ? trim($siteSettings[$key]->value ?? '')
                                                 : '';
                                         @endphp
-
 
                                         @if ($url && $url !== '#' && $url !== '0')
                                             <a href="{{ $url }}" target="_blank">
@@ -75,11 +80,29 @@
             </div>
         </div>
     </div>
+
+    {{-- الشريط الرئيسي: نضع زر القائمة + زر البحث (للأجهزة الصغيرة) قبل الشعار --}}
     <div class="sticky-wrapper">
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
                 <div class="row align-items-center justify-content-between back_spec_c">
-                    <div class="col-9 col-md-10 col-lg-3 new_colore">
+
+                    {{-- عمود الأزرار (زر القائمة + زر البحث) يظهر قبل الشعار على الموبايل --}}
+                    <div class="col-auto header-left d-flex align-items-center">
+                        <!-- زر فتح القائمة (يظهر في الهواتف فقط) -->
+                        <button type="button" class="th-menu-toggle d-inline-block d-lg-none me-2" aria-label="قائمة">
+                            <i class="far fa-bars"></i>
+                        </button>
+
+                        <!-- زر البحث للجوال — يظهر فقط في الشاشات الصغيرة -->
+                        <button type="button" class="mobile-search-header d-inline-block d-lg-none searchBoxToggler"
+                            aria-label="بحث">
+                            <i class="far fa-search"></i>
+                        </button>
+                    </div>
+
+                    {{-- شعار الموقع --}}
+                    <div class="col new_colore header-logo-col d-flex justify-content-center justify-content-lg-start">
                         <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">
                                 @if (isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value)
@@ -91,41 +114,117 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-3 col-md-2 col-lg-9">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12 col-xl-10">
-                                <nav class="main-menu d-none d-lg-inline-block ml-10">
-                                    <ul>
-                                        <li><a href="{{ route('frontend.sheikh-intro') }}"> نبذة الشيخ</a></li>
-                                        <li><a href="{{ route('frontend.videos.index') }}"
-                                                class="ajax-link">المرئيات</a></li>
-                                        <li><a href="{{ route('frontend.audios.index') }}"> الصوتيات</a></li>
-                                        <li><a href="{{ route('frontend.fatawas.index') }}"> الفتاوى</a></li>
-                                        <li><a href="{{ route('frontend.blogs.index') }}"
-                                                class="ajax-link">المقالات</a></li>
-                                        <li><a href="{{ route('frontend.books.index') }}"> الكتب والؤلفات</a></li>
-                                        <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
-                                    </ul>
-                                </nav>
-                                <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
-                                    <i class="far fa-bars"></i>
-                                </button>
-                            </div>
-                            <div class="col-2 d-none d-xxl-block d-xl-block">
-                                <div class="header-button">
-                                    <button type="button" class="icon-style2 searchBoxToggler">
-                                        <i class="far fa-search"></i>
-                                    </button>
-                                    <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
-                                        <img src="{{ asset('frontand/assets/img/icon/grid.svg') }}" alt="">
-                                    </a>
-                                </div>
-                            </div>
+
+                    {{-- القائمة الرئيسية (تظهر على الشاشات الكبيرة) --}}
+                    <div class="col-auto ms-auto d-none d-lg-block header-menu-col">
+                        <nav class="main-menu">
+                            <ul>
+                                <li><a href="{{ route('frontend.sheikh-intro') }}">نبذة الشيخ</a></li>
+                                <li><a href="{{ route('frontend.videos.index') }}" class="ajax-link">المرئيات</a></li>
+                                <li><a href="{{ route('frontend.audios.index') }}">الصوتيات</a></li>
+                                <li><a href="{{ route('frontend.fatawas.index') }}">الفتاوى</a></li>
+                                <li><a href="{{ route('frontend.blogs.index') }}" class="ajax-link">المقالات</a></li>
+                                <li><a href="{{ route('frontend.books.index') }}">الكتب والمؤلفات</a></li>
+                                <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    {{-- أي أزرار إضافية على الجهة اليُمنى في الشاشات الكبيرة --}}
+                    <div class="col-auto d-none d-xxl-block d-xl-block">
+                        <div class="header-button">
+                            <button type="button" class="icon-style2 searchBoxToggler d-none d-lg-inline-block"
+                                aria-label="بحث">
+                                <i class="far fa-search"></i>
+                            </button>
+                            <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
+                                <img src="{{ asset('frontand/assets/img/icon/grid.svg') }}" alt="">
+                            </a>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="logo-shape"></div>
         </div>
     </div>
 </header>
+
+{{-- CSS محلي بسيط لصرف ترتيب العناصر على الموبايل وإخفاء البحث داخل الـ mobile menu --}}
+<style>
+    /* reorder on small screens: bring menu-toggle & search before logo */
+    @media (max-width: 991.98px) {
+        .header-left {
+            order: 1;
+        }
+
+        .header-logo-col {
+            order: 2;
+        }
+
+        .header-menu-col {
+            order: 3;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .mobile-search-header {
+            background: transparent;
+            border: none;
+            font-size: 1.05rem;
+            padding: 6px;
+        }
+    }
+
+    /* أخفوا عنصر البحث داخل الـ mobile menu لأنه الآن في الهيدر */
+    @media (max-width: 991.98px) {
+        .th-mobile-menu .mobile-search-item {
+            display: none !important;
+        }
+    }
+</style>
+
+{{-- سكربت صغير للتعامل مع فتح القائمة و فتح البحث في حالة عدم وجود سكربت آخر --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menu toggle: يفتح ويغلق العنصر .th-menu-wrapper عبر class "open"
+        document.querySelectorAll('.th-menu-toggle').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var wrapper = document.querySelector('.th-menu-wrapper');
+                if (!wrapper) return;
+                wrapper.classList.toggle('open');
+            });
+        });
+
+        // Search toggler: يمكنك تخصيص سلوك ظهور مربع البحث .site-search-box إذا موجود
+        document.querySelectorAll('.searchBoxToggler').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var searchBox = document.querySelector(
+                '.site-search-box'); // لو لديك صندوق بحث محدد
+                if (searchBox) {
+                    searchBox.classList.toggle('visible');
+                    if (searchBox.classList.contains('visible')) {
+                        var input = searchBox.querySelector(
+                            'input[type="search"], input[type="text"]');
+                        if (input) input.focus();
+                    }
+                } else {
+                    // بديل بسيط: فتح prompt بحث وتحويل لصفحة البحث
+                    var q = prompt('ابحث عن:');
+                    if (q !== null) {
+                        var url = new URL("{{ route('frontend.search') }}", window.location
+                            .origin);
+                        url.searchParams.set('q', q);
+                        window.location.href = url.toString();
+                    }
+                }
+            });
+        });
+    });
+</script>

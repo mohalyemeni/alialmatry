@@ -1,3 +1,4 @@
+{{-- partial/frontend/mobile_menu.blade.php --}}
 <!--==============================
     قائمة الجوال
 ============================== -->
@@ -8,24 +9,30 @@
 
         <div class="mobile-logo">
             <a href="{{ route('frontend.index') }}">
-                <img src="{{ asset('frontand/assets/img/top-logo.png') }}" alt="Logo">
+                @if (isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value)
+                    <img src="{{ asset('assets/site_settings/' . $siteSettings['site_logo_light']->value) }}"
+                        alt="Logo">
+                @else
+                    <img src="{{ asset('frontand/assets/img/top-logo.png') }}" alt="Logo">
+                @endif
             </a>
         </div>
 
         <div class="th-mobile-menu">
             <ul>
-                <li class="mobile-search-item">
+                {{-- لقد ألغينا/أخفينا زر البحث داخل القائمة لأننا أنقلناه إلى الهيدر --}}
+                {{-- <li class="mobile-search-item">
                     <button type="button" class="mobile-search-btn searchBoxToggler" aria-label="بحث">
                         <i class="far fa-search"></i>
                         <span class="visually-hidden">بحث</span>
                     </button>
-                </li>
+                </li> --}}
 
                 <li class="menu-item-has-children">
                     <a href="{{ route('frontend.sheikh-intro') }}">نبذة الشيخ</a>
                 </li>
-                <li><a href="{{ route('frontend.videos.index') }}"> المرئيات</a></li>
-                <li><a href="{{ route('frontend.audios.index') }}"> الصوتيات</a></li>
+                <li><a href="{{ route('frontend.videos.index') }}">المرئيات</a></li>
+                <li><a href="{{ route('frontend.audios.index') }}">الصوتيات</a></li>
                 <li class="menu-item-has-children">
                     <a href="{{ route('frontend.fatawas.index') }}">الفتاوى</a>
                 </li>
@@ -47,20 +54,17 @@
     }
 
     .th-mobile-menu ul li.mobile-search-item {
-        list-style: none;
-        margin: 10px 0;
-        display: flex;
-        justify-content: center;
-
+        display: none;
     }
 
+    /* إخفاء حفاظاً على التوافق */
     .mobile-search-btn {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         padding: 8px 14px;
         border-radius: 8px;
-        border: 1px solid rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, .06);
         background: transparent;
         color: inherit;
         font-weight: 600;

@@ -470,7 +470,7 @@ html {
 }
 @media (min-width: 992px) and (max-width: 1410px) {
     .tabs-section .nav-tabs {
-        gap: 1rem;
+        gap: 0.1rem;
     }
 }
 /* نبذه عن الشيخ */
