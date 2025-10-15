@@ -58,7 +58,7 @@
 
                                     <div
                                         class="audio-play-wrapp d-flex justify-content-between align-items-center mb-2">
-                                        <div class="flex-1">
+                                        <div class="flex-1 me-1">
                                             <h5 class="card-title mb-0 a_font_size">
                                                 <a
                                                     href="<?php echo e(route('frontend.audios.show', $audio->slug ?? $audio->id)); ?>">
@@ -71,12 +71,12 @@
                                             <?php endif; ?>
                                         </div>
 
-                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2">
+                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2 ms-1">
                                             <a href="<?php echo e(route('frontend.audios.show', $audio->slug ?? $audio->id)); ?>"
                                                 class="th-btn style1 th-btn1"
                                                 aria-label="تشغيل <?php echo e(e($audio->title)); ?>">
                                                 <span class="btn-text" data-back=" تشغيل" data-front=" تشغيل"></span>
-                                                <i class="fa-solid fa-play me-1"></i>
+                                                <i class="fa-solid fa-play me-2"></i>
                                             </a>
 
                                             <?php if($downloadUrl): ?>
@@ -86,14 +86,14 @@
                                                         aria-label="فتح/تحميل <?php echo e(e($audio->title)); ?>">
                                                         <span class="btn-text" data-back=" تحميل"
                                                             data-front=" تحميل"></span>
-                                                        <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
                                                     </a>
                                                 <?php else: ?>
                                                     <a href="<?php echo e($downloadUrl); ?>" class="th-btn style2 th-btn1"
                                                         download aria-label="تحميل <?php echo e(e($audio->title)); ?>">
                                                         <span class="btn-text" data-back=" تحميل"
                                                             data-front=" تحميل"></span>
-                                                        <i class="fa-regular fa-arrow-down-to-line ms-2"></i>
+                                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
                                                     </a>
                                                 <?php endif; ?>
                                             <?php endif; ?>

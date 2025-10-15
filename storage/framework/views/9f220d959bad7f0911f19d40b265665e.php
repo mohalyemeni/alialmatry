@@ -55,12 +55,10 @@
 
                                     <?php $__currentLoopData = $socials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php
-
                                             $url = isset($siteSettings[$key])
                                                 ? trim($siteSettings[$key]->value ?? '')
                                                 : '';
                                         ?>
-
 
                                         <?php if($url && $url !== '#' && $url !== '0'): ?>
                                             <a href="<?php echo e($url); ?>" target="_blank">
@@ -79,9 +77,14 @@
     <div class="sticky-wrapper">
         <div class="menu-area" data-bg-src="<?php echo e(asset('frontand/assets/img/bg/pattern_bg_2.png')); ?>">
             <div class="container">
+                <!-- NOTE: using order classes to swap columns on mobile only -->
                 <div class="row align-items-center justify-content-between back_spec_c">
-                    <div class="col-9 col-md-10 col-lg-3 new_colore">
-                        <div class="header-logo">
+                    <!-- Logo column: on mobile we show the SEARCH BUTTON BEFORE the logo (mobile UX requirement) -->
+                    <div class="col-8 col-md-10 col-lg-3 new_colore order-2 order-lg-1">
+                        <div class="header-logo d-flex align-items-center justify-content-end">
+                            <!-- Mobile search button (visible on mobile only) -->
+
+
                             <a href="<?php echo e(route('frontend.index')); ?>" class="logo_img">
                                 <?php if(isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value): ?>
                                     <img src="<?php echo e(asset('assets/site_settings/' . $siteSettings['site_logo_light']->value)); ?>"
@@ -92,7 +95,9 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-3 col-md-2 col-lg-9">
+
+                    <!-- Menu + buttons column: on mobile this column appears BEFORE logo (so we swapped cols) -->
+                    <div class="col-4 col-md-2 col-lg-9 order-1 order-lg-2">
                         <div class="row align-items-center">
                             <div class="col-lg-12 col-xl-10">
                                 <nav class="main-menu d-none d-lg-inline-block ml-10">
@@ -108,15 +113,28 @@
                                         <li><a href="<?php echo e(route('frontend.contact.form')); ?>">اتصل بنا</a></li>
                                     </ul>
                                 </nav>
-                                <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
-                                    <i class="far fa-bars"></i>
-                                </button>
-                            </div>
-                            <div class="col-2 d-none d-xxl-block d-xl-block">
+                                <!-- mobile hamburger (visible on mobile) -->
                                 <div class="header-button">
-                                    <button type="button" class="icon-style2 searchBoxToggler">
+                                    <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
+                                        <i class="far fa-bars"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="icon-style2 searchBoxToggler d-inline-flex d-lg-none mobile-header-search me-2"
+                                        aria-label="بحث">
                                         <i class="far fa-search"></i>
                                     </button>
+                                </div>
+                            </div>
+
+                            <div class="col-2 d-none d-xxl-block d-xl-block">
+                                <div class="header-button">
+                                    <!-- Desktop search button (visible on lg and up) -->
+                                    <button type="button"
+                                        class="icon-style2 searchBoxToggler d-none d-lg-inline-block search-on-desktop"
+                                        aria-label="بحث">
+                                        <i class="far fa-search"></i>
+                                    </button>
+
                                     <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
                                         <img src="<?php echo e(asset('frontand/assets/img/icon/grid.svg')); ?>" alt="">
                                     </a>
@@ -130,4 +148,20 @@
         </div>
     </div>
 </header>
+
+<!-- small styles to align mobile search and spacing -->
+<style>
+    /* make mobile search button visually similar to original mobile-menu button */
+    .mobile-header-search {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        background: transparent;
+        font-weight: 600;
+        gap: 8px;
+    }
+</style>
 <?php /**PATH C:\xampp\htdocs\new_alialmatry\alialmatry\resources\views/partial/frontend/header.blade.php ENDPATH**/ ?>

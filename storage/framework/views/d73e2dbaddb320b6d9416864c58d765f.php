@@ -14,12 +14,8 @@
 
         <div class="th-mobile-menu">
             <ul>
-                <li class="mobile-search-item">
-                    <button type="button" class="mobile-search-btn searchBoxToggler" aria-label="بحث">
-                        <i class="far fa-search"></i>
-                        <span class="visually-hidden">بحث</span>
-                    </button>
-                </li>
+                <!-- زر البحث أُخرج إلى الهيدر على الموبايل، لذلك لم نعد نحتاج هذا العنصر داخل القائمة -->
+                <!-- تم حذف <li class="mobile-search-item"> ... </li> -->
 
                 <li class="menu-item-has-children">
                     <a href="<?php echo e(route('frontend.sheikh-intro')); ?>">نبذة الشيخ</a>
@@ -46,39 +42,16 @@
         padding: 0 12px;
     }
 
-    .th-mobile-menu ul li.mobile-search-item {
+    /* تم تعديل الـ mobile-search-item سابقاً؛ هنا تركت بقية ستايلات القائمة كما كانت */
+    .th-mobile-menu ul li {
         list-style: none;
         margin: 10px 0;
-        display: flex;
-        justify-content: center;
-
     }
 
-    .mobile-search-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 8px;
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        background: transparent;
-        color: inherit;
-        font-weight: 600;
-        cursor: pointer;
-        width: 100%;
-        max-width: 320px;
-        justify-content: center;
-    }
-
-    .mobile-search-btn i {
-        font-size: 18px;
-    }
-
-    @media (min-width: 480px) {
-        .mobile-search-btn span {
-            display: inline-block;
-            margin-inline-start: 6px;
-        }
+    .th-mobile-menu .menu-item-has-children a,
+    .th-mobile-menu li a {
+        display: block;
+        padding: 12px 8px;
     }
 
     .visually-hidden {

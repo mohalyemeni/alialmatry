@@ -39,7 +39,7 @@
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-md-6 col-xxl-4 col-xl-4">
-                    <div class="widget footer-widget">
+                    <div class="widget footer-widget border_m border_m1">
                         <div class="th-widget-about">
                             <div class="about-logo">
                                 <a href="index.html">
@@ -57,8 +57,9 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-6 col-xxl-4 col-xl-4">
-                    <div class="widget footer-widget">
+                    <div class="widget footer-widget border_m">
                         <div class="th-widget-about">
                             <h3 class="widget_title widget_title12 widget_title121 text-center"> وسائل التواصل</h3>
                             <div class="th-social text-center">
@@ -105,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-xl-4">
-                    <div class="widget widget_nav_menu footer-widget email">
+                    <div class="widget widget_nav_menu footer-widget border_m email">
                         <h3 class="widget_title"> كما يسعدنا تواصلكم معنا</h3>
                         @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
                             <p class="about-text ">للتواصل عبر الهاتف المحمول :
