@@ -2261,3 +2261,36 @@ h4 {
         width: 100%;
     }
 }
+/* تحسين مظهر عناصر الصوتيات */
+.audio-play-wrapp {
+    border-bottom: 1px solid #e6e6e6; /* خط خفيف تحت كل عنصر */
+    padding: 12px 0;
+    transition: background-color 0.3s ease;
+}
+
+.audio-play-wrapp:last-child {
+    border-bottom: none; /* آخر عنصر بدون خط */
+}
+
+/* تأثير عند تمرير الماوس */
+.audio-play-wrapp:hover {
+    background-color: #fafafa; /* خلفية خفيفة أنيقة عند الهوفر */
+}
+
+/* تحسين شكل العناوين */
+.audio-play-wrapp .card-title a {
+    color: #222;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.audio-play-wrapp .card-title a:hover {
+    color: #0d6efd; /* لون أزرق جميل عند التمرير */
+}
+
+/* توحيد حجم الأزرار قليلاً لتبدو متناغمة */
+.audio-play-wrapp .button-wrapp .th-btn {
+    font-size: 14px;
+    padding: 8px 14px;
+}
