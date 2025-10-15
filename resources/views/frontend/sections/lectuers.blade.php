@@ -74,7 +74,7 @@
                                                 class="th-btn style1 th-btn1"
                                                 aria-label="تشغيل {{ e($audio->title) }}">
                                                 <span class="btn-text" data-back=" تشغيل" data-front=" تشغيل"></span>
-                                                <i class="fa-solid fa-play me-1"></i>
+                                                <i class="fa-solid fa-play me-2"></i>
                                             </a>
 
                                             @if ($downloadUrl)
