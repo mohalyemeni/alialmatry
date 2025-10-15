@@ -84,14 +84,14 @@
                                                         aria-label="فتح/تحميل {{ e($audio->title) }}">
                                                         <span class="btn-text" data-back=" تحميل"
                                                             data-front=" تحميل"></span>
-                                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
+                                                        <i class="fa-regular fa-arrow-down-to-line me-2 ms-2"></i>
                                                     </a>
                                                 @else
                                                     <a href="{{ $downloadUrl }}" class="th-btn style2 th-btn1"
                                                         download aria-label="تحميل {{ e($audio->title) }}">
                                                         <span class="btn-text" data-back=" تحميل"
                                                             data-front=" تحميل"></span>
-                                                        <i class="fa-regular fa-arrow-down-to-line me-2"></i>
+                                                        <i class="fa-regular fa-arrow-down-to-line me-2 ms-2"></i>
                                                     </a>
                                                 @endif
                                             @endif
