@@ -1,9 +1,3 @@
-{{-- partial/frontend/header.blade.php --}}
-@php
-    // تأكد أن $siteSettings متاحة في الـ view
-    // مثال: ['site_logo_light' => (object)['value'=>'...'], ...]
-@endphp
-
 <!--==============================
 منطقة الرأس (الهيدر)
 ==============================-->
@@ -17,9 +11,8 @@
                             @if (isset($siteSettings['site_mobile']->value) && $siteSettings['site_mobile']->value)
                                 <li>
                                     <i class="far fa-phone"></i>
-                                    <a class="css_for_phone" href="tel:{{ $siteSettings['site_mobile']->value }}">
-                                        {{ $siteSettings['site_mobile']->value }}
-                                    </a>
+                                    <a class="css_for_phone"
+                                        href="tel:{{ $siteSettings['site_mobile']->value }}">{{ $siteSettings['site_mobile']->value }}</a>
                                 </li>
                             @endif
 
@@ -39,7 +32,6 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="col-auto">
                     <div class="header-links">
                         <ul>
@@ -47,6 +39,7 @@
                             <li>
                                 <div class="header-social">
                                     <span class="social-title">تابعنا:</span>
+
                                     @php
                                         $socials = [
                                             'site_facebook' => 'fab fa-facebook-f',
@@ -80,30 +73,21 @@
             </div>
         </div>
     </div>
-
-    {{-- الشريط الرئيسي: نضع زر القائمة + زر البحث (للأجهزة الصغيرة) قبل الشعار --}}
     <div class="sticky-wrapper">
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
+                <!-- NOTE: using order classes to swap columns on mobile only -->
                 <div class="row align-items-center justify-content-between back_spec_c">
+                    <!-- Logo column: on mobile we show the SEARCH BUTTON BEFORE the logo (mobile UX requirement) -->
+                    <div class="col-9 col-md-10 col-lg-3 new_colore order-2 order-lg-1">
+                        <div class="header-logo d-flex align-items-center">
+                            <!-- Mobile search button (visible on mobile only) -->
+                            <button type="button"
+                                class="icon-style2 searchBoxToggler d-inline-flex d-lg-none mobile-header-search me-2"
+                                aria-label="بحث">
+                                <i class="far fa-search"></i>
+                            </button>
 
-                    {{-- عمود الأزرار (زر القائمة + زر البحث) يظهر قبل الشعار على الموبايل --}}
-                    <div class="col-auto header-left d-flex align-items-center">
-                        <!-- زر فتح القائمة (يظهر في الهواتف فقط) -->
-                        <button type="button" class="th-menu-toggle d-inline-block d-lg-none me-2" aria-label="قائمة">
-                            <i class="far fa-bars"></i>
-                        </button>
-
-                        <!-- زر البحث للجوال — يظهر فقط في الشاشات الصغيرة -->
-                        <button type="button" class="mobile-search-header d-inline-block d-lg-none searchBoxToggler"
-                            aria-label="بحث">
-                            <i class="far fa-search"></i>
-                        </button>
-                    </div>
-
-                    {{-- شعار الموقع --}}
-                    <div class="col new_colore header-logo-col d-flex justify-content-center justify-content-lg-start">
-                        <div class="header-logo">
                             <a href="{{ route('frontend.index') }}" class="logo_img">
                                 @if (isset($siteSettings['site_logo_light']->value) && $siteSettings['site_logo_light']->value)
                                     <img src="{{ asset('assets/site_settings/' . $siteSettings['site_logo_light']->value) }}"
@@ -115,34 +99,45 @@
                         </div>
                     </div>
 
-                    {{-- القائمة الرئيسية (تظهر على الشاشات الكبيرة) --}}
-                    <div class="col-auto ms-auto d-none d-lg-block header-menu-col">
-                        <nav class="main-menu">
-                            <ul>
-                                <li><a href="{{ route('frontend.sheikh-intro') }}">نبذة الشيخ</a></li>
-                                <li><a href="{{ route('frontend.videos.index') }}" class="ajax-link">المرئيات</a></li>
-                                <li><a href="{{ route('frontend.audios.index') }}">الصوتيات</a></li>
-                                <li><a href="{{ route('frontend.fatawas.index') }}">الفتاوى</a></li>
-                                <li><a href="{{ route('frontend.blogs.index') }}" class="ajax-link">المقالات</a></li>
-                                <li><a href="{{ route('frontend.books.index') }}">الكتب والمؤلفات</a></li>
-                                <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    <!-- Menu + buttons column: on mobile this column appears BEFORE logo (so we swapped cols) -->
+                    <div class="col-3 col-md-2 col-lg-9 order-1 order-lg-2">
+                        <div class="row align-items-center">
+                            <div class="col-lg-12 col-xl-10">
+                                <nav class="main-menu d-none d-lg-inline-block ml-10">
+                                    <ul>
+                                        <li><a href="{{ route('frontend.sheikh-intro') }}"> نبذة الشيخ</a></li>
+                                        <li><a href="{{ route('frontend.videos.index') }}"
+                                                class="ajax-link">المرئيات</a></li>
+                                        <li><a href="{{ route('frontend.audios.index') }}"> الصوتيات</a></li>
+                                        <li><a href="{{ route('frontend.fatawas.index') }}"> الفتاوى</a></li>
+                                        <li><a href="{{ route('frontend.blogs.index') }}"
+                                                class="ajax-link">المقالات</a></li>
+                                        <li><a href="{{ route('frontend.books.index') }}"> الكتب والؤلفات</a></li>
+                                        <li><a href="{{ route('frontend.contact.form') }}">اتصل بنا</a></li>
+                                    </ul>
+                                </nav>
+                                <!-- mobile hamburger (visible on mobile) -->
+                                <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
+                                    <i class="far fa-bars"></i>
+                                </button>
+                            </div>
 
-                    {{-- أي أزرار إضافية على الجهة اليُمنى في الشاشات الكبيرة --}}
-                    <div class="col-auto d-none d-xxl-block d-xl-block">
-                        <div class="header-button">
-                            <button type="button" class="icon-style2 searchBoxToggler d-none d-lg-inline-block"
-                                aria-label="بحث">
-                                <i class="far fa-search"></i>
-                            </button>
-                            <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
-                                <img src="{{ asset('frontand/assets/img/icon/grid.svg') }}" alt="">
-                            </a>
+                            <div class="col-2 d-none d-xxl-block d-xl-block">
+                                <div class="header-button">
+                                    <!-- Desktop search button (visible on lg and up) -->
+                                    <button type="button"
+                                        class="icon-style2 searchBoxToggler d-none d-lg-inline-block search-on-desktop"
+                                        aria-label="بحث">
+                                        <i class="far fa-search"></i>
+                                    </button>
+
+                                    <a href="#" class="icon-btn sideMenuToggler d-none d-lg-block">
+                                        <img src="{{ asset('frontand/assets/img/icon/grid.svg') }}" alt="">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="logo-shape"></div>
@@ -150,11 +145,25 @@
     </div>
 </header>
 
-{{-- CSS محلي بسيط لصرف ترتيب العناصر على الموبايل وإخفاء البحث داخل الـ mobile menu --}}
+<!-- small styles to align mobile search and spacing -->
 <style>
-    @media (max-width: 991.98px) {
-        .th-mobile-menu .mobile-search-item {
-            display: none !important;
+    /* make mobile search button visually similar to original mobile-menu button */
+    .mobile-header-search {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        background: transparent;
+        font-weight: 600;
+        gap: 8px;
+    }
+
+    /* spacing: ensure on very small screens there's some gap */
+    @media (max-width: 575.98px) {
+        .header-logo .logo_img img {
+            max-height: 36px;
         }
     }
 </style>
