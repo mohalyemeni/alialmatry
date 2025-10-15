@@ -159,11 +159,4 @@
         font-weight: 600;
         gap: 8px;
     }
-
-    /* spacing: ensure on very small screens there's some gap */
-    @media (max-width: 575.98px) {
-        .header-logo .logo_img img {
-            max-height: 36px;
-        }
-    }
 </style>
