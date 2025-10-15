@@ -2331,6 +2331,8 @@ h4 {
         padding-top: 20px !important;
         margin-top: 20px !important;
         border-radius: 0;
+        margin-right: 35px;
+        margin-left: 35px;
     }
     .footer-wrapper .border_m1 {
         border-top: none !important;
