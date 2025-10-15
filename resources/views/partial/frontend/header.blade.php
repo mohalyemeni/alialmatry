@@ -145,12 +145,9 @@
     </div>
 </header>
 
+<!-- small styles to align mobile search and spacing -->
 <style>
-    /* === Mobile header layout tweak ===
-   - Logo pinned to the edge
-   - Mobile search button and logo separated with space
-   - Keep desktop behavior unchanged
-*/
+    /* make mobile search button visually similar to original mobile-menu button */
     .mobile-header-search {
         display: inline-flex;
         align-items: center;
@@ -161,81 +158,5 @@
         background: transparent;
         font-weight: 600;
         gap: 8px;
-    }
-
-    /* Ensure header-logo items are inline and not centered on mobile */
-    @media (max-width: 991.98px) {
-
-        /* make the row behave flexibly on mobile */
-        .back_spec_c {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* let the logo column take more space so we can spread items */
-        .back_spec_c>.new_colore {
-            flex: 1 1 auto;
-            /* expand */
-            min-width: 0;
-        }
-
-        /* ensure the other column (menu toggle) keeps minimal width */
-        .back_spec_c>.order-1 {
-            flex: 0 0 auto;
-        }
-
-        /* Make header-logo use full width and push the search and logo to the edges */
-        .header-logo {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            /* key: button left, logo right (or vice versa depending on flow) */
-            gap: 12px;
-            /* spacing between items */
-            padding-inline: 0.25rem;
-            /* small horizontal padding */
-        }
-
-        /* ensure the search button stays compact and on the start side */
-        .header-logo .mobile-header-search {
-            flex: 0 0 auto;
-            margin: 0;
-        }
-
-        /* logo stays at the opposite edge and doesn't center */
-        .header-logo .logo_img {
-            flex: 0 0 auto;
-            display: inline-block;
-        }
-
-        /* prevent the logo from growing too big on small screens */
-        .header-logo .logo_img img {
-            max-height: 40px;
-            /* adjust as needed */
-            width: auto;
-            display: block;
-        }
-
-        /* ensure hamburger (in the other column) stays visible on the opposite side */
-        .th-menu-toggle.d-inline-block.d-lg-none {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 10px;
-        }
-    }
-
-    /* Keep desktop styles intact */
-    @media (min-width: 992px) {
-        .header-logo {
-            justify-content: flex-start;
-            gap: 8px;
-        }
-
-        .header-logo .logo_img img {
-            max-height: none;
-        }
     }
 </style>
