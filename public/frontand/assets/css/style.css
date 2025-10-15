@@ -8692,9 +8692,7 @@ ol.widget_recent_comments,
 }
 
 @media (max-width: 575px) {
-    .header-logo {
-        max-width: 150px;
-    }
+
     .header-logo .icon-masking .mask-icon {
         -webkit-mask-size: cover;
         mask-size: cover;
