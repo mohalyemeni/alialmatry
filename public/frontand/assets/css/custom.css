@@ -1994,8 +1994,6 @@ h5 {
 }
 .footer-widget .widget_title12 {
     margin: -0.11em 0 0 0;
-
-    margin-right: 76px;
 }
 .h3,
 h3 {
@@ -2303,4 +2301,8 @@ h4 {
 }
 .service-box2 .box-content .box-wrapp .box-icon {
     background-color: #fff;
+}
+
+.footer-widget .widget_title121 {
+    max-width: 100%;
 }
