@@ -80,7 +80,7 @@
                 <div class="row align-items-center justify-content-between back_spec_c">
                     <!-- Logo column: on mobile we show the SEARCH BUTTON BEFORE the logo (mobile UX requirement) -->
                     <div class="col-9 col-md-10 col-lg-3 new_colore order-2 order-lg-1">
-                        <div class="header-logo d-flex align-items-center">
+                        <div class="header-logo d-flex align-items-center justify-content-end">
                             <!-- Mobile search button (visible on mobile only) -->
 
 
