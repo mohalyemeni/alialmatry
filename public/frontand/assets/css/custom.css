@@ -2298,3 +2298,9 @@ h4 {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     border-radius: 15px;
 }
+.service-box2 .box-info .box-icon {
+    background-color: #fff;
+}
+.service-box2 .box-content .box-wrapp .box-icon {
+    background-color: #fff;
+}
