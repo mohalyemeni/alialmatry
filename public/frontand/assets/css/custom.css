@@ -2263,7 +2263,7 @@ h4 {
 }
 /* تحسين مظهر عناصر الصوتيات */
 .audio-play-wrapp {
-    border-bottom: 1px solid #e6e6e6; /* خط خفيف تحت كل عنصر */
+    border-bottom: 1px solid #b6b3b3; /* خط خفيف تحت كل عنصر */
     padding: 12px 0;
     transition: background-color 0.3s ease;
 }
@@ -2286,7 +2286,7 @@ h4 {
 }
 
 .audio-play-wrapp .card-title a:hover {
-    color: #0d6efd; /* لون أزرق جميل عند التمرير */
+    color: var(--theme-color2); /* لون أزرق جميل عند التمرير */
 }
 
 /* توحيد حجم الأزرار قليلاً لتبدو متناغمة */

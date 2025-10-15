@@ -57,7 +57,7 @@
 
                                     <div
                                         class="audio-play-wrapp d-flex justify-content-between align-items-center mb-2">
-                                        <div class="flex-1">
+                                        <div class="flex-1 me-1">
                                             <h5 class="card-title mb-0 a_font_size">
                                                 <a
                                                     href="{{ route('frontend.audios.show', $audio->slug ?? $audio->id) }}">
@@ -69,7 +69,7 @@
                                             @endif
                                         </div>
 
-                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2">
+                                        <div class="button-wrapp pt-15 d-flex flex-nowrap gap-2 ms-1">
                                             <a href="{{ route('frontend.audios.show', $audio->slug ?? $audio->id) }}"
                                                 class="th-btn style1 th-btn1"
                                                 aria-label="تشغيل {{ e($audio->title) }}">
