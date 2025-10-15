@@ -2262,7 +2262,7 @@ h4 {
 }
 
 .audio-play-wrapp {
-    border-bottom: 1px solid #b6b3b3;
+    border-bottom: 1px solid #b6b3b39c;
     padding: 12px 0;
     transition: background-color 0.3s ease;
     border-radius: 0;
