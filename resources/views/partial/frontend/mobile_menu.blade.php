@@ -14,8 +14,7 @@
 
         <div class="th-mobile-menu">
             <ul>
-                <!-- زر البحث أُخرج إلى الهيدر على الموبايل، لذلك لم نعد نحتاج هذا العنصر داخل القائمة -->
-                <!-- تم حذف <li class="mobile-search-item"> ... </li> -->
+
 
                 <li class="menu-item-has-children">
                     <a href="{{ route('frontend.sheikh-intro') }}">نبذة الشيخ</a>
@@ -42,7 +41,6 @@
         padding: 0 12px;
     }
 
-    /* تم تعديل الـ mobile-search-item سابقاً؛ هنا تركت بقية ستايلات القائمة كما كانت */
     .th-mobile-menu ul li {
         list-style: none;
         margin: 10px 0;

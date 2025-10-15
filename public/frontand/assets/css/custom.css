@@ -2265,6 +2265,7 @@ h4 {
     border-bottom: 1px solid #b6b3b3;
     padding: 12px 0;
     transition: background-color 0.3s ease;
+    border-radius: 0;
 }
 
 .audio-play-wrapp:last-child {
@@ -2310,21 +2311,19 @@ h4 {
 }
 .border_m {
 }
-/* تصميم الفواصل بين أجزاء الفوتر */
+
 .footer-wrapper .border_m {
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding-top: 25px;
     margin-top: 25px;
 }
 
-/* إزالة الفاصل من أول قسم */
 .footer-wrapper .border_m:first-child {
     border-top: none;
     margin-top: 0;
     padding-top: 0;
 }
 
-/* تحسين العرض في شاشات الهاتف */
 @media (max-width: 768px) {
     .footer-wrapper .border_m {
         border-top: 1px solid rgba(227, 218, 218, 0.58) !important;
@@ -2339,11 +2338,10 @@ h4 {
     }
 }
 
-/* حل مشكلة تداخل خط الفاصل مع صور Google وApple */
 .footer-wrapper .th-widget-about .row {
     margin-top: 10px !important;
     padding-top: 15px !important;
-    border-top: 1px dashed rgba(0, 0, 0, 0.07); /* فاصل خفيف داخل القسم نفسه */
+    border-top: 1px dashed rgba(0, 0, 0, 0.07);
 }
 
 .footer-wrapper .th-widget-about .counter-item img.image {
@@ -2353,15 +2351,13 @@ h4 {
     transition: transform 0.3s ease;
 }
 
-/* حركة بسيطة عند المرور بالماوس */
 .footer-wrapper .th-widget-about .counter-item img.image:hover {
     transform: scale(1.05);
 }
 
-/* تحسين محاذاة أقسام التواصل على الهاتف */
 @media (max-width: 768px) {
     .footer-wrapper .th-widget-about .row {
-        border-top: none; /* إلغاء الخط داخل العمود الثاني لتجنب التكرار */
+        border-top: none;
         margin-top: 10px !important;
     }
     .footer-wrapper .counter-item {

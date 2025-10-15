@@ -76,9 +76,7 @@
     <div class="sticky-wrapper">
         <div class="menu-area" data-bg-src="{{ asset('frontand/assets/img/bg/pattern_bg_2.png') }}">
             <div class="container">
-                <!-- NOTE: using order classes to swap columns on mobile only -->
                 <div class="row align-items-center justify-content-between back_spec_c">
-                    <!-- Logo column: on mobile we show the SEARCH BUTTON BEFORE the logo (mobile UX requirement) -->
                     <div class="col-8 col-md-10 col-lg-3 new_colore order-2 order-lg-1">
                         <div class="header-logo d-flex align-items-center justify-content-end">
                             <!-- Mobile search button (visible on mobile only) -->
@@ -95,7 +93,6 @@
                         </div>
                     </div>
 
-                    <!-- Menu + buttons column: on mobile this column appears BEFORE logo (so we swapped cols) -->
                     <div class="col-4 col-md-2 col-lg-9 order-1 order-lg-2">
                         <div class="row align-items-center">
                             <div class="col-lg-12 col-xl-10">
@@ -148,9 +145,7 @@
     </div>
 </header>
 
-<!-- small styles to align mobile search and spacing -->
 <style>
-    /* make mobile search button visually similar to original mobile-menu button */
     .mobile-header-search {
         display: inline-flex;
         align-items: center;
