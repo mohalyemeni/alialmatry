@@ -386,7 +386,7 @@ h2 {
         margin: 0;
     }
     .header-layout5 .th-menu-toggle {
-        float: left;
+        float: right;
     }
     .audio-play-wrapp .button-wrapp .th-btn:not(:last-child) {
         margin: unset;
