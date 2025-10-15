@@ -113,14 +113,16 @@
                                     </ul>
                                 </nav>
                                 <!-- mobile hamburger (visible on mobile) -->
-                                <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
-                                    <i class="far fa-bars"></i>
-                                </button>
-                                <button type="button"
-                                    class="icon-style2 searchBoxToggler d-inline-flex d-lg-none mobile-header-search me-2"
-                                    aria-label="بحث">
-                                    <i class="far fa-search"></i>
-                                </button>
+                                <div class="header-button">
+                                    <button type="button" class="th-menu-toggle d-inline-block d-lg-none">
+                                        <i class="far fa-bars"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="icon-style2 searchBoxToggler d-inline-flex d-lg-none mobile-header-search me-2"
+                                        aria-label="بحث">
+                                        <i class="far fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="col-2 d-none d-xxl-block d-xl-block">
