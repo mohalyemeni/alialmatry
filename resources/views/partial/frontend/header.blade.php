@@ -152,35 +152,6 @@
 
 {{-- CSS محلي بسيط لصرف ترتيب العناصر على الموبايل وإخفاء البحث داخل الـ mobile menu --}}
 <style>
-    /* reorder on small screens: bring menu-toggle & search before logo */
-    @media (max-width: 991.98px) {
-        .header-left {
-            order: 1;
-        }
-
-        .header-logo-col {
-            order: 2;
-        }
-
-        .header-menu-col {
-            order: 3;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
-
-        .mobile-search-header {
-            background: transparent;
-            border: none;
-            font-size: 1.05rem;
-            padding: 6px;
-        }
-    }
-
-    /* أخفوا عنصر البحث داخل الـ mobile menu لأنه الآن في الهيدر */
     @media (max-width: 991.98px) {
         .th-mobile-menu .mobile-search-item {
             display: none !important;
